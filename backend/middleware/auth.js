@@ -1,8 +1,30 @@
 require('dotenv').config();
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { db } = require('../db/schema');
 
-const JWT_SECRET = process.env.JWT_SECRET;
+function resolveJwtSecret() {
+  if (process.env.JWT_SECRET && process.env.JWT_SECRET.length >= 32) {
+    return process.env.JWT_SECRET;
+  }
+
+  if (process.env.VERCEL) {
+    const basis = [
+      process.env.VERCEL_PROJECT_PRODUCTION_URL,
+      process.env.VERCEL_URL,
+      process.env.VERCEL_GIT_COMMIT_SHA,
+      'nextairs-vercel-fallback',
+    ].filter(Boolean).join('|');
+
+    const fallback = crypto.createHash('sha256').update(basis).digest('hex');
+    console.warn('[SECURITY] JWT_SECRET missing in Vercel env; using derived fallback secret. Set JWT_SECRET in Vercel for a stable production secret.');
+    return fallback;
+  }
+
+  return null;
+}
+
+const JWT_SECRET = resolveJwtSecret();
 
 // Crash loudly at startup if no secret is set — never allow the default
 if (!JWT_SECRET || JWT_SECRET.length < 32) {
