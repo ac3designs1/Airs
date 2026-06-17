@@ -1,4 +1,5 @@
-import { useEffect, useState, FormEvent } from 'react';
+import { useEffect, useState } from 'react';
+import type { FormEvent } from 'react';
 import { Car, Search, Plus, X, AlertTriangle, Save, User, CheckCircle } from 'lucide-react';
 import api from '../api/client';
 import { useAuth } from '../contexts/AuthContext';

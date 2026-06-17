@@ -20,7 +20,7 @@ interface Call { id: string; call_number: string; type: string; location: string
 const P_COLOR: Record<number, string> = { 1: 'p1', 2: 'p2', 3: 'p3' };
 const P_LABEL: Record<number, string> = { 1: 'P1', 2: 'P2', 3: 'P3' };
 
-const QUICK: { to: string; icon: React.ComponentType<{ className?: string }>; label: string; color: string; bg: string }[] = [
+const QUICK = [
   { to: '/roster', icon: Users, label: 'Roster', color: '#0ea5e9', bg: 'rgba(14,165,233,0.10)' },
   { to: '/warrants', icon: AlertTriangle, label: 'Warrants', color: '#ef4444', bg: 'rgba(239,68,68,0.10)' },
   { to: '/in-city-requests', icon: Radio, label: 'Dispatch', color: '#a78bfa', bg: 'rgba(167,139,250,0.10)' },
@@ -29,7 +29,7 @@ const QUICK: { to: string; icon: React.ComponentType<{ className?: string }>; la
   { to: '/certifications', icon: Star, label: 'Certs', color: '#f59e0b', bg: 'rgba(245,158,11,0.10)' },
   { to: '/leave-requests', icon: ArrowRightLeft, label: 'Leave', color: '#818cf8', bg: 'rgba(129,140,248,0.10)' },
   { to: '/reports', icon: FileText, label: 'Reports', color: '#64748b', bg: 'rgba(100,116,139,0.12)' },
-];
+] as const;
 
 export default function Dashboard() {
   const { auth } = useAuth();

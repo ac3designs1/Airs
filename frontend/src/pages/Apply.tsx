@@ -1,8 +1,10 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
 import { Shield, CheckCircle, AlertCircle, ChevronRight, Clock, Users, Star } from 'lucide-react';
 import axios from 'axios';
 
-const api = axios.create({ baseURL: '/api' });
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
+const api = axios.create({ baseURL: apiBaseUrl });
 
 const TIMEZONES = ['AEST (UTC+10)', 'AEDT (UTC+11)', 'ACST (UTC+9:30)', 'AWST (UTC+8)', 'NZT (UTC+12)', 'Other'];
 const AVAILABILITY = ['1–5 hrs/week', '5–10 hrs/week', '10–20 hrs/week', '20+ hrs/week'];

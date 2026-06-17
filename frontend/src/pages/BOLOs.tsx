@@ -206,9 +206,9 @@ export default function BOLOs() {
               <div className="flex gap-4">
                 {[{ k: 'armed', l: 'Subject is Armed' }, { k: 'dangerous', l: 'Considered Dangerous' }].map(f => (
                   <label key={f.k} className="flex items-center gap-2.5 cursor-pointer flex-1">
-                    <div onClick={() => setForm(p => ({ ...p, [f.k]: !(p as Record<string, unknown>)[f.k] }))}
-                      className={`w-5 h-5 rounded flex items-center justify-center border-2 transition-all ${(form as Record<string, unknown>)[f.k] ? 'bg-red-500 border-red-500' : 'border-slate-600'}`}>
-                      {(form as Record<string, unknown>)[f.k] && <span className="text-white text-xs font-bold">✓</span>}
+                    <div onClick={() => setForm(p => ({ ...p, [f.k]: !Boolean((p as Record<string, unknown>)[f.k]) }))}
+                      className={`w-5 h-5 rounded flex items-center justify-center border-2 transition-all ${Boolean((form as Record<string, unknown>)[f.k]) ? 'bg-red-500 border-red-500' : 'border-slate-600'}`}>
+                      {Boolean((form as Record<string, unknown>)[f.k]) && <span className="text-white text-xs font-bold">✓</span>}
                     </div>
                     <span className="text-sm text-slate-300">{f.l}</span>
                   </label>
