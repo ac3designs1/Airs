@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 const bcrypt = require('bcryptjs');
@@ -401,7 +402,7 @@ function initDb() {
   // Seed only the admin account — no preset officers
   const existing = db.prepare('SELECT id FROM officers WHERE username = ?').get('admin');
   if (!existing) {
-    const hash = bcrypt.hashSync('admin123', 10);
+    const hash = bcrypt.hashSync('admin123', 12);
     db.prepare(`INSERT INTO officers (id,badge_number,username,password,first_name,last_name,rank,department,role,status,callsign) VALUES (?,?,?,?,?,?,?,?,?,?,?)`).run(
       uuidv4(), 'ADM001', 'admin', hash, 'System', 'Admin', 'Commissioner', 'GD', 'admin', 'on_duty', 'ADM-001'
     );
@@ -414,8 +415,8 @@ function initDb() {
       'general', 'System Admin', 1
     );
 
-    console.log('[DB] Admin account created. Username: admin | Password: admin123');
-    console.log('[DB] No preset officers — register your real officers via /register');
+    console.log('[DB] Admin account created. Log in with the default credentials from your setup guide.');
+    console.log('[DB] IMPORTANT: Change the admin password immediately after first login.');
   }
 }
 

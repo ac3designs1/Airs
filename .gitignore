@@ -12,11 +12,12 @@ backend/db/*.db
 backend/db/*.db-shm
 backend/db/*.db-wal
 
-# Environment files
+# Environment files — NEVER commit these
 .env
 .env.local
 .env.*.local
 backend/.env
+# .env.example IS safe to commit (no real secrets)
 
 # Logs
 npm-debug.log*
