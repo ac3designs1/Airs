@@ -4,9 +4,13 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 
-const db = new DatabaseSync(path.join(__dirname, 'nextairs.db'));
+const dbFile = process.env.DB_FILE || (process.env.VERCEL
+  ? path.join('/tmp', 'nextairs.db')
+  : path.join(__dirname, 'nextairs.db'));
 
-db.exec('PRAGMA journal_mode = WAL');
+const db = new DatabaseSync(dbFile);
+
+db.exec(`PRAGMA journal_mode = ${process.env.VERCEL ? 'DELETE' : 'WAL'}`);
 db.exec('PRAGMA foreign_keys = ON');
 
 function initDb() {
