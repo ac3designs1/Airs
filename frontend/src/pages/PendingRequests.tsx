@@ -96,7 +96,7 @@ export default function PendingRequests() {
       </div>
 
       {/* Tabs */}
-      <div className="flex rounded-xl overflow-hidden w-fit" style={{ border: '1px solid rgba(14,165,233,0.12)' }}>
+      <div className="flex rounded-xl overflow-hidden w-fit" style={{ border: '1px solid rgba(6,182,212,0.12)' }}>
         {([['pending','Pending',pending],['all','All',items.length]] as [string,string,number][]).map(([v,l,c]) => (
           <button key={v} onClick={() => setTab(v as typeof tab)}
             className={`px-5 py-2.5 text-sm font-medium flex items-center gap-2 transition-all ${tab === v ? 'bg-orange-500/15 text-orange-400' : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'}`}>
@@ -109,8 +109,8 @@ export default function PendingRequests() {
       {/* Confirm modal */}
       {processing && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(14,165,233,0.18)' }}>
-            <div className="p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
+            <div className="p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
               <h2 className="font-bold text-white">{actionType === 'approved' ? '✓ Approve' : '✗ Deny'} Request</h2>
               <p className="text-sm text-slate-500 mt-1">{processing.title} · {processing.officer_name}</p>
             </div>
@@ -147,7 +147,7 @@ export default function PendingRequests() {
               <div key={`${r.type}-${r.id}`} className={`glass rounded-xl p-4 transition-all ${r.status === 'pending' ? 'border-orange-500/15' : 'opacity-75'}`}>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3 flex-1 min-w-0">
-                    <div className="p-2 rounded-lg flex-shrink-0" style={{ background: 'rgba(14,165,233,0.06)' }}>
+                    <div className="p-2 rounded-lg flex-shrink-0" style={{ background: 'rgba(6,182,212,0.06)' }}>
                       <Icon className="w-4 h-4 text-slate-400" />
                     </div>
                     <div className="flex-1 min-w-0">

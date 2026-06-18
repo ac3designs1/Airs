@@ -5,7 +5,7 @@ import api from '../api/client';
 interface Division { id: string; name: string; type: string; description: string; commander: string; memberCount: number; color: string; }
 
 const DEPT_META: Record<string, { type: string; description: string; color: string }> = {
-  Academy: { type: 'Training',    color: '#0ea5e9', description: 'Recruitment and training division. All recruits begin here before field placement.' },
+  Academy: { type: 'Training',    color: '#06b6d4', description: 'Recruitment and training division. All recruits begin here before field placement.' },
   GD:      { type: 'Primary',     color: '#3b82f6', description: 'General Duties — primary patrol and first response for the city.' },
   Highway: { type: 'Primary',     color: '#f59e0b', description: 'Highway Patrol — motorway enforcement, pursuits, and crash investigation.' },
   CIRT:    { type: 'Specialist',  color: '#ef4444', description: 'Critical Incident Response Team — high-risk tactical operations.' },

@@ -108,7 +108,7 @@ export default function FTOTracking() {
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {[{ l: 'Hours', v: `${f.totalHours}h`, icon: Clock }, { l: 'Sessions', v: f.sessions, icon: TrendingUp }, { l: 'Recruits', v: f.recruits.length, icon: Users }].map(s => (
-                  <div key={s.l} className="rounded-lg p-2 text-center" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.08)' }}>
+                  <div key={s.l} className="rounded-lg p-2 text-center" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
                     <s.icon className="w-3.5 h-3.5 mx-auto mb-1 text-yellow-400" />
                     <div className="text-base font-bold text-white">{s.v}</div>
                     <div className="text-[10px] text-slate-500">{s.l}</div>
@@ -123,8 +123,8 @@ export default function FTOTracking() {
       {/* Add form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(14,165,233,0.18)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
               <h2 className="font-bold text-white">Log FTO Shift</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>
@@ -180,7 +180,7 @@ export default function FTOTracking() {
 
       {/* Shift log table */}
       <div className="glass rounded-2xl overflow-hidden">
-        <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+        <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
           <span className="font-semibold text-white">Shift Log</span>
           <span className="chip chip-blue">{shifts.length} entries</span>
         </div>

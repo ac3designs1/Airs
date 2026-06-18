@@ -169,8 +169,8 @@ export default function WeaponsInventory() {
       {/* Assign modal */}
       {assignModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl" style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(14,165,233,0.18)' }}>
-            <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(14,165,233,0.10)' }}>
+          <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl" style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(6,182,212,0.18)' }}>
+            <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.10)' }}>
               <h2 className="text-base font-bold text-white">Assign Weapon</h2>
               <button onClick={() => setAssignModal(null)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5"><X className="w-4 h-4" /></button>
             </div>
@@ -185,7 +185,7 @@ export default function WeaponsInventory() {
               </div>
               <div className="flex gap-3">
                 <button onClick={() => setAssignModal(null)} className="flex-1 py-2.5 rounded-xl border border-slate-700/50 text-slate-400 text-sm">Cancel</button>
-                <button onClick={assign} disabled={saving} className="flex-1 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: 'linear-gradient(135deg,#0284c7,#0ea5e9)' }}>
+                <button onClick={assign} disabled={saving} className="flex-1 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: 'linear-gradient(135deg,#0284c7,#06b6d4)' }}>
                   {saving ? 'Saving…' : 'Confirm'}
                 </button>
               </div>
@@ -206,7 +206,7 @@ export default function WeaponsInventory() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+                <tr style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
                   {['Serial', 'Type', 'Model', 'Assigned To', 'Callsign', 'Issued', 'Status', ...(isLeader ? ['Actions'] : [])].map(h => (
                     <th key={h} className="px-4 py-3 text-left text-[10px] uppercase tracking-wider font-semibold text-slate-600">{h}</th>
                   ))}
@@ -216,7 +216,7 @@ export default function WeaponsInventory() {
                 {filtered.map(w => {
                   const sc = STATUS_CFG[w.status] ?? STATUS_CFG.available;
                   return (
-                    <tr key={w.id} style={{ borderBottom: '1px solid rgba(14,165,233,0.04)' }} className="hover:bg-sky-500/[0.02] transition-colors">
+                    <tr key={w.id} style={{ borderBottom: '1px solid rgba(6,182,212,0.04)' }} className="hover:bg-sky-500/[0.02] transition-colors">
                       <td className="px-4 py-3 text-xs font-mono text-sky-400">{w.serial}</td>
                       <td className="px-4 py-3 text-sm text-slate-300">{w.weapon_type}</td>
                       <td className="px-4 py-3 text-sm text-slate-400">{w.model || '—'}</td>

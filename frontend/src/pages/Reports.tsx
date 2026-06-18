@@ -74,7 +74,7 @@ export default function Reports() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(14,165,233,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-4">
             <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
@@ -125,7 +125,7 @@ export default function Reports() {
             return (
               <button key={r.id} onClick={() => setSelected(r)}
                 className="w-full text-left rounded-xl p-3.5 transition-all"
-                style={{ background: sel ? 'rgba(6,182,212,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(6,182,212,0.28)' : 'rgba(14,165,233,0.06)'}` }}>
+                style={{ background: sel ? 'rgba(6,182,212,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(6,182,212,0.28)' : 'rgba(6,182,212,0.06)'}` }}>
                 <div className="flex items-center justify-between gap-1 mb-1">
                   <span className="font-mono text-[10px] text-slate-600">{r.report_number}</span>
                   <span className={`chip text-[10px] ${sc.cls}`}>{sc.label}</span>
@@ -148,7 +148,7 @@ export default function Reports() {
             </div>
           ) : (
             <div className="glass rounded-2xl overflow-hidden flex flex-col max-h-[540px]">
-              <div className="px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+              <div className="px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2 mb-1">

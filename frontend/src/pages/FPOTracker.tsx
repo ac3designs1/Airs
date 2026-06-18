@@ -86,7 +86,7 @@ export default function FPOTracker() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2 items-center">
-        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.08)' }}>
+        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
           {['active', 'revoked', 'expired'].map(s => (
             <button key={s} onClick={() => setStatus(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${status === s ? 'bg-blue-500/20 text-blue-300' : 'text-slate-500 hover:text-slate-300'}`}>{s}</button>

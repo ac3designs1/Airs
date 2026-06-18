@@ -145,7 +145,7 @@ export default function Apply() {
       {/* Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute w-[700px] h-[700px] rounded-full -top-80 -left-80 opacity-30"
-          style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)' }} />
         <div className="absolute w-[500px] h-[500px] rounded-full -bottom-40 -right-40 opacity-20"
           style={{ background: 'radial-gradient(circle, rgba(88,101,242,0.10) 0%, transparent 70%)' }} />
         <div className="absolute inset-0 opacity-[0.025]"
@@ -155,17 +155,17 @@ export default function Apply() {
       <div className={`relative z-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
 
         {/* Nav */}
-        <div className="flex items-center justify-between px-8 h-16 border-b border-sky-500/10">
+        <div className="flex items-center justify-between px-8 h-16 border-b border-cyan-500/10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0284c7,#0ea5e9)' }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0891b2,#06b6d4)' }}>
               <Shield className="w-4 h-4 text-white" />
             </div>
             <div>
               <div className="text-white font-bold text-sm leading-none">NextAirs</div>
-              <div className="text-[10px] font-mono text-sky-500">NEXT RP · MELBOURNE POLICE</div>
+              <div className="text-[10px] font-mono text-cyan-500">NEXT RP · MELBOURNE POLICE</div>
             </div>
           </div>
-          <a href="/login" className="text-xs text-slate-500 hover:text-sky-400 transition-colors flex items-center gap-1">
+          <a href="/login" className="text-xs text-slate-500 hover:text-cyan-400 transition-colors flex items-center gap-1">
             Officer login <ChevronRight className="w-3 h-3" />
           </a>
         </div>
@@ -178,14 +178,14 @@ export default function Apply() {
             Applications Open
           </div>
           <h1 className="text-5xl md:text-6xl font-black text-white mb-4 leading-none tracking-tight">
-            Join <span style={{ background: 'linear-gradient(135deg,#0ea5e9,#6366f1)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Melbourne</span><br />Police Force
+            Join <span style={{ background: 'linear-gradient(135deg,#06b6d4,#6366f1)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Melbourne</span><br />Police Force
           </h1>
           <p className="text-slate-400 max-w-md mx-auto text-base leading-relaxed mt-4">
             Australia's most immersive FiveM police roleplay experience. Leadership personally reviews every application.
           </p>
           <div className="flex justify-center gap-10 mt-10">
             {[
-              { v: '24–72h', l: 'Review Time', c: '#0ea5e9' },
+              { v: '24–72h', l: 'Review Time', c: '#06b6d4' },
               { v: 'Discord', l: 'Required', c: '#5865F2' },
               { v: 'Academy', l: 'Starting Division', c: '#22c55e' },
             ].map(s => (
@@ -203,7 +203,7 @@ export default function Apply() {
             {/* ── Loading existing application check ── */}
             {checkingExisting && (
               <div className="glass rounded-2xl p-8 text-center mb-4">
-                <Loader className="w-6 h-6 text-sky-400 animate-spin mx-auto mb-3" />
+                <Loader className="w-6 h-6 text-cyan-400 animate-spin mx-auto mb-3" />
                 <p className="text-slate-400 text-sm">Checking for existing application…</p>
               </div>
             )}
@@ -226,7 +226,7 @@ export default function Apply() {
                       <p className="text-sm font-semibold text-white">@{discordUsername}</p>
                       <p className="text-xs text-indigo-400">Signed in with Discord</p>
                     </div>
-                    <button onClick={refreshStatus} className="text-slate-500 hover:text-sky-400 transition-colors p-1">
+                    <button onClick={refreshStatus} className="text-slate-500 hover:text-cyan-400 transition-colors p-1">
                       <RefreshCw className="w-4 h-4" />
                     </button>
                   </div>
@@ -315,14 +315,14 @@ export default function Apply() {
                   </div>
                   <h2 className="text-3xl font-bold text-white mb-2">Application Submitted!</h2>
                   <p className="text-slate-400 mb-6">
-                    Thanks <span className="text-sky-400 font-semibold">{form.full_name}</span>. Leadership will be in touch via Discord.
+                    Thanks <span className="text-cyan-400 font-semibold">{form.full_name}</span>. Leadership will be in touch via Discord.
                   </p>
                   <div className="glass rounded-xl p-4 mb-6 text-left">
                     <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Application ID</p>
                     <div className="flex items-center gap-2">
-                      <code className="text-sky-400 font-mono text-xs flex-1 break-all">{submittedId}</code>
+                      <code className="text-cyan-400 font-mono text-xs flex-1 break-all">{submittedId}</code>
                       <button onClick={() => navigator.clipboard.writeText(submittedId)}
-                        className="text-xs text-slate-500 hover:text-sky-400 px-2 py-1 rounded border border-slate-700">Copy</button>
+                        className="text-xs text-slate-500 hover:text-cyan-400 px-2 py-1 rounded border border-slate-700">Copy</button>
                     </div>
                   </div>
                   <div className="glass rounded-xl p-4 text-left space-y-2">
@@ -335,7 +335,7 @@ export default function Apply() {
               ) : !discordAuthed ? (
                 /* Discord gate */
                 <div className="rounded-2xl overflow-hidden"
-                  style={{ background: 'linear-gradient(135deg,rgba(88,101,242,0.12),rgba(14,165,233,0.06))', border: '1px solid rgba(88,101,242,0.25)' }}>
+                  style={{ background: 'linear-gradient(135deg,rgba(88,101,242,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(88,101,242,0.25)' }}>
                   {/* Top banner */}
                   <div className="px-8 pt-10 pb-8 text-center">
                     <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
@@ -404,12 +404,12 @@ export default function Apply() {
                         <div className="flex items-center gap-1.5">
                           <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                             step > s.n ? 'bg-green-500 text-white' : step === s.n ? 'text-white' : 'bg-slate-800 text-slate-500'
-                          }`} style={step === s.n ? { background: 'linear-gradient(135deg,#0284c7,#6366f1)' } : {}}>
+                          }`} style={step === s.n ? { background: 'linear-gradient(135deg,#0891b2,#6366f1)' } : {}}>
                             {step > s.n ? '✓' : s.n}
                           </div>
                           <span className={`text-xs font-medium hidden sm:block ${step === s.n ? 'text-white' : 'text-slate-600'}`}>{s.label}</span>
                         </div>
-                        {i < STEPS.length - 1 && <div className={`w-6 h-px mx-1 ${step > s.n ? 'bg-sky-500/50' : 'bg-slate-800'}`} />}
+                        {i < STEPS.length - 1 && <div className={`w-6 h-px mx-1 ${step > s.n ? 'bg-cyan-500/50' : 'bg-slate-800'}`} />}
                       </div>
                     ))}
                   </div>
@@ -510,11 +510,11 @@ export default function Apply() {
                                     form.play_times.includes(slot) ? 'text-white' : 'text-slate-400 hover:text-slate-300'
                                   }`}
                                   style={{
-                                    background: form.play_times.includes(slot) ? 'rgba(14,165,233,0.12)' : 'rgba(255,255,255,0.03)',
-                                    border: `1px solid ${form.play_times.includes(slot) ? 'rgba(14,165,233,0.35)' : 'rgba(255,255,255,0.06)'}`,
+                                    background: form.play_times.includes(slot) ? 'rgba(6,182,212,0.12)' : 'rgba(255,255,255,0.03)',
+                                    border: `1px solid ${form.play_times.includes(slot) ? 'rgba(6,182,212,0.35)' : 'rgba(255,255,255,0.06)'}`,
                                   }}>
                                   <div className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 transition-all ${
-                                    form.play_times.includes(slot) ? 'bg-sky-500' : 'bg-slate-800 border border-slate-700'
+                                    form.play_times.includes(slot) ? 'bg-cyan-500' : 'bg-slate-800 border border-slate-700'
                                   }`}>
                                     {form.play_times.includes(slot) && <CheckCircle className="w-3 h-3 text-white" />}
                                   </div>
@@ -530,7 +530,7 @@ export default function Apply() {
                       {step === 4 && (
                         <>
                           <h2 className="text-base font-bold text-white mb-4">Review & Submit</h2>
-                          <div className="rounded-xl p-4 space-y-2" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.12)' }}>
+                          <div className="rounded-xl p-4 space-y-2" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.12)' }}>
                             <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-3">Application Summary</p>
                             {[
                               { l: 'Name',         v: form.full_name },
@@ -574,7 +574,7 @@ export default function Apply() {
                         )}
                         <button type="submit" disabled={loading}
                           className="flex-1 py-3 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-2 transition-all"
-                          style={{ background: loading ? '#1e293b' : 'linear-gradient(135deg,#0284c7,#6366f1)', border: '1px solid rgba(14,165,233,0.3)' }}>
+                          style={{ background: loading ? '#1e293b' : 'linear-gradient(135deg,#0891b2,#6366f1)', border: '1px solid rgba(6,182,212,0.3)' }}>
                           {loading
                             ? <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                             : step < 4

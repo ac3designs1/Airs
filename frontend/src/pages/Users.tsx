@@ -77,9 +77,9 @@ export default function Users() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-5"
-        style={{ background: 'linear-gradient(135deg,rgba(14,165,233,0.10),rgba(99,102,241,0.05))', border: '1px solid rgba(14,165,233,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.10),rgba(99,102,241,0.05))', border: '1px solid rgba(6,182,212,0.18)' }}>
         <div className="flex items-center gap-4">
-          <div className="p-3 rounded-xl" style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(14,165,233,0.25)' }}>
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
             <UsersIcon className="w-6 h-6 text-sky-400" />
           </div>
           <div>
@@ -168,8 +168,8 @@ export default function Users() {
       {editing && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
-            style={{ background: '#0a1020', border: '1px solid rgba(14,165,233,0.18)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+            style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
               <div>
                 <h2 className="font-bold text-white">Edit Officer</h2>
                 <p className="text-xs text-slate-500 mt-0.5">{editing.first_name} {editing.last_name}</p>

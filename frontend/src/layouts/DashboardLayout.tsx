@@ -11,23 +11,23 @@ export default function DashboardLayout() {
 
   if (auth.loading) {
     return (
-      <div className="min-h-screen bg-dots flex items-center justify-center" style={{ background: '#07090f' }}>
+      <div className="min-h-screen bg-grid flex items-center justify-center" style={{ background: '#080d1a' }}>
         <div className="flex flex-col items-center gap-5">
           <div className="relative">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg,#0284c7,#0ea5e9)' }}>
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-glow"
+              style={{ background: 'linear-gradient(135deg,#0891b2,#1d4ed8)' }}>
               <Shield className="w-7 h-7 text-white" />
             </div>
             <div className="absolute inset-0 rounded-2xl animate-ping opacity-20"
-              style={{ background: 'linear-gradient(135deg,#0284c7,#0ea5e9)' }} />
+              style={{ background: 'linear-gradient(135deg,#0891b2,#1d4ed8)' }} />
           </div>
           <div className="text-center">
-            <p className="text-white font-semibold">NextAirs</p>
-            <p className="text-slate-500 text-sm mt-1">Loading system…</p>
+            <p className="text-white font-black tracking-tight">NextAirs MDT</p>
+            <p className="text-slate-500 text-xs mt-1 font-mono">Loading system…</p>
           </div>
           <div className="flex gap-1.5">
             {[0,1,2].map(i => (
-              <div key={i} className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#0ea5e9', animationDelay: `${i * 0.2}s` }} />
+              <div key={i} className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#06b6d4', animationDelay: `${i * 0.2}s` }} />
             ))}
           </div>
         </div>
@@ -38,13 +38,10 @@ export default function DashboardLayout() {
   if (!auth.user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="min-h-screen flex bg-dots" style={{ background: '#07090f' }}>
-      {/* Ambient background glows */}
+    <div className="min-h-screen flex bg-grid" style={{ background: '#080d1a' }}>
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-60 w-[500px] h-[300px] opacity-40"
-          style={{ background: 'radial-gradient(ellipse, rgba(14,165,233,0.06) 0%, transparent 70%)', filter: 'blur(40px)' }} />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[300px] opacity-30"
-          style={{ background: 'radial-gradient(ellipse, rgba(99,102,241,0.07) 0%, transparent 70%)', filter: 'blur(40px)' }} />
+        <div className="absolute top-0 left-60 w-[600px] h-[350px] opacity-100"
+          style={{ background: 'radial-gradient(ellipse, rgba(6,182,212,0.04) 0%, transparent 70%)' }} />
       </div>
 
       <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />

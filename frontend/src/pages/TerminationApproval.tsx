@@ -73,7 +73,7 @@ export default function TerminationApproval() {
       </div>
 
       {/* Status filter */}
-      <div className="flex p-1 gap-1 rounded-xl w-fit" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.08)' }}>
+      <div className="flex p-1 gap-1 rounded-xl w-fit" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
         {['pending', 'approved', 'denied', ''].map(s => (
           <button key={s} onClick={() => setStatusF(s)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusF === s ? 'bg-red-500/20 text-red-300' : 'text-slate-500 hover:text-slate-300'}`}>

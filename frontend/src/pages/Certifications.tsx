@@ -103,7 +103,7 @@ export default function Certifications() {
             </div>
           </div>
           {isLeader && (
-            <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(14,165,233,0.06)', border: '1px solid rgba(14,165,233,0.08)' }}>
+            <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.08)' }}>
               {(['mine', 'all'] as const).map(v => (
                 <button key={v} onClick={() => setView(v)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${view === v ? 'bg-amber-500/20 text-amber-300' : 'text-slate-500 hover:text-slate-300'}`}>
@@ -266,7 +266,7 @@ export default function Certifications() {
                 { l: 'Skills', v: reviewTarget.skills },
                 { l: 'Goals', v: reviewTarget.goals },
               ].map(q => (
-                <div key={q.l} className="rounded-xl p-3.5" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(14,165,233,0.06)' }}>
+                <div key={q.l} className="rounded-xl p-3.5" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
                   <div className="text-[10px] uppercase tracking-wider text-slate-600 font-semibold mb-1">{q.l}</div>
                   <p className="text-sm text-slate-300 leading-relaxed">{q.v || '—'}</p>
                 </div>

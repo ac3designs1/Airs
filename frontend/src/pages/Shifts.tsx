@@ -76,10 +76,10 @@ export default function Shifts() {
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-6 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(14,165,233,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(14,165,233,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(14,165,233,0.25)' }}>
+            <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
               <Clock className="w-6 h-6 text-sky-400" />
             </div>
             <div>
@@ -114,7 +114,7 @@ export default function Shifts() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'This Week', value: fmtMins(stats.week_mins), icon: Calendar, color: '#0ea5e9' },
+          { label: 'This Week', value: fmtMins(stats.week_mins), icon: Calendar, color: '#06b6d4' },
           { label: 'Total Hours', value: fmtMins(stats.total_mins), icon: Clock, color: '#a78bfa' },
           { label: 'Total Shifts', value: stats.total_shifts.toString(), icon: CheckCircle, color: '#22c55e' },
           { label: isLeader ? 'Active Officers' : 'Status', value: isLeader ? stats.active_shifts.toString() : (active ? 'On Duty' : 'Off Duty'), icon: BarChart2, color: active ? '#22c55e' : '#475569' },
@@ -161,10 +161,10 @@ export default function Shifts() {
 
       {/* Table */}
       <div className="glass rounded-2xl overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
           <h2 className="font-bold text-white flex items-center gap-2"><FileText className="w-4 h-4 text-sky-400" /> Shift History</h2>
           {isLeader && (
-            <div className="flex gap-1 p-1 rounded-xl" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.08)' }}>
+            <div className="flex gap-1 p-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
               {(['mine', 'all'] as const).map(t => (
                 <button key={t} onClick={() => setTab(t)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${tab === t ? 'bg-sky-500/20 text-sky-300' : 'text-slate-500 hover:text-slate-300'}`}>
@@ -185,7 +185,7 @@ export default function Shifts() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(14,165,233,0.06)' }}>
+                <tr style={{ borderBottom: '1px solid rgba(6,182,212,0.06)' }}>
                   {(isLeader ? ['Officer', 'Callsign', 'Dept', 'Start', 'End', 'Duration', 'Status', 'Notes'] : ['Date', 'Start', 'End', 'Duration', 'Status', 'Notes']).map(h => (
                     <th key={h} className="px-4 py-3 text-left text-[10px] uppercase tracking-wider font-semibold text-slate-600">{h}</th>
                   ))}
@@ -193,7 +193,7 @@ export default function Shifts() {
               </thead>
               <tbody>
                 {display.map(s => (
-                  <tr key={s.id} style={{ borderBottom: '1px solid rgba(14,165,233,0.04)' }} className="hover:bg-sky-500/[0.02] transition-colors">
+                  <tr key={s.id} style={{ borderBottom: '1px solid rgba(6,182,212,0.04)' }} className="hover:bg-sky-500/[0.02] transition-colors">
                     {isLeader && <td className="px-4 py-3 text-sm text-white font-medium">{s.officer_name}</td>}
                     {isLeader && <td className="px-4 py-3 text-sm text-sky-400 font-mono">{s.callsign || '—'}</td>}
                     {isLeader && <td className="px-4 py-3 text-xs text-slate-400">{s.department || '—'}</td>}

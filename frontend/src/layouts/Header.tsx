@@ -42,7 +42,7 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
 
   return (
     <header className="h-[60px] flex items-center justify-between px-4 sm:px-6 flex-shrink-0 sticky top-0 z-20"
-      style={{ background: 'rgba(5,7,14,0.95)', borderBottom: '1px solid rgba(14,165,233,0.08)', backdropFilter: 'blur(20px)' }}>
+      style={{ background: 'rgba(8,13,26,0.96)', borderBottom: '1px solid rgba(6,182,212,0.10)', backdropFilter: 'blur(12px)' }}>
 
       {/* Left */}
       <div className="flex items-center gap-3">
@@ -54,7 +54,7 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
         {/* Breadcrumb */}
         <div className="hidden md:flex items-center gap-2 text-sm">
           <div className="flex items-center gap-1.5 text-slate-500">
-            <Shield className="w-3.5 h-3.5" style={{ color: '#0ea5e9' }} />
+            <Shield className="w-3.5 h-3.5" style={{ color: '#06b6d4' }} />
             <span className="text-slate-600">NextAirs</span>
           </div>
           <ChevronDown className="w-3.5 h-3.5 text-slate-700 -rotate-90" />
@@ -70,8 +70,8 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
 
         {/* Live clock */}
         <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg"
-          style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.10)' }}>
-          <Radio className="w-3 h-3" style={{ color: '#0ea5e9' }} />
+          style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.12)' }}>
+          <Radio className="w-3 h-3" style={{ color: '#06b6d4' }} />
           <span className="font-mono text-xs text-slate-400">
             {time.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
           </span>
@@ -88,11 +88,11 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
             className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl transition-colors hover:bg-white/5">
             <div className="relative">
               <div className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold text-white"
-                style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
+                style={{ background: 'linear-gradient(135deg,#0891b2,#1d4ed8)' }}>
                 {auth.user?.first_name?.[0]}{auth.user?.last_name?.[0]}
               </div>
               <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2"
-                style={{ background: statusColor, borderColor: '#050810', boxShadow: statusGlow }} />
+                style={{ background: statusColor, borderColor: '#080d1a', boxShadow: statusGlow }} />
             </div>
             <div className="hidden sm:block text-left">
               <div className="text-sm font-semibold text-white leading-none">{auth.user?.first_name} {auth.user?.last_name}</div>
@@ -105,8 +105,8 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
             <>
               <div className="fixed inset-0 z-10" onClick={() => setDropdown(false)} />
               <div className="absolute right-0 top-full mt-2 w-60 rounded-xl z-20 overflow-hidden shadow-2xl animate-fade-in"
-                style={{ background: '#0b1220', border: '1px solid rgba(14,165,233,0.15)' }}>
-                <div className="px-4 py-3.5" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+                style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.18)', boxShadow: '0 12px 40px rgba(0,0,0,0.6)' }}>
+                <div className="px-4 py-3.5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
                   <div className="font-semibold text-white text-sm">{auth.user?.first_name} {auth.user?.last_name}</div>
                   <div className="text-xs text-slate-500 mt-0.5">{auth.user?.callsign ? `${auth.user.callsign} · ` : ''}{auth.user?.department}</div>
                   <div className="flex items-center gap-1.5 mt-2">
@@ -119,7 +119,7 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
                     className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
                     <Settings className="w-4 h-4" /><span>Settings</span>
                   </button>
-                  <div className="mx-3 my-1 h-px" style={{ background: 'rgba(14,165,233,0.08)' }} />
+                  <div className="mx-3 my-1 h-px" style={{ background: 'rgba(6,182,212,0.08)' }} />
                   <button onClick={handleLogout}
                     className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-400 hover:bg-rose-500/10 transition-colors">
                     <LogOut className="w-4 h-4" /><span>Sign Out</span>

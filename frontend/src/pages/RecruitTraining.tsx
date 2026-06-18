@@ -89,7 +89,7 @@ export default function RecruitTraining() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(34,197,94,0.10),rgba(14,165,233,0.06))', border: '1px solid rgba(34,197,94,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(34,197,94,0.10),rgba(6,182,212,0.06))', border: '1px solid rgba(34,197,94,0.18)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="p-3 rounded-xl" style={{ background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.25)' }}>
@@ -125,8 +125,8 @@ export default function RecruitTraining() {
       {/* Add recruit modal */}
       {showAdd && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(14,165,233,0.18)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+          <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
               <h2 className="font-bold text-white">Add Recruit to Training</h2>
               <button onClick={() => setShowAdd(false)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>
@@ -172,7 +172,7 @@ export default function RecruitTraining() {
                 <button onClick={() => setExpanded(isOpen ? null : rec.recruit_officer_id)}
                   className="w-full flex items-center gap-4 p-4 hover:bg-white/5 transition-colors text-left">
                   <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-bold text-white"
-                    style={{ background: 'linear-gradient(135deg,#059669,#0ea5e9)' }}>
+                    style={{ background: 'linear-gradient(135deg,#059669,#06b6d4)' }}>
                     {rec.recruit_name.split(' ').map(n => n[0]).join('').slice(0,2)}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -195,7 +195,7 @@ export default function RecruitTraining() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-4 pb-4 space-y-2" style={{ borderTop: '1px solid rgba(14,165,233,0.06)' }}>
+                  <div className="px-4 pb-4 space-y-2" style={{ borderTop: '1px solid rgba(6,182,212,0.06)' }}>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-3">
                       {rec.stage_statuses.map((s, i) => {
                         const Icon = s.status === 'complete' ? CheckCircle : s.status === 'current' ? Clock : X;

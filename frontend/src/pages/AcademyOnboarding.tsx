@@ -158,9 +158,9 @@ export default function AcademyOnboarding() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(14,165,233,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(14,165,233,0.20)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(6,182,212,0.20)' }}>
         <div className="flex items-center gap-4 flex-1">
-          <div className="p-3 rounded-xl flex-shrink-0" style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(14,165,233,0.30)' }}>
+          <div className="p-3 rounded-xl flex-shrink-0" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.30)' }}>
             <GraduationCap className="w-6 h-6 text-sky-400" />
           </div>
           <div className="flex-1">
@@ -175,7 +175,7 @@ export default function AcademyOnboarding() {
           </div>
           <button onClick={openAddModal}
             className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm text-white transition-all hover:scale-[1.02]"
-            style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)', border: '1px solid rgba(14,165,233,0.3)' }}>
+            style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)', border: '1px solid rgba(6,182,212,0.3)' }}>
             <UserPlus className="w-4 h-4" /> Add Officer
           </button>
         </div>
@@ -198,7 +198,7 @@ export default function AcademyOnboarding() {
                   className={`flex-1 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                     filter === f ? 'text-white' : 'text-slate-500 hover:text-slate-300'
                   }`}
-                  style={filter === f ? { background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(14,165,233,0.25)' } : { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  style={filter === f ? { background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' } : { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                   {f}
                 </button>
               ))}
@@ -218,7 +218,7 @@ export default function AcademyOnboarding() {
           ) : filtered.map(r => (
             <button key={r.id} onClick={() => loadProgress(r)}
               className={`w-full glass rounded-xl p-4 text-left transition-all hover:border-sky-500/25 ${selected?.id === r.id ? 'border-sky-500/30' : ''}`}
-              style={selected?.id === r.id ? { borderColor: 'rgba(14,165,233,0.3)', background: 'rgba(14,165,233,0.05)' } : {}}>
+              style={selected?.id === r.id ? { borderColor: 'rgba(6,182,212,0.3)', background: 'rgba(6,182,212,0.05)' } : {}}>
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm text-white flex-shrink-0"
@@ -298,7 +298,7 @@ export default function AcademyOnboarding() {
                 <div className="mt-4">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-xs text-slate-500">Training progress</span>
-                    <span className="text-xs font-bold" style={{ color: pct === 100 ? '#22c55e' : '#0ea5e9' }}>
+                    <span className="text-xs font-bold" style={{ color: pct === 100 ? '#22c55e' : '#06b6d4' }}>
                       {progress.completedCount}/{progress.total}
                     </span>
                   </div>
@@ -398,8 +398,8 @@ export default function AcademyOnboarding() {
       {/* ── Manual Add Modal ── */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(14,165,233,0.25)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.10)' }}>
+          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.25)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.10)' }}>
               <h2 className="font-bold text-white flex items-center gap-2"><UserPlus className="w-4 h-4 text-sky-400" /> Add Officer to Training</h2>
               <button onClick={() => setShowAddModal(false)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>

@@ -33,7 +33,7 @@ export default function PendingActivation() {
       {/* Ambient glow */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute w-[600px] h-[600px] rounded-full -top-60 -left-60 opacity-20"
-          style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%)' }} />
         <div className="absolute inset-0 opacity-[0.025]"
           style={{ backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
       </div>
@@ -41,7 +41,7 @@ export default function PendingActivation() {
       {/* Nav */}
       <div className="relative z-10 flex items-center justify-between px-8 h-16 border-b border-sky-500/10">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0284c7,#0ea5e9)' }}>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0284c7,#06b6d4)' }}>
             <Shield className="w-4 h-4 text-white" />
           </div>
           <div>
@@ -61,7 +61,7 @@ export default function PendingActivation() {
           <div className="glass rounded-2xl p-6">
             <div className="flex items-center gap-4 mb-5">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)', boxShadow: '0 0 30px rgba(14,165,233,0.3)' }}>
+                style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)', boxShadow: '0 0 30px rgba(6,182,212,0.3)' }}>
                 <Shield className="w-7 h-7 text-white" />
               </div>
               <div>
@@ -72,7 +72,7 @@ export default function PendingActivation() {
               </div>
             </div>
 
-            <div className="p-4 rounded-xl mb-4" style={{ background: 'rgba(14,165,233,0.06)', border: '1px solid rgba(14,165,233,0.15)' }}>
+            <div className="p-4 rounded-xl mb-4" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.15)' }}>
               <div className="flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-slate-300 leading-relaxed">
@@ -86,7 +86,7 @@ export default function PendingActivation() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs text-slate-500 font-medium">Training Progress</span>
-                  <span className="text-xs font-bold" style={{ color: pct === 100 ? '#22c55e' : '#0ea5e9' }}>
+                  <span className="text-xs font-bold" style={{ color: pct === 100 ? '#22c55e' : '#06b6d4' }}>
                     {progress.completedCount}/{progress.total} completed
                   </span>
                 </div>

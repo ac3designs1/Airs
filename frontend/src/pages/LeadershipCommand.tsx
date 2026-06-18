@@ -43,7 +43,7 @@ const STATUS_CLS: Record<string, string> = {
   off_duty: 'chip chip-gray', unavailable: 'chip chip-red',
 };
 const DEPT_COLOR: Record<string, string> = {
-  Academy: '#0ea5e9', GD: '#3b82f6', Highway: '#f59e0b', CIRT: '#ef4444', SOG: '#8b5cf6',
+  Academy: '#06b6d4', GD: '#3b82f6', Highway: '#f59e0b', CIRT: '#ef4444', SOG: '#8b5cf6',
 };
 
 type Tab = 'personnel' | 'approvals' | 'actions';
@@ -265,7 +265,7 @@ export default function LeadershipCommand() {
 
       {/* ── Header ──────────────────────────────────────── */}
       <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(245,158,11,0.14),rgba(239,68,68,0.06),rgba(14,165,233,0.06))', border: '1px solid rgba(245,158,11,0.22)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(245,158,11,0.14),rgba(239,68,68,0.06),rgba(6,182,212,0.06))', border: '1px solid rgba(245,158,11,0.22)' }}>
         <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.10), transparent 70%)' }} />
         <div className="flex items-center justify-between">
@@ -290,7 +290,7 @@ export default function LeadershipCommand() {
       {/* ── KPI row ─────────────────────────────────────── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Officers', value: stats.total,          icon: Users,         color: 'text-sky-400',    bg: 'rgba(14,165,233,0.10)' },
+          { label: 'Total Officers', value: stats.total,          icon: Users,         color: 'text-sky-400',    bg: 'rgba(6,182,212,0.10)' },
           { label: 'On Duty Now',    value: stats.onDuty,         icon: Activity,      color: 'text-green-400',  bg: 'rgba(34,197,94,0.10)' },
           { label: 'Pending Items',  value: stats.pending,        icon: Bell,          color: stats.pending > 0 ? 'text-amber-400' : 'text-slate-400', bg: stats.pending > 0 ? 'rgba(245,158,11,0.10)' : 'rgba(71,85,105,0.10)' },
           { label: 'Active Warrants',value: stats.activeWarrants, icon: AlertTriangle, color: stats.activeWarrants > 0 ? 'text-red-400' : 'text-slate-400', bg: stats.activeWarrants > 0 ? 'rgba(239,68,68,0.10)' : 'rgba(71,85,105,0.10)' },
@@ -306,7 +306,7 @@ export default function LeadershipCommand() {
       </div>
 
       {/* ── Tabs ────────────────────────────────────────── */}
-      <div className="flex gap-1 rounded-xl p-1" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.10)' }}>
+      <div className="flex gap-1 rounded-xl p-1" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.10)' }}>
         {([
           { id: 'personnel', label: 'Personnel', icon: Users, badge: officers.length },
           { id: 'approvals', label: 'Approvals Queue', icon: Bell, badge: stats.pending },
@@ -393,7 +393,7 @@ export default function LeadershipCommand() {
                             )}
                             {/* Edit */}
                             <button title="Edit officer" onClick={() => openEdit(o)}
-                              className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/15 transition-colors" style={{ border: '1px solid rgba(14,165,233,0.20)' }}>
+                              className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/15 transition-colors" style={{ border: '1px solid rgba(6,182,212,0.20)' }}>
                               <Edit2 className="w-3.5 h-3.5" />
                             </button>
                             {/* Strike */}
@@ -493,7 +493,7 @@ export default function LeadershipCommand() {
       {tab === 'actions' && (
         <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {[
-            { title: 'Post Announcement', desc: 'Broadcast a message to all officers', icon: Megaphone, color: '#0ea5e9', onClick: () => setAnnouncing({ title: '', content: '', category: 'general', pinned: false }) },
+            { title: 'Post Announcement', desc: 'Broadcast a message to all officers', icon: Megaphone, color: '#06b6d4', onClick: () => setAnnouncing({ title: '', content: '', category: 'general', pinned: false }) },
             { title: 'Issue Strike', desc: 'Issue a formal strike/demerit to an officer', icon: AlertOctagon, color: '#f59e0b', onClick: () => setTab('personnel') },
             { title: 'Promote Officer', desc: 'Quick-promote from the Personnel tab', icon: TrendingUp, color: '#22c55e', onClick: () => setTab('personnel') },
             { title: 'Promotions Log', desc: 'View full promotion history', icon: Star, color: '#a855f7', onClick: () => window.location.href = '/promotions' },
@@ -525,7 +525,7 @@ export default function LeadershipCommand() {
       {editing && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(245,158,11,0.22)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
               <div>
                 <h2 className="font-bold text-white">Edit Officer</h2>
                 <p className="text-xs text-slate-500 mt-0.5">{editing.officer.first_name} {editing.officer.last_name} · {editing.officer.username}</p>
@@ -584,7 +584,7 @@ export default function LeadershipCommand() {
       {striking && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(245,158,11,0.22)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
               <div>
                 <h2 className="font-bold text-white flex items-center gap-2"><AlertOctagon className="w-4 h-4 text-amber-400" /> Issue Strike</h2>
                 <p className="text-xs text-slate-500 mt-0.5">{striking.officer.first_name} {striking.officer.last_name}</p>
@@ -659,8 +659,8 @@ export default function LeadershipCommand() {
       {/* Post announcement modal */}
       {announcing && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(14,165,233,0.18)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
               <h2 className="font-bold text-white flex items-center gap-2"><Megaphone className="w-4 h-4 text-sky-400" /> Post Announcement</h2>
               <button onClick={() => setAnnouncing(null)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>

@@ -27,7 +27,7 @@ export default function TerminationLogs() {
   return (
     <div className="space-y-5 animate-fade-in">
       <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(100,116,139,0.12),rgba(14,165,233,0.06))', border: '1px solid rgba(100,116,139,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(100,116,139,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(100,116,139,0.18)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(100,116,139,0.15)', border: '1px solid rgba(100,116,139,0.25)' }}>
             <Trash2 className="w-6 h-6 text-slate-400" />

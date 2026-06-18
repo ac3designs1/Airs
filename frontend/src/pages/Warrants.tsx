@@ -109,7 +109,7 @@ export default function Warrants() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
-        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.08)' }}>
+        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
           {['active', 'served', 'cancelled', 'expired'].map(s => (
             <button key={s} onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusFilter === s ? 'bg-red-500/20 text-red-300' : 'text-slate-500 hover:text-slate-300'}`}>
@@ -151,7 +151,7 @@ export default function Warrants() {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600" />
                     <input value={citizenQ} onChange={e => setCitizenQ(e.target.value)} placeholder="Search citizen name…" className="nx-input pl-9 w-full" />
                     {citizenRes.length > 0 && (
-                      <div className="absolute top-full mt-1 w-full rounded-xl overflow-hidden z-10 shadow-xl" style={{ background: '#0b1220', border: '1px solid rgba(14,165,233,0.18)' }}>
+                      <div className="absolute top-full mt-1 w-full rounded-xl overflow-hidden z-10 shadow-xl" style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.18)' }}>
                         {citizenRes.map(c => (
                           <button key={c.id} type="button" onClick={() => { setSelectedCit(c); setCitizenQ(''); setCitizenRes([]); }}
                             className="w-full text-left px-4 py-2.5 hover:bg-sky-500/10 transition-colors">

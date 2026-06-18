@@ -88,8 +88,8 @@ export default function OfficerManagement() {
       {/* Detail modal */}
       {selected && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(14,165,233,0.18)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
               <h2 className="font-bold text-white">Officer Record</h2>
               <button onClick={() => setSelected(null)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>
@@ -119,7 +119,7 @@ export default function OfficerManagement() {
                     [...Array(6)].map((_,i) => <div key={i} className="skeleton rounded-xl h-16" />)
                   ) : stats ? [
                     { label: 'Hours (MTD)', value: `${stats.month_hours}h`, icon: Clock,     color: 'text-blue-400',   bg: 'rgba(59,130,246,0.10)' },
-                    { label: 'Total Hours', value: `${stats.total_hours}h`, icon: Clock,     color: 'text-sky-400',    bg: 'rgba(14,165,233,0.10)' },
+                    { label: 'Total Hours', value: `${stats.total_hours}h`, icon: Clock,     color: 'text-sky-400',    bg: 'rgba(6,182,212,0.10)' },
                     { label: 'Incidents',   value: stats.incidents,         icon: FileText,  color: 'text-amber-400',  bg: 'rgba(245,158,11,0.10)' },
                     { label: 'Arrests',     value: stats.arrests,           icon: Shield,    color: 'text-red-400',    bg: 'rgba(239,68,68,0.10)' },
                     { label: 'Certs',       value: stats.certifications,    icon: Star,      color: 'text-yellow-400', bg: 'rgba(234,179,8,0.10)' },
@@ -135,13 +135,13 @@ export default function OfficerManagement() {
               )}
 
               {/* Details */}
-              <div className="space-y-0 rounded-xl overflow-hidden" style={{ border: '1px solid rgba(14,165,233,0.08)' }}>
+              <div className="space-y-0 rounded-xl overflow-hidden" style={{ border: '1px solid rgba(6,182,212,0.08)' }}>
                 {[
                   { label: 'Role',       value: selected.role?.replace('_', ' ') },
                   { label: 'Joined',     value: format(new Date(selected.created_at), 'dd MMM yyyy') },
                   { label: 'Last Login', value: selected.last_login ? format(new Date(selected.last_login), 'dd MMM yyyy h:mm a') : 'Never' },
                 ].map((row, i) => (
-                  <div key={row.label} className="flex justify-between px-4 py-3" style={{ borderBottom: i < 2 ? '1px solid rgba(14,165,233,0.06)' : 'none', background: i % 2 === 0 ? 'rgba(14,165,233,0.02)' : 'transparent' }}>
+                  <div key={row.label} className="flex justify-between px-4 py-3" style={{ borderBottom: i < 2 ? '1px solid rgba(6,182,212,0.06)' : 'none', background: i % 2 === 0 ? 'rgba(6,182,212,0.02)' : 'transparent' }}>
                     <span className="text-sm text-slate-500">{row.label}</span>
                     <span className="text-sm font-medium text-white capitalize">{row.value}</span>
                   </div>

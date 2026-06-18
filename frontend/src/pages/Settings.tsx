@@ -71,7 +71,7 @@ export default function Settings() {
     <div className="space-y-5 max-w-2xl animate-fade-in">
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(100,116,139,0.12),rgba(14,165,233,0.06))', border: '1px solid rgba(100,116,139,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(100,116,139,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(100,116,139,0.18)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(100,116,139,0.15)', border: '1px solid rgba(100,116,139,0.25)' }}>
             <SettingsIcon className="w-6 h-6 text-slate-400" />
@@ -90,7 +90,7 @@ export default function Settings() {
           <h2 className="font-semibold text-white text-sm">Profile Information</h2>
         </div>
 
-        <div className="flex items-center gap-4 mb-5 p-4 rounded-xl" style={{ background: 'rgba(14,165,233,0.04)', border: '1px solid rgba(14,165,233,0.08)' }}>
+        <div className="flex items-center gap-4 mb-5 p-4 rounded-xl" style={{ background: 'rgba(6,182,212,0.04)', border: '1px solid rgba(6,182,212,0.08)' }}>
           <div className="w-14 h-14 rounded-xl flex items-center justify-center text-lg font-bold text-white flex-shrink-0"
             style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
             {user.first_name[0]}{user.last_name[0]}
@@ -126,7 +126,7 @@ export default function Settings() {
 
         <button onClick={saveProfile} disabled={savingProfile}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110 disabled:opacity-50"
-          style={{ background: 'linear-gradient(135deg,#0284c7,#0ea5e9)' }}>
+          style={{ background: 'linear-gradient(135deg,#0284c7,#06b6d4)' }}>
           {savingProfile
             ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             : <Save className="w-4 h-4" />}
@@ -182,7 +182,7 @@ export default function Settings() {
             { l: 'Rank', v: user.rank },
             { l: 'Status', v: user.status?.replace('_', ' ') ?? '—' },
           ].map(r => (
-            <div key={r.l} className="p-3 rounded-xl" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(14,165,233,0.06)' }}>
+            <div key={r.l} className="p-3 rounded-xl" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
               <div className="text-[10px] uppercase tracking-wider text-slate-600 font-semibold mb-1">{r.l}</div>
               <div className="text-sm text-slate-300 capitalize">{r.v}</div>
             </div>

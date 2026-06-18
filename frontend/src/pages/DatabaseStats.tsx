@@ -9,7 +9,7 @@ interface AdminStats {
 }
 
 const TABLE_DEFS = [
-  { key: 'officers',            label: 'Officers',              icon: Users,        color: 'text-sky-400',    bg: 'rgba(14,165,233,0.10)' },
+  { key: 'officers',            label: 'Officers',              icon: Users,        color: 'text-sky-400',    bg: 'rgba(6,182,212,0.10)' },
   { key: 'citizens',            label: 'Citizens',              icon: Users,        color: 'text-emerald-400',bg: 'rgba(16,185,129,0.10)' },
   { key: 'vehicles',            label: 'Vehicles',              icon: Car,          color: 'text-green-400',  bg: 'rgba(34,197,94,0.10)' },
   { key: 'warrants_active',     label: 'Active Warrants',       icon: AlertTriangle,color: 'text-red-400',    bg: 'rgba(239,68,68,0.10)' },
@@ -28,7 +28,7 @@ const TABLE_DEFS = [
   { key: 'terminations_pending',label: 'Pending Terminations',  icon: AlertTriangle,color: 'text-red-400',    bg: 'rgba(239,68,68,0.10)' },
   { key: 'transfers_pending',   label: 'Pending Transfers',     icon: Users,        color: 'text-indigo-400', bg: 'rgba(99,102,241,0.10)' },
   { key: 'announcements',       label: 'Announcements',         icon: Bell,         color: 'text-amber-400',  bg: 'rgba(245,158,11,0.10)' },
-  { key: 'applications_pending',label: 'Applications (Pending)',icon: Users,        color: 'text-sky-400',    bg: 'rgba(14,165,233,0.10)' },
+  { key: 'applications_pending',label: 'Applications (Pending)',icon: Users,        color: 'text-sky-400',    bg: 'rgba(6,182,212,0.10)' },
 ];
 
 export default function DatabaseStats() {
@@ -47,7 +47,7 @@ export default function DatabaseStats() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(14,165,233,0.06))', border: '1px solid rgba(16,185,129,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(16,185,129,0.18)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="p-3 rounded-xl" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.25)' }}>
@@ -69,7 +69,7 @@ export default function DatabaseStats() {
         {[
           { label: 'DB Engine', value: 'SQLite', sub: 'WAL mode enabled', icon: Database, color: 'text-emerald-400', bg: 'rgba(16,185,129,0.10)' },
           { label: 'Status',    value: 'Online', sub: 'All systems operational', icon: Activity, color: 'text-emerald-400', bg: 'rgba(16,185,129,0.10)' },
-          { label: 'Version',   value: 'v3.0.0', sub: 'NextAirs MDT', icon: Shield, color: 'text-sky-400', bg: 'rgba(14,165,233,0.10)' },
+          { label: 'Version',   value: 'v3.0.0', sub: 'NextAirs MDT', icon: Shield, color: 'text-sky-400', bg: 'rgba(6,182,212,0.10)' },
           { label: 'Tables',    value: '22', sub: 'database tables', icon: Database, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
         ].map(s => (
           <div key={s.label} className="glass rounded-xl p-4">
@@ -91,7 +91,7 @@ export default function DatabaseStats() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-5 gap-3">
             {TABLE_DEFS.map(t => (
-              <div key={t.key} className="rounded-xl p-3.5" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(14,165,233,0.06)' }}>
+              <div key={t.key} className="rounded-xl p-3.5" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
                 <div className="p-1.5 rounded-lg w-fit mb-2" style={{ background: t.bg }}>
                   <t.icon className={`w-3.5 h-3.5 ${t.color}`} />
                 </div>

@@ -62,10 +62,10 @@ export default function Roster() {
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-6 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(14,165,233,0.12),rgba(99,102,241,0.04),rgba(14,165,233,0.06))', border: '1px solid rgba(14,165,233,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(99,102,241,0.04),rgba(6,182,212,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(14,165,233,0.25)' }}>
+            <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
               <Users className="w-6 h-6 text-sky-400" />
             </div>
             <div>
