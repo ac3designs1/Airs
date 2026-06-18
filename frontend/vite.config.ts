@@ -53,9 +53,4 @@ export default defineConfig({
   // Never put secrets in VITE_ vars — they are embedded in the JS bundle
   envPrefix: 'VITE_',
 
-  // Strip console statements from production builds
-  esbuild: {
-    drop: ['debugger'],
-    pure: ['console.debug', 'console.trace'],
-  },
 })
