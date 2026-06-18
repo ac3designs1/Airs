@@ -27,16 +27,53 @@ router.get('/checklist', authenticateToken, (req, res) => {
 // ── GET /api/onboarding — leadership: all recruits in training ─
 router.get('/', authenticateToken, (req, res) => {
   if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Forbidden' });
-  const recruits = db.prepare(`
-    SELECT id, first_name, last_name, callsign, rank, department, discord_username, created_at,
-           COALESCE(onboarding_complete, 0) as onboarding_complete,
-           onboarding_activated_by, onboarding_activated_at
+  try {
+    const recruits = db.prepare(`
+      SELECT id, first_name, last_name, callsign, rank, department, discord_username, created_at,
+             COALESCE(onboarding_complete, 0) as onboarding_complete,
+             onboarding_activated_by, onboarding_activated_at
+      FROM officers
+      WHERE (role = 'recruit' OR rank = 'Recruit')
+        AND username != 'admin'
+      ORDER BY COALESCE(onboarding_complete, 0) ASC, created_at DESC
+    `).all();
+    res.json(recruits);
+  } catch (err) {
+    console.error('[GET /onboarding]', err.message);
+    res.json([]);
+  }
+});
+
+// ── GET /api/onboarding/all-officers — for manual-add picker ──
+router.get('/all-officers', authenticateToken, (req, res) => {
+  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Forbidden' });
+  const officers = db.prepare(`
+    SELECT id, first_name, last_name, callsign, rank, department, role
     FROM officers
-    WHERE (role = 'recruit' OR rank = 'Recruit')
-      AND username != 'admin'
-    ORDER BY created_at DESC
+    WHERE username != 'admin'
+      AND role NOT IN ('terminated')
+    ORDER BY first_name ASC
   `).all();
-  res.json(recruits);
+  res.json(officers);
+});
+
+// ── POST /api/onboarding/manual-add — force-add officer to training ─
+router.post('/manual-add', authenticateToken, (req, res) => {
+  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Forbidden' });
+  const { officer_id } = req.body;
+  if (!officer_id) return res.status(400).json({ error: 'officer_id required' });
+  const officer = db.prepare('SELECT * FROM officers WHERE id = ?').get(officer_id);
+  if (!officer) return res.status(404).json({ error: 'Officer not found' });
+
+  // Set rank to Recruit and role to recruit if not already, reset onboarding
+  db.prepare(`
+    UPDATE officers SET rank = 'Recruit', role = 'recruit',
+    onboarding_complete = 0, onboarding_activated_by = NULL, onboarding_activated_at = NULL
+    WHERE id = ?
+  `).run(officer_id);
+
+  const updated = db.prepare('SELECT id, first_name, last_name, callsign, rank, department, discord_username, created_at, COALESCE(onboarding_complete, 0) as onboarding_complete FROM officers WHERE id = ?').get(officer_id);
+  res.json(updated);
 });
 
 // ── GET /api/onboarding/:id — get one recruit's checklist progress ─

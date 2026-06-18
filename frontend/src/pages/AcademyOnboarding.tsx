@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import {
   GraduationCap, CheckCircle, Clock, Search, Users,
-  ChevronRight, X, Shield, AlertCircle, Zap
+  ChevronRight, X, Shield, AlertCircle, Zap, UserPlus
 } from 'lucide-react';
 import api from '../api/client';
 import { useAuth } from '../contexts/AuthContext';
@@ -46,6 +46,10 @@ export default function AcademyOnboarding() {
   const [noteFor, setNoteFor]     = useState<string | null>(null);
   const [noteText, setNoteText]   = useState('');
   const [filter, setFilter]       = useState<'all' | 'training' | 'done'>('all');
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [allOfficers, setAllOfficers]   = useState<{id:string;first_name:string;last_name:string;rank:string;callsign?:string}[]>([]);
+  const [addSearch, setAddSearch]       = useState('');
+  const [addSaving, setAddSaving]       = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -55,6 +59,30 @@ export default function AcademyOnboarding() {
     } catch { toast.error('Failed to load recruits'); }
     finally { setLoading(false); }
   }, []);
+
+  const openAddModal = async () => {
+    setShowAddModal(true);
+    setAddSearch('');
+    try {
+      const r = await api.get('/onboarding/all-officers');
+      setAllOfficers(r.data);
+    } catch { toast.error('Failed to load officers'); }
+  };
+
+  const manualAdd = async (officerId: string) => {
+    setAddSaving(true);
+    try {
+      const r = await api.post('/onboarding/manual-add', { officer_id: officerId });
+      setRecruits(prev => {
+        const exists = prev.find(x => x.id === officerId);
+        if (exists) return prev.map(x => x.id === officerId ? { ...x, ...r.data } : x);
+        return [r.data, ...prev];
+      });
+      setShowAddModal(false);
+      toast.success('Officer added to training queue');
+    } catch { toast.error('Failed to add officer'); }
+    finally { setAddSaving(false); }
+  };
 
   useEffect(() => { load(); }, [load]);
 
@@ -131,11 +159,11 @@ export default function AcademyOnboarding() {
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(14,165,233,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(14,165,233,0.20)' }}>
-        <div className="flex items-center gap-4">
-          <div className="p-3 rounded-xl" style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(14,165,233,0.30)' }}>
+        <div className="flex items-center gap-4 flex-1">
+          <div className="p-3 rounded-xl flex-shrink-0" style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(14,165,233,0.30)' }}>
             <GraduationCap className="w-6 h-6 text-sky-400" />
           </div>
-          <div>
+          <div className="flex-1">
             <h1 className="text-xl font-bold text-white flex items-center gap-2">
               Academy Onboarding
               <span className="chip chip-blue text-[10px]">LEADERSHIP</span>
@@ -145,6 +173,11 @@ export default function AcademyOnboarding() {
               {recruits.filter(r => r.onboarding_complete).length} activated
             </p>
           </div>
+          <button onClick={openAddModal}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm text-white transition-all hover:scale-[1.02]"
+            style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)', border: '1px solid rgba(14,165,233,0.3)' }}>
+            <UserPlus className="w-4 h-4" /> Add Officer
+          </button>
         </div>
       </div>
 
@@ -361,6 +394,47 @@ export default function AcademyOnboarding() {
           </div>
         )}
       </div>
+
+      {/* ── Manual Add Modal ── */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(14,165,233,0.25)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(14,165,233,0.10)' }}>
+              <h2 className="font-bold text-white flex items-center gap-2"><UserPlus className="w-4 h-4 text-sky-400" /> Add Officer to Training</h2>
+              <button onClick={() => setShowAddModal(false)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
+            </div>
+            <div className="p-5 space-y-3">
+              <p className="text-xs text-slate-500">Select an officer to place in the training queue. Their rank will be set to Recruit and they'll go through the full onboarding checklist.</p>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+                <input value={addSearch} onChange={e => setAddSearch(e.target.value)}
+                  placeholder="Search officer…" className="nx-input pl-9 text-sm" />
+              </div>
+              <div className="space-y-1.5 max-h-64 overflow-y-auto">
+                {allOfficers
+                  .filter(o => `${o.first_name} ${o.last_name} ${o.callsign ?? ''}`.toLowerCase().includes(addSearch.toLowerCase()))
+                  .map(o => (
+                    <button key={o.id} onClick={() => manualAdd(o.id)} disabled={addSaving}
+                      className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-left transition-all hover:border-sky-500/30 disabled:opacity-60"
+                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white flex-shrink-0"
+                          style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
+                          {o.first_name[0]}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-white text-sm truncate">{o.first_name} {o.last_name}</p>
+                          <p className="text-xs text-slate-500">{o.rank}{o.callsign ? ` · ${o.callsign}` : ''}</p>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />
+                    </button>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
