@@ -12,7 +12,7 @@ interface Officer {
 
 const ROLES = ['recruit', 'officer', 'supervisor', 'leadership', 'senior_command', 'administrator', 'admin'] as const;
 const ADMIN_ROLES_FOR_COMMISSIONER = ['commissioner', 'admin', 'administrator'];
-const DEPARTMENTS = ['Academy', 'GD', 'Highway', 'CIRT', 'SOG'];
+const DEPARTMENTS = ['Academy', 'GD', 'Highway', 'CIRT', 'SOG', 'Commissioner Office'];
 
 const ROLE_CLS: Record<string, string> = {
   commissioner:   'text-yellow-300 bg-yellow-400/10 border-yellow-400/40',

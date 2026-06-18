@@ -11,7 +11,7 @@ interface Transfer {
   status: string; review_notes?: string; reviewed_by_name?: string; created_at: string;
 }
 
-const DEPARTMENTS = ['Academy', 'GD', 'Highway', 'CIRT', 'SOG'];
+const DEPARTMENTS = ['Academy', 'GD', 'Highway', 'CIRT', 'SOG', 'Commissioner Office'];
 const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 const STATUS_CFG = {

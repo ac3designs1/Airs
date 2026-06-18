@@ -9,7 +9,7 @@ interface Promotion { officer_name: string; from_rank: string; to_rank: string; 
 interface DeptStats { by_department: DeptStat[]; by_rank: RankStat[]; recent_promotions: Promotion[]; }
 
 const DEPT_COLORS: Record<string, string> = {
-  Academy: '#10b981', GD: '#3b82f6', Highway: '#f59e0b', CIRT: '#ef4444', SOG: '#a855f7',
+  Academy: '#10b981', GD: '#3b82f6', Highway: '#f59e0b', CIRT: '#ef4444', SOG: '#a855f7', 'Commissioner Office': '#fcd34d',
 };
 
 export default function DutyAnalytics() {

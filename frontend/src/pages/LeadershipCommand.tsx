@@ -30,7 +30,7 @@ const RANKS = [
   'Leading Senior Constable','Sergeant','Senior Sergeant','Inspector',
   'Superintendent','Commander','Assistant Commissioner','Deputy Commissioner','Commissioner',
 ];
-const DEPARTMENTS = ['Academy','GD','Highway','CIRT','SOG'];
+const DEPARTMENTS = ['Academy','GD','Highway','CIRT','SOG','Commissioner Office'];
 const ROLES = ['recruit','officer','supervisor','leadership','senior_command','administrator','admin'];
 const ADMIN_ROLES_FOR_COMMISSIONER = ['commissioner','admin','administrator'];
 
@@ -44,7 +44,7 @@ const STATUS_CLS: Record<string, string> = {
   off_duty: 'chip chip-gray', unavailable: 'chip chip-red',
 };
 const DEPT_COLOR: Record<string, string> = {
-  Academy: '#06b6d4', GD: '#3b82f6', Highway: '#f59e0b', CIRT: '#ef4444', SOG: '#8b5cf6',
+  Academy: '#06b6d4', GD: '#3b82f6', Highway: '#f59e0b', CIRT: '#ef4444', SOG: '#8b5cf6', 'Commissioner Office': '#fcd34d',
 };
 
 type Tab = 'personnel' | 'approvals' | 'actions';

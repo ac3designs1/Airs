@@ -19,11 +19,12 @@ const ROLE_CLS: Record<string, string> = {
   supervisor:     'chip-yellow',
 };
 const DEPT_CLS: Record<string, string> = {
-  Academy: 'chip-green',
-  GD:      'chip-cyan',
-  Highway: 'chip-gold',
-  CIRT:    'chip-red',
-  SOG:     'chip-purple',
+  Academy:              'chip-green',
+  GD:                   'chip-cyan',
+  Highway:              'chip-gold',
+  CIRT:                 'chip-red',
+  SOG:                  'chip-purple',
+  'Commissioner Office':'chip-gold',
 };
 const STATUS_CLS: Record<string, { label: string; cls: string; dot: string }> = {
   on_duty:  { label: 'On Duty',  cls: 'chip-green',  dot: '#22c55e' },

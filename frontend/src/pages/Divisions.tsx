@@ -17,7 +17,7 @@ const RANK_ORDER = ['Commissioner','Deputy Commissioner','Assistant Commissioner
 interface OfficerRow { first_name: string; last_name: string; rank: string; department: string; callsign?: string; }
 
 function buildDivisions(officers: OfficerRow[]): Division[] {
-  return ['Academy','GD','Highway','CIRT','SOG'].map((name, i) => {
+  return ['Academy','GD','Highway','CIRT','SOG','Commissioner Office'].map((name, i) => {
     const meta = DEPT_META[name] ?? { type: 'Primary', color: '#64748b', description: '' };
     const members = officers.filter(o => o.department === name);
     const sorted = [...members].sort((a, b) => RANK_ORDER.indexOf(a.rank) - RANK_ORDER.indexOf(b.rank));

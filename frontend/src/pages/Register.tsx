@@ -111,7 +111,7 @@ export default function Register() {
                     <select value={form.department} onChange={e => setForm(p => ({ ...p, department: e.target.value }))}
                       className="w-full px-3 py-2.5 rounded-xl text-white border-2 border-gray-600/50 focus:border-blue-500/50 focus:outline-none text-sm"
                       style={{ background: 'rgba(31,41,55,0.5)' }}>
-                      {['Academy', 'GD', 'Highway', 'CIRT', 'SOG'].map(d => <option key={d}>{d}</option>)}
+                      {['Academy', 'GD', 'Highway', 'CIRT', 'SOG', 'Commissioner Office'].map(d => <option key={d}>{d}</option>)}
                     </select>
                   </div>
                   <div>
