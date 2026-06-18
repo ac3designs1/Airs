@@ -65,14 +65,8 @@ const TIERS = [
 ];
 
 const DIVISION_EOIS: DivEOI[] = [
-  { name:'CIRT',          category:'Tactical',      requirements:['FTO Certified','Minimum 6 months service','Supervisor recommendation','No active strikes'] },
-  { name:'Highway',       category:'Highway',        requirements:['Minimum 3 months service','Advanced driver training','Clean service record'] },
-  { name:'Airwing',       category:'Specialist',     requirements:['Constable rank or above','Minimum 2 months service','No active strikes','Supervisor recommendation'] },
-  { name:'Marine',        category:'Specialist',     requirements:['Constable rank or above','Minimum 2 months service','Swimming proficiency','Supervisor recommendation'] },
-  { name:'Sheriff',       category:'Specialist',     requirements:['Constable rank or above','Minimum 3 months service','No active strikes'] },
-  { name:'Legal',         category:'Investigative',  requirements:['Constable rank or above','Minimum 3 months service','Strong written communication','No active strikes'] },
-  { name:'ORU',           category:'Tactical',       requirements:['Constable rank or above','Highway patrol experience','Supervisor recommendation','No active strikes'] },
-  { name:'Crime Command', category:'Investigative',  requirements:['Constable rank or above','Minimum 4 months service','Strong investigative record','Supervisor recommendation'] },
+  { name:'CIRT',    category:'Tactical', requirements:['FTO Certified','Minimum 6 months service','Supervisor recommendation','No active strikes'] },
+  { name:'Highway', category:'Highway',  requirements:['Minimum 3 months service','Advanced driver training','Clean service record'] },
 ];
 
 const CAT_CLS: Record<string,string> = {
