@@ -63,7 +63,7 @@ function createRecruitFromApplication(app) {
       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     `).run(
       id, badge, finalUsername, randomPwd,
-      firstName, lastName, 'Recruit', 'Academy', 'recruit', 'off_duty',
+      firstName, lastName, 'Recruit', 'GD', 'recruit', 'off_duty',
       `RCT-${ts}`,
       app.discord_id || null, app.discord_username || null, app.discord_avatar || null,
     );

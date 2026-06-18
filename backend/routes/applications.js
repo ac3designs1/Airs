@@ -201,7 +201,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
       if (app.discord_id) {
         sendDiscordDM(app.discord_id,
-          `🎉 **Congratulations ${app.full_name}!**\n\nYour application to join **Next RP Melbourne Police** has been **approved**! Welcome to the team! 🚔\n\n**What happens now:**\n1️⃣ Sign in to the NextAirs MDT using Discord\n2️⃣ You'll be placed in the Initial Training queue\n3️⃣ Leadership will contact you to schedule your training sessions\n4️⃣ Once training is complete you'll receive full MDT access and your official callsign\n\n**Starting rank:** Recruit · Academy Division\n\nWe're excited to have you. See you out there! 🫡\n\n*— Next RP Leadership Team*`
+          `🎉 **Congratulations ${app.full_name}!**\n\nYour application to join **Next RP Melbourne Police** has been **approved**! Welcome to the team! 🚔\n\n**What happens now:**\n1️⃣ Sign in to the NextAirs MDT using Discord\n2️⃣ You'll be placed in the Initial Training queue\n3️⃣ Leadership will contact you to schedule your training sessions\n4️⃣ Once training is complete you'll receive full MDT access and your official callsign\n\n**Starting rank:** Recruit · GD Division\n\nWe're excited to have you. See you out there! 🫡\n\n*— Next RP Leadership Team*`
         );
       }
     }

@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
   const hash = bcrypt.hashSync(password, 12);
   const auto_badge = username.toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Date.now().toString(36);
   db.prepare(`INSERT INTO officers (id, badge_number, username, password, first_name, last_name, rank, department, role, callsign) VALUES (?,?,?,?,?,?,?,?,?,?)`).run(
-    id, auto_badge, username, hash, first_name, last_name, rank || 'Recruit', department || 'Academy', role || 'recruit', callsign || null
+    id, auto_badge, username, hash, first_name, last_name, rank || 'Recruit', department || 'GD', role || 'recruit', callsign || null
   );
   const officer = db.prepare('SELECT id, username, first_name, last_name, rank, department, status, callsign, role FROM officers WHERE id = ?').get(id);
   res.status(201).json(officer);
