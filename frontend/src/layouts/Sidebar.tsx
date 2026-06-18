@@ -116,8 +116,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
     {
       id: 'training', title: 'Training', icon: UserCheck, accentColor: '#22c55e',
       items: [
-        { id: 'recruit-tracker', title: 'Recruit Tracker', path: '/recruit-tracker', icon: UserCheck },
-        { id: 'recruit', title: 'Recruit Training', path: '/recruit-training', icon: UserCheck },
+        { id: 'recruit-tracker', title: 'Recruit Management', path: '/recruit-tracker', icon: GraduationCap },
         { id: 'fto', title: 'FTO Tracking', path: '/fto-tracking', icon: Award, roles: ['admin','administrator','leadership','senior_command','supervisor'] },
       ],
     },

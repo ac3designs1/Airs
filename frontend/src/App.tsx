@@ -87,7 +87,7 @@ export default function App() {
             <Route path="/duty-analytics" element={<DutyAnalytics />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/mdt" element={<OfficerManagement />} />
-            <Route path="/recruit-training" element={<RecruitTraining />} />
+            <Route path="/recruit-training" element={<Navigate to="/recruit-tracker" replace />} />
             <Route path="/recruit-tracker" element={<RecruitTracker />} />
             <Route path="/fto-tracking" element={<FTOTracking />} />
             <Route path="/divisions" element={<Divisions />} />
