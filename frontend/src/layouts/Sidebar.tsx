@@ -43,7 +43,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
   const location = useLocation();
   const nav = useNavigate();
   const role = auth.user?.role ?? 'officer';
-  const isAdmin = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'].includes(role);
+  const isAdmin = ['commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'].includes(role);
 
   const [expanded, setExpanded] = useState<Set<string>>(() => {
     try { const s = localStorage.getItem('nr-sidebar'); if (s) return new Set(JSON.parse(s)); } catch {}
@@ -85,7 +85,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
     {
       id: 'overview', title: 'Overview', icon: LayoutDashboard, accentColor: '#06b6d4',
       items: [
-        { id: 'cmd', title: 'Command Centre', path: '/command-centre', icon: AlertOctagon, roles: ['admin','administrator','leadership','senior_command'], badge: stats.activeCalls || undefined },
+        { id: 'cmd', title: 'Command Centre', path: '/command-centre', icon: AlertOctagon, roles: ['commissioner','admin','administrator','leadership','senior_command'], badge: stats.activeCalls || undefined },
         { id: 'db', title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
         { id: 'shifts', title: 'My Shifts', path: '/shifts', icon: Clock },
         { id: 'stats', title: 'Statistics', path: '/statistics', icon: BarChart2 },
@@ -140,13 +140,13 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
     },
     {
       id: 'admin', title: 'Administration', icon: Key, accentColor: '#f43f5e',
-      roles: ['admin','administrator','leadership','senior_command'],
+      roles: ['commissioner','admin','administrator','leadership','senior_command'],
       items: [
         { id: 'users', title: 'User Management', path: '/users', icon: Users },
         { id: 'divisions', title: 'Divisions', path: '/divisions', icon: Briefcase },
-        { id: 'roles', title: 'Role Permissions', path: '/role-permissions', icon: Key, roles: ['admin','administrator'] },
+        { id: 'roles', title: 'Role Permissions', path: '/role-permissions', icon: Key, roles: ['commissioner','admin','administrator'] },
         { id: 'admindb', title: 'Admin Panel', path: '/admin', icon: Settings },
-        { id: 'dbstats', title: 'Database Stats', path: '/database-stats', icon: Database, roles: ['admin','administrator'] },
+        { id: 'dbstats', title: 'Database Stats', path: '/database-stats', icon: Database, roles: ['commissioner','admin','administrator'] },
       ],
     },
     {

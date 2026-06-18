@@ -28,7 +28,7 @@ const PANELS = [
 
 export default function Admin() {
   const { auth } = useAuth();
-  const isAdmin = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'].includes(auth.user?.role ?? '');
+  const isAdmin = ['commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'].includes(auth.user?.role ?? '');
   const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
