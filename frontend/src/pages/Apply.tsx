@@ -147,11 +147,14 @@ export default function Apply() {
     </svg>
   );
 
+  // Wide layout when actually filling out the form or viewing status
+  const wideMode = checkingExisting || !!existing || discordAuthed || submitted;
+
   return (
     <div className="min-h-screen flex" style={{ background: '#06060a' }}>
 
-      {/* ── LEFT PANEL — Branding ─────────────────────────── */}
-      <div className="hidden lg:flex flex-col flex-1 relative overflow-hidden"
+      {/* ── LEFT PANEL — hidden in wide mode ─────────────────── */}
+      <div className={`${wideMode ? 'hidden' : 'hidden lg:flex'} flex-col flex-1 relative overflow-hidden`}
         style={{ background: 'linear-gradient(160deg,#0a0614 0%,#08050f 50%,#050308 100%)' }}>
 
         {/* Glow orbs */}
@@ -238,16 +241,18 @@ export default function Apply() {
       </div>
 
       {/* ── RIGHT PANEL — Form ────────────────────────────── */}
-      <div className="flex-1 lg:max-w-[480px] flex flex-col relative overflow-y-auto"
+      <div className={`flex-1 flex flex-col relative overflow-y-auto ${wideMode ? '' : 'lg:max-w-[480px]'}`}
         style={{ background:'#08060e' }}>
 
-        {/* Mobile logo */}
-        <div className="lg:hidden flex items-center justify-between px-6 h-14" style={{ borderBottom:'1px solid rgba(168,85,247,0.10)' }}>
+        {/* Top nav — always visible in wide mode, mobile only in split mode */}
+        <div className={`${wideMode ? 'flex' : 'lg:hidden flex'} items-center justify-between px-6 h-14 flex-shrink-0`}
+          style={{ borderBottom:'1px solid rgba(168,85,247,0.10)' }}>
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
               <Shield className="w-4 h-4 text-white" />
             </div>
             <span className="text-white font-black text-sm">NextAirs MDT</span>
+            <span className="text-slate-700 text-xs font-mono hidden sm:block">· Melbourne Police Force</span>
           </div>
           <a href="/login" className="text-xs text-slate-500 hover:text-purple-400 transition-colors flex items-center gap-1">
             Officer login <ChevronRight className="w-3 h-3" />
@@ -261,7 +266,7 @@ export default function Apply() {
         </div>
 
         <div className={`relative z-10 flex-1 flex flex-col justify-center p-8 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <div className="w-full max-w-sm mx-auto">
+          <div className={`w-full mx-auto ${wideMode ? 'max-w-2xl' : 'max-w-sm'}`}>
 
             {/* ── Loading existing application check ── */}
             {checkingExisting && (
