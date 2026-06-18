@@ -242,7 +242,7 @@
 
       <div class="fg">
         <label class="fl">Report Type <span class="r">*</span></label>
-        <select id="r-type" onchange="selType();live()">
+        <select id="r-type" onchange="selType()">
           <option value="INCIDENT REPORT">Incident Report</option>
           <option value="TRAFFIC STOP REPORT">Traffic Stop</option>
           <option value="ARREST REPORT">Arrest Report</option>
@@ -453,40 +453,28 @@
       {id:'sf_pr', label:'Processing',          val:'Suspect was held at station for processing. I read the suspect their caution.\n\nDuring a search, the following items were located:\n• [ITEM]\n• [ITEM]'},
       {id:'sf_co', label:'Charges and Outcome', val:'[SUSPECT NAME] is wanted for the above-mentioned charges.'},
     ],
-    'TRAFFIC STOP': [
+    'TRAFFIC STOP REPORT': [
       {id:'sf_st', label:'Stop Circumstances',  val:'I conducted a traffic stop on a [VEHICLE DESCRIPTION] at [LOCATION] for [REASON].'},
       {id:'sf_dr', label:'Driver Details',      val:'The driver was identified as [NAME], [DESCRIPTION].'},
       {id:'sf_vc', label:'Vehicle Check',       val:'A check of the vehicle registration returned [RESULT].'},
       {id:'sf_oc', label:'Outcome',             val:'[RESULT OF STOP - INFRINGEMENT / WARNING / ARREST]'},
     ],
-    'USE OF FORCE': [
+    'USE OF FORCE REPORT': [
       {id:'sf_ci', label:'Circumstances',       val:'I was called to [LOCATION] for [REASON].'},
       {id:'sf_ta', label:'Threat Assessment',   val:'The subject [NAME] was [BEHAVIOUR / THREAT LEVEL].'},
       {id:'sf_fu', label:'Force Used',          val:'I used [FORCE TYPE] to [REASON FOR FORCE].'},
       {id:'sf_oc', label:'Outcome',             val:'[RESULT - SUBJECT DETAINED / MEDICAL ATTENTION ETC]'},
     ],
-    'VEHICLE PURSUIT': [
+    'VEHICLE PURSUIT REPORT': [
       {id:'sf_pi', label:'Pursuit Initiation',  val:'I initiated a pursuit of a [VEHICLE DESCRIPTION] at [LOCATION] for [REASON].'},
       {id:'sf_pd', label:'Pursuit Details',     val:'The pursuit travelled through [ROUTE] at speeds of approximately [SPEED].'},
       {id:'sf_pt', label:'Pursuit Termination', val:'The pursuit was terminated at [LOCATION] because [REASON].'},
       {id:'sf_oc', label:'Outcome',             val:'[RESULT - ARREST / ESCAPED / SUBJECT IDENTIFIED]'},
     ],
-    'SEARCH AND SEIZURE': [
+    'SEARCH & SEIZURE REPORT': [
       {id:'sf_gs', label:'Grounds for Search',  val:'I had grounds to search [SUBJECT] at [LOCATION] due to [REASON].'},
       {id:'sf_if', label:'Items Found',         val:'During the search, the following items were located:\n• [ITEM]\n• [ITEM]'},
       {id:'sf_oc', label:'Outcome',             val:'[RESULT OF SEARCH - ITEMS SEIZED / CLEAR]'},
-    ],
-    'PROPERTY DAMAGE': [
-      {id:'sf_ci', label:'Circumstances',       val:'I attended [LOCATION] regarding reported property damage.'},
-      {id:'sf_da', label:'Damage Assessment',   val:'Upon inspection, [DESCRIPTION OF DAMAGE].'},
-      {id:'sf_su', label:'Suspect Details',     val:'[SUSPECT NAME / DESCRIPTION / UNKNOWN]'},
-      {id:'sf_oc', label:'Outcome',             val:'[RESULT - ARRESTED / REPORT FILED / NO FURTHER ACTION]'},
-    ],
-    'MISSING PERSON': [
-      {id:'sf_rp', label:'Report Details',      val:'[REPORTING PERSON] reported [MISSING PERSON NAME] missing from [LOCATION] at [TIME].'},
-      {id:'sf_mp', label:'Missing Person Info', val:'[NAME] is described as [DESCRIPTION]. Last seen wearing [CLOTHING].'},
-      {id:'sf_ac', label:'Actions Taken',       val:'[DESCRIBE SEARCHES / NOTIFICATIONS / DATABASE CHECKS]'},
-      {id:'sf_oc', label:'Outcome',             val:'[LOCATED / ONGOING INVESTIGATION]'},
     ],
   };
 
@@ -532,7 +520,8 @@
   }
   function updCtr(){
     const v=sMode?getStructNarrative():(document.getElementById('r-nr').value||'');
-    document.getElementById('ctr').textContent=v.length+' chars';
+    const el=document.getElementById('ctr');
+    if(el) el.textContent=v.length+' chars';
   }
 
   /* Footer */
@@ -594,11 +583,8 @@
     ['r-ev','r-ch','r-nr','r-sv'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
     const type=document.getElementById('r-type').value;
     (EX[type]||[]).forEach(f=>{const e=document.getElementById(f.id);if(e)e.value=''});
-    // clear structured fields and reset to template
     if(sMode) buildStructFields(type);
-    document.getElementById('output-box').value='';
-    document.getElementById('ometa').textContent='— empty —';
-    updCtr();
+    live();
   }
   function toast(m){const e=document.getElementById('toast');e.textContent=m;e.style.display='block';setTimeout(()=>e.style.display='none',2000)}
 
@@ -634,9 +620,9 @@
 
   /* Boot */
   (function(){
-    resetDateTime();
     const s=localStorage.getItem('airs_rp');
-    if(s){try{const p=JSON.parse(s);['name','rank','callsign','division'].forEach(k=>{if(p[k])document.getElementById('p-'+k).value=p[k]});live()}catch{}}
+    if(s){try{const p=JSON.parse(s);['name','rank','callsign','division'].forEach(k=>{if(p[k])document.getElementById('p-'+k).value=p[k]})}catch{}}
+    resetDateTime();
   })();
 </script>
 </body>
