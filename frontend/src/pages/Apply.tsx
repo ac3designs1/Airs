@@ -187,7 +187,7 @@ export default function Apply() {
             {[
               { v: '24–72h', l: 'Review Time', c: '#06b6d4' },
               { v: 'Discord', l: 'Required', c: '#5865F2' },
-              { v: 'Academy', l: 'Starting Division', c: '#22c55e' },
+              { v: 'General Duties', l: 'Starting Division', c: '#22c55e' },
             ].map(s => (
               <div key={s.l} className="text-center">
                 <div className="text-2xl font-black" style={{ color: s.c }}>{s.v}</div>
