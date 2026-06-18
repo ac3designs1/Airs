@@ -4,8 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  // Dev server — proxy API requests to local backend
-  // In production, VITE_API_BASE_URL points to Railway backend
+
   server: {
     port: 5173,
     proxy: {
@@ -20,9 +19,43 @@ export default defineConfig({
       },
     },
   },
+
   build: {
     outDir: 'dist',
+
+    // Never emit source maps in production — prevents reverse-engineering
     sourcemap: false,
+
+    // Use esbuild for minification (name mangling, dead code elimination)
+    minify: 'esbuild',
+
+    // Aggressive chunk splitting makes the bundle harder to read
     chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        // Hashed filenames prevent predictable bundle paths
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[hash].js',
+        assetFileNames: 'assets/[hash].[ext]',
+        // Split large vendor chunks so no single file is easily readable
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'vendor-react';
+            if (id.includes('lucide')) return 'vendor-icons';
+            return 'vendor';
+          }
+        },
+      },
+    },
+  },
+
+  // Ensure VITE_ env vars only contain non-secret values
+  // Never put secrets in VITE_ vars — they are embedded in the JS bundle
+  envPrefix: 'VITE_',
+
+  // Strip console statements from production builds
+  esbuild: {
+    drop: ['debugger'],
+    pure: ['console.debug', 'console.trace'],
   },
 })

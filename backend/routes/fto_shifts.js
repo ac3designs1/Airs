@@ -13,8 +13,9 @@ router.get('/', (req, res) => {
   res.json(rows);
 });
 
-// POST /api/fto-shifts
+// POST /api/fto-shifts — leadership/supervisor only
 router.post('/', (req, res) => {
+  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Leadership only' });
   const { fto_officer_id, fto_name, recruit_officer_id, recruit_name, date, hours, type, notes } = req.body;
   if (!fto_name || !recruit_name || !date || !hours) return res.status(400).json({ error: 'fto_name, recruit_name, date and hours required' });
   const id = uuidv4();

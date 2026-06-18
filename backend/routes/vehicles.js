@@ -4,6 +4,9 @@ const { db } = require('../db/schema');
 const { authenticateToken } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
 
+const OFFICER_ROLES = ['admin','administrator','leadership','senior_command','supervisor','officer','probationary_constable','constable','first_constable','senior_constable','leading_senior_constable','sergeant','senior_sergeant','inspector','superintendent','commander','assistant_commissioner','deputy_commissioner','commissioner'];
+const LEADERSHIP = ['admin','administrator','leadership','senior_command','supervisor'];
+
 router.use(authenticateToken);
 
 router.get('/', (req, res) => {
@@ -39,6 +42,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  if (!OFFICER_ROLES.includes(req.user.role)) return res.status(403).json({ error: 'Active officers only' });
   const { plate, make, model, year, color, vin, owner_id, registration_status, insurance_status, notes } = req.body;
   if (!plate) return res.status(400).json({ error: 'Plate required' });
   const id = uuidv4();
@@ -48,6 +52,7 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+  if (!OFFICER_ROLES.includes(req.user.role)) return res.status(403).json({ error: 'Active officers only' });
   const { plate, make, model, year, color, vin, owner_id, registration_status, insurance_status, stolen, impounded, notes, flags } = req.body;
   db.prepare(`UPDATE vehicles SET plate=?,make=?,model=?,year=?,color=?,vin=?,owner_id=?,registration_status=?,insurance_status=?,stolen=?,impounded=?,notes=?,flags=? WHERE id=?`).run(
     plate?.toUpperCase(), make, model, year, color, vin, owner_id, registration_status, insurance_status, stolen ? 1 : 0, impounded ? 1 : 0, notes, flags || '[]', req.params.id
@@ -58,6 +63,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
+  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Leadership only' });
   db.prepare('DELETE FROM vehicles WHERE id = ?').run(req.params.id);
   res.json({ message: 'Deleted' });
 });

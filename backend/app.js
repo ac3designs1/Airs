@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const { sanitizeMiddleware } = require('./middleware/sanitize');
 
 function getAllowedOrigins() {
   return (process.env.CORS_ORIGIN || 'http://localhost:5173')
@@ -56,6 +57,9 @@ function createApp(options = {}) {
   app.set('env', process.env.NODE_ENV || 'production');
   app.use(express.json({ limit: '512kb' }));
   app.use(express.urlencoded({ extended: false, limit: '512kb' }));
+
+  // Strip HTML/script tags from all incoming string body fields (prevents stored XSS)
+  app.use(sanitizeMiddleware());
 
   const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -121,13 +125,9 @@ function createApp(options = {}) {
   app.use('/api/onboarding', require('./routes/onboarding'));
   app.use('/api/stats', require('./routes/stats'));
 
-  app.get('/api/health', (req, res) => {
-    res.json({
-      status: 'ok',
-      system: 'NextAirs',
-      version: '2.0.0',
-      runtime: process.env.VERCEL ? 'vercel' : 'node',
-    });
+  // Public health check — deliberately minimal to avoid information leakage
+  app.get('/api/health', (_req, res) => {
+    res.json({ status: 'ok' });
   });
 
   app.use((err, req, res, _next) => {

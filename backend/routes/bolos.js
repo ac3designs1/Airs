@@ -4,6 +4,8 @@ const { db } = require('../db/schema');
 const { authenticateToken } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
 
+const OFFICER_ROLES = ['admin','administrator','leadership','senior_command','supervisor','officer','probationary_constable','constable','first_constable','senior_constable','leading_senior_constable','sergeant','senior_sergeant','inspector','superintendent','commander','assistant_commissioner','deputy_commissioner','commissioner'];
+
 router.use(authenticateToken);
 
 router.get('/', (req, res) => {
@@ -20,6 +22,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  if (!OFFICER_ROLES.includes(req.user.role)) return res.status(403).json({ error: 'Active officers only' });
   const { type, subject, description, plate, vehicle_description, citizen_id, armed, dangerous, expires_at } = req.body;
   if (!type || !subject || !description) return res.status(400).json({ error: 'type, subject, description required' });
   const id = uuidv4();
@@ -31,6 +34,7 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id/cancel', (req, res) => {
+  if (!OFFICER_ROLES.includes(req.user.role)) return res.status(403).json({ error: 'Active officers only' });
   db.prepare("UPDATE bolos SET status = 'cancelled' WHERE id = ?").run(req.params.id);
   res.json({ id: req.params.id, status: 'cancelled' });
 });

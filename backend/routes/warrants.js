@@ -4,6 +4,10 @@ const { db } = require('../db/schema');
 const { authenticateToken } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
 
+// Roles that can perform operational MDT actions (not recruits)
+const OFFICER_ROLES = ['admin','administrator','leadership','senior_command','supervisor','officer','probationary_constable','constable','first_constable','senior_constable','leading_senior_constable','sergeant','senior_sergeant','inspector','superintendent','commander','assistant_commissioner','deputy_commissioner','commissioner'];
+const LEADERSHIP = ['admin','administrator','leadership','senior_command','supervisor'];
+
 router.use(authenticateToken);
 
 router.get('/', (req, res) => {
@@ -26,6 +30,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  if (!OFFICER_ROLES.includes(req.user.role)) return res.status(403).json({ error: 'Active officers only' });
   const { citizen_id, type, charges, description, expiry_date, bail_amount } = req.body;
   if (!citizen_id || !type || !charges) return res.status(400).json({ error: 'citizen_id, type, and charges required' });
 
@@ -38,6 +43,7 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+  if (!OFFICER_ROLES.includes(req.user.role)) return res.status(403).json({ error: 'Active officers only' });
   const { status } = req.body;
   const allowed = ['active', 'served', 'cancelled', 'expired'];
   if (!allowed.includes(status)) return res.status(400).json({ error: 'Invalid status' });
@@ -46,6 +52,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.put('/:id/status', (req, res) => {
+  if (!OFFICER_ROLES.includes(req.user.role)) return res.status(403).json({ error: 'Active officers only' });
   const { status } = req.body;
   const allowed = ['active', 'served', 'cancelled', 'expired'];
   if (!allowed.includes(status)) return res.status(400).json({ error: 'Invalid status' });
