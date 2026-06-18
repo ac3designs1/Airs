@@ -1,41 +1,41 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Shield, Lock, Eye, EyeOff, AlertCircle, UserX, XCircle } from 'lucide-react';
+import { Shield, Lock, Eye, EyeOff, AlertCircle, UserX, XCircle, ChevronRight, ExternalLink } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const BACKEND_URL = (import.meta.env.VITE_API_BASE_URL || 'https://airs-production-4e96.up.railway.app/api')
   .replace(/\/api\/?$/, '');
 
 const FEATURES = [
-  'Real-time CAD dispatch system',
-  'Divisions: Academy · GD · Highway · CIRT · SOG',
-  'Recruit training & FTO tracker',
-  'Shift logging & duty analytics',
-  'Warrant & BOLO management',
-  'Promotions, strikes & leave management',
+  { text: 'Real-time CAD dispatch & command', icon: '📡' },
+  { text: 'Divisions: Academy · GD · Highway · CIRT · SOG', icon: '🏛️' },
+  { text: 'Recruit FTO tracking & sign-off', icon: '🎓' },
+  { text: 'Shift logging & duty analytics', icon: '📊' },
+  { text: 'Warrant & BOLO management', icon: '🚨' },
+  { text: 'Full leadership command centre', icon: '⚡' },
 ];
 
 const DISCORD_ERRORS: Record<string, { icon: typeof AlertCircle; msg: string }> = {
-  no_account:      { icon: UserX,       msg: 'No officer account found for your Discord. Show leadership your Discord tag to get linked.' },
-  terminated:      { icon: XCircle,     msg: 'Your account has been terminated. Contact an administrator.' },
-  cancelled:       { icon: AlertCircle, msg: 'Discord sign-in was cancelled.' },
-  server_error:    { icon: AlertCircle, msg: 'Server error during sign-in. Check Railway logs — the exact error is printed there.' },
-  token_failed:    { icon: AlertCircle, msg: 'Discord rejected the login request. Redirect URI or Client Secret may be misconfigured in Railway.' },
-  not_configured:  { icon: AlertCircle, msg: 'Discord OAuth is not configured on the server. Set DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BACKEND_URL and FRONTEND_URL in Railway.' },
-  already_linked:  { icon: AlertCircle, msg: 'That Discord account is already linked to another officer.' },
+  no_account:     { icon: UserX,       msg: 'No officer account linked to your Discord. Contact leadership to get access.' },
+  terminated:     { icon: XCircle,     msg: 'Your account has been terminated. Contact an administrator.' },
+  cancelled:      { icon: AlertCircle, msg: 'Discord sign-in was cancelled.' },
+  server_error:   { icon: AlertCircle, msg: 'Server error during sign-in. Check Railway logs — the exact error is printed there.' },
+  token_failed:   { icon: AlertCircle, msg: 'Discord rejected the login. Redirect URI or Client Secret may be misconfigured in Railway.' },
+  not_configured: { icon: AlertCircle, msg: 'Discord OAuth is not configured. Set DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BACKEND_URL and FRONTEND_URL in Railway.' },
+  already_linked: { icon: AlertCircle, msg: 'That Discord account is already linked to another officer.' },
 };
 
 export default function Login() {
-  const [mounted, setMounted]         = useState(false);
   const [featureIdx, setFeatureIdx]   = useState(0);
   const [showAdmin, setShowAdmin]     = useState(false);
   const [form, setForm]               = useState({ username: '', password: '' });
   const [showPwd, setShowPwd]         = useState(false);
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState('');
-  const [discordTag, setDiscordTag]   = useState('');
   const [errorCode, setErrorCode]     = useState('');
+  const [discordTag, setDiscordTag]   = useState('');
+  const [mounted, setMounted]         = useState(false);
 
   const { login } = useAuth();
   const nav = useNavigate();
@@ -44,18 +44,14 @@ export default function Login() {
   useEffect(() => {
     setMounted(true);
     const t = setInterval(() => setFeatureIdx(i => (i + 1) % FEATURES.length), 2800);
-
-    // Handle Discord OAuth error params then clean URL
     const de = params.get('discord_error');
     if (de) {
       const tag = params.get('discord_tag');
       if (tag) setDiscordTag(decodeURIComponent(tag));
       setErrorCode(de);
       setError(DISCORD_ERRORS[de]?.msg ?? 'Discord sign-in failed.');
-      // Remove query params from URL without triggering a navigation
       window.history.replaceState({}, '', '/login');
     }
-
     return () => clearInterval(t);
   }, []);
 
@@ -81,179 +77,211 @@ export default function Login() {
   const ErrorIcon = error ? (DISCORD_ERRORS[errorCode]?.icon ?? AlertCircle) : AlertCircle;
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#07090f' }}>
+    <div className="min-h-screen flex" style={{ background: '#060810' }}>
 
-      {/* ── Left Hero Panel ─────────────────────────────────── */}
-      <div className="hidden lg:flex lg:w-[54%] relative flex-col justify-between p-12 overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-60" />
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(14,165,233,0.12) 0%, transparent 70%)' }} />
-        <div className="absolute bottom-0 left-0 right-0 h-64" style={{ background: 'linear-gradient(to top, #07090f, transparent)' }} />
-        <div className="absolute top-32 left-16 w-64 h-64 rounded-full pointer-events-none animate-pulse-slow"
-          style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.08), transparent 70%)', filter: 'blur(40px)' }} />
-        <div className="absolute bottom-48 right-8 w-48 h-48 rounded-full pointer-events-none animate-pulse-slow"
-          style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.10), transparent 70%)', filter: 'blur(30px)', animationDelay: '1.5s' }} />
+      {/* ── Left panel — branding ──────────────────────────────── */}
+      <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden flex-col"
+        style={{ background: 'linear-gradient(145deg, #060d1f 0%, #050a18 40%, #07090f 100%)' }}>
 
-        {/* Logo */}
-        <div className={`relative z-10 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="flex items-center gap-3 mb-3">
+        {/* Animated orbs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute w-[500px] h-[500px] rounded-full -top-40 -left-40 opacity-30 animate-orb-drift"
+            style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.18) 0%, transparent 65%)' }} />
+          <div className="absolute w-[400px] h-[400px] rounded-full bottom-0 right-0 opacity-20"
+            style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.20) 0%, transparent 65%)', animationDelay: '4s' }} />
+          <div className="absolute w-[300px] h-[300px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 animate-pulse-slow"
+            style={{ background: 'radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 65%)' }} />
+          {/* Grid */}
+          <div className="absolute inset-0 opacity-[0.03]"
+            style={{ backgroundImage: 'linear-gradient(rgba(14,165,233,1) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,1) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+        </div>
+
+        <div className="relative z-10 flex flex-col h-full p-12">
+
+          {/* Logo */}
+          <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-glow-blue"
-                style={{ background: 'linear-gradient(135deg, #0284c7, #0ea5e9)' }}>
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-glow-blue"
+                style={{ background: 'linear-gradient(135deg, #0284c7, #6366f1)' }}>
                 <Shield className="w-6 h-6 text-white" />
               </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 animate-pulse"
-                style={{ borderColor: '#07090f', boxShadow: '0 0 8px rgba(34,197,94,0.8)' }} />
+              <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 bg-green-400 animate-pulse"
+                style={{ borderColor: '#060d1f', boxShadow: '0 0 8px rgba(34,197,94,0.9)' }} />
             </div>
             <div>
-              <span className="text-white font-bold text-lg tracking-tight">NextAirs</span>
-              <div className="text-xs font-mono" style={{ color: '#0ea5e9' }}>NEXT RP · MELPOL CAD</div>
+              <div className="text-white font-black text-xl tracking-tight">NextAirs</div>
+              <div className="text-[11px] font-mono tracking-widest uppercase" style={{ color: '#0ea5e9' }}>Next RP · Melbourne Police</div>
             </div>
           </div>
-        </div>
 
-        {/* Hero */}
-        <div className={`relative z-10 transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="relative mb-10 w-fit">
-            <div className="relative w-28 h-28">
-              <div className="absolute inset-0 rounded-full border-2 border-dashed animate-spin-slow"
-                style={{ borderColor: 'rgba(14,165,233,0.20)' }} />
-              <div className="absolute inset-3 rounded-full border animate-spin-slow-r"
-                style={{ borderColor: 'rgba(14,165,233,0.15)' }} />
-              <div className="absolute inset-6 rounded-full flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, rgba(2,132,199,0.3), rgba(14,165,233,0.15))', border: '1px solid rgba(14,165,233,0.3)' }}>
-                <Shield className="w-8 h-8 animate-pulse-slow" style={{ color: '#38bdf8' }} />
+          {/* Hero text */}
+          <div className="mt-auto mb-auto pt-20">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-6"
+              style={{ background: 'rgba(14,165,233,0.10)', border: '1px solid rgba(14,165,233,0.20)', color: '#38bdf8' }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
+              FiveM CAD / MDT System v2.0
+            </div>
+            <h1 className="text-4xl xl:text-5xl font-black text-white leading-tight mb-4">
+              The Command<br />
+              <span className="text-gradient">Platform</span> for<br />
+              Next RP Police
+            </h1>
+            <p className="text-slate-400 text-base leading-relaxed max-w-md">
+              A fully integrated CAD, MDT and leadership management system built for Melbourne's finest. Everything you need, in one place.
+            </p>
+
+            {/* Animated feature */}
+            <div className="mt-8 p-4 rounded-2xl overflow-hidden"
+              style={{ background: 'rgba(14,165,233,0.06)', border: '1px solid rgba(14,165,233,0.14)' }}>
+              <div className="flex items-center gap-3 animate-fade-in" key={featureIdx}>
+                <span className="text-2xl">{FEATURES[featureIdx].icon}</span>
+                <p className="text-slate-300 text-sm font-medium">{FEATURES[featureIdx].text}</p>
+              </div>
+              {/* Progress dots */}
+              <div className="flex gap-1.5 mt-3">
+                {FEATURES.map((_, i) => (
+                  <div key={i} className="h-0.5 rounded-full transition-all duration-500 flex-1"
+                    style={{ background: i === featureIdx ? '#0ea5e9' : 'rgba(14,165,233,0.18)' }} />
+                ))}
               </div>
             </div>
           </div>
-          <h1 className="text-5xl font-black text-white leading-tight mb-3">
-            Next RP<br />
-            <span className="text-gradient text-4xl">Internal System</span>
-          </h1>
-          <p className="text-slate-400 text-lg mb-8 max-w-md leading-relaxed">
-            Australia's premier FiveM roleplay CAD — real-time dispatch, warrants, roster management and more.
-          </p>
-          <div className="flex items-center gap-3 mb-10">
-            <div className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
-            <div className="h-5 overflow-hidden relative w-64">
-              {FEATURES.map((f, i) => (
-                <div key={f} className="transition-all duration-500 text-sm text-slate-300 absolute w-full"
-                  style={{ transform: `translateY(${(i - featureIdx) * 20}px)`, opacity: i === featureIdx ? 1 : 0 }}>
-                  {f}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
 
-        {/* Bottom status */}
-        <div className={`relative z-10 flex items-center gap-6 transition-all duration-1000 delay-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-          {['CAD Online', 'Dispatch Active', 'MELPOL Connected'].map(s => (
-            <div key={s} className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: '0 0 6px rgba(34,197,94,0.8)' }} />
-              <span className="text-slate-500 text-xs font-mono">{s}</span>
-            </div>
-          ))}
+          {/* Footer */}
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-slate-700 font-mono">© 2026 Next RP Melbourne</span>
+            <a href="/apply" className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-sky-400 transition-colors">
+              Apply to join <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* ── Right Form Panel ───────────────────────────────── */}
-      <div className="flex-1 flex flex-col justify-center items-center px-6 sm:px-12 py-10 relative overflow-y-auto"
-        style={{ background: 'rgba(5,7,14,0.97)' }}>
-        <div className="absolute left-0 top-0 bottom-0 w-px hidden lg:block"
-          style={{ background: 'linear-gradient(to bottom, transparent, rgba(14,165,233,0.2) 30%, rgba(14,165,233,0.2) 70%, transparent)' }} />
+      {/* ── Right panel — form ─────────────────────────────────── */}
+      <div className="flex-1 flex flex-col overflow-y-auto"
+        style={{ background: '#07090f' }}>
 
-        <div className={`w-full max-w-sm transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        {/* Mobile header */}
+        <div className="lg:hidden flex items-center gap-3 p-6 pb-0">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-glow-blue"
+            style={{ background: 'linear-gradient(135deg, #0284c7, #6366f1)' }}>
+            <Shield className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <div className="text-white font-black text-base">NextAirs</div>
+            <div className="text-[10px] font-mono text-sky-500">NEXT RP · MELPOL</div>
+          </div>
+        </div>
 
-          {/* Mobile logo */}
-          <div className="flex lg:hidden items-center gap-3 mb-8 justify-center">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #0284c7, #0ea5e9)' }}>
-              <Shield className="w-5 h-5 text-white" />
+        <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
+          <div className={`w-full max-w-md transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+
+            {/* Header */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-black text-white mb-1">Secure Access</h2>
+              <p className="text-slate-500 text-sm">Authorised personnel only. All access is logged.</p>
             </div>
-            <span className="text-white font-bold text-lg">NextAirs</span>
-          </div>
 
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-1">Secure Access</h2>
-            <p className="text-slate-500 text-sm">Authorised personnel only. All access is logged.</p>
-          </div>
-
-          {/* Error */}
-          {error && (
-            <div className="mb-5 flex gap-3 px-4 py-3 rounded-xl text-sm"
-              style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', color: '#fca5a5' }}>
-              <ErrorIcon className="w-4 h-4 flex-shrink-0 mt-0.5" />
-              <div>
-                <p>{error}</p>
-                {discordTag && (
-                  <p className="mt-1 text-xs text-red-300/60">
-                    Discord: <span className="font-mono text-red-300">{discordTag}</span> — show this to leadership.
-                  </p>
-                )}
+            {/* Error */}
+            {error && (
+              <div className="mb-6 flex items-start gap-3 p-4 rounded-xl animate-fade-in"
+                style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}>
+                <ErrorIcon className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-red-400 text-sm font-medium">{error}</p>
+                  {discordTag && (
+                    <p className="text-slate-500 text-xs mt-1">Your Discord: <span className="font-mono text-slate-400">{discordTag}</span></p>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {!showAdmin ? (
-            <>
-              {/* Discord Login */}
+            {/* Discord login */}
+            <div className="space-y-3 mb-6">
               <button onClick={handleDiscordLogin}
-                className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl font-semibold text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
-                style={{ background: 'linear-gradient(135deg, #5865F2, #4752C4)', boxShadow: '0 0 24px rgba(88,101,242,0.35)', border: '1px solid rgba(88,101,242,0.4)' }}>
-                {/* Discord icon */}
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl font-bold text-white transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]"
+                style={{
+                  background: 'linear-gradient(135deg, #4f46e5, #5b63f5, #7c3aed)',
+                  border: '1px solid rgba(99,102,241,0.4)',
+                  boxShadow: '0 4px 20px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.12)',
+                }}>
+                <svg width="22" height="22" viewBox="0 0 71 55" fill="white" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.44077 45.4204 0.52529C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.52529C25.5141 0.44359 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 49.9626 12.3413 52.7148 18.1147 54.5717C18.2071 54.6004 18.305 54.5662 18.3638 54.4899C19.7295 52.5754 20.9469 50.5535 21.9907 48.4296C22.0523 48.3062 21.9935 48.1601 21.8676 48.1151C19.9366 47.3921 18.0979 46.5084 16.3292 45.5006C16.1893 45.4191 16.1781 45.2241 16.3068 45.1285C16.679 44.8518 17.0513 44.5637 17.4067 44.2728C17.471 44.2193 17.5606 44.2079 17.6362 44.2418C29.2558 49.6202 41.8354 49.6202 53.3179 44.2418C53.3935 44.2051 53.4831 44.2165 53.5502 44.27C53.9057 44.5609 54.2779 44.8518 54.6529 45.1285C54.7816 45.2241 54.7732 45.4191 54.6333 45.5006C52.8646 46.5283 51.0259 47.3921 49.0921 48.1123C48.9662 48.1573 48.9102 48.3062 48.9718 48.4296C50.0384 50.5506 51.2558 52.5725 52.5959 54.487C52.6519 54.5662 52.7526 54.6004 52.845 54.5717C58.6464 52.7148 64.529 49.9626 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z" />
                 </svg>
                 Sign in with Discord
               </button>
+            </div>
 
-              <div className="mt-6 p-4 rounded-xl text-xs text-slate-500 leading-relaxed"
-                style={{ background: 'rgba(14,165,233,0.04)', border: '1px solid rgba(14,165,233,0.08)' }}>
-                <p className="font-semibold text-slate-400 mb-1">Don't have access yet?</p>
-                <p>Officer accounts are created when your application is approved. <a href="/apply" className="text-sky-400 hover:underline">Apply here</a> to join Next RP Police.</p>
-              </div>
+            {/* Divider */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex-1 h-px" style={{ background: 'rgba(14,165,233,0.10)' }} />
+              <span className="text-xs text-slate-600 font-medium">or</span>
+              <div className="flex-1 h-px" style={{ background: 'rgba(14,165,233,0.10)' }} />
+            </div>
 
-              {/* Hidden admin bypass */}
+            {/* Admin/Leadership bypass */}
+            {!showAdmin ? (
               <button onClick={() => setShowAdmin(true)}
-                className="mt-8 w-full text-center text-[10px] font-mono text-slate-700 hover:text-slate-500 transition-colors">
-                ⬡ leadership access
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-400 transition-colors"
+                style={{ border: '1px solid rgba(14,165,233,0.08)' }}>
+                <Lock className="w-3.5 h-3.5" />
+                Leadership bypass login
+                <ChevronRight className="w-3.5 h-3.5" />
               </button>
-            </>
-          ) : (
-            <>
-              <div className="mb-4 flex items-center justify-between">
-                <span className="text-xs font-mono text-amber-500/70">⚠ Leadership / Emergency Access</span>
-                <button onClick={() => setShowAdmin(false)} className="text-xs text-slate-600 hover:text-slate-400">← Back</button>
-              </div>
-              <form onSubmit={handleAdminLogin} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Username</label>
-                  <input type="text" value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))}
-                    placeholder="username" required className="nx-input" />
+            ) : (
+              <form onSubmit={handleAdminLogin} className="space-y-3 animate-fade-in">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Leadership Access</span>
+                  <button type="button" onClick={() => setShowAdmin(false)} className="text-xs text-slate-600 hover:text-slate-400 transition-colors">Cancel</button>
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Password</label>
-                  <div className="relative">
-                    <input type={showPwd ? 'text' : 'password'} value={form.password}
-                      onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
-                      placeholder="••••••••" required className="nx-input pr-11" />
-                    <button type="button" onClick={() => setShowPwd(s => !s)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-600 hover:text-sky-400 transition-colors">
-                      {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
+                <input
+                  value={form.username}
+                  onChange={e => setForm(p => ({ ...p, username: e.target.value }))}
+                  placeholder="Username"
+                  autoComplete="username"
+                  className="nx-input"
+                  style={{ fontSize: '15px' }}
+                />
+                <div className="relative">
+                  <input
+                    type={showPwd ? 'text' : 'password'}
+                    value={form.password}
+                    onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
+                    placeholder="Password"
+                    autoComplete="current-password"
+                    className="nx-input pr-11"
+                    style={{ fontSize: '15px' }}
+                  />
+                  <button type="button" onClick={() => setShowPwd(p => !p)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors p-1">
+                    {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
                 </div>
-                <button type="submit" disabled={loading}
-                  className="btn-primary w-full flex items-center justify-center gap-2 py-3">
-                  {loading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <><Lock className="w-4 h-4" /> Access System</>}
+                <button type="submit" disabled={loading || !form.username || !form.password}
+                  className="btn-primary w-full">
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Signing in…
+                    </span>
+                  ) : 'Sign In'}
                 </button>
               </form>
-            </>
-          )}
+            )}
 
-          <p className="text-center text-slate-600 text-xs mt-8">
-            Next RP · Melbourne, Australia · FiveM CAD v2.0
-          </p>
+            {/* Info box */}
+            <div className="mt-8 p-4 rounded-xl" style={{ background: 'rgba(14,165,233,0.04)', border: '1px solid rgba(14,165,233,0.09)' }}>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                <span className="text-slate-400 font-semibold">Don't have access? </span>
+                Officer accounts are created when your application is approved.{' '}
+                <a href="/apply" className="text-sky-400 hover:text-sky-300 font-semibold transition-colors">Apply here</a> to join Next RP Police.
+              </p>
+            </div>
+
+            <p className="text-center text-[11px] text-slate-700 mt-6 font-mono">
+              Next RP · Melbourne, Australia · FiveM CAD v2.0
+            </p>
+          </div>
         </div>
       </div>
     </div>
