@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import BottomNav from './BottomNav';
 import { useAuth } from '../contexts/AuthContext';
 import { Shield } from 'lucide-react';
 
@@ -49,11 +50,13 @@ export default function DashboardLayout() {
       <div className="flex-1 flex flex-col md:pl-[240px] min-w-0 relative z-10">
         <Header setMobileOpen={setMobileOpen} />
         <main className="flex-1 overflow-y-auto">
-          <div className="p-4 sm:p-6 lg:p-8 max-w-[1800px] mx-auto w-full">
+          <div className="p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 max-w-[1800px] mx-auto w-full">
             <Outlet />
           </div>
         </main>
       </div>
+
+      <BottomNav />
     </div>
   );
 }

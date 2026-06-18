@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Menu, Bell, Settings, LogOut, ChevronDown, Shield, Radio } from 'lucide-react';
+import { Menu, Settings, LogOut, ChevronDown, Shield, Radio, Users, Zap } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import api from '../api/client';
 
 const PAGE_LABELS: Record<string, string> = {
   '/dashboard': 'Dashboard', '/roster': 'Officer Roster', '/warrants': 'Warrants',
@@ -17,6 +18,8 @@ const PAGE_LABELS: Record<string, string> = {
   '/fto-tracking': 'FTO Tracking', '/divisions': 'Divisions',
   '/role-permissions': 'Role Permissions', '/database-stats': 'Database Stats',
   '/announcements': 'Announcements', '/promotions': 'Promotions', '/strikes': 'Strikes & Demerits',
+  '/recruit-tracker': 'Recruit Management', '/leadership-command': 'Leadership Command',
+  '/leadership-applications': 'Applications', '/academy-onboarding': 'Academy Onboarding',
 };
 
 export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) => void }) {
@@ -25,14 +28,27 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
   const location = useLocation();
   const [dropdown, setDropdown] = useState(false);
   const [time, setTime] = useState(new Date());
+  const [onlineCt, setOnlineCt] = useState<number | null>(null);
+  const [activeCalls, setActiveCalls] = useState(0);
 
   useEffect(() => {
     const t = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
 
-  const handleLogout = async () => { await logout(); nav('/login'); };
+  useEffect(() => {
+    const fetchStats = () => {
+      api.get('/dispatch/stats').then(r => {
+        setOnlineCt(r.data.on_duty ?? null);
+        setActiveCalls(r.data.active_calls ?? 0);
+      }).catch(() => {});
+    };
+    fetchStats();
+    const t = setInterval(fetchStats, 30000);
+    return () => clearInterval(t);
+  }, []);
 
+  const handleLogout = async () => { await logout(); nav('/login'); };
   const pageTitle = PAGE_LABELS[location.pathname] ?? 'NextAirs';
 
   const statusColor = auth.user?.status === 'on_duty' ? '#22c55e' :
@@ -42,7 +58,7 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
 
   return (
     <header className="h-[60px] flex items-center justify-between px-4 sm:px-6 flex-shrink-0 sticky top-0 z-20"
-      style={{ background: 'rgba(6,6,10,0.96)', borderBottom: '1px solid rgba(168,85,247,0.10)', backdropFilter: 'blur(12px)' }}>
+      style={{ background: 'rgba(6,6,10,0.96)', borderBottom: '1px solid rgba(168,85,247,0.10)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}>
 
       {/* Left */}
       <div className="flex items-center gap-3">
@@ -55,21 +71,43 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
         <div className="hidden md:flex items-center gap-2 text-sm">
           <div className="flex items-center gap-1.5 text-slate-500">
             <Shield className="w-3.5 h-3.5" style={{ color: '#a855f7' }} />
-            <span className="text-slate-600">NextAirs</span>
+            <span className="text-slate-600 text-xs font-mono">AIRS</span>
           </div>
           <ChevronDown className="w-3.5 h-3.5 text-slate-700 -rotate-90" />
-          <span className="font-semibold text-white">{pageTitle}</span>
+          <span className="font-bold text-white text-sm">{pageTitle}</span>
         </div>
 
         {/* Mobile title */}
-        <span className="md:hidden font-semibold text-white text-sm">{pageTitle}</span>
+        <span className="md:hidden font-bold text-white text-sm">{pageTitle}</span>
       </div>
 
       {/* Right */}
       <div className="flex items-center gap-2">
 
+        {/* Live stats pills */}
+        <div className="hidden sm:flex items-center gap-2">
+          {/* Active calls */}
+          {activeCalls > 0 && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg animate-fade-in"
+              style={{ background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.22)' }}>
+              <div className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" style={{ boxShadow: '0 0 6px rgba(239,68,68,0.9)' }} />
+              <Zap className="w-3 h-3 text-red-400" />
+              <span className="font-mono text-xs font-bold text-red-400">{activeCalls}</span>
+            </div>
+          )}
+          {/* Officers online */}
+          {onlineCt !== null && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
+              style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.18)' }}>
+              <div className="w-1.5 h-1.5 rounded-full bg-green-400" style={{ boxShadow: '0 0 5px rgba(34,197,94,0.8)' }} />
+              <Users className="w-3 h-3 text-green-400" />
+              <span className="font-mono text-xs font-bold text-green-400">{onlineCt}</span>
+            </div>
+          )}
+        </div>
+
         {/* Live clock */}
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg"
+        <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg"
           style={{ background: 'rgba(168,85,247,0.05)', border: '1px solid rgba(168,85,247,0.12)' }}>
           <Radio className="w-3 h-3" style={{ color: '#a855f7' }} />
           <span className="font-mono text-xs text-slate-400">
@@ -77,17 +115,12 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
           </span>
         </div>
 
-        {/* Notifications */}
-        <button className="relative p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors">
-          <Bell className="w-4.5 h-4.5" style={{ width: 18, height: 18 }} />
-        </button>
-
         {/* User dropdown */}
         <div className="relative">
           <button onClick={() => setDropdown(d => !d)}
             className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl transition-colors hover:bg-white/5">
             <div className="relative">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold text-white"
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black text-white"
                 style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
                 {auth.user?.first_name?.[0]}{auth.user?.last_name?.[0]}
               </div>
@@ -104,14 +137,23 @@ export default function Header({ setMobileOpen }: { setMobileOpen: (v: boolean) 
           {dropdown && (
             <>
               <div className="fixed inset-0 z-10" onClick={() => setDropdown(false)} />
-              <div className="absolute right-0 top-full mt-2 w-60 rounded-xl z-20 overflow-hidden shadow-2xl animate-fade-in"
-                style={{ background: '#0d0a14', border: '1px solid rgba(168,85,247,0.18)', boxShadow: '0 12px 40px rgba(0,0,0,0.6)' }}>
-                <div className="px-4 py-3.5" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
-                  <div className="font-semibold text-white text-sm">{auth.user?.first_name} {auth.user?.last_name}</div>
-                  <div className="text-xs text-slate-500 mt-0.5">{auth.user?.callsign ? `${auth.user.callsign} · ` : ''}{auth.user?.department}</div>
-                  <div className="flex items-center gap-1.5 mt-2">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: statusColor, boxShadow: statusGlow }} />
-                    <span className="text-xs capitalize text-slate-400">{auth.user?.status?.replace('_', ' ')}</span>
+              <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl z-20 overflow-hidden shadow-2xl animate-fade-down"
+                style={{ background: '#0d0a14', border: '1px solid rgba(168,85,247,0.18)', boxShadow: '0 16px 48px rgba(0,0,0,0.70)' }}>
+                {/* Profile section */}
+                <div className="px-4 py-4" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black text-white flex-shrink-0"
+                      style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
+                      {auth.user?.first_name?.[0]}{auth.user?.last_name?.[0]}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="font-bold text-white text-sm truncate">{auth.user?.first_name} {auth.user?.last_name}</div>
+                      <div className="text-xs text-slate-500 mt-0.5 truncate">{auth.user?.callsign ? `${auth.user.callsign} · ` : ''}{auth.user?.department}</div>
+                      <div className="flex items-center gap-1.5 mt-1.5">
+                        <div className="w-1.5 h-1.5 rounded-full" style={{ background: statusColor, boxShadow: statusGlow }} />
+                        <span className="text-[10px] capitalize text-slate-500">{auth.user?.status?.replace('_', ' ')}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="py-1.5">
