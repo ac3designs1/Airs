@@ -98,34 +98,71 @@ function issueJwt(officer) {
   );
 }
 
+/* ── DIAGNOSTIC (public) ───────────────────────────────────── */
+
+// GET /api/auth/discord/check  →  verify env var config without exposing secrets
+router.get('/check', (_req, res) => {
+  res.json({
+    client_id_set:     !!CLIENT_ID,
+    client_secret_set: !!CLIENT_SECRET,
+    jwt_secret_set:    !!JWT_SECRET,
+    frontend_url:      FRONTEND_URL,
+    backend_url:       BACKEND_URL,
+    callback_url:      `${BACKEND_URL}/api/auth/discord/callback`,
+  });
+});
+
 /* ── MDT LOGIN ─────────────────────────────────────────────── */
 
 // GET /api/auth/discord/login  →  redirect to Discord
 router.get('/login', (req, res) => {
   if (!CLIENT_ID || !CLIENT_SECRET) {
     console.error('[Discord OAuth] DISCORD_CLIENT_ID or DISCORD_CLIENT_SECRET not set in environment');
-    return res.status(503).json({ error: 'Discord OAuth not configured — check server environment variables' });
+    return res.redirect(`${FRONTEND_URL}/login?discord_error=not_configured`);
+  }
+  if (!JWT_SECRET) {
+    console.error('[Discord OAuth] JWT_SECRET not set in environment');
+    return res.redirect(`${FRONTEND_URL}/login?discord_error=not_configured`);
   }
   const redirectUri = `${BACKEND_URL}/api/auth/discord/callback`;
+  console.log('[Discord OAuth login] redirectUri:', redirectUri);
   res.redirect(discordAuthUrl(redirectUri, 'login'));
 });
 
 // GET /api/auth/discord/callback  →  handle MDT login
 router.get('/callback', async (req, res) => {
-  const { code, error } = req.query;
+  const { code, error, error_description } = req.query;
   if (error || !code) {
+    console.error('[Discord OAuth callback] Discord returned error:', error, error_description);
     return res.redirect(`${FRONTEND_URL}/login?discord_error=cancelled`);
   }
   try {
     const redirectUri = `${BACKEND_URL}/api/auth/discord/callback`;
-    const tokens = await exchangeCode(code, redirectUri);
-    const discordUser = await getDiscordUser(tokens.access_token);
+    console.log('[Discord OAuth callback] Exchanging code with redirectUri:', redirectUri);
+
+    let tokens;
+    try {
+      tokens = await exchangeCode(code, redirectUri);
+    } catch (e) {
+      console.error('[Discord OAuth callback] Token exchange failed:', e.message);
+      return res.redirect(`${FRONTEND_URL}/login?discord_error=token_failed`);
+    }
+
+    let discordUser;
+    try {
+      discordUser = await getDiscordUser(tokens.access_token);
+    } catch (e) {
+      console.error('[Discord OAuth callback] Failed to fetch Discord user:', e.message);
+      return res.redirect(`${FRONTEND_URL}/login?discord_error=token_failed`);
+    }
 
     const discordId       = discordUser.id;
     const discordUsername = discordUser.username;
     const avatarUrl       = discordUser.avatar
       ? `https://cdn.discordapp.com/avatars/${discordId}/${discordUser.avatar}.png`
       : null;
+
+    console.log('[Discord OAuth callback] User:', discordUsername, '(', discordId, ')');
 
     // Find officer by discord_id first, then by discord_username fallback
     let officer = db.prepare('SELECT * FROM officers WHERE discord_id = ?').get(discordId);
@@ -134,8 +171,8 @@ router.get('/callback', async (req, res) => {
     }
 
     if (!officer) {
-      // No account found — send them to login with their discord tag so they can show admin
       const tag = encodeURIComponent(discordUsername);
+      console.log('[Discord OAuth callback] No officer found for Discord user:', discordUsername);
       return res.redirect(`${FRONTEND_URL}/login?discord_error=no_account&discord_tag=${tag}`);
     }
 
@@ -148,10 +185,9 @@ router.get('/callback', async (req, res) => {
       .run(discordId, discordUsername, avatarUrl, officer.id);
 
     const token = issueJwt({ ...officer, discord_id: discordId });
-    // Redirect to frontend with token — frontend reads it from URL and stores in localStorage
     res.redirect(`${FRONTEND_URL}/auth/discord?token=${encodeURIComponent(token)}`);
   } catch (err) {
-    console.error('[Discord OAuth login callback] ERROR:', err.message, err.stack);
+    console.error('[Discord OAuth login callback] Unexpected error:', err.message, err.stack);
     res.redirect(`${FRONTEND_URL}/login?discord_error=server_error`);
   }
 });

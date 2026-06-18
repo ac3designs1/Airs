@@ -17,11 +17,13 @@ const FEATURES = [
 ];
 
 const DISCORD_ERRORS: Record<string, { icon: typeof AlertCircle; msg: string }> = {
-  no_account:   { icon: UserX,       msg: 'No officer account is linked to your Discord. Contact leadership to get access.' },
-  terminated:   { icon: XCircle,     msg: 'Your account has been terminated. Contact an administrator.' },
-  cancelled:    { icon: AlertCircle, msg: 'Discord sign-in was cancelled.' },
-  server_error: { icon: AlertCircle, msg: 'Access denied. Please contact leadership.' },
-  already_linked: { icon: AlertCircle, msg: 'That Discord account is already linked to another officer.' },
+  no_account:      { icon: UserX,       msg: 'No officer account found for your Discord. Show leadership your Discord tag to get linked.' },
+  terminated:      { icon: XCircle,     msg: 'Your account has been terminated. Contact an administrator.' },
+  cancelled:       { icon: AlertCircle, msg: 'Discord sign-in was cancelled.' },
+  server_error:    { icon: AlertCircle, msg: 'Server error during sign-in. Check Railway logs — the exact error is printed there.' },
+  token_failed:    { icon: AlertCircle, msg: 'Discord rejected the login request. Redirect URI or Client Secret may be misconfigured in Railway.' },
+  not_configured:  { icon: AlertCircle, msg: 'Discord OAuth is not configured on the server. Set DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, BACKEND_URL and FRONTEND_URL in Railway.' },
+  already_linked:  { icon: AlertCircle, msg: 'That Discord account is already linked to another officer.' },
 };
 
 export default function Login() {
@@ -33,6 +35,7 @@ export default function Login() {
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState('');
   const [discordTag, setDiscordTag]   = useState('');
+  const [errorCode, setErrorCode]     = useState('');
 
   const { login } = useAuth();
   const nav = useNavigate();
@@ -47,6 +50,7 @@ export default function Login() {
     if (de) {
       const tag = params.get('discord_tag');
       if (tag) setDiscordTag(decodeURIComponent(tag));
+      setErrorCode(de);
       setError(DISCORD_ERRORS[de]?.msg ?? 'Discord sign-in failed.');
       // Remove query params from URL without triggering a navigation
       window.history.replaceState({}, '', '/login');
@@ -74,7 +78,7 @@ export default function Login() {
     }
   };
 
-  const ErrorIcon = error ? (DISCORD_ERRORS[params.get('discord_error') ?? '']?.icon ?? AlertCircle) : AlertCircle;
+  const ErrorIcon = error ? (DISCORD_ERRORS[errorCode]?.icon ?? AlertCircle) : AlertCircle;
 
   return (
     <div className="min-h-screen flex" style={{ background: '#07090f' }}>
