@@ -127,9 +127,11 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
   // Auto-create officer account on approval
   if (status === 'approved') {
+    // Only skip if a RECRUIT account already exists for this exact Discord ID
+    // (don't block on username match — admins/testers using the same Discord shouldn't prevent officer creation)
     const existing = app.discord_id
-      ? db.prepare('SELECT id FROM officers WHERE discord_id = ?').get(app.discord_id)
-      : db.prepare('SELECT id FROM officers WHERE username = ?').get(app.discord_username || app.discord);
+      ? db.prepare("SELECT id FROM officers WHERE discord_id = ? AND role = 'recruit'").get(app.discord_id)
+      : null;
 
     if (!existing) {
       // Split full_name into first/last

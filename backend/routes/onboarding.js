@@ -29,9 +29,11 @@ router.get('/', authenticateToken, (req, res) => {
   if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Forbidden' });
   const recruits = db.prepare(`
     SELECT id, first_name, last_name, callsign, rank, department, discord_username, created_at,
-           onboarding_complete, onboarding_activated_by, onboarding_activated_at
+           COALESCE(onboarding_complete, 0) as onboarding_complete,
+           onboarding_activated_by, onboarding_activated_at
     FROM officers
-    WHERE role = 'recruit'
+    WHERE (role = 'recruit' OR rank = 'Recruit')
+      AND username != 'admin'
     ORDER BY created_at DESC
   `).all();
   res.json(recruits);
@@ -43,7 +45,7 @@ router.get('/:id', authenticateToken, (req, res) => {
   const isSelf = req.user.id === req.params.id;
   if (!isLeadership && !isSelf) return res.status(403).json({ error: 'Forbidden' });
 
-  const officer = db.prepare('SELECT id,first_name,last_name,callsign,rank,department,onboarding_complete,onboarding_activated_by,onboarding_activated_at FROM officers WHERE id=?').get(req.params.id);
+  const officer = db.prepare('SELECT id,first_name,last_name,callsign,rank,department,COALESCE(onboarding_complete,0) as onboarding_complete,onboarding_activated_by,onboarding_activated_at FROM officers WHERE id=?').get(req.params.id);
   if (!officer) return res.status(404).json({ error: 'Not found' });
 
   const progress = db.prepare('SELECT * FROM recruit_progress WHERE officer_id = ?').all(req.params.id);
