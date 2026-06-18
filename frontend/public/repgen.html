@@ -146,6 +146,10 @@
     .mcbody{font-size:12px;color:var(--dim);line-height:1.9}
     .leg-link{display:flex;align-items:center;gap:8px;padding:11px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--txt);text-decoration:none;background:var(--p3);border:1px solid var(--brd);transition:.13s}
     .leg-link:hover{border-color:var(--purple);color:var(--purple-l);background:rgba(168,85,247,.07)}
+    /* STRUCTURED FIELDS */
+    .sf-section{margin-bottom:12px}
+    .sf-label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--txt);margin-bottom:6px}
+    .sf-label-star{color:#d4a017;font-size:13px}
   </style>
 </head>
 <body>
@@ -263,9 +267,17 @@
         <span class="mode-txt">Mode: <b id="mlbl">Free Text</b></span>
         <button class="mode-tog" onclick="toggleMode()" id="mode-btn">Switch to Structured Mode</button>
       </div>
-      <div class="ctr-row"><span class="ctr" id="ctr">0 chars</span></div>
 
-      <textarea id="r-nr" rows="5" placeholder="Write the narrative here..." oninput="updCtr();live()" style="margin-top:4px"></textarea>
+      <!-- Free text mode -->
+      <div id="free-mode">
+        <textarea id="r-nr" rows="6" placeholder="Write the narrative here..." oninput="updCtr();live()"></textarea>
+        <div class="ctr-row"><span class="ctr" id="ctr">0 chars</span></div>
+      </div>
+
+      <!-- Structured mode -->
+      <div id="struct-mode" style="display:none">
+        <div id="struct-fields"></div>
+      </div>
 
       <div style="margin-top:12px">
         <div class="sv-row">
@@ -418,21 +430,110 @@
     document.getElementById('xf').innerHTML=fs.length
       ?fs.map(f=>`<div class="fg"><label class="fl">${f.l}</label><input type="text" id="${f.id}" placeholder="${f.p}" oninput="live()" /></div>`).join('')
       :'';
+    if(sMode) buildStructFields(type);
+    live();
   }
   selType();
   function gx(id){const e=document.getElementById(id);return e?e.value.trim():''}
 
   /* Mode */
+  /* ── Structured mode templates ── */
+  const STRUCT_TMPL = {
+    'INCIDENT REPORT': [
+      {id:'sf_sd', label:'Scene Description',   val:'I responded to a [CALL TYPE] at [LOCATION].\n\nOn arrival, [SCENE DESCRIPTION].'},
+      {id:'sf_pi', label:'Persons Involved',     val:'[PERSON NAME] - [ROLE / RELATIONSHIP]'},
+      {id:'sf_at', label:'Actions Taken',        val:'[DESCRIBE ACTIONS TAKEN BY OFFICER]'},
+      {id:'sf_oc', label:'Outcome',              val:'[HOW THE INCIDENT CONCLUDED]'},
+    ],
+    'ARREST REPORT': [
+      {id:'sf_sd', label:'Scene Description',   val:'I responded to a [CALL TYPE] at [LOCATION].\n\nOn arrival, [SCENE DESCRIPTION].'},
+      {id:'sf_si', label:'Suspect Information', val:'The suspect was identified as [SUSPECT NAME], described as [SUSPECT DESCRIPTION]. The suspect was last seen [LAST SEEN DETAILS].'},
+      {id:'sf_sc', label:'Scene Conclusion',    val:'The suspect got away by [HOW THEY GOT AWAY].'},
+      {id:'sf_pr', label:'Processing',          val:'Suspect was held at station for processing. I read the suspect their caution.\n\nDuring a search, the following items were located:\n• [ITEM]\n• [ITEM]'},
+      {id:'sf_co', label:'Charges and Outcome', val:'[SUSPECT NAME] is wanted for the above-mentioned charges.'},
+    ],
+    'TRAFFIC STOP': [
+      {id:'sf_st', label:'Stop Circumstances',  val:'I conducted a traffic stop on a [VEHICLE DESCRIPTION] at [LOCATION] for [REASON].'},
+      {id:'sf_dr', label:'Driver Details',      val:'The driver was identified as [NAME], [DESCRIPTION].'},
+      {id:'sf_vc', label:'Vehicle Check',       val:'A check of the vehicle registration returned [RESULT].'},
+      {id:'sf_oc', label:'Outcome',             val:'[RESULT OF STOP - INFRINGEMENT / WARNING / ARREST]'},
+    ],
+    'USE OF FORCE': [
+      {id:'sf_ci', label:'Circumstances',       val:'I was called to [LOCATION] for [REASON].'},
+      {id:'sf_ta', label:'Threat Assessment',   val:'The subject [NAME] was [BEHAVIOUR / THREAT LEVEL].'},
+      {id:'sf_fu', label:'Force Used',          val:'I used [FORCE TYPE] to [REASON FOR FORCE].'},
+      {id:'sf_oc', label:'Outcome',             val:'[RESULT - SUBJECT DETAINED / MEDICAL ATTENTION ETC]'},
+    ],
+    'VEHICLE PURSUIT': [
+      {id:'sf_pi', label:'Pursuit Initiation',  val:'I initiated a pursuit of a [VEHICLE DESCRIPTION] at [LOCATION] for [REASON].'},
+      {id:'sf_pd', label:'Pursuit Details',     val:'The pursuit travelled through [ROUTE] at speeds of approximately [SPEED].'},
+      {id:'sf_pt', label:'Pursuit Termination', val:'The pursuit was terminated at [LOCATION] because [REASON].'},
+      {id:'sf_oc', label:'Outcome',             val:'[RESULT - ARREST / ESCAPED / SUBJECT IDENTIFIED]'},
+    ],
+    'SEARCH AND SEIZURE': [
+      {id:'sf_gs', label:'Grounds for Search',  val:'I had grounds to search [SUBJECT] at [LOCATION] due to [REASON].'},
+      {id:'sf_if', label:'Items Found',         val:'During the search, the following items were located:\n• [ITEM]\n• [ITEM]'},
+      {id:'sf_oc', label:'Outcome',             val:'[RESULT OF SEARCH - ITEMS SEIZED / CLEAR]'},
+    ],
+    'PROPERTY DAMAGE': [
+      {id:'sf_ci', label:'Circumstances',       val:'I attended [LOCATION] regarding reported property damage.'},
+      {id:'sf_da', label:'Damage Assessment',   val:'Upon inspection, [DESCRIPTION OF DAMAGE].'},
+      {id:'sf_su', label:'Suspect Details',     val:'[SUSPECT NAME / DESCRIPTION / UNKNOWN]'},
+      {id:'sf_oc', label:'Outcome',             val:'[RESULT - ARRESTED / REPORT FILED / NO FURTHER ACTION]'},
+    ],
+    'MISSING PERSON': [
+      {id:'sf_rp', label:'Report Details',      val:'[REPORTING PERSON] reported [MISSING PERSON NAME] missing from [LOCATION] at [TIME].'},
+      {id:'sf_mp', label:'Missing Person Info', val:'[NAME] is described as [DESCRIPTION]. Last seen wearing [CLOTHING].'},
+      {id:'sf_ac', label:'Actions Taken',       val:'[DESCRIBE SEARCHES / NOTIFICATIONS / DATABASE CHECKS]'},
+      {id:'sf_oc', label:'Outcome',             val:'[LOCATED / ONGOING INVESTIGATION]'},
+    ],
+  };
+
+  function buildStructFields(type){
+    const container=document.getElementById('struct-fields');
+    const tmpl=STRUCT_TMPL[type]||STRUCT_TMPL['INCIDENT REPORT'];
+    container.innerHTML='';
+    tmpl.forEach(sec=>{
+      const wrap=document.createElement('div');
+      wrap.className='sf-section';
+      wrap.innerHTML=`<div class="sf-label"><span class="sf-label-star">✦</span>${sec.label}</div>`;
+      const ta=document.createElement('textarea');
+      ta.id=sec.id; ta.rows=4; ta.value=sec.val;
+      ta.oninput=()=>live();
+      wrap.appendChild(ta);
+      container.appendChild(wrap);
+    });
+  }
+
+  function getStructNarrative(){
+    const container=document.getElementById('struct-fields');
+    const parts=[];
+    container.querySelectorAll('textarea').forEach(ta=>{
+      const v=(ta.value||'').trim();
+      if(v) parts.push(v);
+    });
+    return parts.join('\n\n');
+  }
+
   let sMode=false;
   function toggleMode(){
     sMode=!sMode;
+    document.getElementById('free-mode').style.display=sMode?'none':'block';
+    document.getElementById('struct-mode').style.display=sMode?'block':'none';
     const tog=document.getElementById('mode-btn');
     const lbl=document.getElementById('mlbl');
-    tog.textContent=sMode?'Switch to Free Text Mode':'Switch to Structured Mode';
+    tog.textContent=sMode?'Switch to Free-Text Mode':'Switch to Structured Mode';
     lbl.textContent=sMode?'Structured':'Free Text';
+    if(sMode){
+      const type=document.getElementById('r-type').value;
+      buildStructFields(type);
+    }
     live();
   }
-  function updCtr(){document.getElementById('ctr').textContent=(document.getElementById('r-nr').value||'').length+' chars'}
+  function updCtr(){
+    const v=sMode?getStructNarrative():(document.getElementById('r-nr').value||'');
+    document.getElementById('ctr').textContent=v.length+' chars';
+  }
 
   /* Footer */
   function footer(){
@@ -471,7 +572,7 @@
     const type=document.getElementById('r-type').value;
     const ev=(document.getElementById('r-ev').value||'').trim();
     const ch=(document.getElementById('r-ch').value||'').trim();
-    const nr=(document.getElementById('r-nr').value||'').trim();
+    const nr=sMode?getStructNarrative():(document.getElementById('r-nr').value||'').trim();
     const xs=EX[type]||[];
     let o=`${type}\nTIME: ${t}\nDATE: ${d}\n`;
     xs.forEach(f=>{const v=gx(f.id);if(v)o+=`${f.l.toUpperCase()}: ${v}\n`});
@@ -489,7 +590,16 @@
   /* Actions */
   function cpReport(){const t=document.getElementById('output-box').value;if(!t.trim())return;navigator.clipboard.writeText(t).then(()=>toast('✓ Copied to clipboard'))}
   function dlReport(){const t=document.getElementById('output-box').value;if(!t.trim())return;const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(t);a.download=`AIRS_Report_${Date.now()}.txt`;a.click()}
-  function clearAll(){['r-ev','r-ch','r-nr','r-sv'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});const type=document.getElementById('r-type').value;(EX[type]||[]).forEach(f=>{const e=document.getElementById(f.id);if(e)e.value=''});document.getElementById('output-box').value='';document.getElementById('ometa').textContent='— empty —';updCtr()}
+  function clearAll(){
+    ['r-ev','r-ch','r-nr','r-sv'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
+    const type=document.getElementById('r-type').value;
+    (EX[type]||[]).forEach(f=>{const e=document.getElementById(f.id);if(e)e.value=''});
+    // clear structured fields and reset to template
+    if(sMode) buildStructFields(type);
+    document.getElementById('output-box').value='';
+    document.getElementById('ometa').textContent='— empty —';
+    updCtr();
+  }
   function toast(m){const e=document.getElementById('toast');e.textContent=m;e.style.display='block';setTimeout(()=>e.style.display='none',2000)}
 
   /* Save/Export/Import */
