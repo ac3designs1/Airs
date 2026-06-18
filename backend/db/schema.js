@@ -28,8 +28,12 @@ function initDb() {
       callsign TEXT,
       avatar_url TEXT,
       role TEXT NOT NULL DEFAULT 'officer',
-      discord_id TEXT UNIQUE,
+      discord_id TEXT,
       discord_username TEXT,
+      in_city_name TEXT,
+      onboarding_complete INTEGER DEFAULT 0,
+      onboarding_activated_by TEXT,
+      onboarding_activated_at TEXT,
       created_at TEXT DEFAULT (datetime('now')),
       last_login TEXT
     );
@@ -406,12 +410,16 @@ function initDb() {
   `);
 
   // Migrate existing databases — add new columns if they don't exist
-  try { db.exec('ALTER TABLE officers ADD COLUMN discord_id TEXT UNIQUE'); } catch {}
+  // NOTE: SQLite does NOT allow UNIQUE in ALTER TABLE ADD COLUMN
+  // Add the column first, then create the unique index separately
+  try { db.exec('ALTER TABLE officers ADD COLUMN discord_id TEXT'); } catch {}
   try { db.exec('ALTER TABLE officers ADD COLUMN discord_username TEXT'); } catch {}
   try { db.exec('ALTER TABLE officers ADD COLUMN in_city_name TEXT'); } catch {}
   try { db.exec('ALTER TABLE officers ADD COLUMN onboarding_complete INTEGER DEFAULT 0'); } catch {}
   try { db.exec('ALTER TABLE officers ADD COLUMN onboarding_activated_by TEXT'); } catch {}
   try { db.exec('ALTER TABLE officers ADD COLUMN onboarding_activated_at TEXT'); } catch {}
+  // Create unique index for discord_id separately (this is idempotent)
+  try { db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_officers_discord_id ON officers(discord_id) WHERE discord_id IS NOT NULL'); } catch {}
 
   // Seed only the admin account — no preset officers
   const existing = db.prepare('SELECT id FROM officers WHERE username = ?').get('admin');
