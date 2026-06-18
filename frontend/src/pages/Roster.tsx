@@ -106,6 +106,7 @@ export default function Roster() {
 
       {/* Table */}
       <div className="glass rounded-2xl overflow-hidden">
+        <div className="nx-table-wrap">
         <table className="nx-table">
           <thead>
             <tr>
@@ -157,6 +158,7 @@ export default function Roster() {
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

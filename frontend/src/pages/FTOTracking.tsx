@@ -189,7 +189,7 @@ export default function FTOTracking() {
         ) : shifts.length === 0 ? (
           <div className="p-8 text-center text-slate-600">No FTO shifts logged yet. Log the first one above.</div>
         ) : (
-          <table className="nx-table">
+          <div className="nx-table-wrap"><table className="nx-table">
             <thead>
               <tr><th>Date</th><th>FTO</th><th>Recruit</th><th>Type</th><th>Hours</th><th>Notes</th>{isLeadership && <th />}</tr>
             </thead>
@@ -212,7 +212,7 @@ export default function FTOTracking() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         )}
       </div>
     </div>

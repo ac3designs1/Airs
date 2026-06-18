@@ -98,6 +98,7 @@ export default function Users() {
 
       {/* Table */}
       <div className="glass rounded-2xl overflow-hidden">
+        <div className="nx-table-wrap">
         <table className="nx-table">
           <thead>
             <tr>
@@ -160,6 +161,7 @@ export default function Users() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Edit modal */}

@@ -28,7 +28,12 @@
 
 /* ── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+
+html {
+  scroll-behavior: smooth;
+  /* iOS Safari: use dynamic viewport height */
+  height: -webkit-fill-available;
+}
 
 body {
   background-color: #07090f;
@@ -37,6 +42,10 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent horizontal overflow on mobile */
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 /* ── Selection ────────────────────────────────────────────── */
@@ -70,12 +79,14 @@ body {
 /* ── Glass card ───────────────────────────────────────────── */
 .glass {
   background: rgba(10, 16, 30, 0.72);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
   backdrop-filter: blur(20px) saturate(160%);
   border: 1px solid rgba(14, 165, 233, 0.10);
   border-radius: 16px;
 }
 .glass-sm {
   background: rgba(10, 16, 30, 0.55);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(14, 165, 233, 0.08);
   border-radius: 12px;
@@ -202,9 +213,13 @@ body {
   color: #e2e8f0;
   padding: 11px 14px;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  /* 16px minimum prevents iOS from zooming in on focus */
+  font-size: 16px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  /* Prevent iOS input styling */
+  -webkit-appearance: none;
+  appearance: none;
 }
 .nx-input::placeholder { color: rgba(100,116,139,0.6); }
 .nx-input:focus {
@@ -285,6 +300,7 @@ body {
 /* ── Card stat ────────────────────────────────────────────── */
 .stat-card {
   background: rgba(10,16,30,0.72);
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(14,165,233,0.10);
   border-radius: 14px;
@@ -336,3 +352,65 @@ body {
   50%      { border-color: rgba(239,68,68,0.6); box-shadow: 0 0 12px rgba(239,68,68,0.2); }
 }
 .p1-pulse { animation: border-pulse 1.5s ease-in-out infinite; }
+
+/* ── Mobile fixes ─────────────────────────────────────────── */
+
+/* Make all tables horizontally scrollable on mobile */
+.nx-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent body scroll lock when modals open on iOS */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Better touch targets — minimum 44px tap area */
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fix select dropdowns on iOS */
+select.nx-input {
+  background-image: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Prevent text size adjustment on orientation change (iOS) */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Smooth scrolling momentum on iOS */
+.overflow-y-auto, nav, main {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile: make modals full-screen on very small screens */
+@media (max-width: 480px) {
+  .modal-card {
+    margin: 0 !important;
+    border-radius: 16px 16px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+  }
+
+  /* Reduce excessive padding on mobile */
+  .glass { border-radius: 12px; }
+  .stat-card { padding: 14px; border-radius: 10px; }
+
+  /* Full width tables on mobile */
+  .nx-table th, .nx-table td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}

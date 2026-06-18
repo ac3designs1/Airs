@@ -75,7 +75,7 @@ export default function Login() {
   const ErrorIcon = error ? (DISCORD_ERRORS[params.get('discord_error') ?? '']?.icon ?? AlertCircle) : AlertCircle;
 
   return (
-    <div className="min-h-screen flex overflow-hidden" style={{ background: '#07090f' }}>
+    <div className="min-h-screen flex" style={{ background: '#07090f' }}>
 
       {/* ── Left Hero Panel ─────────────────────────────────── */}
       <div className="hidden lg:flex lg:w-[54%] relative flex-col justify-between p-12 overflow-hidden">
@@ -151,7 +151,7 @@ export default function Login() {
       </div>
 
       {/* ── Right Form Panel ───────────────────────────────── */}
-      <div className="flex-1 flex flex-col justify-center items-center px-6 sm:px-12 relative"
+      <div className="flex-1 flex flex-col justify-center items-center px-6 sm:px-12 py-10 relative overflow-y-auto"
         style={{ background: 'rgba(5,7,14,0.97)' }}>
         <div className="absolute left-0 top-0 bottom-0 w-px hidden lg:block"
           style={{ background: 'linear-gradient(to bottom, transparent, rgba(14,165,233,0.2) 30%, rgba(14,165,233,0.2) 70%, transparent)' }} />
