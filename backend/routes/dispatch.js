@@ -71,13 +71,13 @@ router.put('/calls/:id', (req, res) => {
 });
 
 router.get('/units', (req, res) => {
-  const units = db.prepare("SELECT id, first_name, last_name, rank, department, status, callsign FROM officers WHERE status != 'off_duty' ORDER BY department, callsign").all();
+  const units = db.prepare("SELECT id, first_name, last_name, rank, department, status, callsign FROM officers WHERE status != 'off_duty' AND username != 'admin' ORDER BY department, callsign").all();
   res.json({ units });
 });
 
 router.get('/stats', (req, res) => {
-  const totalOfficers = db.prepare("SELECT COUNT(*) as c FROM officers").get().c;
-  const onDuty = db.prepare("SELECT COUNT(*) as c FROM officers WHERE status != 'off_duty'").get().c;
+  const totalOfficers = db.prepare("SELECT COUNT(*) as c FROM officers WHERE username != 'admin'").get().c;
+  const onDuty = db.prepare("SELECT COUNT(*) as c FROM officers WHERE status != 'off_duty' AND username != 'admin'").get().c;
   const activeCalls = db.prepare("SELECT COUNT(*) as c FROM dispatch_calls WHERE status = 'active'").get().c;
   const pendingCalls = db.prepare("SELECT COUNT(*) as c FROM dispatch_calls WHERE status = 'pending'").get().c;
   const activeWarrants = db.prepare("SELECT COUNT(*) as c FROM warrants WHERE status = 'active'").get().c;

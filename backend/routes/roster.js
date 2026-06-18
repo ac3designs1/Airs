@@ -10,9 +10,10 @@ router.use(authenticateToken);
 
 router.get('/', (req, res) => {
   const { department } = req.query;
-  let query = 'SELECT id, username, first_name, last_name, rank, department, status, callsign, role, created_at, last_login FROM officers';
-  let params = [];
-  if (department) { query += ' WHERE department = ?'; params.push(department); }
+  let query = `SELECT id, username, first_name, last_name, rank, department, status, callsign, role, created_at, last_login
+    FROM officers WHERE username != 'admin'`;
+  const params = [];
+  if (department) { query += ' AND department = ?'; params.push(department); }
   query += ' ORDER BY department, rank, last_name';
   res.json(db.prepare(query).all(...params));
 });

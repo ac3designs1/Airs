@@ -58,11 +58,11 @@ router.get('/department', (req, res) => {
     SELECT department,
       COUNT(*) as total,
       SUM(CASE WHEN status != 'off_duty' THEN 1 ELSE 0 END) as on_duty
-    FROM officers GROUP BY department ORDER BY department
+    FROM officers WHERE username != 'admin' GROUP BY department ORDER BY department
   `).all();
 
   const byRank = db.prepare(`
-    SELECT rank, COUNT(*) as total FROM officers GROUP BY rank ORDER BY total DESC LIMIT 10
+    SELECT rank, COUNT(*) as total FROM officers WHERE username != 'admin' GROUP BY rank ORDER BY total DESC LIMIT 10
   `).all();
 
   const recentPromotions = db.prepare(`
