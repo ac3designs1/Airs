@@ -543,7 +543,7 @@
     const d=document.getElementById('p-division').value;
     const s=(document.getElementById('r-sv').value||'').trim();
     let f=`Signed,\n${n||'[NAME]'}\n${r} | ${c||'[CALLSIGN]'}\n${d} | MELBOURNE POLICE`;
-    if(s)f+=`\n\nSupervisor Approved: ${s}`;
+    if(s)f+=`\n\nAPPROVED BY: ${s}`;
     return f;
   }
 
@@ -576,7 +576,7 @@
     const xs=EX[type]||[];
     let o=`${type}\nTIME: ${t}\nDATE: ${d}\n`;
     xs.forEach(f=>{const v=gx(f.id);if(v)o+=`${f.l.toUpperCase()}: ${v}\n`});
-    o+=`EVIDENCE:\n${ev}\n\nCHARGES:\n${ch}\n\nREPORT:\n${nr}\n\n\n${footer()}`;
+    o+=`EVIDENCE:\n${ev}\n\nCHARGES:\n${ch}\n\nREPORT:\n${nr}\n\n${footer()}`;
     return o;
   }
 
