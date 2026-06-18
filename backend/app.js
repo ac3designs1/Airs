@@ -49,6 +49,10 @@ function createApp(options = {}) {
     referrerPolicy: { policy: 'same-origin' },
   }));
 
+  // Trust Railway/Vercel/Render reverse proxy — required for express-rate-limit
+  // to correctly read the real client IP from X-Forwarded-For
+  app.set('trust proxy', 1);
+
   app.set('env', process.env.NODE_ENV || 'production');
   app.use(express.json({ limit: '512kb' }));
   app.use(express.urlencoded({ extended: false, limit: '512kb' }));

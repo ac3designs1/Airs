@@ -5,6 +5,11 @@ const { db }  = require('../db/schema');
 const { authenticateToken } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
 
+// Ensure applications table has the discord columns regardless of load order
+try { db.exec('ALTER TABLE applications ADD COLUMN discord_id TEXT'); } catch {}
+try { db.exec('ALTER TABLE applications ADD COLUMN discord_username TEXT'); } catch {}
+try { db.exec('ALTER TABLE applications ADD COLUMN discord_avatar TEXT'); } catch {}
+
 const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 const CHECKLIST = [
@@ -73,7 +78,9 @@ function createRecruitFromApplication(app) {
 // ── Auto-sync: find approved applications with no officer, create them ─
 function syncApprovedApplications() {
   try {
-    const approved = db.prepare("SELECT * FROM applications WHERE status = 'approved'").all();
+    const approved = db.prepare(
+      "SELECT id, full_name, discord, discord_id, discord_username, discord_avatar FROM applications WHERE status = 'approved'"
+    ).all();
     for (const app of approved) {
       // Check if there's already a recruit (or any) officer for this applicant
       let exists = false;
