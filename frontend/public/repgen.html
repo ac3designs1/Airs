@@ -435,6 +435,7 @@
             <div class="cdd-opt" onclick="pickRT('VEHICLE PURSUIT REPORT','Vehicle Pursuit')">Vehicle Pursuit</div>
             <div class="cdd-opt" onclick="pickRT('USE OF FORCE REPORT','Use of Force')">Use of Force</div>
             <div class="cdd-opt" onclick="pickRT('IMPOUND REPORT','Impound Report')">Impound Report</div>
+            <div class="cdd-opt" onclick="pickRT('WARRANT REPORT','Warrant Report')">Warrant Report</div>
           </div>
         </div>
       </div>
@@ -713,6 +714,11 @@
       {id:'xis',l:'Impound Strike',p:'',type:'select',opts:['1st — 24 Hours','2nd — 48 Hours','3rd — 72 Hours','4th — 96 Hours (Permanent)']},
       {id:'xip',l:'Plate',p:'e.g. ABC123'},
     ],
+    'WARRANT REPORT':[
+      {id:'xws',l:'Subject Name',p:'First Last'},
+      {id:'xwd',l:'Subject DOB',p:'DD/MM/YYYY'},
+      {id:'xwr',l:'Reason for Interest',p:'Brief reason for the warrant'},
+    ],
   };
 
   let sMode=false;
@@ -796,6 +802,12 @@
     'IMPOUND REPORT': [
       {id:'sf_ir', label:'Reason for Impound',  val:'[CALLSIGN] impounded a [VEHICLE DESCRIPTION] (Plate: [PLATE]) at [LOCATION].\n\nReason: [EXPLAIN REASON FOR IMPOUND]'},
       {id:'sf_io', label:'Outcome',             val:'Vehicle was impounded and towed to [LOCATION/STATION]. Owner was notified.'},
+    ],
+    'WARRANT REPORT': [
+      {id:'sf_wd', label:'Subject Details',     val:'[CALLSIGN] is requesting a warrant for [SUBJECT NAME], DOB [DOB], currently located at [LOCATION].'},
+      {id:'sf_wb', label:'Background',          val:'[SUBJECT NAME] is wanted in relation to [OFFENCE(S)]. The following evidence supports this warrant:\n• [EVIDENCE ITEM]\n• [EVIDENCE ITEM]'},
+      {id:'sf_wc', label:'Circumstances',       val:'[DESCRIBE CIRCUMSTANCES LEADING TO WARRANT REQUEST]'},
+      {id:'sf_wo', label:'Outcome Sought',      val:'[CALLSIGN] requests authorisation to [ARREST / SEARCH PREMISES / SEIZE PROPERTY] in relation to the above.'},
     ],
   };
 
@@ -925,7 +937,7 @@
   /* Save/Export/Import */
   function saveProf(){localStorage.setItem('airs_rp',JSON.stringify({name:document.getElementById('p-name').value,rank:document.getElementById('p-rank').value,callsign:document.getElementById('p-callsign').value,division:document.getElementById('p-division').value}));toast('✓ Profile saved')}
   function expJSON(){const d={profile:{name:document.getElementById('p-name').value,rank:document.getElementById('p-rank').value,callsign:document.getElementById('p-callsign').value,division:document.getElementById('p-division').value},report:{type:document.getElementById('r-type').value,evidence:document.getElementById('r-ev').value,charges:document.getElementById('r-ch').value,narrative:document.getElementById('r-nr').value,supervisor:document.getElementById('r-sv').value}};const a=document.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(d,null,2));a.download=`AIRS_report_${Date.now()}.json`;a.click()}
-  function impJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.profile){['name','rank','callsign','division'].forEach(k=>{if(d.profile[k])document.getElementById('p-'+k).value=d.profile[k]})}if(d.report){if(d.report.type){document.getElementById('r-type').value=d.report.type;const lmap={'INCIDENT REPORT':'Incident Report','TRAFFIC STOP REPORT':'Traffic Stop','ARREST REPORT':'Arrest Report','SEARCH & SEIZURE REPORT':'Search & Seizure','VEHICLE PURSUIT REPORT':'Vehicle Pursuit','USE OF FORCE REPORT':'Use of Force','IMPOUND REPORT':'Impound Report'};document.getElementById('rt-label').textContent=lmap[d.report.type]||d.report.type;}['evidence','charges','narrative','supervisor'].forEach(k=>{const id={'evidence':'r-ev','charges':'r-ch','narrative':'r-nr','supervisor':'r-sv'}[k];if(id&&d.report[k])document.getElementById(id).value=d.report[k]});selType()}live();toast('✓ Imported')}catch{alert('Invalid JSON')}};r.readAsText(f);e.target.value=''}
+  function impJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.profile){['name','rank','callsign','division'].forEach(k=>{if(d.profile[k])document.getElementById('p-'+k).value=d.profile[k]})}if(d.report){if(d.report.type){document.getElementById('r-type').value=d.report.type;const lmap={'INCIDENT REPORT':'Incident Report','TRAFFIC STOP REPORT':'Traffic Stop','ARREST REPORT':'Arrest Report','SEARCH & SEIZURE REPORT':'Search & Seizure','VEHICLE PURSUIT REPORT':'Vehicle Pursuit','USE OF FORCE REPORT':'Use of Force','IMPOUND REPORT':'Impound Report','WARRANT REPORT':'Warrant Report'};document.getElementById('rt-label').textContent=lmap[d.report.type]||d.report.type;}['evidence','charges','narrative','supervisor'].forEach(k=>{const id={'evidence':'r-ev','charges':'r-ch','narrative':'r-nr','supervisor':'r-sv'}[k];if(id&&d.report[k])document.getElementById(id).value=d.report[k]});selType()}live();toast('✓ Imported')}catch{alert('Invalid JSON')}};r.readAsText(f);e.target.value=''}
 
   /* Modals */
   function openModal(id){document.getElementById(id).style.display='block'}
