@@ -3,7 +3,7 @@ import {
   Crown, Users, Bell, TrendingUp, Search, X, ChevronDown,
   CheckCircle, Shield, AlertTriangle, ArrowRightLeft,
   Star, UserMinus, Zap, Edit2, Trash2, AlertOctagon,
-  RefreshCw, Clock, Activity, FileText, Megaphone, Save
+  RefreshCw, Clock, Activity, FileText, Megaphone, Save, CalendarClock
 } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 import api from '../api/client';
@@ -83,6 +83,7 @@ export default function LeadershipCommand() {
   const [announcing,setAnnouncing] = useState<AnnounceState | null>(null);
   const [saving,    setSaving]   = useState(false);
   const [confirmDel,setConfirmDel] = useState<Officer | null>(null);
+  const [interviewModal, setInterviewModal] = useState<{ item: PendingItem; times: string[]; note: string } | null>(null);
 
   /* ── Load data ── */
   const load = useCallback(async () => {
@@ -217,6 +218,27 @@ export default function LeadershipCommand() {
       setStats(prev => ({ ...prev, pending: prev.pending - 1 }));
       toast.success(`${status === 'approved' ? 'Approved' : 'Denied'}`);
     } catch { toast.error('Failed to review'); }
+  }
+
+  /* ── Move application to interview ── */
+  async function confirmInterview() {
+    if (!interviewModal) return;
+    setSaving(true);
+    try {
+      const msg = [
+        ...interviewModal.times,
+        interviewModal.note ? `\nNote: ${interviewModal.note}` : '',
+      ].filter(Boolean).join('\n');
+      await api.put(`/applications/${interviewModal.item.id}`, {
+        status: 'interview',
+        interview_message: msg || undefined,
+      });
+      setPending(prev => prev.filter(p => p.id !== interviewModal.item.id));
+      setStats(prev => ({ ...prev, pending: prev.pending - 1 }));
+      setInterviewModal(null);
+      toast.success('Moved to interview — Discord DM sent!');
+    } catch { toast.error('Failed'); }
+    finally { setSaving(false); }
   }
 
   /* ── Post announcement ── */
@@ -439,7 +461,14 @@ export default function LeadershipCommand() {
                       <div className="text-xs text-slate-700 mt-1">{formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}</div>
                     </div>
                   </div>
-                  <div className="flex gap-2 flex-shrink-0">
+                  <div className="flex gap-2 flex-shrink-0 flex-wrap justify-end">
+                    {item.kind === 'application' && (
+                      <button onClick={() => setInterviewModal({ item, times: [], note: '' })}
+                        className="px-3 py-1.5 rounded-lg text-indigo-400 text-xs font-bold hover:bg-indigo-500/15 transition-colors flex items-center gap-1.5"
+                        style={{ border: '1px solid rgba(99,102,241,0.25)' }}>
+                        <CalendarClock className="w-3.5 h-3.5" /> Interview
+                      </button>
+                    )}
                     <button onClick={() => reviewItem(item, 'approved')}
                       className="px-3 py-1.5 rounded-lg text-green-400 text-xs font-bold hover:bg-green-500/15 transition-colors flex items-center gap-1.5"
                       style={{ border: '1px solid rgba(34,197,94,0.25)' }}>
@@ -669,6 +698,91 @@ export default function LeadershipCommand() {
           </div>
         </div>
       )}
+      {/* ── Interview modal ── */}
+      {interviewModal && (() => {
+        const PRESET_SLOTS = [
+          'Monday 6pm–8pm AEST',
+          'Tuesday 6pm–8pm AEST',
+          'Wednesday 6pm–8pm AEST',
+          'Thursday 6pm–8pm AEST',
+          'Friday 7pm–9pm AEST',
+          'Saturday 2pm–4pm AEST',
+          'Saturday 7pm–9pm AEST',
+          'Sunday 2pm–4pm AEST',
+          'Sunday 7pm–9pm AEST',
+        ];
+        const toggle = (slot: string) => setInterviewModal(m => m ? ({
+          ...m,
+          times: m.times.includes(slot) ? m.times.filter(s => s !== slot) : [...m.times, slot],
+        }) : m);
+        return (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(99,102,241,0.30)' }}>
+              <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(99,102,241,0.12)' }}>
+                <h2 className="font-bold text-white flex items-center gap-2">
+                  <CalendarClock className="w-5 h-5 text-indigo-400" /> Schedule Interview
+                </h2>
+                <button onClick={() => setInterviewModal(null)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
+              </div>
+              <div className="p-5 space-y-4">
+                {/* Applicant */}
+                <div className="p-3 rounded-xl flex items-center gap-3" style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.12)' }}>
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm text-white flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg,#6366f1,#4f46e5)' }}>
+                    {interviewModal.item.officer_name[0]?.toUpperCase()}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-white text-sm">{interviewModal.item.officer_name}</div>
+                    <div className="text-xs text-indigo-400">New application — interview stage</div>
+                  </div>
+                </div>
+
+                {/* Info */}
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Select available time slots below. The applicant will receive a Discord DM with the shortlist message and the times you select. If they don't have Discord linked, the status will still update.
+                </p>
+
+                {/* Time slot toggles */}
+                <div>
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Available Interview Times</label>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {PRESET_SLOTS.map(slot => (
+                      <button key={slot} type="button" onClick={() => toggle(slot)}
+                        className={`px-2.5 py-2 rounded-lg text-left text-xs font-medium transition-all ${interviewModal.times.includes(slot) ? 'text-white' : 'text-slate-500 hover:text-slate-300'}`}
+                        style={{
+                          background: interviewModal.times.includes(slot) ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.03)',
+                          border: `1px solid ${interviewModal.times.includes(slot) ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.06)'}`,
+                        }}>
+                        {interviewModal.times.includes(slot) ? '✓ ' : ''}{slot}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Extra note */}
+                <div>
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Additional Note <span className="text-slate-700 normal-case font-normal">(optional)</span></label>
+                  <textarea rows={2} value={interviewModal.note}
+                    onChange={e => setInterviewModal(m => m ? { ...m, note: e.target.value } : m)}
+                    placeholder="e.g. Join our Discord and open a leadership ticket to confirm your time."
+                    className="nx-input resize-none text-sm" />
+                </div>
+
+                <div className="flex gap-3 pt-1">
+                  <button onClick={() => setInterviewModal(null)} className="btn-ghost flex-1 py-2.5">Cancel</button>
+                  <button onClick={confirmInterview} disabled={saving}
+                    className="flex-1 py-2.5 px-4 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 transition-all"
+                    style={{ background: 'linear-gradient(135deg,#6366f1,#4f46e5)', border: '1px solid rgba(99,102,241,0.4)' }}>
+                    {saving
+                      ? <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                      : <><CalendarClock className="w-4 h-4" /> Send Interview Invite</>}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

@@ -68,10 +68,32 @@ router.get('/', authenticateToken, (req, res) => {
   res.json(db.prepare(q).all(...params));
 });
 
+// ── Sends a Discord DM via bot token ──────────────────────────
+async function sendDiscordDM(discordId, message) {
+  const token = process.env.DISCORD_BOT_TOKEN;
+  if (!token || !discordId) return;
+  try {
+    const dmRes = await fetch('https://discord.com/api/v10/users/@me/channels', {
+      method: 'POST',
+      headers: { Authorization: `Bot ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ recipient_id: discordId }),
+    });
+    const dm = await dmRes.json();
+    if (!dm.id) return;
+    await fetch(`https://discord.com/api/v10/channels/${dm.id}/messages`, {
+      method: 'POST',
+      headers: { Authorization: `Bot ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: message }),
+    });
+  } catch (e) {
+    console.error('[Discord DM Error]', e.message);
+  }
+}
+
 // ── PUT /api/applications/:id — approve / deny ────────────────
-router.put('/:id', authenticateToken, (req, res) => {
+router.put('/:id', authenticateToken, async (req, res) => {
   if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Forbidden' });
-  const { status, review_notes } = req.body;
+  const { status, review_notes, interview_message } = req.body;
   if (!['approved', 'denied', 'pending', 'interview'].includes(status)) {
     return res.status(400).json({ error: 'Invalid status' });
   }
@@ -82,6 +104,17 @@ router.put('/:id', authenticateToken, (req, res) => {
   const reviewer = `${req.user.first_name ?? ''} ${req.user.last_name ?? ''}`.trim() || req.user.username;
   db.prepare(`UPDATE applications SET status=?, reviewed_by=?, review_notes=?, reviewed_at=datetime('now') WHERE id=?`)
     .run(status, reviewer, review_notes || '', req.params.id);
+
+  // Send Discord DM on interview
+  if (status === 'interview' && app.discord_id) {
+    const timesSection = interview_message
+      ? `\n\n📅 **Suggested Interview Times:**\n${interview_message}\n\nPlease reply confirming which time works best, or contact leadership on our Discord.`
+      : '\n\nLeadership will reach out shortly to arrange a suitable time.';
+    await sendDiscordDM(
+      app.discord_id,
+      `👋 **Hey ${app.full_name}!**\n\nGreat news — your application to join **Next RP Melbourne Police** has been reviewed and you've been shortlisted for an interview! 🎉${timesSection}\n\n*— Next RP Leadership*`,
+    );
+  }
 
   // Auto-create officer account on approval
   if (status === 'approved') {
