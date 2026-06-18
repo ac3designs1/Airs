@@ -18,6 +18,8 @@ router.post('/', authenticateToken, (req, res) => {
   if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Forbidden' });
   const { officer_id, reason, severity } = req.body;
   if (!officer_id || !reason) return res.status(400).json({ error: 'officer_id and reason required' });
+  const validSeverities = ['minor', 'moderate', 'major', 'final'];
+  const safeSeverity = validSeverities.includes(severity) ? severity : 'minor';
 
   const officer = db.prepare('SELECT first_name, last_name, callsign, department FROM officers WHERE id=?').get(officer_id);
   if (!officer) return res.status(404).json({ error: 'Officer not found' });
@@ -27,7 +29,7 @@ router.post('/', authenticateToken, (req, res) => {
   const id = uuidv4();
 
   db.prepare(`INSERT INTO strikes (id,officer_id,officer_name,callsign,department,issued_by_id,issued_by_name,reason,severity) VALUES (?,?,?,?,?,?,?,?,?)`)
-    .run(id, officer_id, `${officer.first_name} ${officer.last_name}`, officer.callsign, officer.department, req.user.id, issuerName, reason, severity || 'minor');
+    .run(id, officer_id, `${officer.first_name} ${officer.last_name}`, officer.callsign, officer.department, req.user.id, issuerName, reason, safeSeverity);
 
   res.status(201).json(db.prepare('SELECT * FROM strikes WHERE id=?').get(id));
 });

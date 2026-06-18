@@ -68,11 +68,11 @@ export default function PendingRequests() {
       const endpoint = processing.type === 'leave' ? `/leave/${processing.id}`
         : processing.type === 'transfer' ? `/transfers/${processing.id}`
         : `/certifications/${processing.id}`;
-      // Leave uses 'denied'; certs/transfers accept any status
-      const resolvedStatus = processing.type === 'leave' && actionType === 'rejected' ? 'denied' : actionType;
+      // All denial actions use 'denied' — certifications and transfers reject 'rejected'
+      const resolvedStatus = actionType === 'rejected' ? 'denied' : actionType;
       const body = { status: resolvedStatus, review_notes: noteText };
       await api.put(endpoint, body);
-      setItems(prev => prev.map(i => i.id === processing.id ? { ...i, status: actionType } : i));
+      setItems(prev => prev.map(i => i.id === processing.id ? { ...i, status: resolvedStatus } : i));
       toast.success(`Request ${actionType}`);
     } catch { toast.error('Failed to update'); }
     setProcessing(null); setActionType(null);

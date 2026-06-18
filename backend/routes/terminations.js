@@ -8,6 +8,7 @@ const LEADERSHIP = ['admin','administrator','leadership','senior_command','super
 router.use(authenticateToken);
 
 router.get('/', (req, res) => {
+  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Leadership only' });
   const { status } = req.query;
   let q = 'SELECT * FROM terminations';
   const p = [];

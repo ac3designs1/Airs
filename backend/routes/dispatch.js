@@ -37,7 +37,7 @@ router.post('/calls', (req, res) => {
   const call_number = `CS-${year}-${String(cnt + 1).padStart(4, '0')}`;
 
   db.prepare(`INSERT INTO dispatch_calls (id, call_number, type, description, location, priority, status, caller_name, caller_phone) VALUES (?,?,?,?,?,?,?,?,?)`).run(
-    id, call_number, type, description, location, priority || 3, 'pending', caller_name, caller_phone
+    id, call_number, type, description, location, priority || 3, 'active', caller_name, caller_phone
   );
 
   const call = db.prepare('SELECT * FROM dispatch_calls WHERE id = ?').get(id);
@@ -78,7 +78,7 @@ router.get('/units', (req, res) => {
 router.get('/stats', (req, res) => {
   const totalOfficers = db.prepare("SELECT COUNT(*) as c FROM officers WHERE username != 'admin'").get().c;
   const onDuty = db.prepare("SELECT COUNT(*) as c FROM officers WHERE status != 'off_duty' AND username != 'admin'").get().c;
-  const activeCalls = db.prepare("SELECT COUNT(*) as c FROM dispatch_calls WHERE status = 'active'").get().c;
+  const activeCalls = db.prepare("SELECT COUNT(*) as c FROM dispatch_calls WHERE status IN ('active','pending')").get().c;
   const pendingCalls = db.prepare("SELECT COUNT(*) as c FROM dispatch_calls WHERE status = 'pending'").get().c;
   const activeWarrants = db.prepare("SELECT COUNT(*) as c FROM warrants WHERE status = 'active'").get().c;
   const activeBolos = db.prepare("SELECT COUNT(*) as c FROM bolos WHERE status = 'active'").get().c;

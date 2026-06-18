@@ -7,7 +7,7 @@ import { format, formatDuration, intervalToDuration, parseISO } from 'date-fns';
 interface Shift {
   id: string; officer_id: string; officer_name: string; callsign?: string;
   department?: string; start_time: string; end_time?: string;
-  duration_mins?: number; status: 'active' | 'ended'; notes?: string;
+  duration_mins?: number; status: 'active' | 'completed'; notes?: string;
 }
 interface Stats { total_shifts: number; total_mins: number; active_shifts: number; week_mins: number; }
 

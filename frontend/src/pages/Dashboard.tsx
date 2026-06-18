@@ -43,7 +43,7 @@ export default function Dashboard() {
   useEffect(() => {
     Promise.all([
       api.get('/dispatch/stats'),
-      api.get('/dispatch?limit=6'),
+      api.get('/dispatch?status=active&limit=6'),
     ]).then(([sRes, cRes]) => {
       setStats(sRes.data);
       setCalls(cRes.data);

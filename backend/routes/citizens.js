@@ -72,8 +72,10 @@ router.put('/:id', (req, res) => {
   res.json(citizen);
 });
 
-// DELETE /api/citizens/:id
+// DELETE /api/citizens/:id — leadership only
 router.delete('/:id', (req, res) => {
+  const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Leadership only' });
   db.prepare('DELETE FROM citizens WHERE id = ?').run(req.params.id);
   res.json({ message: 'Deleted' });
 });

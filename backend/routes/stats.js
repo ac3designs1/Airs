@@ -111,8 +111,10 @@ router.get('/officer/:id', (req, res) => {
   });
 });
 
-// GET /api/stats/admin — all table counts for DatabaseStats
+// GET /api/stats/admin — all table counts for DatabaseStats (leadership only)
 router.get('/admin', (req, res) => {
+  const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Leadership only' });
   const counts = {
     officers:           db.prepare("SELECT COUNT(*) as c FROM officers").get().c,
     citizens:           db.prepare("SELECT COUNT(*) as c FROM citizens").get().c,

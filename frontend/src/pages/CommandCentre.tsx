@@ -1,30 +1,34 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AlertOctagon, AlertTriangle, Clock, Users, Siren, CheckCircle, ChevronRight, Shield, Activity } from 'lucide-react';
+import {
+  AlertOctagon, AlertTriangle, Siren, CheckCircle,
+  ChevronRight, Shield, Activity, Users, Radio, RefreshCw
+} from 'lucide-react';
 import api from '../api/client';
 import { formatDistanceToNow } from 'date-fns';
 
 interface Stats {
   total_officers: number; on_duty: number; active_warrants: number;
   active_bolos: number; active_calls: number; total_incidents: number;
-  pending_calls: number; recent_activity: Activity[];
+  recent_activity: ActivityEntry[];
 }
-interface Activity { id: string; action: string; officer_name: string; details: string; created_at: string; }
+interface ActivityEntry { id: string; action: string; officer_name: string; details: string; created_at: string; }
 interface Call { id: string; call_number: string; type: string; location: string; priority: number; status: string; created_at: string; }
-interface Warrant { id: string; citizen_name: string; type: string; charges: string; issued_date: string; }
+interface Warrant { id: string; citizen_name?: string; type: string; charges: string; issued_date: string; }
 
-const priorityLabel: Record<number, string> = { 1: 'P1 CRITICAL', 2: 'P2 HIGH', 3: 'P3 MEDIUM' };
-const priorityColor: Record<number, string> = {
-  1: 'text-red-400 bg-red-500/15 border-red-500/40',
-  2: 'text-orange-400 bg-orange-500/15 border-orange-500/40',
-  3: 'text-yellow-400 bg-yellow-500/15 border-yellow-500/40',
+const PRIORITY_CFG: Record<number, { label: string; cls: string }> = {
+  1: { label: 'P1 CRITICAL', cls: 'text-red-400 bg-red-500/15 border-red-500/40 p1-pulse' },
+  2: { label: 'P2 HIGH',     cls: 'text-orange-400 bg-orange-500/15 border-orange-500/40' },
+  3: { label: 'P3 MEDIUM',   cls: 'text-yellow-400 bg-yellow-500/15 border-yellow-500/40' },
+  4: { label: 'P4 LOW',      cls: 'text-slate-400 bg-slate-500/10 border-slate-500/25' },
 };
 
 export default function CommandCentre() {
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [calls, setCalls] = useState<Call[]>([]);
+  const [stats, setStats]     = useState<Stats | null>(null);
+  const [calls, setCalls]     = useState<Call[]>([]);
   const [warrants, setWarrants] = useState<Warrant[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lastRefresh, setLastRefresh] = useState(new Date());
 
   const load = async () => {
     try {
@@ -36,160 +40,188 @@ export default function CommandCentre() {
       setStats(sRes.data);
       setCalls(cRes.data);
       setWarrants(wRes.data.slice(0, 6));
+      setLastRefresh(new Date());
     } catch {}
     setLoading(false);
   };
 
-  useEffect(() => { load(); const t = setInterval(load, 30000); return () => clearInterval(t); }, []);
+  useEffect(() => {
+    load();
+    const t = setInterval(load, 30000);
+    return () => clearInterval(t);
+  }, []);
 
-  const chargesDisplay = (raw: string) => { try { return (JSON.parse(raw) as string[]).join(', '); } catch { return raw; } };
+  const chargesDisplay = (raw: string) => {
+    try { return (JSON.parse(raw) as string[]).join(', '); } catch { return raw; }
+  };
 
   const alerts = [
     stats && stats.active_calls > 0 && { level: 'critical', msg: `${stats.active_calls} active dispatch call${stats.active_calls > 1 ? 's' : ''} in progress`, to: '/in-city-requests' },
     stats && stats.active_warrants > 0 && { level: 'warn', msg: `${stats.active_warrants} active warrant${stats.active_warrants > 1 ? 's' : ''} outstanding`, to: '/warrants' },
-    stats && stats.active_bolos > 0 && { level: 'warn', msg: `${stats.active_bolos} active BOLO${stats.active_bolos > 1 ? 's' : ''} issued`, to: '/warrants' },
+    stats && stats.active_bolos > 0 && { level: 'warn', msg: `${stats.active_bolos} active BOLO${stats.active_bolos > 1 ? 's' : ''} issued`, to: '/bolos' },
     stats && stats.on_duty === 0 && { level: 'info', msg: 'No officers currently on duty', to: '/roster' },
   ].filter(Boolean) as { level: string; msg: string; to: string }[];
 
+  const kpis = [
+    { label: 'Active Calls',    value: stats?.active_calls ?? '—',    icon: Siren,    color: '#ef4444', pulse: (stats?.active_calls ?? 0) > 0 },
+    { label: 'Officers On Duty', value: stats?.on_duty ?? '—',         icon: Shield,   color: '#22c55e', pulse: false },
+    { label: 'Active Warrants', value: stats?.active_warrants ?? '—', icon: AlertTriangle, color: '#f59e0b', pulse: false },
+    { label: 'Active BOLOs',    value: stats?.active_bolos ?? '—',    icon: Users,    color: '#a78bfa', pulse: false },
+  ];
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="rounded-2xl border border-red-500/20 p-6 relative overflow-hidden"
-        style={{ background: 'linear-gradient(to right,rgba(239,68,68,0.1),rgba(249,115,22,0.05),rgba(234,179,8,0.1))' }}>
-        <div className="absolute -right-10 -top-10 w-48 h-48 rounded-full blur-3xl pointer-events-none"
-          style={{ background: 'rgba(239,68,68,0.1)' }} />
-        <div className="relative flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-red-500/20 rounded-xl border border-red-400/30">
-              <AlertOctagon className="w-7 h-7 text-red-400" />
+      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+        style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.14),rgba(249,115,22,0.06),rgba(234,179,8,0.08))', border: '1px solid rgba(239,68,68,0.24)' }}>
+        <div className="absolute right-0 top-0 w-64 h-full opacity-10 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at right, rgba(239,68,68,0.5), transparent 70%)' }} />
+        <div className="relative flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <div className="p-3 rounded-xl relative" style={{ background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.35)' }}>
+              <AlertOctagon className="w-6 h-6 text-red-400" />
+              {(stats?.active_calls ?? 0) > 0 && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+              )}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Command Centre</h1>
-              <p className="text-gray-400 text-sm mt-0.5">Live situational awareness — refreshes every 30s</p>
+              <h1 className="text-xl font-bold text-white">Command Centre</h1>
+              <p className="text-slate-500 text-sm">Live situational awareness · auto-refreshes every 30s</p>
             </div>
           </div>
-          <div className="flex items-center space-x-2 text-sm text-green-400">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            <span>Live</span>
+          <div className="flex items-center gap-3">
+            <button onClick={load} className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors">
+              <RefreshCw className="w-4 h-4" />
+            </button>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg"
+              style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.20)' }}>
+              <Radio className="w-3 h-3 text-green-400 animate-pulse" />
+              <span className="text-green-400 text-xs font-mono">Live</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Alerts */}
-      {alerts.length > 0 && (
+      {alerts.length > 0 ? (
         <div className="space-y-2">
           {alerts.map((a, i) => (
-            <Link key={i} to={a.to} className={`flex items-center justify-between p-4 rounded-xl border transition-all hover:brightness-110 ${
-              a.level === 'critical' ? 'bg-red-500/10 border-red-500/30 text-red-300' :
-              a.level === 'warn' ? 'bg-orange-500/10 border-orange-500/30 text-orange-300' :
-              'bg-blue-500/10 border-blue-500/30 text-blue-300'}`}>
-              <div className="flex items-center space-x-3">
-                <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+            <Link key={i} to={a.to}
+              className="flex items-center justify-between p-3.5 rounded-xl border transition-all hover:brightness-110"
+              style={{
+                background: a.level === 'critical' ? 'rgba(239,68,68,0.08)' : a.level === 'warn' ? 'rgba(249,115,22,0.08)' : 'rgba(14,165,233,0.06)',
+                borderColor: a.level === 'critical' ? 'rgba(239,68,68,0.28)' : a.level === 'warn' ? 'rgba(249,115,22,0.28)' : 'rgba(14,165,233,0.20)',
+                color: a.level === 'critical' ? '#fca5a5' : a.level === 'warn' ? '#fdba74' : '#7dd3fc',
+              }}>
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="w-4 h-4 flex-shrink-0" />
                 <span className="text-sm font-medium">{a.msg}</span>
               </div>
-              <ChevronRight className="w-4 h-4 flex-shrink-0" />
+              <ChevronRight className="w-4 h-4 flex-shrink-0 opacity-60" />
             </Link>
           ))}
-          {alerts.length === 0 && (
-            <div className="flex items-center space-x-3 p-4 rounded-xl bg-green-500/10 border border-green-500/30 text-green-300">
-              <CheckCircle className="w-5 h-5" /><span className="text-sm font-medium">All systems normal — no active alerts</span>
-            </div>
-          )}
+        </div>
+      ) : (
+        <div className="flex items-center gap-3 p-3.5 rounded-xl"
+          style={{ background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.20)' }}>
+          <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+          <span className="text-sm font-medium text-green-300">All systems normal — no active alerts</span>
         </div>
       )}
 
-      {/* Stat tiles */}
+      {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {[
-          { label: 'Active Calls', value: stats?.active_calls ?? '—', icon: Siren, color: 'text-red-400 bg-red-500/10', pulse: (stats?.active_calls ?? 0) > 0 },
-          { label: 'On Duty', value: stats?.on_duty ?? '—', icon: Shield, color: 'text-green-400 bg-green-500/10', pulse: false },
-          { label: 'Active Warrants', value: stats?.active_warrants ?? '—', icon: AlertTriangle, color: 'text-orange-400 bg-orange-500/10', pulse: false },
-          { label: 'Active BOLOs', value: stats?.active_bolos ?? '—', icon: Users, color: 'text-yellow-400 bg-yellow-500/10', pulse: false },
-        ].map(s => (
-          <div key={s.label} className="bg-gray-900/30 backdrop-blur-xl rounded-xl border border-gray-800/50 p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">{s.label}</p>
-                <p className="text-2xl font-bold text-white mt-1">{s.value}</p>
-              </div>
-              <div className={`p-3 rounded-xl relative ${s.color}`}>
-                <s.icon className="w-6 h-6" />
-                {s.pulse && <span className="absolute top-1 right-1 w-2 h-2 bg-red-400 rounded-full animate-ping" />}
+        {kpis.map(k => (
+          <div key={k.label} className="stat-card relative overflow-hidden">
+            {k.pulse && <div className="absolute inset-0 rounded-2xl animate-ping opacity-[0.04]" style={{ background: k.color }} />}
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] uppercase tracking-wider font-semibold text-slate-600">{k.label}</span>
+              <div className="p-2 rounded-lg relative" style={{ background: `${k.color}18` }}>
+                <k.icon className="w-4 h-4" style={{ color: k.color }} />
+                {k.pulse && <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full animate-ping" style={{ background: k.color }} />}
               </div>
             </div>
+            <div className="text-3xl font-bold text-white font-mono">{k.value}</div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
         {/* Active Calls */}
-        <div className="bg-gray-900/30 backdrop-blur-xl rounded-2xl border border-gray-800/50 p-6">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-red-500/10 rounded-lg"><Siren className="w-5 h-5 text-red-400" /></div>
+        <div className="glass rounded-2xl overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+            <div className="flex items-center gap-2">
+              <Siren className="w-4 h-4 text-red-400" />
               <h2 className="font-semibold text-white">Active Dispatch Calls</h2>
             </div>
-            <Link to="/in-city-requests" className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1">
+            <Link to="/in-city-requests" className="flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 transition-colors">
               All calls <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
           {loading ? (
-            <div className="flex justify-center py-8"><div className="w-7 h-7 border-2 border-red-500 border-t-transparent rounded-full animate-spin" /></div>
+            <div className="flex justify-center py-10">
+              <div className="w-6 h-6 border-2 border-red-500/30 border-t-red-400 rounded-full animate-spin" />
+            </div>
           ) : calls.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <CheckCircle className="w-10 h-10 mx-auto mb-2 text-green-500/50" /><p>No active calls</p>
+            <div className="py-10 text-center">
+              <CheckCircle className="w-10 h-10 mx-auto mb-2 text-green-500/30" />
+              <p className="text-slate-600 text-sm">No active calls</p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {calls.map(c => (
-                <div key={c.id} className="flex items-start space-x-3 p-3 rounded-xl border border-gray-800/40 hover:border-gray-700/50 transition-all"
-                  style={{ background: 'rgba(17,24,39,0.4)' }}>
-                  <span className={`px-2 py-0.5 rounded text-xs font-bold border flex-shrink-0 mt-0.5 ${priorityColor[c.priority] ?? 'text-gray-400 bg-gray-500/10 border-gray-500/30'}`}>
-                    {priorityLabel[c.priority] ?? 'P?'}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-white text-sm">{c.type}</span>
-                      <span className="text-xs text-gray-500 font-mono">{c.call_number}</span>
+            <div className="divide-y divide-white/[0.04]">
+              {calls.map(c => {
+                const cfg = PRIORITY_CFG[c.priority] ?? PRIORITY_CFG[4];
+                return (
+                  <div key={c.id} className="flex items-start gap-3 px-5 py-3.5 hover:bg-white/[0.02] transition-colors">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold border flex-shrink-0 mt-0.5 ${cfg.cls}`}>
+                      {cfg.label}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-medium text-white text-sm">{c.type}</span>
+                        <span className="text-[10px] text-slate-600 font-mono">{c.call_number}</span>
+                      </div>
+                      <p className="text-xs text-slate-400 mt-0.5">{c.location}</p>
+                      <p className="text-[10px] text-slate-600 mt-0.5">{formatDistanceToNow(new Date(c.created_at), { addSuffix: true })}</p>
                     </div>
-                    <div className="text-xs text-gray-400 mt-0.5">{c.location}</div>
-                    <div className="text-xs text-gray-600 mt-0.5">{formatDistanceToNow(new Date(c.created_at), { addSuffix: true })}</div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
 
         {/* Active Warrants */}
-        <div className="bg-gray-900/30 backdrop-blur-xl rounded-2xl border border-gray-800/50 p-6">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-orange-500/10 rounded-lg"><AlertTriangle className="w-5 h-5 text-orange-400" /></div>
+        <div className="glass rounded-2xl overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-orange-400" />
               <h2 className="font-semibold text-white">Outstanding Warrants</h2>
             </div>
-            <Link to="/warrants" className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1">
+            <Link to="/warrants" className="flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 transition-colors">
               All warrants <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
           {loading ? (
-            <div className="flex justify-center py-8"><div className="w-7 h-7 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" /></div>
+            <div className="flex justify-center py-10">
+              <div className="w-6 h-6 border-2 border-orange-500/30 border-t-orange-400 rounded-full animate-spin" />
+            </div>
           ) : warrants.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <CheckCircle className="w-10 h-10 mx-auto mb-2 text-green-500/50" /><p>No active warrants</p>
+            <div className="py-10 text-center">
+              <CheckCircle className="w-10 h-10 mx-auto mb-2 text-green-500/30" />
+              <p className="text-slate-600 text-sm">No active warrants</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="divide-y divide-white/[0.04]">
               {warrants.map(w => (
-                <div key={w.id} className="flex items-start space-x-3 p-3 rounded-xl border border-gray-800/40 hover:border-gray-700/50 transition-all"
-                  style={{ background: 'rgba(17,24,39,0.4)' }}>
-                  <div className="p-1.5 bg-orange-500/10 rounded-lg flex-shrink-0 mt-0.5">
+                <div key={w.id} className="flex items-start gap-3 px-5 py-3.5 hover:bg-white/[0.02] transition-colors">
+                  <div className="p-1.5 rounded-lg flex-shrink-0 mt-0.5" style={{ background: 'rgba(249,115,22,0.12)' }}>
                     <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-white text-sm">{w.citizen_name ?? 'Unknown'}</div>
-                    <div className="text-xs text-gray-400 mt-0.5 truncate">{chargesDisplay(w.charges)}</div>
-                    <div className="text-xs text-gray-600 mt-0.5">{w.type} Warrant · {formatDistanceToNow(new Date(w.issued_date), { addSuffix: true })}</div>
+                    <p className="font-medium text-white text-sm">{w.citizen_name ?? 'Unknown Subject'}</p>
+                    <p className="text-xs text-slate-400 mt-0.5 truncate">{chargesDisplay(w.charges)}</p>
+                    <p className="text-[10px] text-slate-600 mt-0.5">{w.type} Warrant · {formatDistanceToNow(new Date(w.issued_date), { addSuffix: true })}</p>
                   </div>
                 </div>
               ))}
@@ -198,24 +230,23 @@ export default function CommandCentre() {
         </div>
       </div>
 
-      {/* Recent activity */}
+      {/* Recent Activity */}
       {stats?.recent_activity && stats.recent_activity.length > 0 && (
-        <div className="bg-gray-900/30 backdrop-blur-xl rounded-2xl border border-gray-800/50 p-6">
-          <div className="flex items-center space-x-3 mb-5">
-            <div className="p-2 bg-blue-500/10 rounded-lg"><Activity className="w-5 h-5 text-blue-400" /></div>
-            <h2 className="font-semibold text-white">Recent Activity</h2>
+        <div className="glass rounded-2xl overflow-hidden">
+          <div className="flex items-center gap-2 px-5 py-4" style={{ borderBottom: '1px solid rgba(14,165,233,0.08)' }}>
+            <Activity className="w-4 h-4 text-sky-400" />
+            <h2 className="font-semibold text-white">Recent System Activity</h2>
+            <span className="text-[10px] text-slate-600 ml-auto">Last refresh: {formatDistanceToNow(lastRefresh, { addSuffix: true })}</span>
           </div>
-          <div className="space-y-2">
+          <div className="divide-y divide-white/[0.04]">
             {stats.recent_activity.slice(0, 8).map(a => (
-              <div key={a.id} className="flex items-center justify-between py-2 border-b border-gray-800/30 last:border-0">
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0" />
-                  <div>
-                    <span className="text-sm text-gray-300">{a.details ?? a.action}</span>
-                    {a.officer_name && <span className="text-xs text-gray-500 ml-2">by {a.officer_name}</span>}
-                  </div>
+              <div key={a.id} className="flex items-center justify-between px-5 py-3 hover:bg-white/[0.02] transition-colors">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(14,165,233,0.6)' }} />
+                  <p className="text-sm text-slate-300 truncate">{a.details ?? a.action}</p>
+                  {a.officer_name && <span className="text-xs text-slate-600 flex-shrink-0">by {a.officer_name}</span>}
                 </div>
-                <span className="text-xs text-gray-600 flex-shrink-0 ml-4">
+                <span className="text-[10px] text-slate-600 flex-shrink-0 ml-4 whitespace-nowrap">
                   {formatDistanceToNow(new Date(a.created_at), { addSuffix: true })}
                 </span>
               </div>
