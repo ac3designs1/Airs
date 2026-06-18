@@ -65,8 +65,9 @@ const TIERS = [
 ];
 
 const DIVISION_EOIS: DivEOI[] = [
-  { name:'Critical Incident Response Team (CIRT)', category:'Tactical', requirements:['FTO Certified','Minimum 6 months service','Supervisor recommendation','No active strikes'] },
-  { name:'Highway', category:'Highway',  requirements:['Minimum 3 months service','Advanced driver training','Clean service record'] },
+  { name:'Critical Incident Response Team (CIRT)', category:'Tactical',      requirements:['FTO Certified','Minimum 6 months service','Supervisor recommendation','No active strikes'] },
+  { name:'Highway',                                category:'Highway',        requirements:['Minimum 3 months service','Advanced driver training','Clean service record'] },
+  { name:'Crime Command',                          category:'Investigative',  requirements:['Constable rank or above','Minimum 4 months service','Strong investigative record','Supervisor recommendation'] },
 ];
 
 const CAT_CLS: Record<string,string> = {
