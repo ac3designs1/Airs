@@ -70,14 +70,14 @@ export default function Settings() {
   return (
     <div className="space-y-5 max-w-2xl animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(100,116,139,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(100,116,139,0.18)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(100,116,139,0.15)', border: '1px solid rgba(100,116,139,0.25)' }}>
             <SettingsIcon className="w-6 h-6 text-slate-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Settings</h1>
+            <h1 className="text-xl font-black text-white">Settings</h1>
             <p className="text-slate-500 text-sm">Account and security</p>
           </div>
         </div>
@@ -86,7 +86,7 @@ export default function Settings() {
       {/* Profile card — read-only info */}
       <div className="glass rounded-2xl p-5">
         <div className="flex items-center gap-3 mb-5">
-          <User className="w-4 h-4 text-sky-400" />
+          <User className="w-4 h-4 text-cyan-400" />
           <h2 className="font-semibold text-white text-sm">Profile Information</h2>
         </div>
 

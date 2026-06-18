@@ -82,10 +82,10 @@ export default function Users() {
         style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.10),rgba(99,102,241,0.05))', border: '1px solid rgba(6,182,212,0.18)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
-            <UsersIcon className="w-6 h-6 text-sky-400" />
+            <UsersIcon className="w-6 h-6 text-cyan-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">User Management</h1>
+            <h1 className="text-xl font-black text-white">User Management</h1>
             <p className="text-slate-500 text-sm">{filtered.length} registered officers · assign roles &amp; departments</p>
           </div>
         </div>
@@ -112,12 +112,12 @@ export default function Users() {
           <tbody>
             {loading ? (
               <tr><td colSpan={7} className="py-12 text-center text-slate-600">
-                <div className="w-7 h-7 border-2 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto" />
+                <div className="w-7 h-7 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto" />
               </td></tr>
             ) : filtered.length === 0 ? (
               <tr><td colSpan={7} className="py-10 text-center text-slate-600 text-sm">No officers found</td></tr>
             ) : filtered.map((o, i) => (
-              <tr key={o.id} className={i % 2 ? 'bg-sky-500/[0.015]' : ''}>
+              <tr key={o.id} className={i % 2 ? 'bg-cyan-500/[0.015]' : ''}>
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
@@ -131,7 +131,7 @@ export default function Users() {
                   </div>
                 </td>
                 <td className="font-mono text-slate-400 text-sm">{o.username}</td>
-                <td className="font-mono text-sky-400 text-xs">{o.callsign || '—'}</td>
+                <td className="font-mono text-cyan-400 text-xs">{o.callsign || '—'}</td>
                 <td>
                   <span className="chip chip-blue text-[11px]">{o.department}</span>
                 </td>
@@ -148,7 +148,7 @@ export default function Users() {
                 <td>
                   <div className="flex items-center gap-2">
                     <button onClick={() => openEdit(o)}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-sky-400 hover:bg-sky-500/10 transition-colors">
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors">
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     {o.id !== auth.user?.id && (

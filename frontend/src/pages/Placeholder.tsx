@@ -17,7 +17,7 @@ export default function Placeholder({ icon: Icon, title, description, color = 'b
             <Icon className={`w-7 h-7 text-${color}-400`} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">{title}</h1>
+            <h1 className="text-2xl font-black text-white">{title}</h1>
             {description && <p className="text-gray-400 text-sm mt-0.5">{description}</p>}
           </div>
         </div>

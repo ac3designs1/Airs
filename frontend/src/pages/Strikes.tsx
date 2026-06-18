@@ -74,7 +74,7 @@ export default function Strikes() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.12),rgba(245,158,11,0.04))', border: '1px solid rgba(239,68,68,0.18)' }}>
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-4">
@@ -82,7 +82,7 @@ export default function Strikes() {
               <AlertOctagon className="w-6 h-6 text-red-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Strikes & Demerits</h1>
+              <h1 className="text-xl font-black text-white">Strikes & Demerits</h1>
               <p className="text-slate-500 text-sm">{active} active · {strikes.length} total records</p>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function Strikes() {
       {/* Issue form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(239,68,68,0.18)' }}>
+          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d1526', border: '1px solid rgba(239,68,68,0.18)' }}>
             <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(239,68,68,0.12)', background: 'rgba(239,68,68,0.05)' }}>
               <h2 className="text-base font-bold text-white">Issue Strike / Demerit</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>
@@ -169,7 +169,7 @@ export default function Strikes() {
                     <div className="flex items-center gap-2 flex-wrap mb-2">
                       <span className={`chip text-[10px] ${sv.cls}`}>{sv.label}</span>
                       <span className={`chip text-[10px] ${sc.cls}`}>{sc.label}</span>
-                      {isLeader && s.callsign && <span className="font-mono text-sky-400 text-xs">{s.callsign}</span>}
+                      {isLeader && s.callsign && <span className="font-mono text-cyan-400 text-xs">{s.callsign}</span>}
                       {isLeader && s.department && <span className="text-xs text-slate-600">{s.department}</span>}
                     </div>
                     {isLeader && <div className="font-semibold text-white mb-1">{s.officer_name}</div>}

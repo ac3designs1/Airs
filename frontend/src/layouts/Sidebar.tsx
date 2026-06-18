@@ -218,7 +218,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
                     style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.20)' }}>
                     {(Object.entries(STATUS_CONFIG) as [Status, typeof STATUS_CONFIG[Status]][]).map(([s, c]) => (
                       <button key={s} onClick={() => changeStatus(s)}
-                        className={`w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left transition-colors ${currentStatus === s ? 'text-white bg-sky-500/10' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
+                        className={`w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left transition-colors ${currentStatus === s ? 'text-white bg-cyan-500/10' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: c.dot, boxShadow: currentStatus === s ? c.glow : 'none' }} />
                         {c.label}
                       </button>

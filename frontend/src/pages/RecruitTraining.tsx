@@ -18,8 +18,8 @@ function buildInitialStatuses(): StageStatus[] {
   return STAGES_DEF.map((name, i) => ({ name, status: i === 0 ? 'current' : 'pending' }));
 }
 
-const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-sky-400' : 'text-slate-600';
-const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/05' : s === 'current' ? 'border-sky-500/25 bg-sky-500/05' : 'border-slate-800/80';
+const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-cyan-400' : 'text-slate-600';
+const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/05' : s === 'current' ? 'border-cyan-500/25 bg-cyan-500/05' : 'border-slate-800/80';
 
 const LEADERSHIP = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
 const EMPTY_FORM = { officer_id: '', fto_name: '' };
@@ -88,7 +88,7 @@ export default function RecruitTraining() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(34,197,94,0.10),rgba(6,182,212,0.06))', border: '1px solid rgba(34,197,94,0.18)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -96,7 +96,7 @@ export default function RecruitTraining() {
               <UserCheck className="w-6 h-6 text-green-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Recruit Training</h1>
+              <h1 className="text-xl font-black text-white">Recruit Training</h1>
               <p className="text-slate-500 text-sm">FTO-guided stage progression for active recruits</p>
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function RecruitTraining() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: 'In Training', value: records.length, color: 'text-sky-400' },
+          { label: 'In Training', value: records.length, color: 'text-cyan-400' },
           { label: 'Completed',   value: records.filter(r => r.stage_index >= STAGES_DEF.length - 1 && r.stage_statuses.every(s => s.status === 'complete')).length, color: 'text-green-400' },
           { label: 'In Progress', value: records.filter(r => r.stage_index < STAGES_DEF.length - 1).length, color: 'text-yellow-400' },
         ].map(s => (
@@ -178,7 +178,7 @@ export default function RecruitTraining() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-white">{rec.recruit_name}</span>
-                      {rec.callsign && <span className="text-xs text-sky-400 font-mono">{rec.callsign}</span>}
+                      {rec.callsign && <span className="text-xs text-cyan-400 font-mono">{rec.callsign}</span>}
                     </div>
                     <div className="flex items-center gap-3 mt-1">
                       <div className="flex-1 h-1.5 rounded-full bg-slate-800 max-w-[140px]">

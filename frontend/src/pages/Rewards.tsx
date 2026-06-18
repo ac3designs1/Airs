@@ -84,7 +84,7 @@ export default function Rewards() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(234,179,8,0.12),rgba(249,115,22,0.06))', border: '1px solid rgba(234,179,8,0.20)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -92,7 +92,7 @@ export default function Rewards() {
               <Star className="w-6 h-6 text-yellow-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Rewards & Commendations</h1>
+              <h1 className="text-xl font-black text-white">Rewards & Commendations</h1>
               <p className="text-slate-500 text-sm">{filtered.length} award{filtered.length !== 1 ? 's' : ''} recorded</p>
             </div>
           </div>
@@ -191,7 +191,7 @@ export default function Rewards() {
                       <span className={style.chip}>{r.category}</span>
                     </div>
                     <h3 className="font-semibold text-white">{r.title}</h3>
-                    <p className="text-sm text-sky-400 font-mono mt-0.5">{r.officer_name}{r.callsign ? ` · ${r.callsign}` : ''}</p>
+                    <p className="text-sm text-cyan-400 font-mono mt-0.5">{r.officer_name}{r.callsign ? ` · ${r.callsign}` : ''}</p>
                     {r.description && <p className="text-sm text-slate-400 mt-2 leading-relaxed">{r.description}</p>}
                     <div className="flex items-center justify-between mt-3">
                       <div className="text-xs text-slate-600">

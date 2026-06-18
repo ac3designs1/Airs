@@ -55,7 +55,7 @@ export default function Divisions() {
               <Briefcase className="w-7 h-7 text-indigo-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Divisions</h1>
+              <h1 className="text-2xl font-black text-white">Divisions</h1>
               <p className="text-gray-400 text-sm mt-0.5">{divisions.length} divisions · {officers.length} officers</p>
             </div>
           </div>

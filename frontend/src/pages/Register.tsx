@@ -59,7 +59,7 @@ export default function Register() {
           <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-blue-400/50" />
           <div className="relative z-10 p-8">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-white">Request Access</h2>
+              <h2 className="text-2xl font-black text-white">Request Access</h2>
               <p className="text-gray-400 text-sm">Create your NextAirs officer account</p>
             </div>
             {success ? (

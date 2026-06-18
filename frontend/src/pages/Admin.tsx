@@ -47,7 +47,7 @@ export default function Admin() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-6 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.12),rgba(249,115,22,0.06),rgba(245,158,11,0.08))', border: '1px solid rgba(239,68,68,0.22)' }}>
         <div className="absolute right-0 top-0 w-72 h-full opacity-10 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at right, rgba(239,68,68,0.4), transparent 70%)' }} />
@@ -57,7 +57,7 @@ export default function Admin() {
               <Shield className="w-7 h-7 text-red-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Leadership Panel</h1>
+              <h1 className="text-2xl font-black text-white">Leadership Panel</h1>
               <p className="text-slate-400 text-sm mt-0.5">Senior administration — NextAirs v2.0</p>
             </div>
           </div>
@@ -109,7 +109,7 @@ export default function Admin() {
       {/* System info */}
       <div className="glass rounded-2xl p-5">
         <div className="flex items-center gap-2 mb-4">
-          <Server className="w-4 h-4 text-sky-400" />
+          <Server className="w-4 h-4 text-cyan-400" />
           <h2 className="font-semibold text-white text-sm">System Information</h2>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

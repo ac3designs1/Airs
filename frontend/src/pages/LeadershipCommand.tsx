@@ -265,7 +265,7 @@ export default function LeadershipCommand() {
     <div className="space-y-5 animate-fade-in">
 
       {/* ── Header ──────────────────────────────────────── */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(245,158,11,0.14),rgba(239,68,68,0.06),rgba(6,182,212,0.06))', border: '1px solid rgba(245,158,11,0.22)' }}>
         <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.10), transparent 70%)' }} />
@@ -275,7 +275,7 @@ export default function LeadershipCommand() {
               <Crown className="w-6 h-6 text-amber-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white flex items-center gap-2">
+              <h1 className="text-xl font-black text-white flex items-center gap-2">
                 Leadership Command
                 <span className="chip chip-gold text-[10px]">RESTRICTED</span>
               </h1>
@@ -291,7 +291,7 @@ export default function LeadershipCommand() {
       {/* ── KPI row ─────────────────────────────────────── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Officers', value: stats.total,          icon: Users,         color: 'text-sky-400',    bg: 'rgba(6,182,212,0.10)' },
+          { label: 'Total Officers', value: stats.total,          icon: Users,         color: 'text-cyan-400',    bg: 'rgba(6,182,212,0.10)' },
           { label: 'On Duty Now',    value: stats.onDuty,         icon: Activity,      color: 'text-green-400',  bg: 'rgba(34,197,94,0.10)' },
           { label: 'Pending Items',  value: stats.pending,        icon: Bell,          color: stats.pending > 0 ? 'text-amber-400' : 'text-slate-400', bg: stats.pending > 0 ? 'rgba(245,158,11,0.10)' : 'rgba(71,85,105,0.10)' },
           { label: 'Active Warrants',value: stats.activeWarrants, icon: AlertTriangle, color: stats.activeWarrants > 0 ? 'text-red-400' : 'text-slate-400', bg: stats.activeWarrants > 0 ? 'rgba(239,68,68,0.10)' : 'rgba(71,85,105,0.10)' },
@@ -373,7 +373,7 @@ export default function LeadershipCommand() {
                             </div>
                           </div>
                         </td>
-                        <td className="font-mono text-sky-400 text-xs">{o.callsign || '—'}</td>
+                        <td className="font-mono text-cyan-400 text-xs">{o.callsign || '—'}</td>
                         <td className="text-sm text-slate-300">{o.rank}</td>
                         <td>
                           <span className="chip text-[10px]"
@@ -394,7 +394,7 @@ export default function LeadershipCommand() {
                             )}
                             {/* Edit */}
                             <button title="Edit officer" onClick={() => openEdit(o)}
-                              className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/15 transition-colors" style={{ border: '1px solid rgba(6,182,212,0.20)' }}>
+                              className="p-1.5 rounded-lg text-cyan-400 hover:bg-cyan-500/15 transition-colors" style={{ border: '1px solid rgba(6,182,212,0.20)' }}>
                               <Edit2 className="w-3.5 h-3.5" />
                             </button>
                             {/* Strike */}
@@ -456,7 +456,7 @@ export default function LeadershipCommand() {
                         <span className="chip chip-yellow">Pending</span>
                       </div>
                       <div className="text-sm font-medium text-white">{item.officer_name}
-                        {item.callsign && <span className="text-sky-400 font-mono text-xs ml-2">{item.callsign}</span>}
+                        {item.callsign && <span className="text-cyan-400 font-mono text-xs ml-2">{item.callsign}</span>}
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">{item.detail}</div>
                       <div className="text-xs text-slate-700 mt-1">{formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}</div>
@@ -666,7 +666,7 @@ export default function LeadershipCommand() {
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
             <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
-              <h2 className="font-bold text-white flex items-center gap-2"><Megaphone className="w-4 h-4 text-sky-400" /> Post Announcement</h2>
+              <h2 className="font-bold text-white flex items-center gap-2"><Megaphone className="w-4 h-4 text-cyan-400" /> Post Announcement</h2>
               <button onClick={() => setAnnouncing(null)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>
             <div className="p-5 space-y-4">

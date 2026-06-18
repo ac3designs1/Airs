@@ -55,19 +55,19 @@ export default function OfficerManagement() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(59,130,246,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(59,130,246,0.18)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.25)' }}>
             <Users className="w-6 h-6 text-blue-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Officer Management</h1>
+            <h1 className="text-xl font-black text-white">Officer Management</h1>
             <p className="text-slate-500 text-sm">Roster, records, and performance metrics</p>
           </div>
           <div className="ml-auto flex items-center gap-3">
             <div className="text-right">
-              <div className="text-xl font-bold text-white">{officers.length}</div>
+              <div className="text-xl font-black text-white">{officers.length}</div>
               <div className="text-xs text-slate-500">Total Officers</div>
             </div>
             <div className="text-right">
@@ -119,7 +119,7 @@ export default function OfficerManagement() {
                     [...Array(6)].map((_,i) => <div key={i} className="skeleton rounded-xl h-16" />)
                   ) : stats ? [
                     { label: 'Hours (MTD)', value: `${stats.month_hours}h`, icon: Clock,     color: 'text-blue-400',   bg: 'rgba(59,130,246,0.10)' },
-                    { label: 'Total Hours', value: `${stats.total_hours}h`, icon: Clock,     color: 'text-sky-400',    bg: 'rgba(6,182,212,0.10)' },
+                    { label: 'Total Hours', value: `${stats.total_hours}h`, icon: Clock,     color: 'text-cyan-400',    bg: 'rgba(6,182,212,0.10)' },
                     { label: 'Incidents',   value: stats.incidents,         icon: FileText,  color: 'text-amber-400',  bg: 'rgba(245,158,11,0.10)' },
                     { label: 'Arrests',     value: stats.arrests,           icon: Shield,    color: 'text-red-400',    bg: 'rgba(239,68,68,0.10)' },
                     { label: 'Certs',       value: stats.certifications,    icon: Star,      color: 'text-yellow-400', bg: 'rgba(234,179,8,0.10)' },
@@ -160,7 +160,7 @@ export default function OfficerManagement() {
           <div className="glass rounded-xl p-8 text-center text-slate-600">No officers found.</div>
         ) : filtered.map(o => (
           <button key={o.id} onClick={() => openDetail(o)}
-            className="w-full glass rounded-xl p-4 hover:border-sky-500/20 transition-all text-left group flex items-center gap-4">
+            className="w-full glass rounded-xl p-4 hover:border-cyan-500/20 transition-all text-left group flex items-center gap-4">
             <div className="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-bold text-white"
               style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
               {o.first_name[0]}{o.last_name[0]}
@@ -168,7 +168,7 @@ export default function OfficerManagement() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="font-semibold text-white">{o.first_name} {o.last_name}</span>
-                {o.callsign && <span className="text-xs font-mono text-sky-400">{o.callsign}</span>}
+                {o.callsign && <span className="text-xs font-mono text-cyan-400">{o.callsign}</span>}
                 <span className={STATUS_CLS[o.status] ?? 'chip chip-gray'}>{o.status?.replace('_', ' ')}</span>
               </div>
               <div className="text-sm text-slate-500 mt-0.5">{o.rank} · {o.department}</div>

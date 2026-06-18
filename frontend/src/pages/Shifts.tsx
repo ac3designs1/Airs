@@ -75,20 +75,18 @@ export default function Shifts() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-6 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
-              <Clock className="w-6 h-6 text-sky-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-white">Duty Shifts</h1>
-              <p className="text-slate-500 text-sm">{auth.user?.first_name} {auth.user?.last_name}
-                {auth.user?.callsign && <span className="text-sky-400 font-mono ml-2">{auth.user.callsign}</span>}
-              </p>
-            </div>
+      <div className="page-header page-header-green scan-line">
+        <div className="flex items-center gap-4">
+          <div className="ph-icon ph-icon-green">
+            <Clock className="w-6 h-6 text-green-400" />
           </div>
+          <div>
+            <h1 className="text-xl font-black text-white">Duty Shifts</h1>
+            <p className="text-slate-500 text-sm mt-0.5">{auth.user?.first_name} {auth.user?.last_name}
+              {auth.user?.callsign && <span className="text-cyan-400 font-mono font-bold ml-2">{auth.user.callsign}</span>}
+            </p>
+          </div>
+        </div>
           {!active ? (
             <button onClick={startShift} disabled={starting}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white text-sm transition-all hover:brightness-110"
@@ -112,19 +110,22 @@ export default function Shifts() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: 'This Week', value: fmtMins(stats.week_mins), icon: Calendar, color: '#06b6d4' },
-          { label: 'Total Hours', value: fmtMins(stats.total_mins), icon: Clock, color: '#a78bfa' },
-          { label: 'Total Shifts', value: stats.total_shifts.toString(), icon: CheckCircle, color: '#22c55e' },
-          { label: isLeader ? 'Active Officers' : 'Status', value: isLeader ? stats.active_shifts.toString() : (active ? 'On Duty' : 'Off Duty'), icon: BarChart2, color: active ? '#22c55e' : '#475569' },
+          { label: 'This Week',      value: fmtMins(stats.week_mins),    icon: Calendar,    color: '#06b6d4' },
+          { label: 'Total Hours',    value: fmtMins(stats.total_mins),   icon: Clock,       color: '#a78bfa' },
+          { label: 'Total Shifts',   value: stats.total_shifts.toString(), icon: CheckCircle, color: '#22c55e' },
+          { label: isLeader ? 'Active Officers' : 'Current Status', value: isLeader ? stats.active_shifts.toString() : (active ? 'On Duty' : 'Off Duty'), icon: BarChart2, color: active ? '#22c55e' : '#475569' },
         ].map(s => (
-          <div key={s.label} className="glass rounded-xl p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] uppercase tracking-wider font-semibold text-slate-600">{s.label}</span>
-              <s.icon className="w-4 h-4" style={{ color: s.color }} />
+          <div key={s.label} className="rounded-xl p-4"
+            style={{ background:`${s.color}0d`, border:`1px solid ${s.color}22` }}>
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color:`${s.color}80` }}>{s.label}</span>
+              <div className="p-1.5 rounded-lg" style={{ background:`${s.color}18` }}>
+                <s.icon className="w-3.5 h-3.5" style={{ color: s.color }} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-white font-mono">{s.value}</div>
+            <div className="text-2xl font-black text-white font-mono">{s.value}</div>
           </div>
         ))}
       </div>
@@ -161,13 +162,15 @@ export default function Shifts() {
 
       {/* Table */}
       <div className="glass rounded-2xl overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
-          <h2 className="font-bold text-white flex items-center gap-2"><FileText className="w-4 h-4 text-sky-400" /> Shift History</h2>
+        <div className="card-header">
+          <div className="flex items-center gap-2">
+            <FileText className="w-4 h-4 text-cyan-400" />
+            <span className="text-sm font-bold text-white">Shift History</span>
+          </div>
           {isLeader && (
-            <div className="flex gap-1 p-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
+            <div className="nx-tabs">
               {(['mine', 'all'] as const).map(t => (
-                <button key={t} onClick={() => setTab(t)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${tab === t ? 'bg-sky-500/20 text-sky-300' : 'text-slate-500 hover:text-slate-300'}`}>
+                <button key={t} onClick={() => setTab(t)} className={`nx-tab ${tab === t ? 'active' : ''}`}>
                   {t === 'mine' ? 'My Shifts' : 'All Officers'}
                 </button>
               ))}
@@ -175,38 +178,33 @@ export default function Shifts() {
           )}
         </div>
         {loading ? (
-          <div className="p-8 text-center text-slate-600">Loading…</div>
+          <div className="nx-empty"><div className="nx-spinner" /><p className="text-slate-600 text-sm">Loading shifts…</p></div>
         ) : display.length === 0 ? (
-          <div className="p-8 text-center">
-            <Clock className="w-10 h-10 mx-auto mb-2 text-slate-700" />
-            <p className="text-slate-600 text-sm">No shifts logged yet. Click <strong className="text-slate-400">Start Shift</strong> to begin.</p>
+          <div className="nx-empty">
+            <div className="nx-empty-icon"><Clock className="w-6 h-6 text-slate-600" /></div>
+            <p className="text-slate-500 text-sm font-medium">No shifts logged yet</p>
+            <p className="text-slate-600 text-xs">Click <strong className="text-slate-400">Start Shift</strong> to begin tracking</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr style={{ borderBottom: '1px solid rgba(6,182,212,0.06)' }}>
-                  {(isLeader ? ['Officer', 'Callsign', 'Dept', 'Start', 'End', 'Duration', 'Status', 'Notes'] : ['Date', 'Start', 'End', 'Duration', 'Status', 'Notes']).map(h => (
-                    <th key={h} className="px-4 py-3 text-left text-[10px] uppercase tracking-wider font-semibold text-slate-600">{h}</th>
-                  ))}
-                </tr>
-              </thead>
+          <div className="nx-table-wrap">
+            <table className="nx-table">
+              <thead><tr>
+                {(isLeader ? ['Officer','Callsign','Dept','Start','End','Duration','Status','Notes'] : ['Date','Start','End','Duration','Status','Notes']).map(h => (
+                  <th key={h}>{h}</th>
+                ))}
+              </tr></thead>
               <tbody>
                 {display.map(s => (
-                  <tr key={s.id} style={{ borderBottom: '1px solid rgba(6,182,212,0.04)' }} className="hover:bg-sky-500/[0.02] transition-colors">
-                    {isLeader && <td className="px-4 py-3 text-sm text-white font-medium">{s.officer_name}</td>}
-                    {isLeader && <td className="px-4 py-3 text-sm text-sky-400 font-mono">{s.callsign || '—'}</td>}
-                    {isLeader && <td className="px-4 py-3 text-xs text-slate-400">{s.department || '—'}</td>}
-                    {!isLeader && <td className="px-4 py-3 text-xs text-slate-500">{format(parseISO(s.start_time), 'dd MMM yyyy')}</td>}
-                    <td className="px-4 py-3 text-sm text-slate-300 font-mono">{format(parseISO(s.start_time), 'HH:mm')}</td>
-                    <td className="px-4 py-3 text-sm text-slate-300 font-mono">{s.end_time ? format(parseISO(s.end_time), 'HH:mm') : '—'}</td>
-                    <td className="px-4 py-3 text-sm font-mono text-slate-300">{s.duration_mins ? fmtMins(s.duration_mins) : (s.status === 'active' ? <span className="text-green-400">Active</span> : '—')}</td>
-                    <td className="px-4 py-3">
-                      <span className={`chip text-[10px] ${s.status === 'active' ? 'chip-green' : 'chip-gray'}`}>
-                        {s.status === 'active' ? 'On Duty' : 'Ended'}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-xs text-slate-500 max-w-[160px] truncate">{s.notes || '—'}</td>
+                  <tr key={s.id}>
+                    {isLeader && <td className="font-semibold text-white">{s.officer_name}</td>}
+                    {isLeader && <td className="font-mono text-cyan-400 text-sm">{s.callsign || '—'}</td>}
+                    {isLeader && <td className="text-slate-400 text-xs">{s.department || '—'}</td>}
+                    {!isLeader && <td className="text-slate-500 text-xs">{format(parseISO(s.start_time), 'dd MMM yyyy')}</td>}
+                    <td className="font-mono text-slate-300">{format(parseISO(s.start_time), 'HH:mm')}</td>
+                    <td className="font-mono text-slate-300">{s.end_time ? format(parseISO(s.end_time), 'HH:mm') : '—'}</td>
+                    <td className="font-mono font-semibold text-slate-200">{s.duration_mins ? fmtMins(s.duration_mins) : (s.status === 'active' ? <span className="text-green-400 font-bold">Active</span> : '—')}</td>
+                    <td><span className={`chip text-[10px] ${s.status === 'active' ? 'chip-green' : 'chip-gray'}`}>{s.status === 'active' ? 'On Duty' : 'Ended'}</span></td>
+                    <td className="text-xs text-slate-500 max-w-[160px] truncate">{s.notes || '—'}</td>
                   </tr>
                 ))}
               </tbody>

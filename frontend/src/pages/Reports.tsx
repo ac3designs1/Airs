@@ -73,7 +73,7 @@ export default function Reports() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-4">
@@ -81,7 +81,7 @@ export default function Reports() {
               <FileText className="w-6 h-6 text-cyan-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Reports</h1>
+              <h1 className="text-xl font-black text-white">Reports</h1>
               <p className="text-slate-500 text-sm">{reports.length} report{reports.length !== 1 ? 's' : ''} {isLeader ? '(all officers)' : '(yours)'}</p>
             </div>
           </div>
@@ -190,7 +190,7 @@ export default function Reports() {
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
-            style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(6,182,212,0.18)' }}>
+            style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.18)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
               style={{ borderBottom: '1px solid rgba(6,182,212,0.10)', background: 'rgba(6,182,212,0.05)' }}>
               <h2 className="text-base font-bold text-white">{editing ? 'Edit Report' : 'New Report'}</h2>

@@ -115,7 +115,7 @@ export default function RolePermissions() {
               <Key className="w-6 h-6 text-purple-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Role Permissions</h1>
+              <h1 className="text-xl font-black text-white">Role Permissions</h1>
               <p className="text-slate-500 text-sm">
                 {canEdit ? 'Click any cell to toggle. Senior Leadership always has full access.' : 'System access control matrix — read only.'}
               </p>

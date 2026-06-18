@@ -26,14 +26,14 @@ export default function TerminationLogs() {
 
   return (
     <div className="space-y-5 animate-fade-in">
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(100,116,139,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(100,116,139,0.18)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(100,116,139,0.15)', border: '1px solid rgba(100,116,139,0.25)' }}>
             <Trash2 className="w-6 h-6 text-slate-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Termination Logs</h1>
+            <h1 className="text-xl font-black text-white">Termination Logs</h1>
             <p className="text-slate-500 text-sm">Complete history of all termination requests</p>
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function TerminationLogs() {
                   </div>
                   <div className="font-bold text-white">{t.officer_name ?? '—'}</div>
                   <div className="text-xs text-slate-500">
-                    {t.officer_callsign && <span className="font-mono text-sky-400 mr-2">{t.officer_callsign}</span>}
+                    {t.officer_callsign && <span className="font-mono text-cyan-400 mr-2">{t.officer_callsign}</span>}
                     {t.rank} · {t.department}
                   </div>
                   <p className="text-sm text-slate-400 mt-2 leading-relaxed">{t.reason}</p>

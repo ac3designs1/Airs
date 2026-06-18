@@ -81,7 +81,7 @@ export default function PendingRequests() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(249,115,22,0.12),rgba(234,179,8,0.06))', border: '1px solid rgba(249,115,22,0.20)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl relative" style={{ background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.25)' }}>
@@ -89,7 +89,7 @@ export default function PendingRequests() {
             {pending > 0 && <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">{pending}</span>}
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Pending Requests</h1>
+            <h1 className="text-xl font-black text-white">Pending Requests</h1>
             <p className="text-slate-500 text-sm">{pending > 0 ? `${pending} awaiting review` : 'All caught up'} · leave, transfers & cert applications</p>
           </div>
         </div>
@@ -161,7 +161,7 @@ export default function PendingRequests() {
                       <div className="flex items-center gap-2 mb-1">
                         <User className="w-3.5 h-3.5 text-slate-500" />
                         <span className="text-white font-medium text-sm">{r.officer_name}</span>
-                        {r.callsign && <span className="text-xs text-sky-400 font-mono">{r.callsign}</span>}
+                        {r.callsign && <span className="text-xs text-cyan-400 font-mono">{r.callsign}</span>}
                       </div>
                       <p className="text-sm text-slate-400 line-clamp-2">{r.detail}</p>
                       <p className="text-xs text-slate-600 mt-1">{formatDistanceToNow(new Date(r.created_at), { addSuffix: true })}</p>

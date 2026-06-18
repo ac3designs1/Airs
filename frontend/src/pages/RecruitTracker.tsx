@@ -77,12 +77,12 @@ const STATUS_LABEL: Record<Status, string> = {
 };
 const STATUS_CLS: Record<Status, string> = {
   not_started: 'text-slate-400 bg-slate-800/80 border-slate-700',
-  in_progress:  'text-sky-400 bg-sky-500/10 border-sky-500/30',
+  in_progress:  'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
   completed:    'text-green-400 bg-green-500/10 border-green-500/30',
   failed:       'text-red-400 bg-red-500/10 border-red-500/30',
 };
-const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/5' : s === 'current' ? 'border-sky-500/25 bg-sky-500/5' : 'border-slate-800/80 bg-transparent';
-const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-sky-400' : 'text-slate-600';
+const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/5' : s === 'current' ? 'border-cyan-500/25 bg-cyan-500/5' : 'border-slate-800/80 bg-transparent';
+const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-cyan-400' : 'text-slate-600';
 
 const EDITABLE_ROLES = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
@@ -291,15 +291,15 @@ export default function RecruitTracker() {
     <div className="space-y-5 animate-fade-in">
 
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(34,197,94,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
-              <GraduationCap className="w-6 h-6 text-sky-400" />
+              <GraduationCap className="w-6 h-6 text-cyan-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Recruit Management</h1>
+              <h1 className="text-xl font-black text-white">Recruit Management</h1>
               <p className="text-slate-500 text-sm">Skill requirements &amp; FTO stage progression in one place</p>
             </div>
           </div>
@@ -309,7 +309,7 @@ export default function RecruitTracker() {
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Recruits',  value: recruits.length,      icon: Users,        color: 'text-sky-400' },
+          { label: 'Total Recruits',  value: recruits.length,      icon: Users,        color: 'text-cyan-400' },
           { label: 'Avg Skills',      value: `${avgPct}%`,          icon: BarChart2,    color: 'text-green-400' },
           { label: 'In FTO Programme',value: trainingRecords.length, icon: UserCheck,   color: 'text-purple-400' },
           { label: 'FTO Complete',    value: trainingComplete,       icon: TrendingUp,  color: 'text-amber-400' },
@@ -331,7 +331,7 @@ export default function RecruitTracker() {
         <div className="w-60 flex-shrink-0 flex flex-col gap-2">
           <div className="glass rounded-2xl p-4 space-y-3">
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-sky-400" />
+              <Users className="w-4 h-4 text-cyan-400" />
               <span className="text-sm font-semibold text-white">Recruits</span>
               <span className="ml-auto text-[10px] text-slate-600 font-mono">{recruits.length} total</span>
             </div>
@@ -350,7 +350,7 @@ export default function RecruitTracker() {
               <div className="glass rounded-xl p-4 text-center space-y-1">
                 <UserCheck className="w-8 h-8 mx-auto text-slate-700" />
                 <p className="text-xs text-slate-500 font-semibold">No recruits</p>
-                <p className="text-[10px] text-slate-600 leading-snug">Assign the <span className="text-sky-400 font-mono">recruit</span> role via User Management</p>
+                <p className="text-[10px] text-slate-600 leading-snug">Assign the <span className="text-cyan-400 font-mono">recruit</span> role via User Management</p>
               </div>
             ) : filtered.map(r => {
               const d = skillTotalDone(r.id, progress);
@@ -405,7 +405,7 @@ export default function RecruitTracker() {
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <span className="text-xl font-bold text-sky-400">{skillTotalDone(selected.id, progress)}</span>
+                      <span className="text-xl font-bold text-cyan-400">{skillTotalDone(selected.id, progress)}</span>
                       <span className="text-slate-600">/{TOTAL_REQS}</span>
                       <div className="text-[10px] text-slate-600">skills done</div>
                     </div>
@@ -430,7 +430,7 @@ export default function RecruitTracker() {
                     <button key={t.key} onClick={() => setTab(t.key as typeof tab)}
                       className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-xl transition-all ${
                         tab === t.key
-                          ? 'bg-sky-500/10 text-sky-300 border-b-2 border-sky-400'
+                          ? 'bg-cyan-500/10 text-cyan-300 border-b-2 border-sky-400'
                           : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'
                       }`}>
                       <t.icon className="w-3.5 h-3.5" />
@@ -510,7 +510,7 @@ export default function RecruitTracker() {
                                     <>
                                       {prog.status === 'not_started' && (
                                         <button onClick={() => setSkillStatus(selected.id, req.id, 'in_progress')}
-                                          className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-sky-400"
+                                          className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-cyan-400"
                                           style={{ background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.25)' }}>
                                           Start
                                         </button>
@@ -609,7 +609,7 @@ export default function RecruitTracker() {
                                 <span className={`text-sm font-semibold ${stageColor(s.status)}`}>{s.name}</span>
                               </div>
                               {s.date && <div className="text-xs text-slate-600 mt-1">{format(new Date(s.date), 'dd MMM yyyy')}</div>}
-                              {s.status === 'current' && <div className="text-[10px] text-sky-400 mt-1 font-bold">● Current Stage</div>}
+                              {s.status === 'current' && <div className="text-[10px] text-cyan-400 mt-1 font-bold">● Current Stage</div>}
                             </div>
                           );
                         })}

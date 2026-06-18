@@ -66,7 +66,7 @@ export default function DivisionTransfers() {
 
   return (
     <div className="space-y-5 animate-fade-in">
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(99,102,241,0.12),rgba(59,130,246,0.06))', border: '1px solid rgba(99,102,241,0.20)' }}>
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-4">
@@ -74,7 +74,7 @@ export default function DivisionTransfers() {
               <ArrowRightLeft className="w-6 h-6 text-indigo-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Division Transfers</h1>
+              <h1 className="text-xl font-black text-white">Division Transfers</h1>
               <p className="text-slate-500 text-sm">{pendingCount} pending review</p>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function DivisionTransfers() {
                       <span className="text-xs text-slate-500">{format(parseISO(t.created_at), 'dd MMM yyyy')}</span>
                     </div>
                     <div className="font-bold text-white">
-                      {t.officer_callsign ? <><span className="font-mono text-sky-400 mr-2 text-sm">{t.officer_callsign}</span></> : ''}
+                      {t.officer_callsign ? <><span className="font-mono text-cyan-400 mr-2 text-sm">{t.officer_callsign}</span></> : ''}
                       {t.officer_name}
                     </div>
                     <div className="flex items-center gap-2 mt-1 text-sm">
@@ -152,7 +152,7 @@ export default function DivisionTransfers() {
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
-            style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(99,102,241,0.20)' }}>
+            style={{ background: '#0d1526', border: '1px solid rgba(99,102,241,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
               style={{ borderBottom: '1px solid rgba(99,102,241,0.12)', background: 'rgba(99,102,241,0.05)' }}>
               <h2 className="text-base font-bold text-white">Division Transfer Request</h2>
@@ -195,7 +195,7 @@ export default function DivisionTransfers() {
       {selected && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
-            style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(99,102,241,0.20)' }}>
+            style={{ background: '#0d1526', border: '1px solid rgba(99,102,241,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
               style={{ borderBottom: '1px solid rgba(99,102,241,0.12)', background: 'rgba(99,102,241,0.05)' }}>
               <div>

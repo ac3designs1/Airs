@@ -52,7 +52,7 @@ export default function TerminationApproval() {
 
   return (
     <div className="space-y-5 animate-fade-in">
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.12),rgba(249,115,22,0.06))', border: '1px solid rgba(239,68,68,0.18)' }}>
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-4">
@@ -60,7 +60,7 @@ export default function TerminationApproval() {
               <AlertTriangle className="w-6 h-6 text-red-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Termination Approval</h1>
+              <h1 className="text-xl font-black text-white">Termination Approval</h1>
               <p className="text-slate-500 text-sm">Review and process termination requests</p>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function TerminationApproval() {
                     </div>
                     <div className="font-bold text-white">{t.officer_name ?? '—'}</div>
                     <div className="text-xs text-slate-500 mt-0.5">
-                      {t.officer_callsign && <span className="font-mono text-sky-400 mr-2">{t.officer_callsign}</span>}
+                      {t.officer_callsign && <span className="font-mono text-cyan-400 mr-2">{t.officer_callsign}</span>}
                       {t.rank} · {t.department}
                     </div>
                     <p className="text-sm text-slate-300 mt-2">{t.reason}</p>
@@ -127,7 +127,7 @@ export default function TerminationApproval() {
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
-            style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(239,68,68,0.20)' }}>
+            style={{ background: '#0d1526', border: '1px solid rgba(239,68,68,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4"
               style={{ borderBottom: '1px solid rgba(239,68,68,0.12)', background: 'rgba(239,68,68,0.05)' }}>
               <h2 className="text-base font-bold text-white">Submit Termination Request</h2>
@@ -168,7 +168,7 @@ export default function TerminationApproval() {
       {selected && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
-            style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(239,68,68,0.20)' }}>
+            style={{ background: '#0d1526', border: '1px solid rgba(239,68,68,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4"
               style={{ borderBottom: '1px solid rgba(239,68,68,0.12)', background: 'rgba(239,68,68,0.05)' }}>
               <div>

@@ -35,14 +35,14 @@ export default function Statistics() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(168,85,247,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(168,85,247,0.20)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.25)' }}>
             <BarChart2 className="w-6 h-6 text-purple-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Statistics</h1>
+            <h1 className="text-xl font-black text-white">Statistics</h1>
             <p className="text-slate-500 text-sm">Personal performance — {user.first_name} {user.last_name} · {user.callsign}</p>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function Statistics() {
           {/* KPI grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: 'Total Hours', value: `${stats.total_hours}h`, sub: `${stats.month_hours}h this month`, icon: Clock, color: 'text-sky-400', bg: 'rgba(6,182,212,0.10)' },
+              { label: 'Total Hours', value: `${stats.total_hours}h`, sub: `${stats.month_hours}h this month`, icon: Clock, color: 'text-cyan-400', bg: 'rgba(6,182,212,0.10)' },
               { label: 'Incidents Filed', value: stats.incidents, sub: 'cases as primary officer', icon: FileText, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
               { label: 'Arrests', value: stats.arrests, sub: 'arrest reports authored', icon: Shield, color: 'text-red-400', bg: 'rgba(239,68,68,0.10)' },
               { label: 'Warrants Issued', value: stats.warrants_issued, sub: 'warrants signed', icon: AlertTriangle, color: 'text-orange-400', bg: 'rgba(249,115,22,0.10)' },
@@ -73,7 +73,7 @@ export default function Statistics() {
                   </div>
                   <span className="text-[11px] uppercase tracking-wider font-semibold text-slate-600">{s.label}</span>
                 </div>
-                <div className="text-2xl font-bold text-white">{s.value}</div>
+                <div className="text-2xl font-black text-white">{s.value}</div>
                 <div className="text-xs text-slate-600 mt-0.5">{s.sub}</div>
               </div>
             ))}

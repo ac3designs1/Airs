@@ -9,7 +9,7 @@ interface AdminStats {
 }
 
 const TABLE_DEFS = [
-  { key: 'officers',            label: 'Officers',              icon: Users,        color: 'text-sky-400',    bg: 'rgba(6,182,212,0.10)' },
+  { key: 'officers',            label: 'Officers',              icon: Users,        color: 'text-cyan-400',    bg: 'rgba(6,182,212,0.10)' },
   { key: 'citizens',            label: 'Citizens',              icon: Users,        color: 'text-emerald-400',bg: 'rgba(16,185,129,0.10)' },
   { key: 'vehicles',            label: 'Vehicles',              icon: Car,          color: 'text-green-400',  bg: 'rgba(34,197,94,0.10)' },
   { key: 'warrants_active',     label: 'Active Warrants',       icon: AlertTriangle,color: 'text-red-400',    bg: 'rgba(239,68,68,0.10)' },
@@ -18,7 +18,7 @@ const TABLE_DEFS = [
   { key: 'dispatch_active',     label: 'Active Calls',          icon: Activity,     color: 'text-indigo-400', bg: 'rgba(99,102,241,0.10)' },
   { key: 'arrest_reports',      label: 'Arrest Reports',        icon: Shield,       color: 'text-rose-400',   bg: 'rgba(244,63,94,0.10)' },
   { key: 'reports',             label: 'Reports',               icon: TrendingUp,   color: 'text-cyan-400',   bg: 'rgba(6,182,212,0.10)' },
-  { key: 'shifts_total',        label: 'Total Shifts',          icon: Clock,        color: 'text-sky-300',    bg: 'rgba(125,211,252,0.10)' },
+  { key: 'shifts_total',        label: 'Total Shifts',          icon: Clock,        color: 'text-cyan-300',    bg: 'rgba(125,211,252,0.10)' },
   { key: 'leave_pending',       label: 'Pending Leave',         icon: Bell,         color: 'text-yellow-400', bg: 'rgba(234,179,8,0.10)' },
   { key: 'cert_pending',        label: 'Cert. Pending',         icon: Award,        color: 'text-amber-400',  bg: 'rgba(245,158,11,0.10)' },
   { key: 'strikes_active',      label: 'Active Strikes',        icon: AlertTriangle,color: 'text-red-400',    bg: 'rgba(239,68,68,0.10)' },
@@ -28,7 +28,7 @@ const TABLE_DEFS = [
   { key: 'terminations_pending',label: 'Pending Terminations',  icon: AlertTriangle,color: 'text-red-400',    bg: 'rgba(239,68,68,0.10)' },
   { key: 'transfers_pending',   label: 'Pending Transfers',     icon: Users,        color: 'text-indigo-400', bg: 'rgba(99,102,241,0.10)' },
   { key: 'announcements',       label: 'Announcements',         icon: Bell,         color: 'text-amber-400',  bg: 'rgba(245,158,11,0.10)' },
-  { key: 'applications_pending',label: 'Applications (Pending)',icon: Users,        color: 'text-sky-400',    bg: 'rgba(6,182,212,0.10)' },
+  { key: 'applications_pending',label: 'Applications (Pending)',icon: Users,        color: 'text-cyan-400',    bg: 'rgba(6,182,212,0.10)' },
 ];
 
 export default function DatabaseStats() {
@@ -46,7 +46,7 @@ export default function DatabaseStats() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(16,185,129,0.18)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -54,7 +54,7 @@ export default function DatabaseStats() {
               <Database className="w-6 h-6 text-emerald-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Database Statistics</h1>
+              <h1 className="text-xl font-black text-white">Database Statistics</h1>
               <p className="text-slate-500 text-sm">Last refreshed: {lastRefresh.toLocaleTimeString()}</p>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function DatabaseStats() {
         {[
           { label: 'DB Engine', value: 'SQLite', sub: 'WAL mode enabled', icon: Database, color: 'text-emerald-400', bg: 'rgba(16,185,129,0.10)' },
           { label: 'Status',    value: 'Online', sub: 'All systems operational', icon: Activity, color: 'text-emerald-400', bg: 'rgba(16,185,129,0.10)' },
-          { label: 'Version',   value: 'v3.0.0', sub: 'NextAirs MDT', icon: Shield, color: 'text-sky-400', bg: 'rgba(6,182,212,0.10)' },
+          { label: 'Version',   value: 'v3.0.0', sub: 'NextAirs MDT', icon: Shield, color: 'text-cyan-400', bg: 'rgba(6,182,212,0.10)' },
           { label: 'Tables',    value: '22', sub: 'database tables', icon: Database, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
         ].map(s => (
           <div key={s.label} className="glass rounded-xl p-4">
@@ -95,7 +95,7 @@ export default function DatabaseStats() {
                 <div className="p-1.5 rounded-lg w-fit mb-2" style={{ background: t.bg }}>
                   <t.icon className={`w-3.5 h-3.5 ${t.color}`} />
                 </div>
-                <div className="text-xl font-bold text-white">{data?.counts[t.key] ?? 0}</div>
+                <div className="text-xl font-black text-white">{data?.counts[t.key] ?? 0}</div>
                 <div className="text-[10px] text-slate-500 mt-0.5 leading-tight">{t.label}</div>
               </div>
             ))}

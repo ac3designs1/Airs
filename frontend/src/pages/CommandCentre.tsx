@@ -72,7 +72,7 @@ export default function CommandCentre() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.14),rgba(249,115,22,0.06),rgba(234,179,8,0.08))', border: '1px solid rgba(239,68,68,0.24)' }}>
         <div className="absolute right-0 top-0 w-64 h-full opacity-10 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at right, rgba(239,68,68,0.5), transparent 70%)' }} />
@@ -85,7 +85,7 @@ export default function CommandCentre() {
               )}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Command Centre</h1>
+              <h1 className="text-xl font-black text-white">Command Centre</h1>
               <p className="text-slate-500 text-sm">Live situational awareness · auto-refreshes every 30s</p>
             </div>
           </div>
@@ -154,7 +154,7 @@ export default function CommandCentre() {
               <Siren className="w-4 h-4 text-red-400" />
               <h2 className="font-semibold text-white">Active Dispatch Calls</h2>
             </div>
-            <Link to="/in-city-requests" className="flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 transition-colors">
+            <Link to="/in-city-requests" className="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
               All calls <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
@@ -198,7 +198,7 @@ export default function CommandCentre() {
               <AlertTriangle className="w-4 h-4 text-orange-400" />
               <h2 className="font-semibold text-white">Outstanding Warrants</h2>
             </div>
-            <Link to="/warrants" className="flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 transition-colors">
+            <Link to="/warrants" className="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
               All warrants <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
@@ -234,7 +234,7 @@ export default function CommandCentre() {
       {stats?.recent_activity && stats.recent_activity.length > 0 && (
         <div className="glass rounded-2xl overflow-hidden">
           <div className="flex items-center gap-2 px-5 py-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
-            <Activity className="w-4 h-4 text-sky-400" />
+            <Activity className="w-4 h-4 text-cyan-400" />
             <h2 className="font-semibold text-white">Recent System Activity</h2>
             <span className="text-[10px] text-slate-600 ml-auto">Last refresh: {formatDistanceToNow(lastRefresh, { addSuffix: true })}</span>
           </div>
@@ -242,7 +242,7 @@ export default function CommandCentre() {
             {stats.recent_activity.slice(0, 8).map(a => (
               <div key={a.id} className="flex items-center justify-between px-5 py-3 hover:bg-white/[0.02] transition-colors">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(6,182,212,0.6)' }} />
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(6,182,212,0.6)' }} />
                   <p className="text-sm text-slate-300 truncate">{a.details ?? a.action}</p>
                   {a.officer_name && <span className="text-xs text-slate-600 flex-shrink-0">by {a.officer_name}</span>}
                 </div>

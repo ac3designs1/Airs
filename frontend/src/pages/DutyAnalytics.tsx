@@ -35,14 +35,14 @@ export default function DutyAnalytics() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(168,85,247,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(168,85,247,0.20)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.25)' }}>
             <BarChart2 className="w-6 h-6 text-purple-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Duty Analytics</h1>
+            <h1 className="text-xl font-black text-white">Duty Analytics</h1>
             <p className="text-slate-500 text-sm">Live department-wide overview</p>
           </div>
         </div>
@@ -51,7 +51,7 @@ export default function DutyAnalytics() {
       {/* Top KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Officers', value: total,   icon: Users,     color: 'text-sky-400',    bg: 'rgba(6,182,212,0.10)' },
+          { label: 'Total Officers', value: total,   icon: Users,     color: 'text-cyan-400',    bg: 'rgba(6,182,212,0.10)' },
           { label: 'On Duty Now',    value: onDuty,  icon: Activity,  color: 'text-green-400',  bg: 'rgba(34,197,94,0.10)' },
           { label: 'Off Duty',       value: total - onDuty, icon: Clock, color: 'text-slate-400', bg: 'rgba(71,85,105,0.10)' },
           { label: 'Departments',    value: data?.by_department.filter(d => d.total > 0).length ?? 0, icon: Shield, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
@@ -71,7 +71,7 @@ export default function DutyAnalytics() {
           {/* Officers by department */}
           <div className="glass rounded-2xl p-5">
             <h2 className="font-semibold text-white text-sm mb-4 flex items-center gap-2">
-              <Users className="w-4 h-4 text-sky-400" /> Officers by Division
+              <Users className="w-4 h-4 text-cyan-400" /> Officers by Division
             </h2>
             {(data?.by_department ?? []).length === 0 ? (
               <p className="text-slate-600 text-sm">No data yet.</p>

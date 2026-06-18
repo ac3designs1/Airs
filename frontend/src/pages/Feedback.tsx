@@ -72,7 +72,7 @@ export default function FeedbackViewer() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(59,130,246,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(59,130,246,0.18)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -83,7 +83,7 @@ export default function FeedbackViewer() {
               )}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Feedback</h1>
+              <h1 className="text-xl font-black text-white">Feedback</h1>
               <p className="text-slate-500 text-sm">{unread > 0 ? `${unread} unread` : 'All caught up'} · {items.length} total submissions</p>
             </div>
           </div>

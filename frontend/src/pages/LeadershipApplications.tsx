@@ -88,7 +88,7 @@ export default function LeadershipApplications() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(245,158,11,0.12),rgba(251,191,36,0.04),rgba(6,182,212,0.06))', border: '1px solid rgba(245,158,11,0.18)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -96,7 +96,7 @@ export default function LeadershipApplications() {
               <ClipboardList className="w-6 h-6 text-amber-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Recruitment Applications</h1>
+              <h1 className="text-xl font-black text-white">Recruitment Applications</h1>
               <p className="text-slate-500 text-sm">{counts.pending} pending review · {apps.length} total submissions</p>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function LeadershipApplications() {
             <div className="glass rounded-xl p-6 text-center text-slate-600">
               <ClipboardList className="w-10 h-10 mx-auto mb-2 opacity-20" />
               <p className="text-sm">No applications found</p>
-              {counts.all === 0 && <p className="text-xs text-slate-700 mt-1">Share the link <span className="text-sky-400 font-mono">/apply</span> to receive applications</p>}
+              {counts.all === 0 && <p className="text-xs text-slate-700 mt-1">Share the link <span className="text-cyan-400 font-mono">/apply</span> to receive applications</p>}
             </div>
           ) : filtered.map(a => {
             const sc = STATUS_CFG[a.status];
@@ -150,7 +150,7 @@ export default function LeadershipApplications() {
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div>
                     <div className="font-semibold text-white text-sm">{a.full_name}</div>
-                    <div className="text-xs text-sky-400 font-mono mt-0.5">{a.discord}</div>
+                    <div className="text-xs text-cyan-400 font-mono mt-0.5">{a.discord}</div>
                   </div>
                   <span className={`chip text-[10px] flex-shrink-0 ${sc.cls}`}>{sc.label}</span>
                 </div>
@@ -186,7 +186,7 @@ export default function LeadershipApplications() {
                   </div>
                   <div>
                     <h2 className="text-lg font-bold text-white">{selected.full_name}</h2>
-                    <p className="text-sky-400 font-mono text-sm">{selected.discord}</p>
+                    <p className="text-cyan-400 font-mono text-sm">{selected.discord}</p>
                     <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
                       <span className="flex items-center gap-1"><User className="w-3 h-3" /> Age {selected.age}</span>
                       <span className="flex items-center gap-1"><Globe className="w-3 h-3" /> {selected.timezone}</span>

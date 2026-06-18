@@ -74,7 +74,7 @@ export default function FTOTracking() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(234,179,8,0.12),rgba(249,115,22,0.06))', border: '1px solid rgba(234,179,8,0.20)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -82,7 +82,7 @@ export default function FTOTracking() {
               <Award className="w-6 h-6 text-yellow-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">FTO Tracking</h1>
+              <h1 className="text-xl font-black text-white">FTO Tracking</h1>
               <p className="text-slate-500 text-sm">Field Training Officer shift hours log</p>
             </div>
           </div>
@@ -197,7 +197,7 @@ export default function FTOTracking() {
               {shifts.map(s => (
                 <tr key={s.id}>
                   <td className="mono text-xs">{format(new Date(s.date), 'dd MMM yyyy')}</td>
-                  <td className="text-sky-400 font-medium">{s.fto_name}</td>
+                  <td className="text-cyan-400 font-medium">{s.fto_name}</td>
                   <td>{s.recruit_name}</td>
                   <td><span className="chip chip-blue">{s.type}</span></td>
                   <td className="font-bold text-yellow-400">{s.hours}h</td>

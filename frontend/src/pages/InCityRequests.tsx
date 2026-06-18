@@ -72,7 +72,7 @@ export default function InCityRequests() {
               <ClipboardList className="w-7 h-7 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">In-City Requests</h1>
+              <h1 className="text-2xl font-black text-white">In-City Requests</h1>
               <p className="text-gray-400 text-sm mt-0.5">{filtered.length} call{filtered.length !== 1 ? 's' : ''}</p>
             </div>
           </div>

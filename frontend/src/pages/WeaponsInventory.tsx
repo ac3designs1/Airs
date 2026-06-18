@@ -75,7 +75,7 @@ export default function WeaponsInventory() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
+      <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.12),rgba(249,115,22,0.06))', border: '1px solid rgba(239,68,68,0.18)' }}>
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-4">
@@ -83,7 +83,7 @@ export default function WeaponsInventory() {
               <Sword className="w-6 h-6 text-red-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Weapons Inventory</h1>
+              <h1 className="text-xl font-black text-white">Weapons Inventory</h1>
               <p className="text-slate-500 text-sm">{counts.total} weapons · {counts.assigned} assigned · {counts.available} available</p>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function WeaponsInventory() {
       {/* Add weapon modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(239,68,68,0.18)' }}>
+          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d1526', border: '1px solid rgba(239,68,68,0.18)' }}>
             <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(239,68,68,0.10)', background: 'rgba(239,68,68,0.05)' }}>
               <h2 className="text-base font-bold text-white">Add Weapon to Inventory</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>
@@ -169,13 +169,13 @@ export default function WeaponsInventory() {
       {/* Assign modal */}
       {assignModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl" style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(6,182,212,0.18)' }}>
+          <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.18)' }}>
             <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.10)' }}>
               <h2 className="text-base font-bold text-white">Assign Weapon</h2>
               <button onClick={() => setAssignModal(null)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5"><X className="w-4 h-4" /></button>
             </div>
             <div className="p-6 space-y-4">
-              <p className="text-xs text-slate-500">Serial <span className="text-sky-400 font-mono">{assignModal.serial}</span> · {assignModal.weapon_type} {assignModal.model}</p>
+              <p className="text-xs text-slate-500">Serial <span className="text-cyan-400 font-mono">{assignModal.serial}</span> · {assignModal.weapon_type} {assignModal.model}</p>
               <div>
                 <label className="block text-[11px] uppercase tracking-wider font-semibold text-slate-500 mb-1.5">Assign To Officer</label>
                 <select value={assignOfficerId} onChange={e => setAssignOfficerId(e.target.value)} className="nx-input w-full" style={{ colorScheme: 'dark' }}>
@@ -216,12 +216,12 @@ export default function WeaponsInventory() {
                 {filtered.map(w => {
                   const sc = STATUS_CFG[w.status] ?? STATUS_CFG.available;
                   return (
-                    <tr key={w.id} style={{ borderBottom: '1px solid rgba(6,182,212,0.04)' }} className="hover:bg-sky-500/[0.02] transition-colors">
-                      <td className="px-4 py-3 text-xs font-mono text-sky-400">{w.serial}</td>
+                    <tr key={w.id} style={{ borderBottom: '1px solid rgba(6,182,212,0.04)' }} className="hover:bg-cyan-500/[0.02] transition-colors">
+                      <td className="px-4 py-3 text-xs font-mono text-cyan-400">{w.serial}</td>
                       <td className="px-4 py-3 text-sm text-slate-300">{w.weapon_type}</td>
                       <td className="px-4 py-3 text-sm text-slate-400">{w.model || '—'}</td>
                       <td className="px-4 py-3 text-sm text-white">{w.assigned_to_name || <span className="text-slate-600">Unassigned</span>}</td>
-                      <td className="px-4 py-3 text-xs font-mono text-sky-400">{w.assigned_callsign || '—'}</td>
+                      <td className="px-4 py-3 text-xs font-mono text-cyan-400">{w.assigned_callsign || '—'}</td>
                       <td className="px-4 py-3 text-xs text-slate-500">{w.issued_date ? format(parseISO(w.issued_date), 'dd MMM yyyy') : '—'}</td>
                       <td className="px-4 py-3"><span className={`chip text-[10px] ${sc.cls}`}>{sc.label}</span></td>
                       {isLeader && (

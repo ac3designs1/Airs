@@ -87,24 +87,21 @@ export default function Warrants() {
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="relative rounded-2xl overflow-hidden p-5 scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.12),rgba(249,115,22,0.06))', border: '1px solid rgba(239,68,68,0.18)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)' }}>
-              <AlertTriangle className="w-6 h-6 text-red-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-white">Warrants</h1>
-              <p className="text-slate-500 text-sm">{filtered.length} {statusFilter} warrant{filtered.length !== 1 ? 's' : ''}</p>
-            </div>
+      <div className="page-header page-header-red scan-line">
+        <div className="flex items-center gap-4">
+          <div className="ph-icon ph-icon-red">
+            <AlertTriangle className="w-6 h-6 text-red-400" />
           </div>
-          <button onClick={() => { resetForm(); setShowForm(true); }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110"
-            style={{ background: 'linear-gradient(135deg,#ef4444,#dc2626)', border: '1px solid rgba(239,68,68,0.3)' }}>
-            <Plus className="w-4 h-4" /> Issue Warrant
-          </button>
+          <div>
+            <h1 className="text-xl font-black text-white">Warrants</h1>
+            <p className="text-slate-500 text-sm mt-0.5">{filtered.length} {statusFilter} warrant{filtered.length !== 1 ? 's' : ''}</p>
+          </div>
         </div>
+        <button onClick={() => { resetForm(); setShowForm(true); }}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
+          style={{ background: 'linear-gradient(135deg,#ef4444,#dc2626)', border: '1px solid rgba(239,68,68,0.3)', boxShadow: '0 4px 14px rgba(239,68,68,0.25)' }}>
+          <Plus className="w-4 h-4" /> Issue Warrant
+        </button>
       </div>
 
       {/* Filters */}
@@ -126,7 +123,7 @@ export default function Warrants() {
       {/* Issue warrant modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col" style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(239,68,68,0.20)' }}>
+          <div className="w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col" style={{ background: '#0d1526', border: '1px solid rgba(239,68,68,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(239,68,68,0.12)', background: 'rgba(239,68,68,0.05)' }}>
               <h2 className="text-base font-bold text-white">Issue Warrant</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>
@@ -154,14 +151,14 @@ export default function Warrants() {
                       <div className="absolute top-full mt-1 w-full rounded-xl overflow-hidden z-10 shadow-xl" style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.18)' }}>
                         {citizenRes.map(c => (
                           <button key={c.id} type="button" onClick={() => { setSelectedCit(c); setCitizenQ(''); setCitizenRes([]); }}
-                            className="w-full text-left px-4 py-2.5 hover:bg-sky-500/10 transition-colors">
+                            className="w-full text-left px-4 py-2.5 hover:bg-cyan-500/10 transition-colors">
                             <div className="text-sm text-white font-medium">{c.first_name} {c.last_name}</div>
                             {c.dob && <div className="text-xs text-slate-500">DOB: {format(parseISO(c.dob), 'dd/MM/yyyy')}</div>}
                           </button>
                         ))}
                       </div>
                     )}
-                    {citizenQ && !citizenRes.length && <p className="text-xs text-slate-600 mt-1">No citizens found. <a href="/citizens" target="_blank" className="text-sky-400 underline">Create record first</a>.</p>}
+                    {citizenQ && !citizenRes.length && <p className="text-xs text-slate-600 mt-1">No citizens found. <a href="/citizens" target="_blank" className="text-cyan-400 underline">Create record first</a>.</p>}
                   </div>
                 )}
               </div>
