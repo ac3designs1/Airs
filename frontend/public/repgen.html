@@ -237,7 +237,7 @@
     #fi{display:none}
 
     /* MODAL */
-    .mbg{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);overflow-y:auto;padding:32px 16px}
+    .mbg{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);overflow-y:auto;overflow-x:auto;padding:32px 16px}
     .mbox{max-width:660px;margin:0 auto;background:var(--p2);border:1px solid var(--brd);border-radius:14px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.6)}
     .mhd{padding:18px 22px;border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(139,92,246,.08) 0%,transparent 100%)}
     .mhd-ttl{font-size:14px;font-weight:800;color:var(--txt)}
@@ -469,13 +469,111 @@
 
 <!-- ══ MODAL: Cheat Sheet ══ -->
 <div class="mbg" id="m-cheatsheet" onclick="if(event.target===this)closeModal('m-cheatsheet')">
-  <div class="mbox">
-    <div class="mhd"><div class="mhd-ttl">Cheat Sheet</div><button class="mx" onclick="closeModal('m-cheatsheet')">×</button></div>
-    <div class="mgrid">
-      <div class="mc" style="background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)"><div class="mcttl" style="color:#a855f7">Common Charges</div><div class="mcbody">Assault · GBH · Murder<br>Robbery · Armed Robbery<br>Theft · Grand Theft Auto<br>Drug Possession · Trafficking<br>Evading Police · Reckless Driving<br>Weapons Possession<br>Obstruct Police · Resist Arrest</div></div>
-      <div class="mc" style="background:rgba(88,166,255,.06);border-color:rgba(88,166,255,.2)"><div class="mcttl" style="color:#58a6ff">Radio Codes</div><div class="mcbody">10-4 — Acknowledged<br>10-7 — Out of Service<br>10-8 — In Service<br>10-20 — Location<br>10-23 — Arrived on Scene<br>Code 1 — Routine<br>Code 2 — Urgent · Code 3 — Emergency</div></div>
-      <div class="mc" style="background:rgba(63,185,80,.06);border-color:rgba(63,185,80,.2)"><div class="mcttl" style="color:#3fb950">Pursuit Protocols</div><div class="mcbody">Call out vehicle + direction<br>Request supervisor authorisation<br>Max 2 units unless approved<br>Abandon if risk outweighs benefit<br>Document start/end, speeds,<br>reason, outcome &amp; all units</div></div>
-      <div class="mc" style="background:rgba(210,153,34,.06);border-color:rgba(210,153,34,.2)"><div class="mcttl" style="color:#d29922">Use of Force Scale</div><div class="mcbody">1 — Verbal commands<br>2 — Physical restraint<br>3 — OC Spray / Taser<br>4 — Baton / Less-lethal<br>5 — Lethal force (last resort)<br>Document ALL levels used</div></div>
+  <div class="mbox" style="max-width:1100px">
+    <div class="mhd">
+      <div class="mhd-ttl">Cheat Sheet</div>
+      <button class="mx" onclick="closeModal('m-cheatsheet')">×</button>
+    </div>
+    <div style="padding:16px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:start">
+
+      <!-- Radio Etiquette -->
+      <div class="mc" style="background:rgba(96,165,250,.06);border-color:rgba(96,165,250,.2)">
+        <div class="mcttl" style="color:#60a5fa">Radio Etiquette</div>
+        <div class="mcbody" style="font-size:11.5px">
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 1</span><span>On Patrol</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 2</span><span>Arrived At Station</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 3</span><span>Misc. Calls / 000 Calls / Suspicious Activity</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 4</span><span>Traffic Stop</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 5</span><span>Arrived At Job / Scene</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 6</span><span>Unavailable</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 7</span><span>En-Route to Station Whilst On Duty</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 8</span><span>Unit Sign Off / Off Duty</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 9</span><span>Police Require Urgent Assistance / Duress Call</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 10</span><span>Protest / Riot</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 12</span><span>Motor Vehicle Accident (MVA)</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 13</span><span>Mugging / Assault &amp; Robbery</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 14</span><span>Silent Alarm</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 15</span><span>Hostage Situation</span></div>
+          <div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 16</span><span>Shots Fired</span></div>
+          <div style="display:flex;gap:6px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 17</span><span>Active Bomb Threat</span></div>
+        </div>
+      </div>
+
+      <!-- Code 14/15's -->
+      <div class="mc" style="background:rgba(251,191,36,.05);border-color:rgba(251,191,36,.2)">
+        <div class="mcttl" style="color:#fbbf24">Code 14/15's</div>
+        <div class="mcbody" style="font-size:11.5px">
+          <div style="font-weight:700;color:#fbbf24;margin-bottom:5px">IF NEGOTIATOR</div>
+          <div style="margin-bottom:3px">(Number) Of Hostages And Hostage Takers</div>
+          <div style="margin-bottom:3px">Welfare Of Hostages</div>
+          <div style="margin-bottom:3px">Demands</div>
+          <div style="margin-bottom:3px">Direction Of Travel</div>
+          <div style="margin-bottom:3px">Confirm Getaway Vehicle</div>
+          <div style="margin-bottom:12px">ETA Until Ready</div>
+          <div style="font-weight:700;color:#fbbf24;margin-bottom:5px">IF Scene Command</div>
+          <div style="margin-bottom:3px">Get Road Blocks and Traffic Circle Up</div>
+          <div style="margin-bottom:3px">Ensure that negotiator has relayed all needed info</div>
+          <div style="margin-bottom:3px">Get Pursuing Units Ready</div>
+          <div style="margin-bottom:10px">Keep Control Of The Scene</div>
+          <div style="font-size:11px;color:var(--dim)">If scene gets out of hand and you need assistance, ask your TO for advice or ask your TO to take over.<br><br>Reminder CIRT/Leadership Can take over any time</div>
+        </div>
+      </div>
+
+      <!-- FPO Caution + Pursuit Initiations -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="mc" style="background:rgba(248,113,113,.05);border-color:rgba(248,113,113,.2)">
+          <div class="mcttl" style="color:#f87171">FPO Caution</div>
+          <div class="mcbody" style="font-size:11px;line-height:1.7">Hello! My name is (YOUR NAME) from Melbourne police. A firearms prohibition order (FPO) of (Tier type) is going to be placed on you for (time period). An FPO (Firearms prohibition order) prohibits you from acquiring, possessing or carrying a firearm or firearm related items. During the time of you holding an FPO police officers have the right to search you, your vehicle and other individuals you have in your vehicle at any point in time. If you violate your FPO you can receive a higher tier FPO and all your vehicles and premises can be searched. Do you understand this FPO being placed onto you?</div>
+        </div>
+        <div class="mc" style="background:rgba(52,211,153,.05);border-color:rgba(52,211,153,.2)">
+          <div class="mcttl" style="color:#34d399">Pursuit Initiations</div>
+          <div class="mcbody" style="font-size:11px;line-height:1.7">[CALLSIGN] is in a pursuit of (DESCRIPTION OF THE VEHICLE), (LICENCE CLASS) (VEHICLE CLASS), traffic is (light, medium, heavy). (DIRECTION AND STREET NAME)</div>
+        </div>
+        <div class="mc" style="background:rgba(139,92,246,.06);border-color:rgba(139,92,246,.2)">
+          <div class="mcttl" style="color:#a78bfa">Code 4's</div>
+          <div class="mcbody" style="font-size:11px;line-height:1.7">[CALLSIGN] is currently in a Code 4 with (DESCRIPTION OF THE VEHICLE), currently (DIRECTION AND STREET NAME). (ANY ADDITIONAL UNITS REQUIRED?)</div>
+        </div>
+      </div>
+
+      <!-- Lawyers + Searching + Priority Signs -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="mc" style="background:rgba(96,165,250,.05);border-color:rgba(96,165,250,.2)">
+          <div class="mcttl" style="color:#60a5fa">Lawyers</div>
+          <div class="mcbody" style="font-size:11px;line-height:1.7">If a suspect wants a lawyer to represent them, ensure that the lawyer has the correct paperwork, to check this get them to show you their BAR-LICENSE! If they have no ID or they aren't willing to give it then do not let them in the holding area. If they are a registered lawyer make sure they have not been charged with anything in the last 30 days. If they have, do not let them in! Before letting a lawyer in, make sure you search the lawyer and all bags they have to ensure they are not carrying any illegal weapons, drugs, or materials.</div>
+        </div>
+        <div class="mc" style="background:rgba(251,191,36,.05);border-color:rgba(251,191,36,.2)">
+          <div class="mcttl" style="color:#fbbf24">Searching</div>
+          <div class="mcbody" style="font-size:11px;line-height:1.7;font-weight:600;color:#fbbf24">MAKE SURE YOU READ OUT THE SUSPECT CAUTION BEFORE SEARCHING THEM!!</div>
+          <div class="mcbody" style="font-size:11px;margin-top:5px">This does not apply to detained People of Interest after Code 15's or searching lawyers before they represent a suspect</div>
+        </div>
+        <div class="mc" style="background:rgba(52,211,153,.05);border-color:rgba(52,211,153,.2)">
+          <div class="mcttl" style="color:#34d399">Priority Signs</div>
+          <div class="mcbody" style="font-size:11.5px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#f87171;font-weight:700">Priority One</span><span>Lights and Sirens</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#fbbf24;font-weight:700">Priority Two</span><span>Lights and Sirens as Needed</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:#34d399;font-weight:700">Priority Three</span><span>No Lights or Sirens</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrest/Custody Caution + Codes to Remember -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="mc" style="background:rgba(248,113,113,.05);border-color:rgba(248,113,113,.2)">
+          <div class="mcttl" style="color:#f87171">Arrest/Custody Caution</div>
+          <div class="mcbody" style="font-size:11px;line-height:1.7">Hello, my name is (YOUR NAME) from Melbourne Police. You are currently under arrest for (WHAT THEY ARE UNDER ARREST FOR). You do not have to do or say anything you do not want to, anything you say or do may and can be used against you in evidence. You have the right to contact a family member or friend to let known your whereabouts. You also have the right to contact Legal Representation, or have your case heard by a magistrate. Do you understand this caution?</div>
+        </div>
+        <div class="mc" style="background:rgba(139,92,246,.06);border-color:rgba(139,92,246,.2)">
+          <div class="mcttl" style="color:#a78bfa">Codes to Remember</div>
+          <div class="mcbody" style="font-size:11.5px">
+            <div style="display:flex;gap:8px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 1</span><span>On Patrol</span></div>
+            <div style="display:flex;gap:8px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 4</span><span>Traffic Stop</span></div>
+            <div style="display:flex;gap:8px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 5</span><span>Arrived at Job / On Scene</span></div>
+            <div style="display:flex;gap:8px;margin-bottom:3px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 9</span><span>Duress Call</span></div>
+            <div style="display:flex;gap:8px"><span style="color:#60a5fa;font-weight:700;min-width:44px">Code 15</span><span>Hostage Situation</span></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
