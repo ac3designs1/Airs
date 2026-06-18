@@ -424,13 +424,14 @@
     'USE OF FORCE REPORT':[{id:'xuf',l:'Subject Name',p:'First Last'},{id:'xth',l:'Threat Level',p:'e.g. Level 3 – Taser'},{id:'xfc',l:'Force Used',p:'Describe force applied'}],
   };
 
+  let sMode=false;
   function selType(){
     const type=document.getElementById('r-type').value;
     const fs=EX[type]||[];
     document.getElementById('xf').innerHTML=fs.length
       ?fs.map(f=>`<div class="fg"><label class="fl">${f.l}</label><input type="text" id="${f.id}" placeholder="${f.p}" oninput="live()" /></div>`).join('')
       :'';
-    if(sMode) buildStructFields(type);
+    if(sMode && typeof buildStructFields==='function') buildStructFields(type);
     live();
   }
   selType();
@@ -515,7 +516,6 @@
     return parts.join('\n\n');
   }
 
-  let sMode=false;
   function toggleMode(){
     sMode=!sMode;
     document.getElementById('free-mode').style.display=sMode?'none':'block';
