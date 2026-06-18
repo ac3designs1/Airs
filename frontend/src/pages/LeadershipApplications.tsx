@@ -18,7 +18,7 @@ interface Application {
   created_at: string;
 }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 const STATUS_CFG = {
   pending:   { label: 'Pending',   cls: 'chip-yellow', dot: '#fcd34d' },

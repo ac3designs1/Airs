@@ -5,8 +5,8 @@ const { authenticateToken } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
 
 // Roles that can perform operational MDT actions (not recruits)
-const OFFICER_ROLES = ['admin','administrator','leadership','senior_command','supervisor','officer','probationary_constable','constable','first_constable','senior_constable','leading_senior_constable','sergeant','senior_sergeant','inspector','superintendent','commander','assistant_commissioner','deputy_commissioner','commissioner'];
-const LEADERSHIP = ['admin','administrator','leadership','senior_command','supervisor'];
+const OFFICER_ROLES = ['commissioner','admin','administrator','leadership','senior_command','supervisor','officer','probationary_constable','constable','first_constable','senior_constable','leading_senior_constable','sergeant','senior_sergeant','inspector','superintendent','commander','assistant_commissioner','deputy_commissioner','commissioner'];
+const LEADERSHIP = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
 
 router.use(authenticateToken);
 

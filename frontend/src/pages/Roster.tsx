@@ -3,11 +3,21 @@ import { Search, Users, ChevronDown } from 'lucide-react';
 import api from '../api/client';
 
 const ROLE_DISPLAY: Record<string, string> = {
-  admin: 'Senior Leadership',
-  administrator: 'Senior Leadership',
-  leadership: 'Leadership',
+  commissioner:   'Commissioner',
+  admin:          'Senior Leadership',
+  administrator:  'Senior Leadership',
+  leadership:     'Leadership',
   senior_command: 'Senior Command',
-  supervisor: 'Supervisor',
+  supervisor:     'Supervisor',
+};
+
+const ROLE_CLS: Record<string, string> = {
+  commissioner:   'text-yellow-300',
+  admin:          'text-rose-400',
+  administrator:  'text-rose-400',
+  leadership:     'text-amber-400',
+  senior_command: 'text-orange-400',
+  supervisor:     'text-yellow-400',
 };
 
 interface Officer {
@@ -144,8 +154,8 @@ export default function Roster() {
                       </div>
                       <div>
                         <div className="font-semibold text-white text-sm">{o.first_name} {o.last_name}</div>
-                        {['admin','administrator','leadership','senior_command'].includes(o.role) && (
-                          <div className="text-[10px] text-rose-400 font-semibold uppercase tracking-wider">{ROLE_DISPLAY[o.role] ?? o.role.replace('_',' ')}</div>
+                        {['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(o.role) && (
+                          <div className={`text-[10px] font-bold uppercase tracking-wider ${ROLE_CLS[o.role] ?? 'text-rose-400'}`}>{ROLE_DISPLAY[o.role] ?? o.role.replace('_',' ')}</div>
                         )}
                       </div>
                     </div>

@@ -9,7 +9,7 @@ import { Navigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 interface Recruit {
   id: string; first_name: string; last_name: string;

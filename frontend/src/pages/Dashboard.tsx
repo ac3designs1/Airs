@@ -34,7 +34,7 @@ const QUICK = [
 export default function Dashboard() {
   const { auth } = useAuth();
   const user = auth.user!;
-  const isAdmin = ['admin', 'administrator', 'leadership', 'senior_command'].includes(user.role);
+  const isAdmin = ['commissioner', 'admin', 'administrator', 'leadership', 'senior_command'].includes(user.role);
 
   const [stats, setStats] = useState<Stats | null>(null);
   const [calls, setCalls] = useState<Call[]>([]);
@@ -62,15 +62,18 @@ export default function Dashboard() {
       <div style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.16)', borderRadius: 12, padding: '20px 24px' }}>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center text-base font-black text-white flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, #0891b2, #1d4ed8)' }}>
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center text-base font-black text-white flex-shrink-0 relative"
+              style={{ background: user.role === 'commissioner' ? 'linear-gradient(135deg, #b45309, #f59e0b)' : 'linear-gradient(135deg, #0891b2, #1d4ed8)', boxShadow: user.role === 'commissioner' ? '0 0 20px rgba(245,158,11,0.35)' : undefined }}>
               {user.first_name[0]}{user.last_name[0]}
             </div>
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <h1 className="text-lg font-black text-white">
                   {(user as unknown as { in_city_name?: string }).in_city_name || `${user.first_name} ${user.last_name}`}
                 </h1>
+                {user.role === 'commissioner' && (
+                  <span className="chip chip-gold text-[10px]" style={{ letterSpacing: '0.1em' }}>⭐ COMMISSIONER</span>
+                )}
                 <div className="flex items-center gap-1.5 px-2 py-0.5 rounded" style={{ background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.18)' }}>
                   <div className="w-1.5 h-1.5 rounded-full" style={{ background: statusColor, boxShadow: `0 0 5px ${statusColor}` }} />
                   <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: statusColor }}>{statusLabel}</span>
@@ -245,14 +248,14 @@ export default function Dashboard() {
                 { label: 'Callsign', value: user.callsign || '—', mono: true, color: '#06b6d4' },
                 { label: 'Rank',     value: user.rank },
                 { label: 'Division', value: user.department },
-                { label: 'Role',     value: user.role?.replace(/_/g, ' '), cap: true },
+                { label: 'Role',     value: user.role === 'commissioner' ? 'Commissioner' : user.role?.replace(/_/g, ' '), cap: true, gold: user.role === 'commissioner' },
                 { label: 'Status',   value: user.status?.replace(/_/g, ' '), cap: true, color: statusColor },
               ].map((row, i, arr) => (
                 <div key={row.label}
                   className={`flex items-center justify-between py-2.5 ${i < arr.length - 1 ? 'border-b border-cyan-500/[0.07]' : ''}`}>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">{row.label}</span>
                   <span className={`text-sm font-semibold ${row.cap ? 'capitalize' : ''} ${row.mono ? 'font-mono' : ''}`}
-                    style={{ color: row.color ?? '#cbd5e1' }}>
+                    style={{ color: (row as {gold?: boolean}).gold ? '#fcd34d' : (row.color ?? '#cbd5e1') }}>
                     {row.value}
                   </span>
                 </div>

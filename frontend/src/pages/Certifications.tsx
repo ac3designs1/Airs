@@ -29,7 +29,7 @@ const CAT_COLORS: Record<string, string> = {
   Specialist:    'chip-purple',
   Investigative: 'chip-indigo',
 };
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 const BLANK_EOI = { why_interested: '', skills: '', goals: '' };
 

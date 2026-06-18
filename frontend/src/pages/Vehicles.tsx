@@ -11,7 +11,7 @@ interface Vehicle {
   flags?: string; license_status?: string; citizen_id?: string;
 }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 const REG_CFG: Record<string, string> = {
   valid: 'chip-green', expired: 'chip-yellow', suspended: 'chip-red', unregistered: 'chip-red',
 };

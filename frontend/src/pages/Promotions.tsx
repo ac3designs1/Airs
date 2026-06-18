@@ -11,7 +11,7 @@ interface Promotion {
 }
 interface Officer { id: string; first_name: string; last_name: string; callsign?: string; rank: string; department: string; }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 const RANKS = [
   'Recruit', 'Probationary Constable', 'Constable', 'First Constable',
   'Senior Constable', 'Leading Senior Constable', 'Sergeant', 'Senior Sergeant',

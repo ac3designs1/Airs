@@ -31,6 +31,7 @@ const RANKS = [
   'Superintendent','Commander','Assistant Commissioner','Deputy Commissioner','Commissioner',
 ];
 const DEPARTMENTS = ['Academy','GD','Highway','CIRT','SOG'];
+// 'commissioner' is hidden — not assignable via UI dropdown
 const ROLES = ['recruit','officer','supervisor','leadership','senior_command','administrator','admin'];
 
 const ROLE_CLS: Record<string, string> = {
@@ -65,10 +66,10 @@ interface AnnounceState { title: string; content: string; category: string; pinn
 ────────────────────────────────────────────────────────── */
 export default function LeadershipCommand() {
   const { auth } = useAuth();
-  const LEADERSHIP = ['admin','administrator','leadership','senior_command','supervisor'];
+  const LEADERSHIP = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
   if (!LEADERSHIP.includes(auth.user?.role ?? '')) return <Navigate to="/dashboard" replace />;
 
-  const canPromote = ['admin','administrator','leadership','senior_command','supervisor'].includes(auth.user?.role ?? '');
+  const canPromote = ['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(auth.user?.role ?? '');
 
   /* ── State ── */
   const [tab,       setTab]      = useState<Tab>('personnel');

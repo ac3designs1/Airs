@@ -4,7 +4,7 @@ const { db } = require('../db/schema');
 const { authenticateToken } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 // GET /api/weapons
 router.get('/', authenticateToken, (req, res) => {

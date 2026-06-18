@@ -11,7 +11,7 @@ interface Shift {
 }
 interface Stats { total_shifts: number; total_mins: number; active_shifts: number; week_mins: number; }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 function fmtMins(m: number) {
   if (!m) return '0m';

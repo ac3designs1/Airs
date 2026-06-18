@@ -10,7 +10,7 @@ interface Report {
   status: string; created_at: string; updated_at: string;
 }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 const TYPES = ['General', 'Incident', 'Arrest', 'Use of Force', 'Traffic', 'Property', 'Pursuit', 'Welfare Check', 'Other'];
 
 const STATUS_CFG = {

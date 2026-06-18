@@ -17,7 +17,7 @@ const EMPTY = { fto_name: '', recruit_name: '', date: new Date().toISOString().s
 
 export default function FTOTracking() {
   const { auth } = useAuth();
-  const isLeadership = ['admin','administrator','leadership','senior_command','supervisor'].includes(auth.user?.role ?? '');
+  const isLeadership = ['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(auth.user?.role ?? '');
 
   const [shifts,    setShifts]    = useState<FTOShift[]>([]);
   const [officers,  setOfficers]  = useState<OfficerRow[]>([]);

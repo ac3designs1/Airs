@@ -21,7 +21,7 @@ const STATUS_CLS: Record<string, string> = {
 
 export default function OfficerManagement() {
   const { auth } = useAuth();
-  const isLeadership = ['admin','administrator','leadership','senior_command','supervisor'].includes(auth.user?.role ?? '');
+  const isLeadership = ['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(auth.user?.role ?? '');
 
   const [officers,  setOfficers]  = useState<Officer[]>([]);
   const [loading,   setLoading]   = useState(true);

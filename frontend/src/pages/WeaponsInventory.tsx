@@ -12,7 +12,7 @@ interface Weapon {
 }
 interface Officer { id: string; first_name: string; last_name: string; callsign?: string; }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 const TYPES = ['Pistol', 'Rifle', 'Shotgun', 'Taser', 'Sniper Rifle', 'SMG', 'Less-Lethal'];
 const STATUS_CFG = {
   available:     { cls: 'chip-yellow', label: 'Available' },

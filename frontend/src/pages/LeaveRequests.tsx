@@ -11,7 +11,7 @@ interface Leave {
   reviewed_by?: string; review_notes?: string; reviewed_at?: string; created_at: string;
 }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 const TYPES = ['Annual Leave', 'Personal Leave', 'Medical Leave', 'Leave of Absence', 'Special Circumstances'];
 
 const STATUS_CFG = {

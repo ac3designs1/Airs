@@ -21,7 +21,7 @@ function buildInitialStatuses(): StageStatus[] {
 const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-sky-400' : 'text-slate-600';
 const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/05' : s === 'current' ? 'border-sky-500/25 bg-sky-500/05' : 'border-slate-800/80';
 
-const LEADERSHIP = ['admin','administrator','leadership','senior_command','supervisor'];
+const LEADERSHIP = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
 const EMPTY_FORM = { officer_id: '', fto_name: '' };
 
 export default function RecruitTraining() {

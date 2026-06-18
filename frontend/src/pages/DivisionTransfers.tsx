@@ -12,7 +12,7 @@ interface Transfer {
 }
 
 const DEPARTMENTS = ['Academy', 'GD', 'Highway', 'CIRT', 'SOG'];
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 const STATUS_CFG = {
   pending:  { cls: 'chip-yellow', label: 'Pending' },

@@ -43,13 +43,13 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
   const location = useLocation();
   const nav = useNavigate();
   const role = auth.user?.role ?? 'officer';
-  const isAdmin = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'].includes(role);
+  const isAdmin = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'].includes(role);
 
   const [expanded, setExpanded] = useState<Set<string>>(() => {
     try { const s = localStorage.getItem('nr-sidebar'); if (s) return new Set(JSON.parse(s)); } catch {}
     const defaults = ['overview', 'operations', 'records', 'training', 'leadership'];
     const userRole = auth.user?.role ?? 'officer';
-    if (['admin', 'administrator', 'leadership', 'senior_command'].includes(userRole)) {
+    if (['commissioner', 'admin', 'administrator', 'leadership', 'senior_command'].includes(userRole)) {
       defaults.push('admin');
     }
     return new Set(defaults);
@@ -117,12 +117,12 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
       id: 'training', title: 'Training', icon: UserCheck, accentColor: '#22c55e',
       items: [
         { id: 'recruit-tracker', title: 'Recruit Management', path: '/recruit-tracker', icon: GraduationCap },
-        { id: 'fto', title: 'FTO Tracking', path: '/fto-tracking', icon: Award, roles: ['admin','administrator','leadership','senior_command','supervisor'] },
+        { id: 'fto', title: 'FTO Tracking', path: '/fto-tracking', icon: Award, roles: ['commissioner','admin','administrator','leadership','senior_command','supervisor'] },
       ],
     },
     {
       id: 'leadership', title: 'Leadership', icon: TrendingUp, accentColor: '#f59e0b',
-      roles: ['admin','administrator','leadership','senior_command','supervisor'],
+      roles: ['commissioner','admin','administrator','leadership','senior_command','supervisor'],
       items: [
         { id: 'lc', title: 'Command Centre', path: '/leadership-command', icon: TrendingUp, badge: (stats.pendingLeave + stats.pendingApps) || undefined },
         { id: 'academy-onboarding', title: 'Academy Onboarding', path: '/academy-onboarding', icon: GraduationCap },

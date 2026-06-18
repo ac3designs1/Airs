@@ -9,7 +9,7 @@ interface Announcement {
   author_name?: string; pinned: number; created_at: string; updated_at: string;
 }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command'];
+const LEADERSHIP = ['commissioner', 'admin', 'administrator', 'leadership', 'senior_command'];
 const CATEGORIES = ['general', 'urgent', 'training', 'events', 'policy'];
 
 const CAT_CFG: Record<string, { cls: string; icon: React.ComponentType<{ className?: string }>; label: string }> = {

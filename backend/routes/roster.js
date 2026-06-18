@@ -5,13 +5,18 @@ const { authenticateToken, requireRole } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 
-const LEADERSHIP = ['admin','administrator','leadership','senior_command','supervisor'];
+const LEADERSHIP = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
 router.use(authenticateToken);
 
 router.get('/', (req, res) => {
   const { department } = req.query;
+  const isLeadership = LEADERSHIP.includes(req.user.role);
+  // Commissioner accounts are only visible to leadership (they are hidden from standard roster)
   let query = `SELECT id, username, first_name, last_name, rank, department, status, callsign, role, created_at, last_login
     FROM officers WHERE username != 'admin'`;
+  if (!isLeadership) {
+    query += ` AND role != 'commissioner'`;
+  }
   const params = [];
   if (department) { query += ' AND department = ?'; params.push(department); }
   query += ' ORDER BY department, rank, last_name';
@@ -57,6 +62,11 @@ router.put('/:id', (req, res) => {
 
   const { first_name, last_name, rank, department, role, callsign, status } = req.body;
 
+  // Only a current commissioner can assign/remove the commissioner role
+  if (role === 'commissioner' && req.user.role !== 'commissioner') {
+    return res.status(403).json({ error: 'Only the Commissioner can assign that role' });
+  }
+
   db.prepare(`UPDATE officers SET first_name=?, last_name=?, rank=?, department=?, role=?, callsign=?, status=? WHERE id=?`).run(
     first_name  ?? officer.first_name,
     last_name   ?? officer.last_name,
@@ -81,6 +91,26 @@ router.put('/:id', (req, res) => {
 
   const updated = db.prepare('SELECT id, username, first_name, last_name, rank, department, status, callsign, role, created_at, last_login FROM officers WHERE id = ?').get(req.params.id);
   res.json(updated);
+});
+
+// Commissioner-only: silently assign / revoke the commissioner role
+// POST /roster/commissioner-assign  { officer_id, action: 'grant'|'revoke' }
+router.post('/commissioner-assign', (req, res) => {
+  if (req.user.role !== 'commissioner') {
+    return res.status(403).json({ error: 'Commissioner only' });
+  }
+  const { officer_id, action } = req.body;
+  if (!officer_id || !['grant', 'revoke'].includes(action)) {
+    return res.status(400).json({ error: 'officer_id and action (grant|revoke) required' });
+  }
+  const officer = db.prepare('SELECT id, first_name, last_name FROM officers WHERE id=?').get(officer_id);
+  if (!officer) return res.status(404).json({ error: 'Officer not found' });
+  const newRole = action === 'grant' ? 'commissioner' : 'leadership';
+  db.prepare('UPDATE officers SET role=? WHERE id=?').run(newRole, officer_id);
+  db.prepare(`INSERT INTO activity_log (id, officer_id, action, details) VALUES (?,?,?,?)`)
+    .run(uuidv4(), req.user.id, 'commissioner_role_change',
+      `Commissioner ${action}ed commissioner role to ${officer.first_name} ${officer.last_name}`);
+  res.json({ message: `Role ${action}ed`, new_role: newRole });
 });
 
 // Terminate/remove officer — logs before deleting

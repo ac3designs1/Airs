@@ -23,7 +23,7 @@ const EMPTY = { category: 'General', sentiment: 'neutral' as const, message: '',
 
 export default function FeedbackViewer() {
   const { auth } = useAuth();
-  const isLeadership = ['admin','administrator','leadership','senior_command','supervisor'].includes(auth.user?.role ?? '');
+  const isLeadership = ['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(auth.user?.role ?? '');
 
   const [items,     setItems]     = useState<FeedbackItem[]>([]);
   const [loading,   setLoading]   = useState(true);

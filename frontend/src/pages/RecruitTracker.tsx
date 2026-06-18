@@ -84,7 +84,7 @@ const STATUS_CLS: Record<Status, string> = {
 const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/5' : s === 'current' ? 'border-sky-500/25 bg-sky-500/5' : 'border-slate-800/80 bg-transparent';
 const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-sky-400' : 'text-slate-600';
 
-const EDITABLE_ROLES = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const EDITABLE_ROLES = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 /* ─────────────────────────────────────────────────────────────── */
 export default function RecruitTracker() {

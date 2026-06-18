@@ -12,7 +12,7 @@ interface Strike {
 }
 interface Officer { id: string; first_name: string; last_name: string; callsign?: string; rank: string; department: string; }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 const SEV_CFG = {
   minor:    { cls: 'chip-yellow', label: 'Minor' },
   moderate: { cls: 'chip-yellow', label: 'Moderate' },

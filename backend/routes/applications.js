@@ -9,7 +9,7 @@ function getCreateRecruit() {
   return require('./onboarding').createRecruitFromApplication;
 }
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 // ── Migrate table ─────────────────────────────────────────────
 db.exec(`

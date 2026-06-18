@@ -14,7 +14,7 @@ function genReportNumber() {
 
 router.get('/', (req, res) => {
   const { q, type, status, page = 1, limit = 30 } = req.query;
-  const isLeader = ['admin','administrator','leadership','senior_command','supervisor'].includes(req.user.role);
+  const isLeader = ['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(req.user.role);
   const offset = (Number(page) - 1) * Number(limit);
   const where = [];
   const params = [];
@@ -47,7 +47,7 @@ router.put('/:id', (req, res) => {
   const { title, type, content, status } = req.body;
   const existing = db.prepare('SELECT * FROM reports WHERE id = ?').get(req.params.id);
   if (!existing) return res.status(404).json({ error: 'Not found' });
-  const isLeader = ['admin','administrator','leadership','senior_command','supervisor'].includes(req.user.role);
+  const isLeader = ['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(req.user.role);
   if (!isLeader && existing.officer_id !== req.user.id) return res.status(403).json({ error: 'Forbidden' });
   db.prepare(`UPDATE reports SET title=?,type=?,content=?,status=?,updated_at=CURRENT_TIMESTAMP WHERE id=?`).run(
     title ?? existing.title, type ?? existing.type, content ?? existing.content, status ?? existing.status, req.params.id
@@ -56,7 +56,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  const isLeader = ['admin','administrator','leadership','senior_command','supervisor'].includes(req.user.role);
+  const isLeader = ['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(req.user.role);
   const existing = db.prepare('SELECT * FROM reports WHERE id = ?').get(req.params.id);
   if (!existing) return res.status(404).json({ error: 'Not found' });
   if (!isLeader && existing.officer_id !== req.user.id) return res.status(403).json({ error: 'Forbidden' });

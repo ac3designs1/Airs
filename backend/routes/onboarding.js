@@ -10,7 +10,7 @@ try { db.exec('ALTER TABLE applications ADD COLUMN discord_id TEXT'); } catch {}
 try { db.exec('ALTER TABLE applications ADD COLUMN discord_username TEXT'); } catch {}
 try { db.exec('ALTER TABLE applications ADD COLUMN discord_avatar TEXT'); } catch {}
 
-const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
 const CHECKLIST = [
   { id: 'ob_01', name: 'Welcome & Orientation Briefing',        desc: 'Initial welcome session covering department culture, values, and chain of command.' },
