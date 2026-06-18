@@ -27,7 +27,7 @@ interface NavSection {
 }
 
 const ROLE_LABELS: Record<string, string> = {
-  admin: 'Leadership', administrator: 'Leadership', leadership: 'Leadership',
+  admin: 'Senior Leadership', administrator: 'Senior Leadership', leadership: 'Leadership',
   senior_command: 'Senior Command', supervisor: 'Supervisor',
   officer: 'Officer', recruit: 'Recruit',
 };

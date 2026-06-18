@@ -3,8 +3,8 @@ import { Search, Users, ChevronDown } from 'lucide-react';
 import api from '../api/client';
 
 const ROLE_DISPLAY: Record<string, string> = {
-  admin: 'Leadership',
-  administrator: 'Leadership',
+  admin: 'Senior Leadership',
+  administrator: 'Senior Leadership',
   leadership: 'Leadership',
   senior_command: 'Senior Command',
   supervisor: 'Supervisor',

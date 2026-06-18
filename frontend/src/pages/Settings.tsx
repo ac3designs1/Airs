@@ -8,8 +8,8 @@ import toast from 'react-hot-toast';
 const BACKEND_URL = (import.meta.env.VITE_API_BASE_URL || 'https://airs-production-4e96.up.railway.app/api').replace(/\/api\/?$/, '');
 
 const ROLE_LABELS: Record<string, string> = {
-  admin: 'Leadership',
-  administrator: 'Leadership',
+  admin: 'Senior Leadership',
+  administrator: 'Senior Leadership',
   leadership: 'Leadership',
   senior_command: 'Senior Command',
   supervisor: 'Supervisor',
