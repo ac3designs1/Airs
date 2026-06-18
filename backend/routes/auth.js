@@ -128,9 +128,10 @@ router.get('/me', authenticateToken, (req, res) => {
 
 /* ── PUT /api/auth/profile ──────────────────────────────── */
 router.put('/profile', authenticateToken, (req, res) => {
-  const callsign    = sanitiseStr(req.body.callsign, MAX.callsign);
-  const cur_pw      = sanitiseStr(req.body.current_password, MAX.password);
-  const new_pw      = sanitiseStr(req.body.new_password, MAX.password);
+  const callsign     = sanitiseStr(req.body.callsign,     MAX.callsign);
+  const in_city_name = sanitiseStr(req.body.in_city_name, 80);
+  const cur_pw       = sanitiseStr(req.body.current_password, MAX.password);
+  const new_pw       = sanitiseStr(req.body.new_password,     MAX.password);
 
   const officer = db.prepare('SELECT * FROM officers WHERE id = ?').get(req.user.id);
   if (!officer) return res.status(404).json({ error: 'Not found' });
@@ -146,8 +147,11 @@ router.put('/profile', authenticateToken, (req, res) => {
     hash = bcrypt.hashSync(new_pw, 12);
   }
 
-  db.prepare('UPDATE officers SET callsign=?, password=? WHERE id=?').run(
-    callsign ?? officer.callsign, hash, officer.id
+  db.prepare('UPDATE officers SET callsign=?, in_city_name=?, password=? WHERE id=?').run(
+    callsign     !== undefined ? callsign     : officer.callsign,
+    in_city_name !== undefined ? in_city_name : officer.in_city_name,
+    hash,
+    officer.id
   );
   const updated = db.prepare('SELECT * FROM officers WHERE id = ?').get(officer.id);
   const { password: _pw, badge_number: _bn, ...safe } = updated;

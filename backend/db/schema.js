@@ -408,6 +408,7 @@ function initDb() {
   // Migrate existing databases — add new columns if they don't exist
   try { db.exec('ALTER TABLE officers ADD COLUMN discord_id TEXT UNIQUE'); } catch {}
   try { db.exec('ALTER TABLE officers ADD COLUMN discord_username TEXT'); } catch {}
+  try { db.exec('ALTER TABLE officers ADD COLUMN in_city_name TEXT'); } catch {}
 
   // Seed only the admin account — no preset officers
   const existing = db.prepare('SELECT id FROM officers WHERE username = ?').get('admin');

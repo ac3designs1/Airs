@@ -196,7 +196,9 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
               {user.first_name[0]}{user.last_name[0]}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold text-white truncate leading-none">{user.first_name} {user.last_name}</div>
+              <div className="text-sm font-semibold text-white truncate leading-none">
+                {(user as unknown as { in_city_name?: string }).in_city_name || `${user.first_name} ${user.last_name}`}
+              </div>
               <div className="text-[11px] text-slate-500 mt-0.5 truncate">{user.rank}{user.callsign ? ` · ${user.callsign}` : ''}</div>
             </div>
 

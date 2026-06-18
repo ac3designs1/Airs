@@ -22,7 +22,8 @@ export default function Settings() {
   const user = auth.user!;
   const [searchParams] = useSearchParams();
 
-  const [callsign, setCallsign] = useState(user.callsign ?? '');
+  const [callsign, setCallsign]       = useState(user.callsign ?? '');
+  const [inCityName, setInCityName]   = useState((user as unknown as { in_city_name?: string }).in_city_name ?? '');
   const [savingProfile, setSavingProfile] = useState(false);
 
   useEffect(() => {
@@ -40,7 +41,10 @@ export default function Settings() {
   const saveProfile = async () => {
     setSavingProfile(true);
     try {
-      const r = await api.put('/auth/profile', { callsign: callsign.trim() || null });
+      const r = await api.put('/auth/profile', {
+        callsign:     callsign.trim()     || null,
+        in_city_name: inCityName.trim()   || null,
+      });
       setAuth(prev => ({ ...prev, user: { ...prev.user!, ...r.data } }));
       localStorage.setItem('airs_user', JSON.stringify({ ...user, ...r.data }));
       toast.success('Profile updated');
@@ -100,6 +104,12 @@ export default function Settings() {
 
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
+            <label className="block text-[11px] uppercase tracking-wider font-semibold text-slate-500 mb-1.5">In-City Name</label>
+            <input value={inCityName} onChange={e => setInCityName(e.target.value)}
+              placeholder="e.g. James Smith" className="nx-input w-full" />
+            <p className="text-[10px] text-slate-600 mt-1">Your character's in-game name shown on the roster.</p>
+          </div>
+          <div>
             <label className="block text-[11px] uppercase tracking-wider font-semibold text-slate-500 mb-1.5">MDT Callsign</label>
             <input value={callsign} onChange={e => setCallsign(e.target.value)}
               placeholder="e.g. GD-102" className="nx-input w-full font-mono" />
@@ -107,6 +117,10 @@ export default function Settings() {
           <div>
             <label className="block text-[11px] uppercase tracking-wider font-semibold text-slate-500 mb-1.5">Username</label>
             <input value={user.username} readOnly className="nx-input w-full opacity-50 cursor-not-allowed" />
+          </div>
+          <div>
+            <label className="block text-[11px] uppercase tracking-wider font-semibold text-slate-500 mb-1.5">Discord</label>
+            <input value={(user as unknown as { discord_username?: string }).discord_username ?? 'Not linked'} readOnly className="nx-input w-full opacity-50 cursor-not-allowed" />
           </div>
         </div>
 
