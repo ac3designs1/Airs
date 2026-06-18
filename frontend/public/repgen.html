@@ -7,473 +7,318 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
     :root{
-      --bg:#050508;
-      --s1:#0b0812;
-      --s2:#0f0b1a;
-      --s3:#130e20;
-      --border:rgba(168,85,247,.13);
-      --border2:rgba(168,85,247,.25);
-      --p:#a855f7;
-      --pl:#c084fc;
-      --pd:#7c3aed;
-      --text:#dde1ea;
-      --dim:#8b94a8;
-      --faint:#6b7280;
-      --r:10px;
+      --bg:#07060e;--c1:#0e0b18;--c2:#120f1e;--c3:#0a0815;
+      --brd:rgba(168,85,247,.14);--brd2:rgba(168,85,247,.28);
+      --p:#a855f7;--pl:#c084fc;--pd:#7c3aed;
+      --txt:#dde1ea;--dim:#8494a8;--faint:#5a6478;
     }
-
-    html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
-    ::-webkit-scrollbar{width:3px}
-    ::-webkit-scrollbar-thumb{background:rgba(168,85,247,.2);border-radius:99px}
+    html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+    ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:rgba(168,85,247,.18);border-radius:99px}
 
     /* ── HEADER ── */
     .hdr{
-      position:fixed;inset:0 0 auto;height:54px;z-index:100;
-      display:flex;align-items:center;justify-content:space-between;padding:0 18px;
-      background:rgba(5,5,8,.95);border-bottom:1px solid var(--border);
-      backdrop-filter:blur(20px);
+      position:fixed;inset:0 0 auto;height:52px;z-index:50;
+      display:flex;align-items:center;justify-content:space-between;padding:0 20px;
+      background:rgba(7,6,14,.97);border-bottom:1px solid var(--brd);backdrop-filter:blur(20px);
     }
-    .hdr-l{display:flex;align-items:center;gap:10px}
-    .hdr-logo{
-      width:32px;height:32px;border-radius:8px;flex-shrink:0;
+    .hl{display:flex;align-items:center;gap:10px}
+    .logo{
+      width:30px;height:30px;border-radius:8px;
       background:linear-gradient(135deg,#6d28d9,#a855f7);
       display:flex;align-items:center;justify-content:center;
-      box-shadow:0 0 18px rgba(168,85,247,.3);
+      box-shadow:0 0 14px rgba(168,85,247,.3);flex-shrink:0;
     }
-    .hdr-logo svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.5}
-    .hdr-wordmark{font-size:13px;font-weight:800;color:#fff;letter-spacing:-.02em}
-    .hdr-wordmark span{color:var(--pl)}
-    .hdr-pipe{width:1px;height:16px;background:rgba(168,85,247,.2)}
-    .hdr-tag{font-size:11px;color:var(--dim);font-weight:500}
-    .hdr-r{display:flex;align-items:center;gap:8px}
-    .clock-chip{
-      font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;
-      color:var(--pl);padding:4px 11px;border-radius:7px;letter-spacing:.05em;
-      background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.15);
-    }
-    .hdr-action{
-      display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;
-      font-size:11.5px;font-weight:600;cursor:pointer;transition:.15s;
-      background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.15);color:var(--pl);
-      font-family:'Inter',sans-serif;
-    }
-    .hdr-action:hover{background:rgba(168,85,247,.12);border-color:var(--border2)}
-    .hdr-action svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+    .logo svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5}
+    .wm{font-size:13.5px;font-weight:800;color:#fff;letter-spacing:-.02em}
+    .wm b{color:var(--pl);font-weight:800}
+    .pipe{width:1px;height:14px;background:var(--brd)}
+    .wtag{font-size:11px;color:var(--faint);font-weight:500}
+    .hr{display:flex;align-items:center;gap:8px}
+    .clk{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--pl);padding:4px 10px;border-radius:6px;background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.14);letter-spacing:.04em}
+    .hbtn{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;transition:.14s;background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.14);color:var(--pl);font-family:'Inter',sans-serif}
+    .hbtn:hover{background:rgba(168,85,247,.12);border-color:var(--brd2)}
+    .hbtn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
 
-    /* ── LAYOUT ── */
-    .shell{
-      position:fixed;top:54px;inset-x:0;bottom:0;
-      display:grid;grid-template-columns:228px 1fr 360px;overflow:hidden;
-    }
+    /* ── BODY ── */
+    .body{position:fixed;top:52px;inset-x:0;bottom:0;display:flex;overflow:hidden}
 
-    /* ── PANEL BASE ── */
-    .col{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
-    .col:last-child{border-right:none}
-    .col-body{flex:1;overflow-y:auto;padding:14px 14px 20px}
+    /* ── FORM SIDE ── */
+    .form-side{flex:0 0 520px;display:flex;flex-direction:column;border-right:1px solid var(--brd);background:var(--c1);overflow:hidden}
+    .form-scroll{flex:1;overflow-y:auto;padding:18px}
 
-    .col-head{
-      flex-shrink:0;padding:12px 14px;border-bottom:1px solid var(--border);
-      background:linear-gradient(180deg,rgba(168,85,247,.04) 0%,transparent 100%);
-    }
-    .col-head-label{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--p)}
-    .col-head-sub{font-size:11px;color:var(--faint);margin-top:1px}
-
-    /* ── PANELS BG ── */
-    .col-left {background:var(--s1)}
-    .col-mid  {background:var(--s2)}
-    .col-right{background:var(--s3);display:flex;flex-direction:column}
-
-    /* ── FORM ── */
-    .fg{margin-bottom:12px}
-    .fg:last-child{margin-bottom:0}
-    .fl{
-      display:block;font-size:9.5px;font-weight:700;text-transform:uppercase;
-      letter-spacing:.08em;color:var(--faint);margin-bottom:5px;
-    }
-    .fl .r{color:#f87171}
-    input[type=text],select,textarea{
-      width:100%;padding:8px 11px;font-size:12.5px;font-family:'Inter',sans-serif;
-      background:rgba(255,255,255,.025);border:1px solid rgba(168,85,247,.13);
-      border-radius:8px;color:var(--text);outline:none;transition:.15s;-webkit-appearance:none;
-    }
-    input[type=text]::placeholder,textarea::placeholder{color:rgba(139,148,168,.45);font-size:12px}
-    input[type=text]:focus,select:focus,textarea:focus{
-      border-color:rgba(168,85,247,.45);background:rgba(168,85,247,.035);
-      box-shadow:0 0 0 3px rgba(168,85,247,.08);
-    }
-    select{cursor:pointer;color-scheme:dark}
-    textarea{resize:vertical;line-height:1.55}
-
-    /* ── PROFILE CARD ── */
-    .prof{
-      display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:9px;
-      margin-bottom:14px;
-      background:linear-gradient(135deg,rgba(109,40,217,.12),rgba(168,85,247,.06));
-      border:1px solid rgba(168,85,247,.18);
-    }
-    .prof-av{
-      width:34px;height:34px;border-radius:8px;flex-shrink:0;
-      background:linear-gradient(135deg,#6d28d9,#a855f7);
-      display:flex;align-items:center;justify-content:center;
-      font-size:13px;font-weight:800;color:#fff;text-transform:uppercase;
-      box-shadow:0 2px 8px rgba(168,85,247,.3);
-    }
-    .prof-name{font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .prof-meta{font-size:10px;color:var(--faint);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-    /* ── SAVE ROW ── */
-    .save-row{display:flex;gap:5px;margin-top:14px}
-    .sbtn{
-      flex:1;display:flex;align-items:center;justify-content:center;gap:4px;
-      padding:7px 6px;border-radius:8px;font-size:10.5px;font-weight:700;
-      cursor:pointer;transition:.15s;border:1px solid transparent;font-family:'Inter',sans-serif;
-    }
-    .sbtn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
-    .sb-save  {background:rgba(34,197,94,.09); border-color:rgba(34,197,94,.2); color:#86efac}
-    .sb-exp   {background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.2);color:#93c5fd}
-    .sb-imp   {background:rgba(168,85,247,.07);border-color:rgba(168,85,247,.2);color:var(--pl)}
-    .sb-save:hover{background:rgba(34,197,94,.16)}
-    .sb-exp:hover {background:rgba(59,130,246,.16)}
-    .sb-imp:hover {background:rgba(168,85,247,.14)}
-
-    /* ── SECTION LABEL ── */
-    .seclbl{
-      display:flex;align-items:center;gap:7px;
-      font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--faint);
-      margin:14px 0 10px;
-    }
-    .seclbl::before{content:'';width:3px;height:10px;border-radius:2px;background:var(--p);flex-shrink:0}
-
-    /* ── TYPE PILLS ── */
-    .type-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-    .tp{
-      display:flex;align-items:center;gap:6px;
-      padding:6px 12px;border-radius:20px;cursor:pointer;transition:.15s;
-      font-size:11.5px;font-weight:600;font-family:'Inter',sans-serif;
-      background:rgba(255,255,255,.03);border:1px solid rgba(168,85,247,.14);color:var(--dim);
-    }
-    .tp:hover{background:rgba(168,85,247,.08);border-color:rgba(168,85,247,.28);color:var(--pl)}
-    .tp.on{
-      background:rgba(168,85,247,.14);border-color:rgba(168,85,247,.45);color:var(--pl);
-      box-shadow:0 0 12px rgba(168,85,247,.12);
-    }
-    .tp svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
-
-    /* ── DIVIDER ── */
-    .div-line{height:1px;background:var(--border);margin:14px 0}
-
-    /* ── MODE TOGGLE ── */
-    .mode-bar{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:7px 11px;border-radius:8px;margin-bottom:10px;
-      background:rgba(168,85,247,.04);border:1px solid rgba(168,85,247,.10);
-    }
-    .mode-txt{font-size:11px;color:var(--faint)}
-    .mode-txt b{color:var(--pl);font-weight:600}
-    .mode-tog{
-      font-size:10.5px;font-weight:700;color:var(--pl);cursor:pointer;
-      padding:3px 9px;border-radius:6px;
-      background:rgba(168,85,247,.09);border:1px solid rgba(168,85,247,.2);
-      transition:.15s;font-family:'Inter',sans-serif;
-    }
-    .mode-tog:hover{background:rgba(168,85,247,.17)}
-
-    /* ── COUNTER ── */
-    .ctr-row{display:flex;justify-content:flex-end;margin-top:3px}
-    .ctr{font-size:10px;color:rgba(107,114,128,.5);font-family:'JetBrains Mono',monospace}
-
-    /* ── GENERATE BTN ── */
-    .gen-btn{
-      width:100%;margin-top:14px;
-      display:flex;align-items:center;justify-content:center;gap:7px;
-      padding:11px;border-radius:10px;font-size:13px;font-weight:800;
-      cursor:pointer;transition:.18s;font-family:'Inter',sans-serif;color:#fff;
-      background:linear-gradient(135deg,#6d28d9 0%,#a855f7 100%);
-      border:1px solid rgba(168,85,247,.4);
-      box-shadow:0 4px 18px rgba(168,85,247,.25),inset 0 1px 0 rgba(255,255,255,.1);
-      letter-spacing:-.01em;
-    }
-    .gen-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(168,85,247,.38)}
-    .gen-btn:active{transform:translateY(0)}
-    .gen-btn svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5}
-
-    /* ── RIGHT PANEL ── */
-    .out-hdr{
-      flex-shrink:0;padding:12px 14px;border-bottom:1px solid var(--border);
-      display:flex;align-items:center;justify-content:space-between;
-      background:linear-gradient(180deg,rgba(168,85,247,.05) 0%,transparent 100%);
-    }
-    .out-hdr-l{display:flex;align-items:center;gap:8px}
-    .out-dot{width:8px;height:8px;border-radius:50%;background:var(--p);box-shadow:0 0 6px rgba(168,85,247,.5)}
-    .out-title{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--p)}
-    .out-lines{font-size:9.5px;color:var(--faint);font-family:'JetBrains Mono',monospace}
-
+    /* ── OUTPUT SIDE ── */
+    .out-side{flex:1;display:flex;flex-direction:column;background:var(--c3)}
+    .out-top{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--brd);background:rgba(168,85,247,.03)}
+    .out-ttl{display:flex;align-items:center;gap:7px}
+    .out-dot{width:7px;height:7px;border-radius:50%;background:var(--p);box-shadow:0 0 6px rgba(168,85,247,.5)}
+    .out-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--p)}
+    .out-meta{font-size:10px;color:var(--faint);font-family:'JetBrains Mono',monospace}
     #output-box{
       flex:1;overflow-y:auto;padding:16px;width:100%;
-      font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;
-      color:#d4bbff;background:transparent;border:none;outline:none;
-      resize:none;white-space:pre;overflow-x:auto;
+      font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.85;
+      color:#c8b0ff;background:transparent;border:none;outline:none;resize:none;
+      white-space:pre;overflow-x:hidden;
     }
-    #output-box::placeholder{color:rgba(107,114,128,.3);font-size:11.5px;font-style:italic;font-family:'JetBrains Mono',monospace}
+    #output-box::placeholder{color:rgba(90,100,120,.4);font-style:italic;font-size:11.5px}
+    .out-btns{flex-shrink:0;display:flex;gap:5px;padding:10px 12px;border-top:1px solid var(--brd)}
+    .ob{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;transition:.14s;font-family:'Inter',sans-serif;border:1px solid transparent}
+    .ob svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+    .ob-cp{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.2);color:#93c5fd}
+    .ob-dl{background:rgba(168,85,247,.07);border-color:rgba(168,85,247,.18);color:var(--pl)}
+    .ob-cl{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.17);color:#fca5a5}
+    .ob-cp:hover{background:rgba(59,130,246,.16)}
+    .ob-dl:hover{background:rgba(168,85,247,.14)}
+    .ob-cl:hover{background:rgba(239,68,68,.13)}
 
-    .out-actions{
-      flex-shrink:0;display:flex;gap:5px;padding:10px 12px;
-      border-top:1px solid var(--border);
-      background:rgba(168,85,247,.02);
+    /* ── CARDS ── */
+    .card{background:var(--c2);border:1px solid var(--brd);border-radius:10px;margin-bottom:12px;overflow:hidden}
+    .card:last-child{margin-bottom:0}
+    .card-hdr{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:10px 14px;border-bottom:1px solid var(--brd);cursor:pointer;
+      background:linear-gradient(90deg,rgba(168,85,247,.04),transparent);
     }
-    .oa{
-      flex:1;display:flex;align-items:center;justify-content:center;gap:5px;
-      padding:8px 6px;border-radius:8px;font-size:11px;font-weight:700;
-      cursor:pointer;transition:.15s;font-family:'Inter',sans-serif;border:1px solid transparent;
+    .card-hdr-l{display:flex;align-items:center;gap:7px}
+    .card-hdr-dot{width:6px;height:6px;border-radius:50%;background:var(--p);box-shadow:0 0 5px rgba(168,85,247,.4)}
+    .card-hdr-ttl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--pl)}
+    .card-body{padding:12px 14px}
+
+    /* ── OFFICER ROW ── */
+    .officer-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .officer-row .fg-full{grid-column:1/-1}
+
+    /* ── PROFILE PILL ── */
+    .prof-pill{
+      display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;margin-bottom:12px;
+      background:linear-gradient(90deg,rgba(109,40,217,.1),rgba(168,85,247,.04));
+      border:1px solid rgba(168,85,247,.18);
     }
-    .oa svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
-    .oa-copy{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.2);color:#93c5fd}
-    .oa-dl  {background:rgba(168,85,247,.07);border-color:rgba(168,85,247,.18);color:var(--pl)}
-    .oa-clr {background:rgba(239,68,68,.07); border-color:rgba(239,68,68,.18); color:#fca5a5}
-    .oa-copy:hover{background:rgba(59,130,246,.17)}
-    .oa-dl:hover  {background:rgba(168,85,247,.14)}
-    .oa-clr:hover {background:rgba(239,68,68,.14)}
+    .pav{width:32px;height:32px;border-radius:7px;flex-shrink:0;background:linear-gradient(135deg,#6d28d9,#a855f7);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;text-transform:uppercase;box-shadow:0 2px 8px rgba(168,85,247,.25)}
+    .pname{font-size:12px;font-weight:700;color:#fff}
+    .pmeta{font-size:10px;color:var(--faint);margin-top:1px}
+
+    /* ── FORM ELEMENTS ── */
+    .fg{margin-bottom:9px}
+    .fg:last-child{margin-bottom:0}
+    .fl{display:block;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin-bottom:4px}
+    .fl .r{color:#f87171}
+    input[type=text],select,textarea{
+      width:100%;padding:7px 10px;font-size:12.5px;font-family:'Inter',sans-serif;
+      background:rgba(255,255,255,.025);border:1px solid rgba(168,85,247,.12);
+      border-radius:7px;color:var(--txt);outline:none;transition:.14s;-webkit-appearance:none;
+    }
+    input::placeholder,textarea::placeholder{color:rgba(132,148,168,.4);font-size:12px}
+    input:focus,select:focus,textarea:focus{border-color:rgba(168,85,247,.42);background:rgba(168,85,247,.03);box-shadow:0 0 0 3px rgba(168,85,247,.07)}
+    select{cursor:pointer;color-scheme:dark}
+    textarea{resize:none;line-height:1.5}
+
+    /* ── SAVE BTNS ── */
+    .save-row{display:flex;gap:5px;margin-top:10px}
+    .sbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:6px;border-radius:7px;font-size:10.5px;font-weight:700;cursor:pointer;transition:.14s;border:1px solid transparent;font-family:'Inter',sans-serif}
+    .sbtn svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2}
+    .ss{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.18);color:#86efac}
+    .se{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.18);color:#93c5fd}
+    .si{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.18);color:var(--pl)}
+    .ss:hover{background:rgba(34,197,94,.15)}.se:hover{background:rgba(59,130,246,.15)}.si:hover{background:rgba(168,85,247,.12)}
+
+    /* ── TYPE PILLS ── */
+    .types{display:flex;flex-wrap:wrap;gap:5px}
+    .tp{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;cursor:pointer;transition:.14s;font-size:11.5px;font-weight:600;font-family:'Inter',sans-serif;background:rgba(255,255,255,.025);border:1px solid rgba(168,85,247,.12);color:var(--dim)}
+    .tp svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2}
+    .tp:hover{background:rgba(168,85,247,.08);border-color:rgba(168,85,247,.25);color:var(--pl)}
+    .tp.on{background:rgba(168,85,247,.13);border-color:rgba(168,85,247,.4);color:var(--pl);box-shadow:0 0 10px rgba(168,85,247,.1)}
+
+    /* ── MODE ── */
+    .mode-row{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:7px;margin:9px 0;background:rgba(168,85,247,.04);border:1px solid rgba(168,85,247,.09)}
+    .mode-txt{font-size:10.5px;color:var(--faint)}.mode-txt b{color:var(--pl);font-weight:600}
+    .mode-tog{font-size:10.5px;font-weight:700;color:var(--pl);cursor:pointer;padding:3px 8px;border-radius:5px;background:rgba(168,85,247,.09);border:1px solid rgba(168,85,247,.18);transition:.14s;font-family:'Inter',sans-serif}
+    .mode-tog:hover{background:rgba(168,85,247,.16)}
+    .ctr-row{display:flex;justify-content:flex-end;margin-top:3px}
+    .ctr{font-size:9.5px;color:rgba(90,100,120,.5);font-family:'JetBrains Mono',monospace}
+
+    /* ── GENERATE ── */
+    .gen{
+      width:100%;margin-top:12px;
+      display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;
+      border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;transition:.16s;
+      font-family:'Inter',sans-serif;color:#fff;letter-spacing:-.01em;
+      background:linear-gradient(135deg,#6d28d9,#a855f7);
+      border:1px solid rgba(168,85,247,.35);
+      box-shadow:0 4px 16px rgba(168,85,247,.22),inset 0 1px 0 rgba(255,255,255,.1);
+    }
+    .gen:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(168,85,247,.35)}
+    .gen:active{transform:none}
+    .gen svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2.5}
 
     /* ── TOAST ── */
-    #toast{
-      position:fixed;bottom:20px;right:20px;z-index:9999;
-      padding:9px 16px;border-radius:9px;font-size:12.5px;font-weight:600;
-      color:var(--pl);background:#160d28;border:1px solid rgba(168,85,247,.3);
-      box-shadow:0 8px 24px rgba(0,0,0,.7);display:none;
-      animation:slideUp .2s ease;
-    }
-    @keyframes slideUp{from{transform:translateY(6px);opacity:0}to{transform:translateY(0);opacity:1}}
-    #file-input{display:none}
+    #toast{position:fixed;bottom:18px;right:18px;z-index:9999;padding:8px 15px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--pl);background:#160d28;border:1px solid rgba(168,85,247,.3);box-shadow:0 6px 22px rgba(0,0,0,.7);display:none;animation:su .18s ease}
+    @keyframes su{from{transform:translateY(6px);opacity:0}to{transform:translateY(0);opacity:1}}
+    #fi{display:none}
 
     /* ── MODAL ── */
-    .modal-bg{
-      display:none;position:fixed;inset:0;z-index:300;
-      background:rgba(0,0,0,.8);backdrop-filter:blur(10px);
-      overflow-y:auto;padding:36px 16px;
-    }
-    .modal-inner{
-      max-width:660px;margin:0 auto;
-      background:#0e0b1a;border:1px solid rgba(168,85,247,.22);border-radius:14px;overflow:hidden;
-    }
-    .modal-top{
-      padding:18px 22px;border-bottom:1px solid rgba(168,85,247,.1);
-      display:flex;align-items:center;justify-content:space-between;
-    }
-    .modal-top-ttl{font-size:14px;font-weight:800;color:#fff}
-    .modal-x{
-      width:28px;height:28px;display:flex;align-items:center;justify-content:center;
-      border-radius:7px;cursor:pointer;font-size:16px;
-      background:none;border:none;color:var(--faint);transition:.15s;
-    }
-    .modal-x:hover{background:rgba(255,255,255,.06);color:#fff}
-    .modal-grid{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .mc{padding:14px;border-radius:10px;border:1px solid}
-    .mc-ttl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px}
-    .mc-body{font-size:11.5px;color:#c4c9d4;line-height:2}
+    .mbg{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);overflow-y:auto;padding:32px 16px}
+    .mbox{max-width:640px;margin:0 auto;background:#0e0b1a;border:1px solid rgba(168,85,247,.2);border-radius:13px;overflow:hidden}
+    .mhd{padding:16px 20px;border-bottom:1px solid rgba(168,85,247,.1);display:flex;align-items:center;justify-content:space-between}
+    .mhd-ttl{font-size:14px;font-weight:800;color:#fff}
+    .mx{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;font-size:16px;background:none;border:none;color:var(--faint);transition:.14s}
+    .mx:hover{background:rgba(255,255,255,.06);color:#fff}
+    .mgrid{padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .mc{padding:12px;border-radius:9px;border:1px solid}
+    .mcttl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+    .mcbody{font-size:11.5px;color:#c4c9d4;line-height:1.9}
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="hdr">
-  <div class="hdr-l">
-    <div class="hdr-logo">
-      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    </div>
-    <span class="hdr-wordmark">Next&nbsp;RP&nbsp;<span>AIRS</span></span>
-    <div class="hdr-pipe"></div>
-    <span class="hdr-tag">Report Generator</span>
+  <div class="hl">
+    <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    <span class="wm">Next&nbsp;RP&nbsp;<b>AIRS</b></span>
+    <div class="pipe"></div>
+    <span class="wtag">Report Generator</span>
   </div>
-  <div class="hdr-r">
-    <div class="clock-chip" id="clock">00:00:00</div>
-    <button class="hdr-action" onclick="openCheatsheet()">
+  <div class="hr">
+    <div class="clk" id="clock">00:00:00</div>
+    <button class="hbtn" onclick="openCS()">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       Police Cheat Sheet
     </button>
   </div>
 </header>
 
-<!-- MAIN SHELL -->
-<div class="shell">
+<div class="body">
 
-  <!-- ═══ LEFT: Officer Details ═══ -->
-  <div class="col col-left">
-    <div class="col-head">
-      <div class="col-head-label">Officer Details</div>
-      <div class="col-head-sub">Your persistent profile</div>
-    </div>
-    <div class="col-body">
+  <!-- ═══ FORM SIDE ═══ -->
+  <div class="form-side">
+    <div class="form-scroll">
 
-      <div class="prof" id="prof-card">
-        <div class="prof-av" id="av">?</div>
-        <div>
-          <div class="prof-name" id="pv-name">Display name</div>
-          <div class="prof-meta" id="pv-meta">RECRUIT · GENERAL DUTIES</div>
+      <!-- Officer Details Card -->
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-hdr-l">
+            <div class="card-hdr-dot"></div>
+            <span class="card-hdr-ttl">Officer Details</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="prof-pill">
+            <div class="pav" id="av">?</div>
+            <div><div class="pname" id="pv-n">Display name</div><div class="pmeta" id="pv-m">RECRUIT · GENERAL DUTIES</div></div>
+          </div>
+          <div class="officer-row">
+            <div class="fg fg-full">
+              <label class="fl">Name <span class="r">*</span></label>
+              <input type="text" id="p-name" placeholder="Display name / IC name" oninput="updProf();live()" />
+            </div>
+            <div class="fg">
+              <label class="fl">Rank <span class="r">*</span></label>
+              <select id="p-rank" onchange="updProf();live()">
+                <option>RECRUIT</option><option>PROBATIONARY CONSTABLE</option><option>CONSTABLE</option>
+                <option>SENIOR CONSTABLE</option><option>LEADING SENIOR CONSTABLE</option>
+                <option>DETECTIVE CONSTABLE</option><option>SERGEANT</option>
+                <option>DETECTIVE SERGEANT</option><option>SENIOR SERGEANT</option>
+                <option>DETECTIVE SENIOR SERGEANT</option><option>INSPECTOR</option>
+                <option>SENIOR INSPECTOR</option><option>SUPERINTENDENT</option>
+                <option>COMMANDER</option><option>DEPUTY COMMISSIONER</option><option>COMMISSIONER</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label class="fl">Callsign <span class="r">*</span></label>
+              <input type="text" id="p-callsign" placeholder="e.g. 107" oninput="live()" />
+            </div>
+            <div class="fg fg-full">
+              <label class="fl">Division <span class="r">*</span></label>
+              <select id="p-division" onchange="updProf();live()">
+                <option>GENERAL DUTIES</option><option>ORU HIGHWAY</option><option>CRIME COMMAND</option>
+                <option>CIRT</option><option>AIRWING</option><option>MARINE</option>
+                <option>SHERIFFS OFFICE</option><option>LEGAL SERVICES</option><option>COMMISSIONERS OFFICE</option>
+              </select>
+            </div>
+          </div>
+          <div class="save-row">
+            <button class="sbtn ss" onclick="saveProf()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Save</button>
+            <button class="sbtn se" onclick="expJSON()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>Export JSON</button>
+            <button class="sbtn si" onclick="document.getElementById('fi').click()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/></svg>Import JSON</button>
+          </div>
+          <input type="file" id="fi" accept=".json" onchange="impJSON(event)" />
         </div>
       </div>
 
-      <div class="fg">
-        <label class="fl">Name <span class="r">*</span></label>
-        <input type="text" id="p-name" placeholder="Display name / IC name" oninput="updateProf();liveUpdate()" />
-      </div>
-      <div class="fg">
-        <label class="fl">Rank <span class="r">*</span></label>
-        <select id="p-rank" onchange="updateProf();liveUpdate()">
-          <option>RECRUIT</option>
-          <option>PROBATIONARY CONSTABLE</option>
-          <option>CONSTABLE</option>
-          <option>SENIOR CONSTABLE</option>
-          <option>LEADING SENIOR CONSTABLE</option>
-          <option>DETECTIVE CONSTABLE</option>
-          <option>SERGEANT</option>
-          <option>DETECTIVE SERGEANT</option>
-          <option>SENIOR SERGEANT</option>
-          <option>DETECTIVE SENIOR SERGEANT</option>
-          <option>INSPECTOR</option>
-          <option>SENIOR INSPECTOR</option>
-          <option>SUPERINTENDENT</option>
-          <option>COMMANDER</option>
-          <option>DEPUTY COMMISSIONER</option>
-          <option>COMMISSIONER</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label class="fl">Callsign <span class="r">*</span></label>
-        <input type="text" id="p-callsign" placeholder="e.g. 107" oninput="liveUpdate()" />
-      </div>
-      <div class="fg">
-        <label class="fl">Division <span class="r">*</span></label>
-        <select id="p-division" onchange="updateProf();liveUpdate()">
-          <option>GENERAL DUTIES</option>
-          <option>ORU HIGHWAY</option>
-          <option>CRIME COMMAND</option>
-          <option>CIRT</option>
-          <option>AIRWING</option>
-          <option>MARINE</option>
-          <option>SHERIFFS OFFICE</option>
-          <option>LEGAL SERVICES</option>
-          <option>COMMISSIONERS OFFICE</option>
-        </select>
-      </div>
+      <!-- Report Details Card -->
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-hdr-l">
+            <div class="card-hdr-dot"></div>
+            <span class="card-hdr-ttl">Report Details</span>
+          </div>
+        </div>
+        <div class="card-body">
 
-      <div class="save-row">
-        <button class="sbtn sb-save" onclick="saveProf()">
-          <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
-          Save
-        </button>
-        <button class="sbtn sb-exp" onclick="exportJSON()">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
-          Export
-        </button>
-        <button class="sbtn sb-imp" onclick="document.getElementById('file-input').click()">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/></svg>
-          Import
-        </button>
+          <div class="fg">
+            <label class="fl">Report Type <span class="r">*</span></label>
+            <div class="types">
+              <button class="tp on" data-type="INCIDENT REPORT" onclick="selType(this)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Incident</button>
+              <button class="tp" data-type="TRAFFIC STOP REPORT" onclick="selType(this)"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Traffic Stop</button>
+              <button class="tp" data-type="ARREST REPORT" onclick="selType(this)"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Arrest</button>
+              <button class="tp" data-type="SEARCH &amp; SEIZURE REPORT" onclick="selType(this)"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Search &amp; Seizure</button>
+              <button class="tp" data-type="VEHICLE PURSUIT REPORT" onclick="selType(this)"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Vehicle Pursuit</button>
+              <button class="tp" data-type="USE OF FORCE REPORT" onclick="selType(this)"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Use of Force</button>
+            </div>
+          </div>
+
+          <div id="xf"></div>
+
+          <div class="fg" style="margin-top:10px">
+            <label class="fl">Evidence <span class="r">*</span></label>
+            <textarea id="r-ev" rows="3" placeholder="One item per line" oninput="live()"></textarea>
+          </div>
+          <div class="fg">
+            <label class="fl">Charges <span class="r">*</span></label>
+            <textarea id="r-ch" rows="3" placeholder="One item per line" oninput="live()"></textarea>
+          </div>
+
+          <div class="mode-row">
+            <span class="mode-txt">Mode: <b id="mlbl">Free Text</b></span>
+            <button class="mode-tog" onclick="toggleMode()">Switch to Structured Mode</button>
+          </div>
+
+          <div class="fg">
+            <label class="fl" id="nlbl">Report Narrative</label>
+            <textarea id="r-nr" rows="5" placeholder="Write the narrative here..." oninput="updCtr();live()"></textarea>
+            <div class="ctr-row"><span class="ctr" id="ctr">0 chars</span></div>
+          </div>
+
+          <div class="fg">
+            <label class="fl">Supervisor Approved</label>
+            <input type="text" id="r-sv" placeholder="Name / Callsign" oninput="live()" />
+          </div>
+
+          <button class="gen" onclick="live()">
+            <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            Generate Report
+          </button>
+
+        </div>
       </div>
-      <input type="file" id="file-input" accept=".json" onchange="importJSON(event)" />
 
     </div>
   </div>
 
-  <!-- ═══ MIDDLE: Report Fields ═══ -->
-  <div class="col col-mid">
-    <div class="col-head">
-      <div class="col-head-label">Report Details</div>
-      <div class="col-head-sub">Select type then fill in the fields</div>
-    </div>
-    <div class="col-body">
-
-      <div class="seclbl">Report Type</div>
-
-      <div class="type-pills">
-        <button class="tp on" data-type="INCIDENT REPORT" onclick="selectType(this)">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          Incident
-        </button>
-        <button class="tp" data-type="TRAFFIC STOP REPORT" onclick="selectType(this)">
-          <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-          Traffic Stop
-        </button>
-        <button class="tp" data-type="ARREST REPORT" onclick="selectType(this)">
-          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          Arrest
-        </button>
-        <button class="tp" data-type="SEARCH &amp; SEIZURE REPORT" onclick="selectType(this)">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          Search &amp; Seizure
-        </button>
-        <button class="tp" data-type="VEHICLE PURSUIT REPORT" onclick="selectType(this)">
-          <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          Vehicle Pursuit
-        </button>
-        <button class="tp" data-type="USE OF FORCE REPORT" onclick="selectType(this)">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Use of Force
-        </button>
-      </div>
-
-      <div id="extra-fields"></div>
-
-      <div class="seclbl">Report Content</div>
-
-      <div class="fg">
-        <label class="fl">Evidence <span class="r">*</span></label>
-        <textarea id="r-evidence" rows="3" placeholder="One item per line" oninput="liveUpdate()"></textarea>
-      </div>
-      <div class="fg">
-        <label class="fl">Charges <span class="r">*</span></label>
-        <textarea id="r-charges" rows="3" placeholder="One item per line" oninput="liveUpdate()"></textarea>
-      </div>
-
-      <div class="mode-bar">
-        <span class="mode-txt">Mode: <b id="mode-lbl">Free Text</b></span>
-        <button class="mode-tog" onclick="toggleMode()">Switch to Structured Mode</button>
-      </div>
-
-      <div class="fg">
-        <label class="fl" id="narr-label">Report Narrative</label>
-        <textarea id="r-narrative" rows="6" placeholder="Write the narrative here..." oninput="updateCtr();liveUpdate()"></textarea>
-        <div class="ctr-row"><span class="ctr" id="char-ct">0 chars</span></div>
-      </div>
-
-      <div class="fg">
-        <label class="fl">Supervisor Approved</label>
-        <input type="text" id="r-supervisor" placeholder="Name / Callsign" oninput="liveUpdate()" />
-      </div>
-
-      <button class="gen-btn" onclick="liveUpdate()">
-        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        Generate Report
-      </button>
-
-    </div>
-  </div>
-
-  <!-- ═══ RIGHT: Output ═══ -->
-  <div class="col col-right">
-    <div class="out-hdr">
-      <div class="out-hdr-l">
+  <!-- ═══ OUTPUT SIDE ═══ -->
+  <div class="out-side">
+    <div class="out-top">
+      <div class="out-ttl">
         <div class="out-dot"></div>
-        <div class="out-title">Generated Report</div>
+        <div class="out-label">Generated Report</div>
       </div>
-      <div class="out-lines" id="out-lines">— empty —</div>
+      <div class="out-meta" id="ometa">— empty —</div>
     </div>
     <textarea id="output-box" spellcheck="false" placeholder="Fill in the form to generate your report..."></textarea>
-    <div class="out-actions">
-      <button class="oa oa-copy" onclick="copyReport()">
-        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-        Copy Report
-      </button>
-      <button class="oa oa-dl" onclick="dlReport()">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
-        Download .txt
-      </button>
-      <button class="oa oa-clr" onclick="clearAll()">
-        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
-        Clear
-      </button>
+    <div class="out-btns">
+      <button class="ob ob-cp" onclick="cpReport()"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy Report</button>
+      <button class="ob ob-dl" onclick="dlReport()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>Download .txt</button>
+      <button class="ob ob-cl" onclick="clearAll()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Clear</button>
     </div>
   </div>
 
@@ -481,30 +326,18 @@
 
 <div id="toast"></div>
 
-<!-- MODAL -->
-<div class="modal-bg" id="cs-modal" onclick="if(event.target===this)this.style.display='none'">
-  <div class="modal-inner">
-    <div class="modal-top">
-      <div class="modal-top-ttl">Police Cheat Sheet</div>
-      <button class="modal-x" onclick="document.getElementById('cs-modal').style.display='none'">×</button>
+<!-- CHEAT SHEET MODAL -->
+<div class="mbg" id="csm" onclick="if(event.target===this)this.style.display='none'">
+  <div class="mbox">
+    <div class="mhd">
+      <div class="mhd-ttl">Police Cheat Sheet</div>
+      <button class="mx" onclick="document.getElementById('csm').style.display='none'">×</button>
     </div>
-    <div class="modal-grid">
-      <div class="mc" style="background:rgba(168,85,247,.05);border-color:rgba(168,85,247,.15)">
-        <div class="mc-ttl" style="color:#a855f7">Common Charges</div>
-        <div class="mc-body">Assault · GBH · Murder<br>Robbery · Armed Robbery · Burglary<br>Theft · Grand Theft Auto · Fraud<br>Drug Possession · Drug Trafficking<br>Evading Police · Reckless Driving<br>Weapons Possession · Obstruct Police<br>Resist Arrest · Disorderly Conduct</div>
-      </div>
-      <div class="mc" style="background:rgba(59,130,246,.05);border-color:rgba(59,130,246,.15)">
-        <div class="mc-ttl" style="color:#60a5fa">Radio Codes</div>
-        <div class="mc-body">10-4 — Acknowledged<br>10-7 — Out of Service<br>10-8 — In Service<br>10-10 — Off Duty<br>10-20 — Location<br>10-23 — Arrived on Scene<br>Code 1 — Routine · Code 2 — Urgent<br>Code 3 — Emergency</div>
-      </div>
-      <div class="mc" style="background:rgba(34,197,94,.05);border-color:rgba(34,197,94,.15)">
-        <div class="mc-ttl" style="color:#4ade80">Pursuit Protocols</div>
-        <div class="mc-body">Call out vehicle + direction<br>Request supervisor authorisation<br>Max 2 units unless approved<br>Abandon if risk outweighs benefit<br>Document: start/end, speeds,<br>reason, outcome &amp; all units</div>
-      </div>
-      <div class="mc" style="background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.15)">
-        <div class="mc-ttl" style="color:#fbbf24">Use of Force Scale</div>
-        <div class="mc-body">1 — Verbal commands<br>2 — Physical restraint<br>3 — OC Spray / Taser<br>4 — Baton / Less-lethal<br>5 — Lethal force (last resort)<br>Document ALL levels used</div>
-      </div>
+    <div class="mgrid">
+      <div class="mc" style="background:rgba(168,85,247,.04);border-color:rgba(168,85,247,.14)"><div class="mcttl" style="color:#a855f7">Common Charges</div><div class="mcbody">Assault · GBH · Murder<br>Robbery · Armed Robbery<br>Theft · Grand Theft Auto<br>Drug Possession · Trafficking<br>Evading Police · Reckless Driving<br>Weapons Possession<br>Obstruct Police · Resist Arrest</div></div>
+      <div class="mc" style="background:rgba(59,130,246,.04);border-color:rgba(59,130,246,.14)"><div class="mcttl" style="color:#60a5fa">Radio Codes</div><div class="mcbody">10-4 — Acknowledged<br>10-7 — Out of Service<br>10-8 — In Service<br>10-20 — Location<br>10-23 — Arrived on Scene<br>Code 1 — Routine<br>Code 2 — Urgent · Code 3 — Emergency</div></div>
+      <div class="mc" style="background:rgba(34,197,94,.04);border-color:rgba(34,197,94,.14)"><div class="mcttl" style="color:#4ade80">Pursuit Protocols</div><div class="mcbody">Call out vehicle + direction<br>Request supervisor authorisation<br>Max 2 units unless approved<br>Abandon if risk outweighs benefit<br>Document start/end, speeds,<br>reason, outcome &amp; all units</div></div>
+      <div class="mc" style="background:rgba(245,158,11,.04);border-color:rgba(245,158,11,.14)"><div class="mcttl" style="color:#fbbf24">Use of Force Scale</div><div class="mcbody">1 — Verbal commands<br>2 — Physical restraint<br>3 — OC Spray / Taser<br>4 — Baton / Less-lethal<br>5 — Lethal force (last resort)<br>Document ALL levels used</div></div>
     </div>
   </div>
 </div>
@@ -517,52 +350,40 @@
   /* AEST */
   function aest(){const n=new Date();return{t:n.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',timeZone:'Australia/Melbourne',hour12:false}),d:n.toLocaleDateString('en-AU',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'Australia/Melbourne'})}}
 
-  /* Type select */
+  /* Types */
   let cType='INCIDENT REPORT';
-  function selectType(el){
-    document.querySelectorAll('.tp').forEach(b=>b.classList.remove('on'));
-    el.classList.add('on');cType=el.dataset.type;
-    renderExtras();liveUpdate();
-  }
-
-  /* Extra fields */
-  const EXTRAS={
-    'TRAFFIC STOP REPORT':[{id:'x-plate',l:'Vehicle Plate',ph:'e.g. ABC123'},{id:'x-veh',l:'Vehicle Description',ph:'Make / Model / Colour'},{id:'x-driver',l:'Driver Name',ph:'First Last'}],
-    'ARREST REPORT':[{id:'x-sus',l:'Suspect Name',ph:'First Last'},{id:'x-dob',l:'Suspect DOB',ph:'DD/MM/YYYY'}],
-    'SEARCH & SEIZURE REPORT':[{id:'x-subj',l:'Subject / Premises',ph:'Name or address'},{id:'x-wno',l:'Warrant No.',ph:'If applicable'}],
-    'VEHICLE PURSUIT REPORT':[{id:'x-veh',l:'Fleeing Vehicle',ph:'Make / Model / Plate'},{id:'x-sl',l:'Start Location',ph:'Street / Area'},{id:'x-el',l:'End Location',ph:'Where terminated'},{id:'x-dur',l:'Duration',ph:'e.g. 4 minutes'}],
-    'USE OF FORCE REPORT':[{id:'x-subj',l:'Subject Name',ph:'First Last'},{id:'x-thr',l:'Threat Level',ph:'e.g. Level 3 – Taser'},{id:'x-frc',l:'Force Used',ph:'Describe force applied'}],
+  const EX={
+    'TRAFFIC STOP REPORT':[{id:'xp',l:'Vehicle Plate',p:'e.g. ABC123'},{id:'xv',l:'Vehicle Description',p:'Make / Model / Colour'},{id:'xd',l:'Driver Name',p:'First Last'}],
+    'ARREST REPORT':[{id:'xs',l:'Suspect Name',p:'First Last'},{id:'xb',l:'Suspect DOB',p:'DD/MM/YYYY'}],
+    'SEARCH & SEIZURE REPORT':[{id:'xsj',l:'Subject / Premises',p:'Name or address'},{id:'xw',l:'Warrant No.',p:'If applicable'}],
+    'VEHICLE PURSUIT REPORT':[{id:'xpv',l:'Fleeing Vehicle',p:'Make / Model / Plate'},{id:'xsl',l:'Start Location',p:'Street / Area'},{id:'xel',l:'End Location',p:'Where terminated'},{id:'xdu',l:'Duration',p:'e.g. 4 minutes'}],
+    'USE OF FORCE REPORT':[{id:'xuf',l:'Subject Name',p:'First Last'},{id:'xth',l:'Threat Level',p:'e.g. Level 3 – Taser'},{id:'xfc',l:'Force Used',p:'Describe force applied'}],
   };
-  function renderExtras(){
-    const fs=EXTRAS[cType]||[];
-    document.getElementById('extra-fields').innerHTML=fs.length
-      ?`<div class="seclbl">Additional Details</div>`+fs.map(f=>`<div class="fg"><label class="fl">${f.l}</label><input type="text" id="${f.id}" placeholder="${f.ph}" oninput="liveUpdate()" /></div>`).join('')
+
+  function selType(el){document.querySelectorAll('.tp').forEach(b=>b.classList.remove('on'));el.classList.add('on');cType=el.dataset.type;renderXF();live()}
+  function renderXF(){
+    const fs=EX[cType]||[];
+    document.getElementById('xf').innerHTML=fs.length
+      ?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">`+fs.map(f=>`<div class="fg"><label class="fl">${f.l}</label><input type="text" id="${f.id}" placeholder="${f.p}" oninput="live()" /></div>`).join('')+`</div>`
       :'';
   }
-  renderExtras();
+  renderXF();
   function gx(id){const e=document.getElementById(id);return e?e.value.trim():''}
 
-  /* Profile card */
-  function updateProf(){
+  /* Profile */
+  function updProf(){
     const n=document.getElementById('p-name').value.trim();
     const r=document.getElementById('p-rank').value;
     const d=document.getElementById('p-division').value;
-    const ini=n?n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase():'?';
-    document.getElementById('av').textContent=ini;
-    document.getElementById('pv-name').textContent=n||'Display name';
-    document.getElementById('pv-meta').textContent=r+' · '+d;
+    document.getElementById('av').textContent=n?n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase():'?';
+    document.getElementById('pv-n').textContent=n||'Display name';
+    document.getElementById('pv-m').textContent=r+' · '+d;
   }
 
   /* Mode */
   let sMode=false;
-  function toggleMode(){
-    sMode=!sMode;
-    document.getElementById('narr-label').textContent=sMode?'Report (Structured)':'Report Narrative';
-    document.querySelector('.mode-tog').textContent=sMode?'Switch to Free Text Mode':'Switch to Structured Mode';
-    document.getElementById('mode-lbl').textContent=sMode?'Structured':'Free Text';
-    liveUpdate();
-  }
-  function updateCtr(){const n=(document.getElementById('r-narrative').value||'').length;document.getElementById('char-ct').textContent=n+' chars'}
+  function toggleMode(){sMode=!sMode;document.getElementById('nlbl').textContent=sMode?'Report (Structured)':'Report Narrative';document.querySelector('.mode-tog').textContent=sMode?'Switch to Free Text Mode':'Switch to Structured Mode';document.getElementById('mlbl').textContent=sMode?'Structured':'Free Text';live()}
+  function updCtr(){document.getElementById('ctr').textContent=(document.getElementById('r-nr').value||'').length+' chars'}
 
   /* Footer */
   function footer(){
@@ -570,7 +391,7 @@
     const r=document.getElementById('p-rank').value;
     const c=(document.getElementById('p-callsign').value||'').trim();
     const d=document.getElementById('p-division').value;
-    const s=(document.getElementById('r-supervisor').value||'').trim();
+    const s=(document.getElementById('r-sv').value||'').trim();
     let f=`Signed,\n${n||'[NAME]'}\n${r} | ${c||'[CALLSIGN]'}\n${d} | MELBOURNE POLICE`;
     if(s)f+=`\n\nSupervisor Approved: ${s}`;
     return f;
@@ -579,42 +400,35 @@
   /* Build */
   function build(){
     const{t,d}=aest();
-    const ev=(document.getElementById('r-evidence').value||'').trim();
-    const ch=(document.getElementById('r-charges').value||'').trim();
-    const nr=(document.getElementById('r-narrative').value||'').trim();
-    const xs=EXTRAS[cType]||[];
+    const ev=(document.getElementById('r-ev').value||'').trim();
+    const ch=(document.getElementById('r-ch').value||'').trim();
+    const nr=(document.getElementById('r-nr').value||'').trim();
+    const xs=EX[cType]||[];
     let o=`${cType}\nTIME: ${t}\nDATE: ${d}\n`;
-    for(const f of xs){const v=gx(f.id);if(v)o+=`${f.l.toUpperCase()}: ${v}\n`;}
+    xs.forEach(f=>{const v=gx(f.id);if(v)o+=`${f.l.toUpperCase()}: ${v}\n`});
     o+=`EVIDENCE:\n${ev}\n\nCHARGES:\n${ch}\n\nREPORT:\n${nr}\n\n\n${footer()}`;
     return o;
   }
 
-  /* Live update */
-  function liveUpdate(){
-    const o=build();
-    document.getElementById('output-box').value=o;
-    document.getElementById('out-lines').textContent=o.split('\n').length+' lines';
-    updateCtr();
-  }
+  /* Live */
+  function live(){const o=build();document.getElementById('output-box').value=o;document.getElementById('ometa').textContent=o.split('\n').length+' lines';updCtr()}
 
   /* Actions */
-  function copyReport(){const t=document.getElementById('output-box').value;if(!t.trim())return;navigator.clipboard.writeText(t).then(()=>toast('✓ Copied to clipboard'))}
+  function cpReport(){const t=document.getElementById('output-box').value;if(!t.trim())return;navigator.clipboard.writeText(t).then(()=>toast('✓ Copied to clipboard'))}
   function dlReport(){const t=document.getElementById('output-box').value;if(!t.trim())return;const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(t);a.download=`AIRS_${cType.replace(/\s+/g,'_')}_${Date.now()}.txt`;a.click()}
-  function clearAll(){['r-evidence','r-charges','r-narrative','r-supervisor'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});(EXTRAS[cType]||[]).forEach(f=>{const e=document.getElementById(f.id);if(e)e.value=''});document.getElementById('output-box').value='';document.getElementById('out-lines').textContent='— empty —';updateCtr()}
+  function clearAll(){['r-ev','r-ch','r-nr','r-sv'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});(EX[cType]||[]).forEach(f=>{const e=document.getElementById(f.id);if(e)e.value=''});document.getElementById('output-box').value='';document.getElementById('ometa').textContent='— empty —';updCtr()}
+  function toast(m){const e=document.getElementById('toast');e.textContent=m;e.style.display='block';setTimeout(()=>e.style.display='none',2000)}
 
-  /* Toast */
-  function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.style.display='block';setTimeout(()=>e.style.display='none',2000)}
-
-  /* Save / Export / Import */
+  /* Save/Export/Import */
   function saveProf(){localStorage.setItem('airs_rp',JSON.stringify({name:document.getElementById('p-name').value,rank:document.getElementById('p-rank').value,callsign:document.getElementById('p-callsign').value,division:document.getElementById('p-division').value}));toast('✓ Profile saved')}
-  function exportJSON(){const d={profile:{name:document.getElementById('p-name').value,rank:document.getElementById('p-rank').value,callsign:document.getElementById('p-callsign').value,division:document.getElementById('p-division').value},report:{type:cType,evidence:document.getElementById('r-evidence').value,charges:document.getElementById('r-charges').value,narrative:document.getElementById('r-narrative').value,supervisor:document.getElementById('r-supervisor').value}};const a=document.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(d,null,2));a.download=`AIRS_report_${Date.now()}.json`;a.click()}
-  function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.profile){['name','rank','callsign','division'].forEach(k=>{if(d.profile[k])document.getElementById('p-'+k).value=d.profile[k]});updateProf()}if(d.report){if(d.report.type){cType=d.report.type;document.querySelectorAll('.tp').forEach(b=>b.classList.toggle('on',b.dataset.type===cType));renderExtras()}['evidence','charges','narrative','supervisor'].forEach(k=>{if(d.report[k])document.getElementById('r-'+k).value=d.report[k]})}liveUpdate();toast('✓ Report imported')}catch{alert('Invalid JSON')}};r.readAsText(f);e.target.value=''}
+  function expJSON(){const d={profile:{name:document.getElementById('p-name').value,rank:document.getElementById('p-rank').value,callsign:document.getElementById('p-callsign').value,division:document.getElementById('p-division').value},report:{type:cType,evidence:document.getElementById('r-ev').value,charges:document.getElementById('r-ch').value,narrative:document.getElementById('r-nr').value,supervisor:document.getElementById('r-sv').value}};const a=document.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(d,null,2));a.download=`AIRS_report_${Date.now()}.json`;a.click()}
+  function impJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.profile){['name','rank','callsign','division'].forEach(k=>{if(d.profile[k])document.getElementById('p-'+k).value=d.profile[k]});updProf()}if(d.report){if(d.report.type){cType=d.report.type;document.querySelectorAll('.tp').forEach(b=>b.classList.toggle('on',b.dataset.type===cType));renderXF()}['evidence','charges','narrative','supervisor'].forEach(k=>{const id={'evidence':'r-ev','charges':'r-ch','narrative':'r-nr','supervisor':'r-sv'}[k];if(id&&d.report[k])document.getElementById(id).value=d.report[k]})}live();toast('✓ Imported')}catch{alert('Invalid JSON')}};r.readAsText(f);e.target.value=''}
 
   /* Modal */
-  function openCheatsheet(){document.getElementById('cs-modal').style.display='block'}
+  function openCS(){document.getElementById('csm').style.display='block'}
 
   /* Boot */
-  (function(){const s=localStorage.getItem('airs_rp');if(s){try{const p=JSON.parse(s);['name','rank','callsign','division'].forEach(k=>{if(p[k])document.getElementById('p-'+k).value=p[k]});updateProf();liveUpdate()}catch{}}})();
+  (function(){const s=localStorage.getItem('airs_rp');if(s){try{const p=JSON.parse(s);['name','rank','callsign','division'].forEach(k=>{if(p[k])document.getElementById('p-'+k).value=p[k]});updProf();live()}catch{}}})();
 </script>
 </body>
 </html>
