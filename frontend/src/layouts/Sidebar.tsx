@@ -184,7 +184,6 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
   ];
 
   const statusConf = STATUS_CONFIG[currentStatus];
-  const user = auth.user;
 
   const SidebarContent = (
     <div className="h-full flex flex-col select-none" style={{ background: '#06060a', borderRight: '1px solid rgba(168,85,247,0.12)' }}>
