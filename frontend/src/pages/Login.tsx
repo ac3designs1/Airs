@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Shield, Lock, Eye, EyeOff, AlertCircle, UserX, XCircle, ChevronRight } from 'lucide-react';
+import { Shield, Eye, EyeOff, AlertCircle, UserX, XCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const BACKEND_URL = (import.meta.env.VITE_API_BASE_URL || 'https://airs-production-4e96.up.railway.app/api')
@@ -19,6 +19,7 @@ const DISCORD_ERRORS: Record<string, { icon: typeof AlertCircle; msg: string }> 
 
 export default function Login() {
   const [showAdmin, setShowAdmin]   = useState(false);
+  const [tapCount,  setTapCount]    = useState(0);
   const [form, setForm]             = useState({ username: '', password: '' });
   const [showPwd, setShowPwd]       = useState(false);
   const [loading, setLoading]       = useState(false);
@@ -138,23 +139,8 @@ export default function Login() {
               Sign in with Discord
             </button>
 
-            {/* Divider */}
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-px" style={{ background: 'rgba(6,182,212,0.08)' }} />
-              <span className="text-[11px] text-slate-600 font-mono">OR</span>
-              <div className="flex-1 h-px" style={{ background: 'rgba(6,182,212,0.08)' }} />
-            </div>
-
-            {/* Leadership bypass */}
-            {!showAdmin ? (
-              <button onClick={() => setShowAdmin(true)}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-400 transition-colors"
-                style={{ border: '1px solid rgba(6,182,212,0.08)' }}>
-                <Lock className="w-3.5 h-3.5" />
-                Leadership bypass
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            ) : (
+            {/* Leadership bypass — revealed after 5 taps on footer */}
+            {showAdmin && (
               <form onSubmit={handleAdminLogin} className="space-y-3 animate-fade-in">
                 <div className="flex items-center justify-between mb-0.5">
                   <span className="section-label">Leadership access</span>
@@ -198,7 +184,16 @@ export default function Login() {
               No access?{' '}
               <a href="/apply" className="font-semibold transition-colors" style={{ color: '#06b6d4' }}>Apply to join</a>
             </p>
-            <span className="text-[10px] font-mono text-slate-700">All access logged</span>
+            <button
+              onClick={() => {
+                const next = tapCount + 1;
+                setTapCount(next);
+                if (next >= 5) { setShowAdmin(true); setTapCount(0); }
+              }}
+              className="text-[10px] font-mono text-slate-700 hover:text-slate-700 select-none cursor-default"
+              style={{ background: 'none', border: 'none', padding: 0 }}>
+              All access logged
+            </button>
           </div>
         </div>
 
