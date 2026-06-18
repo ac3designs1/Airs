@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
+const apiBaseUrl = (
+  import.meta.env.VITE_API_BASE_URL ||
+  'https://airs-production-4e96.up.railway.app/api'
+).replace(/\/$/, '');
 
 const api = axios.create({
   baseURL: apiBaseUrl,
