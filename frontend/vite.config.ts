@@ -10,28 +10,42 @@ export default defineConfig({
     javaScriptObfuscator({
       apply: 'build',
       options: {
-        // Encrypt string literals so they can't be searched
+        // ── String encryption ───────────────────────────────────
         stringArray: true,
         stringArrayEncoding: ['rc4'],
-        stringArrayThreshold: 0.75,
-        // Rotate the string array to make static analysis harder
+        stringArrayThreshold: 0.85,
         stringArrayRotate: true,
         stringArrayShuffle: true,
-        // Mangle identifiers beyond what esbuild already does
-        identifierNamesGenerator: 'mangled-shuffled',
-        // Rename globals to random names
-        renameGlobals: false,
-        // Inject dead code paths to confuse reverse engineers
-        deadCodeInjection: true,
-        deadCodeInjectionThreshold: 0.2,
-        // Split string literals into chunks
+        stringArrayWrappersCount: 2,
+        stringArrayWrappersChainedCalls: true,
+        stringArrayWrappersParametersMaxCount: 4,
+        stringArrayWrappersType: 'function',
+        // Split strings into small chunks
         splitStrings: true,
-        splitStringsChunkLength: 5,
-        // Disable source map output
+        splitStringsChunkLength: 4,
+        // ── Identifier mangling ──────────────────────────────────
+        identifierNamesGenerator: 'mangled-shuffled',
+        identifiersPrefix: '_0x',
+        renameGlobals: false,
+        renameProperties: false,
+        // ── Control flow obfuscation ────────────────────────────
+        controlFlowFlattening: true,
+        controlFlowFlatteningThreshold: 0.4,
+        // ── Dead code injection ──────────────────────────────────
+        deadCodeInjection: true,
+        deadCodeInjectionThreshold: 0.3,
+        // ── Anti-tamper / anti-debug ────────────────────────────
+        // Breaks DevTools debugger panel continuously
+        debugProtection: true,
+        debugProtectionInterval: 3000,
+        // Makes code crash if a beautifier tries to reformat it
+        selfDefending: true,
+        // Remove all console.* calls from production build
+        disableConsoleOutput: true,
+        // ── Output ──────────────────────────────────────────────
         sourceMap: false,
-        // Compact output
         compact: true,
-        // Skip vendor chunks (react, etc.) — only obfuscate our code
+        // Only obfuscate our app code, not vendor libraries
         exclude: [/node_modules/],
       },
     }),
