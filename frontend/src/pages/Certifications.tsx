@@ -12,15 +12,19 @@ interface CertApp {
   review_notes?: string; reviewed_at?: string; created_at: string;
 }
 
+// Certifications — skill/role based, apply via EOI
 const CERTS = [
-  { name: 'Field Training Officer (FTO)',        category: 'Training',      requirements: ['Senior Constable rank or above', 'Minimum 3 months service', 'No active strikes'] },
-  { name: 'Critical Incident Response (CIRT)',   category: 'Tactical',      requirements: ['FTO Certified', 'Minimum 6 months service', 'Supervisor recommendation'] },
-  { name: 'K9 Handler',                          category: 'Specialist',    requirements: ['Minimum 6 months service', 'No active strikes', 'K9 course completion'] },
-  { name: 'Firearms Instructor',                 category: 'Training',      requirements: ['FTO Certified', 'Minimum 1 year service', 'Marksmanship qualification'] },
-  { name: 'Traffic Investigator',                category: 'Specialist',    requirements: ['Minimum 4 months service', 'Traffic enforcement training'] },
-  { name: 'Detective',                           category: 'Investigative', requirements: ['Minimum 9 months service', 'Supervisor recommendation', 'Detective exam pass'] },
-  { name: 'SOG Operator',                        category: 'Tactical',      requirements: ['CIRT Certified', 'Minimum 12 months service', 'Commander approval'] },
-  { name: 'Highway Patrol',                      category: 'Specialist',    requirements: ['Minimum 3 months service', 'Advanced driver training'] },
+  { name: 'Field Training Officer (FTO)', category: 'Training',      requirements: ['Senior Constable rank or above', 'Minimum 3 months service', 'No active strikes'] },
+  { name: 'K9 Handler',                   category: 'Specialist',    requirements: ['Minimum 6 months service', 'No active strikes', 'K9 course completion'] },
+  { name: 'Firearms Instructor',          category: 'Training',      requirements: ['FTO Certified', 'Minimum 1 year service', 'Marksmanship qualification'] },
+  { name: 'Traffic Investigator',         category: 'Specialist',    requirements: ['Minimum 4 months service', 'Traffic enforcement training'] },
+  { name: 'Detective',                    category: 'Investigative', requirements: ['Minimum 9 months service', 'Supervisor recommendation', 'Detective exam pass'] },
+];
+
+// Division EOIs — transfer requests, separate questions
+const DIVISION_EOIS = [
+  { name: 'CIRT',           category: 'Tactical',  requirements: ['FTO Certified', 'Minimum 6 months service', 'Supervisor recommendation', 'No active strikes'] },
+  { name: 'Highway Patrol', category: 'Highway',   requirements: ['Minimum 3 months service', 'Advanced driver training', 'Clean service record'] },
 ];
 
 const CAT_COLORS: Record<string, string> = {
@@ -28,10 +32,12 @@ const CAT_COLORS: Record<string, string> = {
   Tactical:      'chip-red',
   Specialist:    'chip-purple',
   Investigative: 'chip-indigo',
+  Highway:       'chip-gold',
 };
-const LEADERSHIP = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
+const LEADERSHIP = ['commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
-const BLANK_EOI = { why_interested: '', skills: '', goals: '' };
+const BLANK_EOI  = { why_interested: '', skills: '', goals: '' };
+const BLANK_DIV  = { div_bring: '', div_time: '', div_goals: '' };
 
 export default function Certifications() {
   const { auth } = useAuth();
@@ -41,7 +47,9 @@ export default function Certifications() {
   const [catFilter, setCatFilter] = useState('');
   const [view, setView] = useState<'mine' | 'all'>('mine');
   const [applyingCert, setApplyingCert] = useState<string | null>(null);
+  const [applyingDiv,  setApplyingDiv]  = useState<string | null>(null);
   const [eoi, setEoi] = useState({ ...BLANK_EOI });
+  const [divEoi, setDivEoi] = useState({ ...BLANK_DIV });
   const [submitting, setSubmitting] = useState(false);
   const [reviewTarget, setReviewTarget] = useState<CertApp | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
@@ -74,6 +82,22 @@ export default function Certifications() {
     } finally { setSubmitting(false); }
   };
 
+  const submitDivEOI = async (e: React.FormEvent) => {
+    e.preventDefault(); setSubmitting(true);
+    try {
+      const div = DIVISION_EOIS.find(d => d.name === applyingDiv);
+      await api.post('/certifications', {
+        cert_name: `Division Transfer — ${applyingDiv}`,
+        cert_category: div?.category ?? 'Division',
+        why_interested: divEoi.div_bring,
+        skills: divEoi.div_time,
+        goals: divEoi.div_goals,
+      });
+      await load();
+      setApplyingDiv(null); setDivEoi({ ...BLANK_DIV });
+    } finally { setSubmitting(false); }
+  };
+
   const updateStatus = async (id: string, status: 'approved' | 'denied') => {
     await api.put(`/certifications/${id}`, { status, review_notes: reviewNotes });
     await load();
@@ -81,7 +105,17 @@ export default function Certifications() {
   };
 
   const cats = [...new Set(CERTS.map(c => c.category))];
-  const displayedApps = apps.filter(a => view === 'mine' ? a.officer_name === `${auth.user?.first_name} ${auth.user?.last_name}` : true);
+  const myName = `${auth.user?.first_name} ${auth.user?.last_name}`;
+  const displayedApps = apps.filter(a => view === 'mine' ? a.officer_name === myName : true);
+
+  const getDivStatus = (divName: string) => {
+    const key = `Division Transfer — ${divName}`;
+    const mine = apps.filter(a => a.cert_name === key);
+    if (!mine.length) return 'not_applied';
+    if (mine.some(a => a.status === 'approved')) return 'approved';
+    if (mine.some(a => a.status === 'pending')) return 'pending';
+    return 'denied';
+  };
   const pendingCount = apps.filter(a => a.status === 'pending').length;
 
   return (
@@ -158,51 +192,173 @@ export default function Certifications() {
           ))}
         </div>
       ) : (
-        /* Certification catalogue */
-        <div className="grid sm:grid-cols-2 gap-4">
-          {CERTS.filter(c => !catFilter || c.category === catFilter).map(cert => {
-            const myStatus = getMyStatus(cert.name);
-            return (
-              <div key={cert.name} className="glass rounded-xl p-5 transition-all hover:border-amber-500/15"
-                style={{ borderColor: myStatus === 'approved' ? 'rgba(34,197,94,0.20)' : myStatus === 'pending' ? 'rgba(234,179,8,0.20)' : undefined }}>
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1.5">
+        <div className="space-y-6">
+
+          {/* ── Certifications ─────────────────────────────── */}
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <Award className="w-4 h-4 text-amber-400" />
+              <span className="text-sm font-bold text-white">Certifications</span>
+              <span className="text-xs text-slate-600">Skill &amp; role qualifications</span>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {CERTS.filter(c => !catFilter || c.category === catFilter).map(cert => {
+                const myStatus = getMyStatus(cert.name);
+                return (
+                  <div key={cert.name} className="glass rounded-xl p-5 transition-all hover:border-amber-500/15"
+                    style={{ borderColor: myStatus === 'approved' ? 'rgba(34,197,94,0.20)' : myStatus === 'pending' ? 'rgba(234,179,8,0.20)' : undefined }}>
+                    <div className="flex items-center gap-2 mb-2">
                       <span className={`chip text-[10px] ${CAT_COLORS[cert.category] ?? 'chip-gray'}`}>{cert.category}</span>
                       {myStatus === 'approved' && <span className="chip chip-green text-[10px] flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" />Certified</span>}
-                      {myStatus === 'pending' && <span className="chip chip-yellow text-[10px] flex items-center gap-1"><Clock className="w-2.5 h-2.5" />Pending</span>}
-                      {myStatus === 'denied' && <span className="chip chip-red text-[10px]">Denied</span>}
+                      {myStatus === 'pending'  && <span className="chip chip-yellow text-[10px] flex items-center gap-1"><Clock className="w-2.5 h-2.5" />Pending</span>}
+                      {myStatus === 'denied'   && <span className="chip chip-red text-[10px]">Denied</span>}
                     </div>
-                    <h3 className="font-semibold text-white text-sm">{cert.name}</h3>
+                    <h3 className="font-semibold text-white text-sm mb-3">{cert.name}</h3>
+                    <div className="space-y-1 mb-4">
+                      {cert.requirements.map((r, i) => (
+                        <div key={i} className="flex items-center gap-2 text-xs text-slate-600">
+                          <div className="w-1 h-1 rounded-full bg-slate-700 flex-shrink-0" />{r}
+                        </div>
+                      ))}
+                    </div>
+                    {myStatus === 'not_applied' && (
+                      <button onClick={() => { setApplyingCert(cert.name); setEoi({ ...BLANK_EOI }); }}
+                        className="w-full py-2 rounded-xl text-sm font-semibold text-white transition-all hover:brightness-110"
+                        style={{ background: 'linear-gradient(135deg,#b45309,#d97706)' }}>
+                        Apply for Certification
+                      </button>
+                    )}
+                    {myStatus === 'denied' && (
+                      <button onClick={() => { setApplyingCert(cert.name); setEoi({ ...BLANK_EOI }); }}
+                        className="w-full py-2 rounded-xl text-sm font-medium text-slate-300 border border-slate-700/50 hover:border-amber-500/30 transition-all">
+                        Re-apply
+                      </button>
+                    )}
                   </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ── Division EOIs ───────────────────────────────── */}
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-4 h-4 rounded flex items-center justify-center" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
+                <ChevronRight className="w-3 h-3 text-cyan-400" />
+              </div>
+              <span className="text-sm font-bold text-white">Division EOIs</span>
+              <span className="text-xs text-slate-600">Expression of Interest to transfer divisions</span>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {DIVISION_EOIS.map(div => {
+                const myStatus = getDivStatus(div.name);
+                return (
+                  <div key={div.name} className="glass rounded-xl p-5 transition-all hover:border-cyan-500/15"
+                    style={{ borderColor: myStatus === 'approved' ? 'rgba(34,197,94,0.20)' : myStatus === 'pending' ? 'rgba(6,182,212,0.20)' : undefined }}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`chip text-[10px] ${CAT_COLORS[div.category] ?? 'chip-cyan'}`}>{div.category}</span>
+                      <span className="chip chip-cyan text-[10px]">Division EOI</span>
+                      {myStatus === 'approved' && <span className="chip chip-green text-[10px] flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" />Accepted</span>}
+                      {myStatus === 'pending'  && <span className="chip chip-yellow text-[10px] flex items-center gap-1"><Clock className="w-2.5 h-2.5" />Pending</span>}
+                      {myStatus === 'denied'   && <span className="chip chip-red text-[10px]">Unsuccessful</span>}
+                    </div>
+                    <h3 className="font-semibold text-white text-sm mb-3">{div.name}</h3>
+                    <div className="space-y-1 mb-4">
+                      {div.requirements.map((r, i) => (
+                        <div key={i} className="flex items-center gap-2 text-xs text-slate-600">
+                          <div className="w-1 h-1 rounded-full bg-slate-700 flex-shrink-0" />{r}
+                        </div>
+                      ))}
+                    </div>
+                    {myStatus === 'not_applied' && (
+                      <button onClick={() => { setApplyingDiv(div.name); setDivEoi({ ...BLANK_DIV }); }}
+                        className="w-full py-2 rounded-xl text-sm font-semibold text-white transition-all hover:brightness-110"
+                        style={{ background: 'linear-gradient(135deg,#0891b2,#0284c7)' }}>
+                        Submit Division EOI
+                      </button>
+                    )}
+                    {myStatus === 'denied' && (
+                      <button onClick={() => { setApplyingDiv(div.name); setDivEoi({ ...BLANK_DIV }); }}
+                        className="w-full py-2 rounded-xl text-sm font-medium text-slate-300 border border-slate-700/50 hover:border-cyan-500/30 transition-all">
+                        Re-apply
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* SOG — invite only notice */}
+              <div className="glass rounded-xl p-5 opacity-50">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="chip chip-red text-[10px]">Tactical</span>
+                  <span className="chip chip-gray text-[10px]">Invite Only</span>
                 </div>
+                <h3 className="font-semibold text-slate-400 text-sm mb-3">SOG</h3>
                 <div className="space-y-1 mb-4">
-                  {cert.requirements.map((r, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs text-slate-600">
-                      <div className="w-1 h-1 rounded-full bg-slate-700 flex-shrink-0" />{r}
+                  {['CIRT experience required', 'Minimum 12 months service', 'Selected by Commander invitation only'].map((r, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-slate-700">
+                      <div className="w-1 h-1 rounded-full bg-slate-800 flex-shrink-0" />{r}
                     </div>
                   ))}
                 </div>
-                {myStatus === 'not_applied' && (
-                  <button onClick={() => { setApplyingCert(cert.name); setEoi({ ...BLANK_EOI }); }}
-                    className="w-full py-2 rounded-xl text-sm font-semibold text-white transition-all hover:brightness-110"
-                    style={{ background: 'linear-gradient(135deg,#b45309,#d97706)' }}>
-                    Apply for Certification
-                  </button>
-                )}
-                {myStatus === 'denied' && (
-                  <button onClick={() => { setApplyingCert(cert.name); setEoi({ ...BLANK_EOI }); }}
-                    className="w-full py-2 rounded-xl text-sm font-medium text-slate-300 border border-slate-700/50 hover:border-amber-500/30 transition-all">
-                    Re-apply
-                  </button>
-                )}
+                <div className="w-full py-2 rounded-xl text-sm font-semibold text-slate-600 text-center flex items-center justify-center gap-2"
+                  style={{ background: 'rgba(71,85,105,0.12)', border: '1px solid rgba(71,85,105,0.20)' }}>
+                  <Lock className="w-3.5 h-3.5" /> Invite Only — Not Open for Applications
+                </div>
               </div>
-            );
-          })}
+            </div>
+          </div>
+
         </div>
       )}
 
-      {/* EOI Modal */}
+      {/* Division EOI Modal */}
+      {applyingDiv && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
+            style={{ background: 'rgba(8,12,24,0.99)', border: '1px solid rgba(6,182,212,0.20)' }}>
+            <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
+              style={{ borderBottom: '1px solid rgba(6,182,212,0.12)', background: 'rgba(6,182,212,0.05)' }}>
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
+                  <FileText className="w-4 h-4 text-cyan-400" />
+                </div>
+                <div>
+                  <div className="text-base font-bold text-white">Division EOI</div>
+                  <div className="text-xs text-cyan-400/70 mt-0.5">{applyingDiv} Division Transfer</div>
+                </div>
+              </div>
+              <button onClick={() => setApplyingDiv(null)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <form onSubmit={submitDivEOI} className="p-6 space-y-5 overflow-y-auto">
+              {[
+                { k: 'div_bring', l: 'What can you bring to this division?',            p: 'Describe your skills, experience, and qualities relevant to this division…' },
+                { k: 'div_time',  l: 'How long have you been in your current division?', p: 'e.g. 3 months in GD, previously in Highway for 1 month…' },
+                { k: 'div_goals', l: 'What are your long-term goals in this division?',  p: 'Where do you see yourself and how will you contribute long-term…' },
+              ].map(q => (
+                <div key={q.k}>
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">{q.l} <span className="text-rose-400">*</span></label>
+                  <textarea required rows={3} value={(divEoi as Record<string, string>)[q.k]}
+                    onChange={e => setDivEoi(p => ({ ...p, [q.k]: e.target.value }))}
+                    placeholder={q.p} className="nx-input w-full resize-none text-sm" />
+                </div>
+              ))}
+              <div className="flex gap-3">
+                <button type="button" onClick={() => setApplyingDiv(null)} className="flex-1 py-2.5 rounded-xl border border-slate-700/50 text-slate-400 text-sm hover:text-white">Cancel</button>
+                <button type="submit" disabled={submitting}
+                  className="flex-1 py-2.5 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2"
+                  style={{ background: 'linear-gradient(135deg,#0891b2,#0284c7)' }}>
+                  <FileText className="w-4 h-4" />{submitting ? 'Submitting…' : 'Submit EOI'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Cert EOI Modal */}
       {applyingCert && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
