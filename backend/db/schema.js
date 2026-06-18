@@ -28,6 +28,8 @@ function initDb() {
       callsign TEXT,
       avatar_url TEXT,
       role TEXT NOT NULL DEFAULT 'officer',
+      discord_id TEXT UNIQUE,
+      discord_username TEXT,
       created_at TEXT DEFAULT (datetime('now')),
       last_login TEXT
     );
@@ -402,6 +404,10 @@ function initDb() {
       UNIQUE(recruit_officer_id)
     );
   `);
+
+  // Migrate existing databases — add new columns if they don't exist
+  try { db.exec('ALTER TABLE officers ADD COLUMN discord_id TEXT UNIQUE'); } catch {}
+  try { db.exec('ALTER TABLE officers ADD COLUMN discord_username TEXT'); } catch {}
 
   // Seed only the admin account — no preset officers
   const existing = db.prepare('SELECT id FROM officers WHERE username = ?').get('admin');

@@ -84,6 +84,7 @@ function createApp(options = {}) {
   app.use('/api/auth/login', authLimiter);
   app.use('/api/auth/register', authLimiter);
   app.use('/api/auth', require('./routes/auth'));
+  app.use('/api/auth/discord', require('./routes/discord_auth'));
 
   app.post('/api/applications', publicFormLimiter);
 

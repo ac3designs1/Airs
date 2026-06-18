@@ -24,6 +24,7 @@ interface AuthContextType {
   setAuth: React.Dispatch<React.SetStateAction<AuthState>>;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  setToken: (token: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -58,6 +59,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setAuth({ user: officer, loading: false });
   };
 
+  const setToken = async (token: string) => {
+    localStorage.setItem('airs_token', token);
+    const res = await api.get('/auth/me');
+    localStorage.setItem('airs_user', JSON.stringify(res.data));
+    setAuth({ user: res.data, loading: false });
+  };
+
   const logout = async () => {
     try { await api.post('/auth/logout'); } catch {}
     localStorage.removeItem('airs_token');
@@ -66,7 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, login, logout }}>
+    <AuthContext.Provider value={{ auth, setAuth, login, logout, setToken }}>
       {children}
     </AuthContext.Provider>
   );

@@ -37,6 +37,7 @@ import Announcements from './pages/Announcements';
 import Promotions from './pages/Promotions';
 import Strikes from './pages/Strikes';
 import Apply from './pages/Apply';
+import DiscordCallback from './pages/DiscordCallback';
 import LeadershipApplications from './pages/LeadershipApplications';
 import Citizens from './pages/Citizens';
 import Vehicles from './pages/Vehicles';
@@ -53,6 +54,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/apply" element={<Apply />} />
+          <Route path="/auth/discord" element={<DiscordCallback />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
           {/* Dashboard routes */}
