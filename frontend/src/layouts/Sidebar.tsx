@@ -105,13 +105,6 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
       ],
     },
     {
-      id: 'records', title: 'MDT Records', icon: Database, accentColor: '#0ea5e9',
-      items: [
-        { id: 'citizens', title: 'Citizen Records', path: '/citizens', icon: Users },
-        { id: 'vehicles', title: 'Vehicles / Plates', path: '/vehicles', icon: Car },
-      ],
-    },
-    {
       id: 'myrecords', title: 'My Records', icon: BookOpen, accentColor: '#a78bfa',
       items: [
         { id: 'leave', title: 'Leave Requests', path: '/leave-requests', icon: ArrowRightLeft },
