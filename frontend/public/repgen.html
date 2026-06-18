@@ -3,893 +3,686 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Next RP — Report Suite</title>
+  <title>Next RP — AIRS Report Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #06060a;
-      --surface:  #0d0a14;
-      --card:     #110d1c;
-      --border:   rgba(168,85,247,0.16);
-      --purple:   #a855f7;
-      --purple-d: #7c3aed;
-      --purple-l: #c084fc;
-      --text:     #e2e8f0;
-      --muted:    #64748b;
-      --faint:    #1e1628;
+      --bg:      #06060a;
+      --surface: #0d0a14;
+      --card:    #110d1c;
+      --border:  rgba(168,85,247,0.16);
+      --purple:  #a855f7;
+      --purple-d:#7c3aed;
+      --purple-l:#c084fc;
+      --text:    #e2e8f0;
+      --muted:   #64748b;
+      --faint:   #1a1228;
     }
 
     html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      -webkit-font-smoothing: antialiased;
+      height: 100%; background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
 
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.25); border-radius: 99px; }
 
-    /* ── Layout ── */
+    /* ── Header ── */
     .header {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 28px; height: 62px;
-      background: rgba(6,6,10,0.95);
-      border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 58px;
+      background: rgba(6,6,10,0.96); border-bottom: 1px solid var(--border);
       backdrop-filter: blur(14px);
     }
-
-    .header-left { display: flex; align-items: center; gap: 14px; }
-
-    .logo-badge {
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-logo {
+      width: 32px; height: 32px; border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; border-radius: 10px;
       background: linear-gradient(135deg,#7c3aed,#a855f7);
-      box-shadow: 0 0 16px rgba(168,85,247,0.40);
-      flex-shrink: 0;
     }
-    .logo-badge svg { width: 18px; height: 18px; color: white; }
-
-    .logo-text { line-height: 1; }
-    .logo-title { font-size: 14px; font-weight: 900; color: white; letter-spacing: -0.02em; }
-    .logo-sub { font-size: 9px; font-family: 'JetBrains Mono', monospace; font-weight: 600;
-      color: var(--purple); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px; }
-
-    .header-nav { display: flex; align-items: center; gap: 4px; }
-
-    .nav-btn {
-      display: flex; align-items: center; gap: 7px;
-      padding: 7px 14px; border-radius: 10px;
-      font-size: 12.5px; font-weight: 600; color: var(--muted);
-      background: none; border: 1px solid transparent;
-      cursor: pointer; transition: all 0.14s; font-family: 'Inter', sans-serif;
+    .header-logo svg { width: 18px; height: 18px; color: #fff; }
+    .header-title { font-size: 15px; font-weight: 800; color: #fff; }
+    .header-title span { color: var(--purple-l); }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .clock-badge {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      color: var(--purple-l); background: rgba(168,85,247,0.08);
+      border: 1px solid rgba(168,85,247,0.18); border-radius: 8px;
+      padding: 4px 10px; letter-spacing: 0.04em;
     }
-    .nav-btn:hover { background: rgba(168,85,247,0.08); border-color: rgba(168,85,247,0.18); color: var(--text); }
-    .nav-btn.active { background: rgba(168,85,247,0.14); border-color: rgba(168,85,247,0.30); color: var(--purple-l); }
-    .nav-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
-
-    .clock {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px; font-weight: 600;
-      color: var(--purple-l);
-      padding: 6px 14px; border-radius: 10px;
-      background: rgba(168,85,247,0.07);
-      border: 1px solid rgba(168,85,247,0.15);
-      letter-spacing: 0.04em;
-    }
-
-    .online-dot {
+    .hdr-btn {
       display: flex; align-items: center; gap: 6px;
-      font-size: 10px; font-family: 'JetBrains Mono', monospace;
-      color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+      padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
+      background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.18);
+      color: var(--purple-l); transition: all .15s;
     }
-    .online-dot::before {
-      content: ''; display: block;
-      width: 7px; height: 7px; border-radius: 50%;
-      background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.9);
-      animation: pulse 2s ease-in-out infinite;
+    .hdr-btn:hover { background: rgba(168,85,247,0.16); }
+    .hdr-btn svg { width: 14px; height: 14px; }
+
+    /* ── 3-Column Layout ── */
+    .workspace {
+      display: grid;
+      grid-template-columns: 260px 1fr 340px;
+      gap: 0; height: calc(100vh - 58px); overflow: hidden;
     }
 
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-
-    /* ── Main content ── */
-    .main { max-width: 1100px; margin: 0 auto; padding: 36px 24px 80px; }
-
-    .page-title {
-      font-size: 28px; font-weight: 900; color: white;
-      letter-spacing: -0.03em; margin-bottom: 6px;
+    .panel {
+      display: flex; flex-direction: column; overflow-y: auto;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
     }
-    .page-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
-
-    /* ── Report type selector ── */
-    .section-label {
-      font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
-      text-transform: uppercase; color: rgba(168,85,247,0.60);
-      margin-bottom: 12px;
+    .panel:last-child { border-right: none; }
+    .panel-right {
+      display: flex; flex-direction: column; overflow-y: auto;
+      background: #0a0814;
     }
 
-    .report-types {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
-      gap: 10px; margin-bottom: 28px;
+    .panel-header {
+      padding: 16px 16px 12px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+      background: inherit; backdrop-filter: blur(8px);
     }
+    .panel-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .panel-body { padding: 14px; flex: 1; }
 
-    .report-type-btn {
-      display: flex; flex-direction: column; align-items: flex-start;
-      gap: 6px; padding: 16px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; cursor: pointer; transition: all 0.15s;
-      text-align: left; font-family: 'Inter', sans-serif;
+    /* ── Form Elements ── */
+    label {
+      display: block; font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .06em;
+      color: var(--muted); margin-bottom: 5px; margin-top: 12px;
     }
-    .report-type-btn:hover { border-color: rgba(168,85,247,0.30); background: #160f28; }
-    .report-type-btn.selected {
-      border-color: var(--purple); background: rgba(168,85,247,0.10);
-      box-shadow: 0 0 20px rgba(168,85,247,0.12);
-    }
-    .report-type-btn .rt-icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.22);
-      margin-bottom: 2px;
-    }
-    .report-type-btn.selected .rt-icon { background: rgba(168,85,247,0.22); }
-    .report-type-btn .rt-icon svg { width: 18px; height: 18px; color: var(--purple-l); }
-    .report-type-btn .rt-name { font-size: 13px; font-weight: 700; color: white; }
-    .report-type-btn .rt-desc { font-size: 11px; color: var(--muted); }
+    label:first-child { margin-top: 0; }
+    label .req { color: #f87171; }
 
-    /* ── Form ── */
-    .form-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; overflow: hidden; margin-bottom: 20px;
+    input[type="text"], select, textarea {
+      width: 100%; padding: 8px 11px; font-size: 13px; font-family: 'Inter', sans-serif;
+      background: rgba(168,85,247,0.04); border: 1px solid rgba(168,85,247,0.16);
+      border-radius: 8px; color: var(--text); outline: none; transition: border .15s;
+      -webkit-appearance: none;
     }
-    .form-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid rgba(168,85,247,0.08);
-      background: rgba(168,85,247,0.03);
+    input[type="text"]:focus, select:focus, textarea:focus {
+      border-color: rgba(168,85,247,0.45); box-shadow: 0 0 0 3px rgba(168,85,247,0.08);
     }
-    .form-header-title { font-size: 14px; font-weight: 800; color: white; }
-    .form-header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    select { cursor: pointer; color-scheme: dark; }
+    textarea { resize: vertical; font-family: 'Inter', sans-serif; line-height: 1.5; }
 
-    .form-body { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .form-body.single-col { grid-template-columns: 1fr; }
-    .form-body.three-col { grid-template-columns: 1fr 1fr 1fr; }
-
-    .field { display: flex; flex-direction: column; gap: 5px; }
-    .field.full { grid-column: 1/-1; }
-    .field label {
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.08em; color: rgba(168,85,247,0.65);
-    }
-    .field input, .field select, .field textarea {
-      width: 100%; background: rgba(168,85,247,0.05);
-      border: 1.5px solid rgba(168,85,247,0.16);
-      border-radius: 10px; color: var(--text);
-      padding: 10px 13px; font-family: 'Inter', sans-serif;
-      font-size: 13.5px; outline: none;
-      transition: border-color 0.16s, box-shadow 0.16s;
-      appearance: none; -webkit-appearance: none;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus {
-      border-color: rgba(168,85,247,0.50);
-      box-shadow: 0 0 0 3px rgba(168,85,247,0.09);
-    }
-    .field input::placeholder, .field textarea::placeholder { color: rgba(100,116,139,0.50); }
-    .field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-    .field select option { background: #110d1c; }
-
-    /* ── Output ── */
-    .output-section { margin-top: 20px; }
-    #output-box {
-      width: 100%; min-height: 240px;
-      background: rgba(0,0,0,0.3); border: 1.5px solid rgba(168,85,247,0.18);
-      border-radius: 12px; color: #c084fc;
-      padding: 16px; font-family: 'JetBrains Mono', monospace;
-      font-size: 12.5px; line-height: 1.8;
-      outline: none; resize: vertical;
-      white-space: pre-wrap;
-    }
-
-    .action-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-
+    /* ── Buttons ── */
+    .btn-row { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
     .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 20px; border-radius: 11px;
-      font-size: 13px; font-weight: 700; cursor: pointer;
-      transition: all 0.14s; font-family: 'Inter', sans-serif;
-      border: 1px solid transparent;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 13px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all .15s; border: 1px solid transparent; font-family: 'Inter', sans-serif;
     }
-    .btn-primary {
+    .btn svg { width: 13px; height: 13px; }
+    .btn-save { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.25); color: #86efac; }
+    .btn-save:hover { background: rgba(34,197,94,0.20); }
+    .btn-export { background: rgba(59,130,246,0.10); border-color: rgba(59,130,246,0.25); color: #93c5fd; }
+    .btn-export:hover { background: rgba(59,130,246,0.18); }
+    .btn-import { background: rgba(168,85,247,0.08); border-color: rgba(168,85,247,0.22); color: var(--purple-l); }
+    .btn-import:hover { background: rgba(168,85,247,0.16); }
+    .btn-generate {
+      width: 100%; justify-content: center; padding: 10px 16px;
       background: linear-gradient(135deg,#7c3aed,#a855f7);
-      color: white; border-color: rgba(168,85,247,0.40);
-      box-shadow: 0 4px 18px rgba(168,85,247,0.30);
+      color: #fff; font-size: 13px; border-radius: 10px; margin-top: 14px;
+      box-shadow: 0 4px 14px rgba(168,85,247,0.25);
     }
-    .btn-primary:hover { filter: brightness(1.10); transform: translateY(-1px); }
-    .btn-ghost {
-      background: rgba(168,85,247,0.06); color: var(--purple-l);
-      border-color: rgba(168,85,247,0.22);
-    }
-    .btn-ghost:hover { background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.35); }
-    .btn-danger {
-      background: rgba(239,68,68,0.10); color: #f87171;
-      border-color: rgba(239,68,68,0.28);
-    }
-    .btn-danger:hover { background: rgba(239,68,68,0.18); }
-    .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .btn-generate:hover { opacity: .9; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(168,85,247,0.35); }
 
-    /* ── Modal ── */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
-      align-items: center; justify-content: center; padding: 24px;
+    /* Right panel action buttons */
+    .out-actions { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); }
+    .out-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 8px 10px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all .15s; border: 1px solid transparent; font-family: 'Inter', sans-serif;
     }
-    .modal-overlay.open { display: flex; }
+    .out-btn svg { width: 13px; height: 13px; }
+    .out-btn-copy { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.25); color: #93c5fd; }
+    .out-btn-copy:hover { background: rgba(59,130,246,0.22); }
+    .out-btn-dl   { background: rgba(168,85,247,0.08); border-color: rgba(168,85,247,0.22); color: var(--purple-l); }
+    .out-btn-dl:hover { background: rgba(168,85,247,0.16); }
+    .out-btn-clr  { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.22); color: #fca5a5; }
+    .out-btn-clr:hover { background: rgba(239,68,68,0.16); }
 
-    .modal {
-      background: var(--surface); border: 1px solid rgba(168,85,247,0.22);
-      border-radius: 20px; width: 100%; max-width: 680px;
-      max-height: 82vh; display: flex; flex-direction: column;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.70);
-      animation: modalIn 0.22s cubic-bezier(0.16,1,0.3,1) both;
+    /* ── Output textarea ── */
+    #output-box {
+      flex: 1; width: 100%; padding: 16px;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.75;
+      background: transparent; border: none; color: #e2e8f0;
+      resize: none; outline: none; letter-spacing: 0.01em;
     }
-    .modal.wide { max-width: 860px; }
-    @keyframes modalIn { from{opacity:0;transform:translateY(16px) scale(0.97)} to{opacity:1;transform:none} }
 
-    .modal-head {
+    /* ── Mode toggle ── */
+    .mode-row {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 22px; border-bottom: 1px solid rgba(168,85,247,0.10);
-      flex-shrink: 0;
+      margin-top: 12px; padding: 7px 11px; border-radius: 8px;
+      background: rgba(168,85,247,0.04); border: 1px solid rgba(168,85,247,0.12);
     }
-    .modal-head h2 { font-size: 17px; font-weight: 900; color: white; }
-    .modal-head p { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .modal-close {
-      width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center;
-      justify-content: center; cursor: pointer; background: none;
-      border: 1px solid rgba(168,85,247,0.12); color: var(--muted); transition: all 0.12s;
+    .mode-label { font-size: 11px; color: var(--muted); }
+    .mode-toggle {
+      font-size: 11px; font-weight: 600; color: var(--purple-l); cursor: pointer;
+      padding: 3px 10px; border-radius: 6px; background: rgba(168,85,247,0.10);
+      border: 1px solid rgba(168,85,247,0.20); transition: all .15s;
     }
-    .modal-close:hover { background: rgba(168,85,247,0.10); color: white; }
-    .modal-close svg { width: 14px; height: 14px; }
+    .mode-toggle:hover { background: rgba(168,85,247,0.18); }
 
-    .modal-body { overflow-y: auto; padding: 22px; flex: 1; }
+    /* ── Char counter ── */
+    .counter-row { display: flex; justify-content: flex-end; margin-top: 4px; }
+    .counter { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
 
-    /* ── Cheat sheet ── */
-    .code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .code-group { background: rgba(168,85,247,0.04); border: 1px solid rgba(168,85,247,0.10); border-radius: 12px; padding: 14px; }
-    .code-group h3 { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.10em; color: var(--purple-l); margin-bottom: 10px; }
-    .code-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(168,85,247,0.06); }
-    .code-row:last-child { border-bottom: none; }
-    .code-key { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--purple-l); }
-    .code-val { font-size: 12px; color: #94a3b8; }
+    /* ── Section separator ── */
+    .sep { height: 1px; background: var(--border); margin: 14px 0; }
 
-    /* ── Legislation ── */
-    .leg-section { margin-bottom: 20px; }
-    .leg-section h3 { font-size: 13px; font-weight: 800; color: white; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(168,85,247,0.10); }
-    .leg-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(168,85,247,0.05); }
-    .leg-item:last-child { border-bottom: none; }
-    .leg-code { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--purple); min-width: 70px; padding-top: 1px; }
-    .leg-desc { font-size: 12.5px; color: #94a3b8; line-height: 1.5; }
+    /* ── Live preview label ── */
+    .preview-label {
+      padding: 10px 14px 8px; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Divider label ── */
+    .officer-crest {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 6px; padding: 16px 0 4px;
+    }
+    .crest-img { width: 44px; height: 44px; opacity: .7; }
+    .crest-text { font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); text-align: center; }
 
     /* ── Toast ── */
     #toast {
-      position: fixed; bottom: 24px; right: 24px; z-index: 999;
-      padding: 12px 20px; border-radius: 12px;
-      background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.30);
-      color: #4ade80; font-size: 13px; font-weight: 600;
-      display: none; animation: toastIn 0.2s ease-out;
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: #1e1628; border: 1px solid rgba(168,85,247,0.35);
+      border-radius: 10px; padding: 10px 18px;
+      font-size: 13px; font-weight: 600; color: var(--purple-l);
+      display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     }
-    @keyframes toastIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
 
-    /* ── Chips ── */
-    .chip {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;
-      letter-spacing: 0.06em; text-transform: uppercase;
-    }
-    .chip-green { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.28); color: #4ade80; }
-    .chip-red   { background: rgba(239,68,68,0.12);  border: 1px solid rgba(239,68,68,0.28);  color: #f87171; }
-    .chip-gold  { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.28); color: #fcd34d; }
-    .chip-blue  { background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.28); color: #818cf8; }
+    /* ── Hidden file input ── */
+    #file-input { display: none; }
 
-    @media (max-width: 640px) {
-      .header-nav { display: none; }
-      .form-body { grid-template-columns: 1fr; }
-      .form-body.three-col { grid-template-columns: 1fr 1fr; }
-      .code-grid { grid-template-columns: 1fr; }
-      .report-types { grid-template-columns: 1fr 1fr; }
+    /* ── Mobile warning ── */
+    @media (max-width: 768px) {
+      .workspace { grid-template-columns: 1fr; height: auto; overflow: visible; }
+      .panel, .panel-right { border-right: none; border-bottom: 1px solid var(--border); }
+      #output-box { min-height: 280px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════ HEADER ═══════ -->
-  <header class="header">
-    <div class="header-left">
-      <div class="logo-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
-      </div>
-      <div class="logo-text">
-        <div class="logo-title">Next RP</div>
-        <div class="logo-sub">Report Suite · AIRS</div>
-      </div>
-      <div class="online-dot" style="margin-left:8px">Online</div>
+<!-- Header -->
+<header class="header">
+  <div class="header-left">
+    <div class="header-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
     </div>
+    <span class="header-title">Next RP &nbsp;<span>AIRS</span>&nbsp; — Report Generator</span>
+  </div>
+  <div class="header-right">
+    <div class="clock-badge" id="clock">00:00:00</div>
+    <button class="hdr-btn" onclick="openCheatsheet()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      Police Cheat Sheet
+    </button>
+  </div>
+</header>
 
-    <nav class="header-nav">
-      <button class="nav-btn" onclick="openModal('modal-cheatsheet')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-        Cheat Sheet
-      </button>
-      <button class="nav-btn" onclick="openModal('modal-legislation')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        Legislation
-      </button>
-      <button class="nav-btn" onclick="openModal('modal-feedback')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-        Feedback
-      </button>
-      <a href="/dashboard" class="nav-btn" style="text-decoration:none">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        AIRS Dashboard
-      </a>
-    </nav>
+<!-- 3-Column Workspace -->
+<div class="workspace">
 
-    <div class="clock" id="clock">00:00:00</div>
-  </header>
-
-  <!-- ═══════ MAIN ═══════ -->
-  <main class="main">
-    <div style="margin-bottom:28px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
-        <h1 class="page-title" style="margin-bottom:0">Report Generator</h1>
-        <span class="chip chip-green">Live</span>
-      </div>
-      <p class="page-sub">Select a report type below, fill in the details, and copy the formatted report.</p>
+  <!-- ══ LEFT: Officer Info ══ -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Officer Details</div>
     </div>
+    <div class="panel-body">
 
-    <!-- Report type selector -->
-    <div class="section-label">Select Report Type</div>
-    <div class="report-types" id="report-types">
+      <label>Name <span class="req">*</span></label>
+      <input type="text" id="p-name" placeholder="Display name / IC name" oninput="liveUpdate()" />
 
-      <button class="report-type-btn selected" data-type="traffic" onclick="selectType(this,'traffic')">
-        <div class="rt-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v9a2 2 0 01-2 2h-2"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
-        </div>
-        <div class="rt-name">Traffic Stop</div>
-        <div class="rt-desc">Vehicle & driver infringement</div>
-      </button>
+      <label>Rank <span class="req">*</span></label>
+      <select id="p-rank" onchange="liveUpdate()">
+        <option value="RECRUIT">RECRUIT</option>
+        <option value="PROBATIONARY CONSTABLE">PROBATIONARY CONSTABLE</option>
+        <option value="CONSTABLE">CONSTABLE</option>
+        <option value="SENIOR CONSTABLE">SENIOR CONSTABLE</option>
+        <option value="LEADING SENIOR CONSTABLE">LEADING SENIOR CONSTABLE</option>
+        <option value="DETECTIVE CONSTABLE">DETECTIVE CONSTABLE</option>
+        <option value="SERGEANT">SERGEANT</option>
+        <option value="DETECTIVE SERGEANT">DETECTIVE SERGEANT</option>
+        <option value="SENIOR SERGEANT">SENIOR SERGEANT</option>
+        <option value="DETECTIVE SENIOR SERGEANT">DETECTIVE SENIOR SERGEANT</option>
+        <option value="INSPECTOR">INSPECTOR</option>
+        <option value="SENIOR INSPECTOR">SENIOR INSPECTOR</option>
+        <option value="SUPERINTENDENT">SUPERINTENDENT</option>
+        <option value="COMMANDER">COMMANDER</option>
+        <option value="DEPUTY COMMISSIONER">DEPUTY COMMISSIONER</option>
+        <option value="COMMISSIONER">COMMISSIONER</option>
+      </select>
 
-      <button class="report-type-btn" data-type="arrest" onclick="selectType(this,'arrest')">
-        <div class="rt-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
-        </div>
-        <div class="rt-name">Arrest Report</div>
-        <div class="rt-desc">Custody & charges</div>
-      </button>
+      <label>Callsign <span class="req">*</span></label>
+      <input type="text" id="p-callsign" placeholder="e.g. 107" oninput="liveUpdate()" />
 
-      <button class="report-type-btn" data-type="incident" onclick="selectType(this,'incident')">
-        <div class="rt-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        </div>
-        <div class="rt-name">Incident Report</div>
-        <div class="rt-desc">General incident log</div>
-      </button>
+      <label>Division <span class="req">*</span></label>
+      <select id="p-division" onchange="liveUpdate()">
+        <option value="GENERAL DUTIES">GENERAL DUTIES</option>
+        <option value="ORU HIGHWAY">ORU HIGHWAY</option>
+        <option value="CRIME COMMAND">CRIME COMMAND</option>
+        <option value="CIRT">CIRT</option>
+        <option value="AIRWING">AIRWING</option>
+        <option value="MARINE">MARINE</option>
+        <option value="SHERIFFS OFFICE">SHERIFFS OFFICE</option>
+        <option value="LEGAL SERVICES">LEGAL SERVICES</option>
+        <option value="COMMISSIONERS OFFICE">COMMISSIONERS OFFICE</option>
+      </select>
 
-      <button class="report-type-btn" data-type="search" onclick="selectType(this,'search')">
-        <div class="rt-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </div>
-        <div class="rt-name">Search & Seizure</div>
-        <div class="rt-desc">Premises or vehicle search</div>
-      </button>
-
-      <button class="report-type-btn" data-type="pursuit" onclick="selectType(this,'pursuit')">
-        <div class="rt-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        </div>
-        <div class="rt-name">Vehicle Pursuit</div>
-        <div class="rt-desc">Pursuit initiation & end</div>
-      </button>
-
-      <button class="report-type-btn" data-type="use-of-force" onclick="selectType(this,'use-of-force')">
-        <div class="rt-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <div class="rt-name">Use of Force</div>
-        <div class="rt-desc">Force justification report</div>
-      </button>
-
-    </div>
-
-    <!-- Dynamic form -->
-    <div id="form-container"></div>
-
-    <!-- Output -->
-    <div class="output-section">
-      <div class="section-label">Generated Report</div>
-      <div class="form-card">
-        <div class="form-header">
-          <div>
-            <div class="form-header-title">Report Output</div>
-            <div class="form-header-sub">Copy and paste this into your report channel</div>
-          </div>
-          <span class="chip chip-blue" id="report-type-chip">Traffic Stop</span>
-        </div>
-        <div style="padding:16px">
-          <textarea id="output-box" readonly placeholder="Fill in the form above and click Generate Report..."></textarea>
-        </div>
-      </div>
-      <div class="action-row">
-        <button class="btn btn-primary" onclick="generateReport()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-          Generate Report
+      <div class="btn-row">
+        <button class="btn btn-save" onclick="saveProfile()" title="Save officer details to browser">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Save
         </button>
-        <button class="btn btn-ghost" onclick="copyReport()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-          Copy to Clipboard
+        <button class="btn btn-export" onclick="exportJSON()" title="Export report as JSON">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export JSON
         </button>
-        <button class="btn btn-danger" onclick="clearForm()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
-          Clear
+        <button class="btn btn-import" onclick="document.getElementById('file-input').click()" title="Import report from JSON">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Import JSON
         </button>
       </div>
-    </div>
-  </main>
+      <input type="file" id="file-input" accept=".json" onchange="importJSON(event)" />
 
-  <!-- ═══════ MODAL: CHEAT SHEET ═══════ -->
-  <div class="modal-overlay" id="modal-cheatsheet">
-    <div class="modal wide">
-      <div class="modal-head">
-        <div>
-          <h2>Police Cheat Sheet</h2>
-          <p>Quick reference for codes, signals, and procedures</p>
-        </div>
-        <button class="modal-close" onclick="closeModal('modal-cheatsheet')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+    </div>
+  </div>
+
+  <!-- ══ MIDDLE: Report Details ══ -->
+  <div class="panel" style="border-right:1px solid var(--border); background:var(--card)">
+    <div class="panel-header" style="background:var(--card)">
+      <div class="panel-title">Report Details</div>
+    </div>
+    <div class="panel-body">
+
+      <label>Report Type <span class="req">*</span></label>
+      <select id="r-type" onchange="onTypeChange(); liveUpdate()">
+        <option value="INCIDENT REPORT">Incident Report</option>
+        <option value="TRAFFIC STOP REPORT">Traffic Stop</option>
+        <option value="ARREST REPORT">Arrest Report</option>
+        <option value="SEARCH & SEIZURE REPORT">Search & Seizure</option>
+        <option value="VEHICLE PURSUIT REPORT">Vehicle Pursuit</option>
+        <option value="USE OF FORCE REPORT">Use of Force</option>
+      </select>
+
+      <div id="extra-fields"></div>
+
+      <label>Evidence <span class="req">*</span></label>
+      <textarea id="r-evidence" rows="3" placeholder="One item per line" oninput="liveUpdate()"></textarea>
+
+      <label>Charges <span class="req">*</span></label>
+      <textarea id="r-charges" rows="3" placeholder="One item per line" oninput="liveUpdate()"></textarea>
+
+      <div class="mode-row">
+        <span class="mode-label">Mode: <span id="mode-label-text">Free Text Mode</span></span>
+        <span class="mode-toggle" onclick="toggleMode()">Switch to Structured Mode</span>
       </div>
-      <div class="modal-body">
-        <div class="code-grid">
-          <div class="code-group">
-            <h3>Radio Codes</h3>
-            <div class="code-row"><span class="code-key">10-4</span><span class="code-val">Acknowledged / Copy</span></div>
-            <div class="code-row"><span class="code-key">10-6</span><span class="code-val">Busy — Stand By</span></div>
-            <div class="code-row"><span class="code-key">10-7</span><span class="code-val">Out of Service</span></div>
-            <div class="code-row"><span class="code-key">10-8</span><span class="code-val">In Service / Available</span></div>
-            <div class="code-row"><span class="code-key">10-10</span><span class="code-val">Off Duty</span></div>
-            <div class="code-row"><span class="code-key">10-20</span><span class="code-val">Location</span></div>
-            <div class="code-row"><span class="code-key">10-23</span><span class="code-val">Arrived on Scene</span></div>
-            <div class="code-row"><span class="code-key">10-76</span><span class="code-val">En Route</span></div>
-            <div class="code-row"><span class="code-key">10-99</span><span class="code-val">Officer Needs Assistance</span></div>
-          </div>
-          <div class="code-group">
-            <h3>Priority Codes</h3>
-            <div class="code-row"><span class="code-key">Code 1</span><span class="code-val">Routine — No Lights/Siren</span></div>
-            <div class="code-row"><span class="code-key">Code 2</span><span class="code-val">Urgent — No Siren</span></div>
-            <div class="code-row"><span class="code-key">Code 3</span><span class="code-val">Emergency — Lights &amp; Siren</span></div>
-            <div class="code-row"><span class="code-key">Code 4</span><span class="code-val">Scene Secure — No Further Units</span></div>
-            <div class="code-row"><span class="code-key">Code 6</span><span class="code-val">Out for Investigation</span></div>
-            <div class="code-row"><span class="code-key">Code 7</span><span class="code-val">Meal Break</span></div>
-          </div>
-          <div class="code-group">
-            <h3>Charges Reference</h3>
-            <div class="code-row"><span class="code-key">S/A</span><span class="code-val">Simple Assault</span></div>
-            <div class="code-row"><span class="code-key">A/A</span><span class="code-val">Aggravated Assault</span></div>
-            <div class="code-row"><span class="code-key">AOPWI</span><span class="code-val">Assault — Officer w/ Intent</span></div>
-            <div class="code-row"><span class="code-key">B&amp;E</span><span class="code-val">Breaking &amp; Entering</span></div>
-            <div class="code-row"><span class="code-key">POM</span><span class="code-val">Possession of Marijuana</span></div>
-            <div class="code-row"><span class="code-key">POW</span><span class="code-val">Possession of Weapon</span></div>
-            <div class="code-row"><span class="code-key">ELUDING</span><span class="code-val">Failure to Yield / Pursuit</span></div>
-            <div class="code-row"><span class="code-key">MUAC</span><span class="code-val">Murder Under the Criminal Code</span></div>
-          </div>
-          <div class="code-group">
-            <h3>Vehicle Offences</h3>
-            <div class="code-row"><span class="code-key">DUI</span><span class="code-val">Driving Under Influence</span></div>
-            <div class="code-row"><span class="code-key">RD</span><span class="code-val">Reckless Driving</span></div>
-            <div class="code-row"><span class="code-key">FYR</span><span class="code-val">Failure to Yield to Red</span></div>
-            <div class="code-row"><span class="code-key">UDL</span><span class="code-val">Unlicensed Driver</span></div>
-            <div class="code-row"><span class="code-key">URV</span><span class="code-val">Unregistered Vehicle</span></div>
-            <div class="code-row"><span class="code-key">SPEED</span><span class="code-val">Speeding Infringement</span></div>
-            <div class="code-row"><span class="code-key">FTC</span><span class="code-val">Failure to Comply — Traffic Stop</span></div>
-          </div>
+
+      <label id="narrative-label" style="margin-top:12px">Report Narrative</label>
+      <textarea id="r-narrative" rows="6" placeholder="Write the narrative here..." oninput="updateCounter(); liveUpdate()"></textarea>
+      <div class="counter-row"><span class="counter" id="char-count">0 chars</span></div>
+
+      <label>Supervisor Approved</label>
+      <input type="text" id="r-supervisor" placeholder="Name / Callsign" oninput="liveUpdate()" />
+
+      <button class="btn-generate btn" onclick="liveUpdate()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Generate Report
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ══ RIGHT: Generated Output ══ -->
+  <div class="panel-right">
+    <div class="preview-label">Generated Report 📋</div>
+    <textarea id="output-box" spellcheck="false" placeholder="Fill in the form to generate your report..."></textarea>
+    <div class="out-actions">
+      <button class="out-btn out-btn-copy" onclick="copyReport()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy Report
+      </button>
+      <button class="out-btn out-btn-dl" onclick="downloadReport()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download .txt
+      </button>
+      <button class="out-btn out-btn-clr" onclick="clearAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+        Clear Report
+      </button>
+    </div>
+  </div>
+
+</div><!-- end workspace -->
+
+<!-- Toast -->
+<div id="toast">✓ Copied to clipboard</div>
+
+<!-- ═══ MODAL: Cheat Sheet ═══ -->
+<div id="modal-cheatsheet" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);overflow-y:auto;padding:40px 20px">
+  <div style="max-width:680px;margin:0 auto;background:#110d1c;border:1px solid rgba(168,85,247,0.22);border-radius:16px;overflow:hidden">
+    <div style="padding:20px 24px;border-bottom:1px solid rgba(168,85,247,0.12);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:16px;font-weight:800;color:#fff">Police Cheat Sheet</div>
+      <button onclick="document.getElementById('modal-cheatsheet').style.display='none'" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:20px;line-height:1">×</button>
+    </div>
+    <div style="padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div style="background:rgba(168,85,247,0.05);border:1px solid rgba(168,85,247,0.12);border-radius:10px;padding:16px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#a855f7;margin-bottom:10px">Common Charges</div>
+        <div style="font-size:12px;color:#cbd5e1;line-height:2">
+          Assault · Grievous Bodily Harm · Murder<br>
+          Robbery · Armed Robbery · Burglary<br>
+          Theft · Grand Theft Auto · Fraud<br>
+          Drug Possession · Drug Trafficking<br>
+          Evading Police · Reckless Driving<br>
+          Weapons Possession · Threatening Behaviour<br>
+          Obstruct Police · Resist Arrest<br>
+          Public Nuisance · Disorderly Conduct
+        </div>
+      </div>
+      <div style="background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:10px;padding:16px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#60a5fa;margin-bottom:10px">Radio Codes</div>
+        <div style="font-size:12px;color:#cbd5e1;line-height:2">
+          10-4 — Acknowledged<br>
+          10-7 — Out of Service<br>
+          10-8 — In Service<br>
+          10-10 — Off Duty<br>
+          10-20 — Location<br>
+          10-23 — Arrived on Scene<br>
+          10-97 — Arrived at Scene<br>
+          Code 1 — Routine · Code 2 — Urgent<br>
+          Code 3 — Emergency
+        </div>
+      </div>
+      <div style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.12);border-radius:10px;padding:16px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4ade80;margin-bottom:10px">Pursuit Protocols</div>
+        <div style="font-size:12px;color:#cbd5e1;line-height:1.9">
+          Initiate: call out vehicle + direction<br>
+          Request supervisor authorisation<br>
+          Max 2 units unless supervisor approved<br>
+          Abandon if risk outweighs benefit<br>
+          Document: start/end location, speeds,<br>
+          reason, outcome & units involved
+        </div>
+      </div>
+      <div style="background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.12);border-radius:10px;padding:16px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fbbf24;margin-bottom:10px">Use of Force Scale</div>
+        <div style="font-size:12px;color:#cbd5e1;line-height:2">
+          1 — Verbal commands<br>
+          2 — Physical restraint<br>
+          3 — OC Spray / Taser<br>
+          4 — Baton / Less-lethal<br>
+          5 — Lethal force (last resort)<br>
+          Document all levels used
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ═══════ MODAL: LEGISLATION ═══════ -->
-  <div class="modal-overlay" id="modal-legislation">
-    <div class="modal wide">
-      <div class="modal-head">
-        <div><h2>Legislation Reference</h2><p>Key laws applicable to Next RP — Melbourne Police</p></div>
-        <button class="modal-close" onclick="closeModal('modal-legislation')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="leg-section">
-          <h3>Criminal Code</h3>
-          <div class="leg-item"><span class="leg-code">CC s.1</span><span class="leg-desc">Murder — Intentional killing of another person with malice aforethought. Life imprisonment.</span></div>
-          <div class="leg-item"><span class="leg-code">CC s.2</span><span class="leg-desc">Manslaughter — Unintentional killing resulting from criminal negligence or recklessness.</span></div>
-          <div class="leg-item"><span class="leg-code">CC s.3</span><span class="leg-desc">Assault — Intentional act causing apprehension of immediate harmful or offensive contact.</span></div>
-          <div class="leg-item"><span class="leg-code">CC s.4</span><span class="leg-desc">Aggravated Assault — Assault with a deadly weapon or causing serious bodily harm.</span></div>
-          <div class="leg-item"><span class="leg-code">CC s.5</span><span class="leg-desc">Assault on Police Officer — Assault upon a law enforcement officer in the performance of duties.</span></div>
-          <div class="leg-item"><span class="leg-code">CC s.6</span><span class="leg-desc">Robbery — Taking property from a person using force or threat of force.</span></div>
-          <div class="leg-item"><span class="leg-code">CC s.7</span><span class="leg-desc">Kidnapping — Unlawful detention or carrying away of a person against their will.</span></div>
-          <div class="leg-item"><span class="leg-code">CC s.8</span><span class="leg-desc">Possession of Illegal Weapon — Unlicensed possession of a restricted or prohibited weapon.</span></div>
-        </div>
-        <div class="leg-section">
-          <h3>Traffic Act</h3>
-          <div class="leg-item"><span class="leg-code">TA s.1</span><span class="leg-desc">Reckless Driving — Operating a vehicle in a manner dangerous to the public.</span></div>
-          <div class="leg-item"><span class="leg-code">TA s.2</span><span class="leg-desc">Driving Under Influence — Operating a vehicle while impaired by alcohol or substances.</span></div>
-          <div class="leg-item"><span class="leg-code">TA s.3</span><span class="leg-desc">Failure to Stop — Failing to stop for a police officer when lawfully directed to do so.</span></div>
-          <div class="leg-item"><span class="leg-code">TA s.4</span><span class="leg-desc">Unlicensed Driving — Operating a motor vehicle without a valid driver's licence.</span></div>
-          <div class="leg-item"><span class="leg-code">TA s.5</span><span class="leg-desc">Unregistered Vehicle — Operating a vehicle that is not registered with the relevant authority.</span></div>
-          <div class="leg-item"><span class="leg-code">TA s.6</span><span class="leg-desc">Speeding — Exceeding the posted speed limit on any public road or highway.</span></div>
-        </div>
-        <div class="leg-section">
-          <h3>Public Security Act</h3>
-          <div class="leg-item"><span class="leg-code">PS s.1</span><span class="leg-desc">Trespassing — Unlawful entry or remaining on private or restricted property.</span></div>
-          <div class="leg-item"><span class="leg-code">PS s.2</span><span class="leg-desc">Disorderly Conduct — Behaviour that causes public alarm, nuisance or disturbance.</span></div>
-          <div class="leg-item"><span class="leg-code">PS s.3</span><span class="leg-desc">Obstruction of Police — Wilfully obstructing, hindering or resisting a police officer.</span></div>
-          <div class="leg-item"><span class="leg-code">PS s.4</span><span class="leg-desc">Breach of Peace — Acting in a way likely to cause a breach of the peace.</span></div>
-        </div>
-        <div class="leg-section">
-          <h3>Weapons Act</h3>
-          <div class="leg-item"><span class="leg-code">WA s.1</span><span class="leg-desc">Prohibited Weapon — Possession of a prohibited weapon without lawful excuse.</span></div>
-          <div class="leg-item"><span class="leg-code">WA s.2</span><span class="leg-desc">Carrying Concealed — Carrying a concealed weapon in a public place without authority.</span></div>
-          <div class="leg-item"><span class="leg-code">WA s.3</span><span class="leg-desc">Brandishing — Displaying a weapon in a threatening or intimidating manner.</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
+<script>
+  // ── Clock ──
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Australia/Melbourne', hour12:false });
+  }
+  updateClock(); setInterval(updateClock, 1000);
 
-  <!-- ═══════ MODAL: FEEDBACK ═══════ -->
-  <div class="modal-overlay" id="modal-feedback">
-    <div class="modal">
-      <div class="modal-head">
-        <div><h2>Submit Feedback</h2><p>Report issues or suggestions for the AIRS system</p></div>
-        <button class="modal-close" onclick="closeModal('modal-feedback')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div style="display:flex;flex-direction:column;gap:14px">
-          <div class="field">
-            <label>Your Name / Callsign</label>
-            <input type="text" id="fb-name" placeholder="e.g. Senior Constable Smith · SC-42" />
-          </div>
-          <div class="field">
-            <label>Category</label>
-            <select id="fb-cat">
-              <option>Bug Report</option>
-              <option>Feature Request</option>
-              <option>UI/UX Suggestion</option>
-              <option>Report Template Issue</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Description</label>
-            <textarea id="fb-desc" placeholder="Describe the issue or suggestion in detail..." style="min-height:110px"></textarea>
-          </div>
-          <button class="btn btn-primary" onclick="submitFeedback()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Submit Feedback
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  // ── Get current AEST time/date ──
+  function getAEST() {
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit', timeZone:'Australia/Melbourne', hour12:false });
+    const date = now.toLocaleDateString('en-AU', { day:'2-digit', month:'2-digit', year:'numeric', timeZone:'Australia/Melbourne' });
+    return { time, date };
+  }
 
-  <!-- Toast -->
-  <div id="toast">✓ Copied to clipboard!</div>
-
-  <script>
-    // ── Clock ──
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('clock').textContent =
-        now.toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Australia/Melbourne', hour12:false });
+  // ── Mode toggle ──
+  let structuredMode = false;
+  function toggleMode() {
+    structuredMode = !structuredMode;
+    const lbl = document.getElementById('narrative-label');
+    const tog = document.querySelector('.mode-toggle');
+    const mll = document.getElementById('mode-label-text');
+    if (structuredMode) {
+      lbl.textContent = 'Report (Structured)';
+      tog.textContent = 'Switch to Free Text Mode';
+      mll.textContent = 'Structured Mode';
+    } else {
+      lbl.textContent = 'Report Narrative';
+      tog.textContent = 'Switch to Structured Mode';
+      mll.textContent = 'Free Text Mode';
     }
-    updateClock(); setInterval(updateClock, 1000);
+    liveUpdate();
+  }
 
-    // ── Modal ──
-    function openModal(id) { document.getElementById(id).classList.add('open'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-    document.querySelectorAll('.modal-overlay').forEach(el =>
-      el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); })
-    );
+  // ── Char counter ──
+  function updateCounter() {
+    const n = (document.getElementById('r-narrative').value || '').length;
+    document.getElementById('char-count').textContent = n + ' chars';
+  }
 
-    // ── Report type selection ──
-    let currentType = 'traffic';
-    const FORMS = {
-      traffic: {
-        title: 'Traffic Stop Report',
-        sub: 'Vehicle stop, infringement & driver details',
-        chip: 'Traffic Stop',
-        fields: [
-          ['Officer Name & Callsign','officer','text','e.g. Constable J. Smith · GD-12','half'],
-          ['Date & Time','datetime','datetime-local','','half'],
-          ['Location of Stop','location','text','e.g. Intersection of Collins St & Spencer St','full'],
-          ['Vehicle Plate','plate','text','e.g. 1AB 2CD','third'],
-          ['Vehicle Description','veh-desc','text','e.g. 2019 White Toyota Camry','third'],
-          ['Registered Owner','reg-owner','text','','third'],
-          ['Driver Name','driver-name','text','','half'],
-          ['Driver Licence','driver-lic','text','','half'],
-          ['Reason for Stop','stop-reason','text','e.g. Speeding — 80km/h in 50km/h zone','full'],
-          ['Charges / Infringements','charges','textarea','List each charge on a new line','full'],
-          ['Outcome','outcome','select','','full',['Warning Issued','Infringement Notice','Vehicle Impounded','Arrested','No Further Action']],
-          ['Additional Notes','notes','textarea','Any additional information...','full'],
-        ]
-      },
-      arrest: {
-        title: 'Arrest Report',
-        sub: 'Suspect custody and charges documentation',
-        chip: 'Arrest',
-        fields: [
-          ['Arresting Officer & Callsign','officer','text','','half'],
-          ['Date & Time of Arrest','datetime','datetime-local','','half'],
-          ['Location of Arrest','location','text','','full'],
-          ['Suspect Full Name','suspect-name','text','','half'],
-          ['Date of Birth','suspect-dob','date','','half'],
-          ['Physical Description','suspect-desc','text','e.g. Male, 6\'1", brown hair, tattoo on neck','full'],
-          ['Charges','charges','textarea','List each charge on a new line','full'],
-          ['Arrest Circumstances','circumstances','textarea','Describe the events leading to the arrest','full'],
-          ['Evidence Seized','evidence','textarea','List evidence collected','full'],
-          ['Bail Conditions / Remand','bail','select','','full',['Released — No Charge','Released on Bail','Remanded in Custody','Issued Court Summons']],
-          ['Additional Notes','notes','textarea','','full'],
-        ]
-      },
-      incident: {
-        title: 'Incident Report',
-        sub: 'General incident documentation',
-        chip: 'Incident',
-        fields: [
-          ['Reporting Officer & Callsign','officer','text','','half'],
-          ['Date & Time','datetime','datetime-local','','half'],
-          ['Incident Location','location','text','','full'],
-          ['Incident Type','inc-type','select','','half',['Assault','Robbery','Disturbance','Suspicious Activity','Medical Assist','Fire','Other']],
-          ['Priority Level','priority','select','','half',['Code 1 — Routine','Code 2 — Urgent','Code 3 — Emergency']],
-          ['Persons Involved','persons','textarea','Name, role, and contact if known','full'],
-          ['Incident Description','description','textarea','Detailed account of the incident','full'],
-          ['Actions Taken','actions','textarea','What officers did at the scene','full'],
-          ['Outcome / Disposition','outcome','select','','full',['No Further Action','Report Filed','Arrest Made','Referred to Detectives','Medical Referral']],
-          ['Additional Notes','notes','textarea','','full'],
-        ]
-      },
-      search: {
-        title: 'Search & Seizure Report',
-        sub: 'Grounds, consent, and items seized',
-        chip: 'Search & Seizure',
-        fields: [
-          ['Officer Name & Callsign','officer','text','','half'],
-          ['Date & Time','datetime','datetime-local','','half'],
-          ['Location Searched','location','text','','full'],
-          ['Subject / Premises Name','subject','text','','half'],
-          ['Search Type','search-type','select','','half',['Person','Vehicle','Premises','Bag/Container']],
-          ['Legal Basis for Search','legal-basis','select','','full',['Probable Cause','Consent Given','Search Warrant — Warrant No.','Arrest Incident','Exigent Circumstances']],
-          ['Warrant Number (if applicable)','warrant-no','text','Leave blank if not applicable','half'],
-          ['Consenting Party','consent-party','text','Name of person who consented (or N/A)','half'],
-          ['Items Seized','seized','textarea','List all items seized, with descriptions','full'],
-          ['Items Returned','returned','textarea','Items returned to owner (if any)','full'],
-          ['Additional Notes','notes','textarea','','full'],
-        ]
-      },
-      pursuit: {
-        title: 'Vehicle Pursuit Report',
-        sub: 'Pursuit initiation, events, and termination',
-        chip: 'Pursuit',
-        fields: [
-          ['Initiating Officer & Callsign','officer','text','','half'],
-          ['Date & Time Initiated','datetime','datetime-local','','half'],
-          ['Initial Location','start-loc','text','Where the pursuit began','half'],
-          ['Termination Location','end-loc','text','Where the pursuit ended','half'],
-          ['Fleeing Vehicle Description','veh-desc','text','Make, model, colour, plate','full'],
-          ['Reason for Initial Stop','stop-reason','text','Why was the vehicle being stopped','full'],
-          ['Max Speed Reached','max-speed','text','e.g. ~130km/h','half'],
-          ['Duration','duration','text','e.g. 4 minutes','half'],
-          ['Units Involved','units','textarea','List all units that joined the pursuit','full'],
-          ['Pursuit Events','events','textarea','Describe key events during the pursuit','full'],
-          ['Termination Reason','termination','select','','full',['Vehicle Stopped — Occupants Detained','Vehicle Stopped — Occupants Fled on Foot','Pursuit Terminated — Safety Concerns','Pursuit Terminated — Lost Visual','Vehicle Crashed','Spike Strip Deployed']],
-          ['Outcome','outcome','textarea','What happened after the pursuit ended','full'],
-        ]
-      },
-      'use-of-force': {
-        title: 'Use of Force Report',
-        sub: 'Justification and force level documentation',
-        chip: 'Use of Force',
-        fields: [
-          ['Officer Name & Callsign','officer','text','','half'],
-          ['Date & Time','datetime','datetime-local','','half'],
-          ['Location of Incident','location','text','','full'],
-          ['Subject Name','subject','text','','half'],
-          ['Subject Description','subject-desc','text','','half'],
-          ['Threat Level','threat','select','','full',['Verbal Threat','Physical Resistance','Armed — Non-Lethal','Armed — Lethal Threat']],
-          ['Force Used','force-used','select','','full',['Verbal Commands Only','Physical Restraint','Taser / CEW','Baton','Firearm — Warning Shot','Firearm — Directed Shot','Other']],
-          ['Circumstances Leading to Force','circumstances','textarea','Describe what led to force being required','full'],
-          ['De-escalation Attempts','deescalation','textarea','What attempts were made before force was used','full'],
-          ['Injuries Sustained','injuries','textarea','Officer and/or subject injuries','full'],
-          ['Medical Attention Required','medical','select','','half',['None Required','First Aid Applied','Ambulance Called','Hospital Transport']],
-          ['Supervisor Notified','supervisor','text','Name & callsign of supervisor notified','half'],
-          ['Additional Notes','notes','textarea','','full'],
-        ]
-      },
-    };
+  // ── Extra fields per report type ──
+  const TYPE_EXTRA = {
+    'TRAFFIC STOP REPORT': [
+      { id:'x-plate', label:'Vehicle Plate', placeholder:'e.g. ABC123' },
+      { id:'x-veh',   label:'Vehicle Description', placeholder:'Make / Model / Colour' },
+      { id:'x-driver',label:'Driver Name', placeholder:'First Last' },
+    ],
+    'ARREST REPORT': [
+      { id:'x-suspect', label:'Suspect Name', placeholder:'First Last' },
+      { id:'x-dob',     label:'Suspect DOB',  placeholder:'DD/MM/YYYY' },
+    ],
+    'SEARCH & SEIZURE REPORT': [
+      { id:'x-subject',  label:'Subject / Premises', placeholder:'Name or address' },
+      { id:'x-warrant',  label:'Warrant No.',         placeholder:'If applicable' },
+    ],
+    'VEHICLE PURSUIT REPORT': [
+      { id:'x-veh',      label:'Fleeing Vehicle',  placeholder:'Make / Model / Plate' },
+      { id:'x-start',    label:'Start Location',   placeholder:'Street / Area' },
+      { id:'x-end',      label:'End Location',     placeholder:'Where it terminated' },
+      { id:'x-duration', label:'Duration',         placeholder:'e.g. 4 minutes' },
+    ],
+    'USE OF FORCE REPORT': [
+      { id:'x-subject',  label:'Subject Name',  placeholder:'First Last' },
+      { id:'x-threat',   label:'Threat Level',  placeholder:'e.g. Level 3 – Taser' },
+      { id:'x-force',    label:'Force Used',    placeholder:'Describe force applied' },
+    ],
+  };
 
-    function selectType(el, type) {
-      document.querySelectorAll('.report-type-btn').forEach(b => b.classList.remove('selected'));
-      el.classList.add('selected');
-      currentType = type;
-      renderForm(type);
-      document.getElementById('report-type-chip').textContent = FORMS[type].chip;
+  function onTypeChange() {
+    const type = document.getElementById('r-type').value;
+    const fields = TYPE_EXTRA[type] || [];
+    let html = '';
+    for (const f of fields) {
+      html += `<label>${f.label}</label><input type="text" id="${f.id}" placeholder="${f.placeholder}" oninput="liveUpdate()" />`;
+    }
+    document.getElementById('extra-fields').innerHTML = html;
+  }
+  onTypeChange();
+
+  function getExtra(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
+  // ── Signed footer ──
+  function buildFooter() {
+    const name = (document.getElementById('p-name').value || '').trim().toUpperCase();
+    const rank = document.getElementById('p-rank').value;
+    const cs   = (document.getElementById('p-callsign').value || '').trim();
+    const div  = document.getElementById('p-division').value;
+    const sup  = (document.getElementById('r-supervisor').value || '').trim();
+
+    let footer = `Signed,\n${name || '[NAME]'}\n${rank} | ${cs || '[CALLSIGN]'}\n${div} | MELBOURNE POLICE`;
+    if (sup) footer += `\n\nSupervisor Approved: ${sup}`;
+    return footer;
+  }
+
+  // ── Core: build report text ──
+  function buildReport() {
+    const { time, date } = getAEST();
+    const type    = document.getElementById('r-type').value;
+    const ev      = (document.getElementById('r-evidence').value  || '').trim();
+    const charges = (document.getElementById('r-charges').value   || '').trim();
+    const narr    = (document.getElementById('r-narrative').value || '').trim();
+
+    let out = `${type}\n`;
+    out += `TIME: ${time}\n`;
+    out += `DATE: ${date}\n`;
+
+    // Extra fields for special report types
+    const extras = TYPE_EXTRA[type] || [];
+    for (const f of extras) {
+      const val = getExtra(f.id);
+      if (val) out += `${f.label.toUpperCase()}: ${val}\n`;
     }
 
-    function renderForm(type) {
-      const f = FORMS[type];
-      let html = `<div class="form-card"><div class="form-header"><div><div class="form-header-title">${f.title}</div><div class="form-header-sub">${f.sub}</div></div></div><div class="form-body" id="inner-form">`;
-      f.fields.forEach(([label, id, inputType, placeholder, span, options]) => {
-        const cls = span === 'full' ? ' full' : span === 'third' ? '' : '';
-        html += `<div class="field${cls}"><label>${label}</label>`;
-        if (inputType === 'textarea') {
-          html += `<textarea id="f-${id}" placeholder="${placeholder || ''}"></textarea>`;
-        } else if (inputType === 'select' && options) {
-          html += `<select id="f-${id}">${options.map(o=>`<option>${o}</option>`).join('')}</select>`;
-        } else {
-          html += `<input type="${inputType}" id="f-${id}" placeholder="${placeholder || ''}" />`;
-        }
-        html += `</div>`;
-      });
-      html += `</div></div>`;
-      document.getElementById('form-container').innerHTML = html;
-    }
+    out += `EVIDENCE:\n${ev}\n`;
+    out += `\nCHARGES:\n${charges}\n`;
+    out += `\nREPORT:\n${narr}\n`;
+    out += `\n\n${buildFooter()}`;
 
-    function getVal(id) {
-      const el = document.getElementById(`f-${id}`);
-      return el ? el.value.trim() : '';
-    }
+    return out;
+  }
 
-    function now() {
-      return new Date().toLocaleString('en-AU', { timeZone: 'Australia/Melbourne', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:false });
-    }
+  // ── Live update output ──
+  function liveUpdate() {
+    document.getElementById('output-box').value = buildReport();
+    updateCounter();
+  }
 
-    function generateReport() {
-      const t = currentType;
-      let out = '';
-      const sep = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
-      const gen = `[Generated: ${now()} AEST via Next RP AIRS Report Suite]`;
-
-      if (t === 'traffic') {
-        out = `${sep}\n📋 TRAFFIC STOP REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
-          `📌 OFFICER:      ${getVal('officer') || 'N/A'}\n` +
-          `📅 DATE/TIME:    ${getVal('datetime') || 'N/A'}\n` +
-          `📍 LOCATION:     ${getVal('location') || 'N/A'}\n\n` +
-          `🚗 VEHICLE DETAILS\n` +
-          `   Plate:        ${getVal('plate') || 'N/A'}\n` +
-          `   Description:  ${getVal('veh-desc') || 'N/A'}\n` +
-          `   Reg. Owner:   ${getVal('reg-owner') || 'N/A'}\n\n` +
-          `👤 DRIVER DETAILS\n` +
-          `   Name:         ${getVal('driver-name') || 'N/A'}\n` +
-          `   Licence:      ${getVal('driver-lic') || 'N/A'}\n\n` +
-          `⚠️  REASON FOR STOP\n   ${getVal('stop-reason') || 'N/A'}\n\n` +
-          `📋 CHARGES / INFRINGEMENTS\n   ${(getVal('charges') || 'None').replace(/\n/g, '\n   ')}\n\n` +
-          `✅ OUTCOME:      ${getVal('outcome') || 'N/A'}\n\n` +
-          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
-      } else if (t === 'arrest') {
-        out = `${sep}\n🔒 ARREST REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
-          `📌 ARRESTING OFFICER: ${getVal('officer') || 'N/A'}\n` +
-          `📅 DATE/TIME:         ${getVal('datetime') || 'N/A'}\n` +
-          `📍 LOCATION:          ${getVal('location') || 'N/A'}\n\n` +
-          `👤 SUSPECT DETAILS\n` +
-          `   Name:         ${getVal('suspect-name') || 'N/A'}\n` +
-          `   DOB:          ${getVal('suspect-dob') || 'N/A'}\n` +
-          `   Description:  ${getVal('suspect-desc') || 'N/A'}\n\n` +
-          `⚖️  CHARGES\n   ${(getVal('charges') || 'None').replace(/\n/g, '\n   ')}\n\n` +
-          `📖 CIRCUMSTANCES\n   ${(getVal('circumstances') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
-          `🗂️  EVIDENCE SEIZED\n   ${(getVal('evidence') || 'None').replace(/\n/g, '\n   ')}\n\n` +
-          `🏛️  BAIL/REMAND:      ${getVal('bail') || 'N/A'}\n\n` +
-          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
-      } else if (t === 'incident') {
-        out = `${sep}\n🚨 INCIDENT REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
-          `📌 REPORTING OFFICER: ${getVal('officer') || 'N/A'}\n` +
-          `📅 DATE/TIME:         ${getVal('datetime') || 'N/A'}\n` +
-          `📍 LOCATION:          ${getVal('location') || 'N/A'}\n` +
-          `📋 INCIDENT TYPE:     ${getVal('inc-type') || 'N/A'}\n` +
-          `🚦 PRIORITY:          ${getVal('priority') || 'N/A'}\n\n` +
-          `👥 PERSONS INVOLVED\n   ${(getVal('persons') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
-          `📝 DESCRIPTION\n   ${(getVal('description') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
-          `✅ ACTIONS TAKEN\n   ${(getVal('actions') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
-          `📊 OUTCOME:           ${getVal('outcome') || 'N/A'}\n\n` +
-          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
-      } else if (t === 'search') {
-        out = `${sep}\n🔍 SEARCH & SEIZURE REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
-          `📌 OFFICER:           ${getVal('officer') || 'N/A'}\n` +
-          `📅 DATE/TIME:         ${getVal('datetime') || 'N/A'}\n` +
-          `📍 LOCATION:          ${getVal('location') || 'N/A'}\n` +
-          `👤 SUBJECT/PREMISES:  ${getVal('subject') || 'N/A'}\n` +
-          `🔎 SEARCH TYPE:       ${getVal('search-type') || 'N/A'}\n` +
-          `⚖️  LEGAL BASIS:       ${getVal('legal-basis') || 'N/A'}\n` +
-          `📋 WARRANT NO:        ${getVal('warrant-no') || 'N/A'}\n` +
-          `✍️  CONSENT BY:        ${getVal('consent-party') || 'N/A'}\n\n` +
-          `📦 ITEMS SEIZED\n   ${(getVal('seized') || 'None').replace(/\n/g, '\n   ')}\n\n` +
-          `↩️  ITEMS RETURNED\n   ${(getVal('returned') || 'None').replace(/\n/g, '\n   ')}\n\n` +
-          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
-      } else if (t === 'pursuit') {
-        out = `${sep}\n🚔 VEHICLE PURSUIT REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
-          `📌 INITIATING OFFICER: ${getVal('officer') || 'N/A'}\n` +
-          `📅 DATE/TIME:          ${getVal('datetime') || 'N/A'}\n` +
-          `📍 START LOCATION:     ${getVal('start-loc') || 'N/A'}\n` +
-          `🏁 END LOCATION:       ${getVal('end-loc') || 'N/A'}\n` +
-          `⏱️  DURATION:           ${getVal('duration') || 'N/A'}\n` +
-          `💨 MAX SPEED:          ${getVal('max-speed') || 'N/A'}\n\n` +
-          `🚗 FLEEING VEHICLE:    ${getVal('veh-desc') || 'N/A'}\n` +
-          `⚠️  REASON FOR STOP:   ${getVal('stop-reason') || 'N/A'}\n\n` +
-          `👮 UNITS INVOLVED\n   ${(getVal('units') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
-          `📖 PURSUIT EVENTS\n   ${(getVal('events') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
-          `🛑 TERMINATION:        ${getVal('termination') || 'N/A'}\n\n` +
-          `✅ OUTCOME\n   ${(getVal('outcome') || 'N/A').replace(/\n/g, '\n   ')}\n\n${sep}\n${gen}`;
-      } else if (t === 'use-of-force') {
-        out = `${sep}\n⚡ USE OF FORCE REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
-          `📌 OFFICER:            ${getVal('officer') || 'N/A'}\n` +
-          `📅 DATE/TIME:          ${getVal('datetime') || 'N/A'}\n` +
-          `📍 LOCATION:           ${getVal('location') || 'N/A'}\n` +
-          `👤 SUBJECT:            ${getVal('subject') || 'N/A'}\n` +
-          `📋 DESCRIPTION:        ${getVal('subject-desc') || 'N/A'}\n\n` +
-          `⚠️  THREAT LEVEL:      ${getVal('threat') || 'N/A'}\n` +
-          `💥 FORCE USED:         ${getVal('force-used') || 'N/A'}\n\n` +
-          `📖 CIRCUMSTANCES\n   ${(getVal('circumstances') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
-          `🕊️  DE-ESCALATION ATTEMPTS\n   ${(getVal('deescalation') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
-          `🏥 INJURIES:           ${(getVal('injuries') || 'None').replace(/\n/g, '\n   ')}\n` +
-          `🚑 MEDICAL:            ${getVal('medical') || 'N/A'}\n` +
-          `👮 SUPERVISOR:         ${getVal('supervisor') || 'N/A'}\n\n` +
-          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
-      }
-
-      document.getElementById('output-box').value = out;
-    }
-
-    function copyReport() {
-      const txt = document.getElementById('output-box').value;
-      if (!txt.trim()) return;
-      navigator.clipboard.writeText(txt).then(() => {
-        const t = document.getElementById('toast');
-        t.style.display = 'block';
-        setTimeout(() => { t.style.display = 'none'; }, 2200);
-      });
-    }
-
-    function clearForm() {
-      document.querySelectorAll('#inner-form input, #inner-form select, #inner-form textarea').forEach(el => {
-        if (el.tagName === 'SELECT') el.selectedIndex = 0;
-        else el.value = '';
-      });
-      document.getElementById('output-box').value = '';
-    }
-
-    function submitFeedback() {
-      const name = document.getElementById('fb-name').value.trim();
-      const cat  = document.getElementById('fb-cat').value;
-      const desc = document.getElementById('fb-desc').value.trim();
-      if (!desc) return;
+  // ── Copy ──
+  function copyReport() {
+    const txt = document.getElementById('output-box').value;
+    if (!txt.trim()) return;
+    navigator.clipboard.writeText(txt).then(() => {
       const t = document.getElementById('toast');
-      t.textContent = '✓ Feedback submitted!';
       t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; t.textContent = '✓ Copied to clipboard!'; }, 2500);
-      document.getElementById('fb-name').value = '';
-      document.getElementById('fb-desc').value = '';
-      closeModal('modal-feedback');
-      console.log('Feedback:', { name, cat, desc });
-    }
+      setTimeout(() => { t.style.display = 'none'; }, 2000);
+    });
+  }
 
-    // Init
-    renderForm('traffic');
-  </script>
+  // ── Download ──
+  function downloadReport() {
+    const txt = document.getElementById('output-box').value;
+    if (!txt.trim()) return;
+    const type = document.getElementById('r-type').value.replace(/\s+/g,'_').toLowerCase();
+    const a = document.createElement('a');
+    a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(txt);
+    a.download = `AIRS_${type}_${Date.now()}.txt`;
+    a.click();
+  }
+
+  // ── Clear ──
+  function clearAll() {
+    ['r-evidence','r-charges','r-narrative','r-supervisor'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    (TYPE_EXTRA[document.getElementById('r-type').value] || []).forEach(f => {
+      const el = document.getElementById(f.id); if (el) el.value = '';
+    });
+    document.getElementById('output-box').value = '';
+    updateCounter();
+  }
+
+  // ── Save profile to localStorage ──
+  function saveProfile() {
+    localStorage.setItem('airs_profile', JSON.stringify({
+      name: document.getElementById('p-name').value,
+      rank: document.getElementById('p-rank').value,
+      callsign: document.getElementById('p-callsign').value,
+      division: document.getElementById('p-division').value,
+    }));
+    const t = document.getElementById('toast');
+    t.textContent = '✓ Profile saved';
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; t.textContent = '✓ Copied to clipboard'; }, 2000);
+  }
+
+  // ── Export JSON ──
+  function exportJSON() {
+    const data = {
+      profile: {
+        name: document.getElementById('p-name').value,
+        rank: document.getElementById('p-rank').value,
+        callsign: document.getElementById('p-callsign').value,
+        division: document.getElementById('p-division').value,
+      },
+      report: {
+        type: document.getElementById('r-type').value,
+        evidence: document.getElementById('r-evidence').value,
+        charges: document.getElementById('r-charges').value,
+        narrative: document.getElementById('r-narrative').value,
+        supervisor: document.getElementById('r-supervisor').value,
+      }
+    };
+    const a = document.createElement('a');
+    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data, null, 2));
+    a.download = `AIRS_report_${Date.now()}.json`;
+    a.click();
+  }
+
+  // ── Import JSON ──
+  function importJSON(e) {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const d = JSON.parse(ev.target.result);
+        if (d.profile) {
+          if (d.profile.name)     document.getElementById('p-name').value     = d.profile.name;
+          if (d.profile.rank)     document.getElementById('p-rank').value     = d.profile.rank;
+          if (d.profile.callsign) document.getElementById('p-callsign').value = d.profile.callsign;
+          if (d.profile.division) document.getElementById('p-division').value = d.profile.division;
+        }
+        if (d.report) {
+          if (d.report.type)       document.getElementById('r-type').value      = d.report.type;
+          if (d.report.evidence)   document.getElementById('r-evidence').value  = d.report.evidence;
+          if (d.report.charges)    document.getElementById('r-charges').value   = d.report.charges;
+          if (d.report.narrative)  document.getElementById('r-narrative').value = d.report.narrative;
+          if (d.report.supervisor) document.getElementById('r-supervisor').value= d.report.supervisor;
+        }
+        onTypeChange(); liveUpdate();
+      } catch { alert('Invalid JSON file'); }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
+
+  // ── Modal ──
+  function openCheatsheet() {
+    document.getElementById('modal-cheatsheet').style.display = 'block';
+  }
+  document.getElementById('modal-cheatsheet').addEventListener('click', function(e) {
+    if (e.target === this) this.style.display = 'none';
+  });
+
+  // ── Load saved profile on start ──
+  (function() {
+    const saved = localStorage.getItem('airs_profile');
+    if (saved) {
+      try {
+        const p = JSON.parse(saved);
+        if (p.name)     document.getElementById('p-name').value     = p.name;
+        if (p.rank)     document.getElementById('p-rank').value     = p.rank;
+        if (p.callsign) document.getElementById('p-callsign').value = p.callsign;
+        if (p.division) document.getElementById('p-division').value = p.division;
+        liveUpdate();
+      } catch {}
+    }
+  })();
+</script>
 </body>
 </html>
