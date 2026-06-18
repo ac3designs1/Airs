@@ -264,7 +264,7 @@
     .cdd-list{
       display:none;position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:500;
       background:var(--p2);border:1px solid var(--brd-p);border-radius:9px;
-      overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.65);
+      overflow-y:auto;max-height:220px;box-shadow:0 12px 32px rgba(0,0,0,.65);
     }
     .cdd-list.open{display:block}
     .cdd-opt{
@@ -336,27 +336,57 @@
         </div>
       </div>
 
+      <input type="hidden" id="p-rank" value="RECRUIT" />
+      <input type="hidden" id="p-division" value="GENERAL DUTIES" />
+
       <div class="card">
         <div class="card-title">Assignment</div>
         <div class="fg">
           <label class="fl">Rank <span class="r">*</span></label>
-          <select id="p-rank" onchange="updatePC();live()">
-            <option>RECRUIT</option><option>PROBATIONARY CONSTABLE</option><option>CONSTABLE</option>
-            <option>SENIOR CONSTABLE</option><option>LEADING SENIOR CONSTABLE</option>
-            <option>DETECTIVE CONSTABLE</option><option>SERGEANT</option>
-            <option>DETECTIVE SERGEANT</option><option>SENIOR SERGEANT</option>
-            <option>DETECTIVE SENIOR SERGEANT</option><option>INSPECTOR</option>
-            <option>SENIOR INSPECTOR</option><option>SUPERINTENDENT</option>
-            <option>COMMANDER</option><option>DEPUTY COMMISSIONER</option><option>COMMISSIONER</option>
-          </select>
+          <div class="cdd-wrap" id="rank-wrap">
+            <button type="button" class="cdd-btn" id="rank-btn" onclick="toggleCDD('rank')">
+              <span id="rank-label">RECRUIT</span>
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cdd-list" id="rank-list">
+              <div class="cdd-opt selected" onclick="pickCDD('rank','p-rank','rank-label',this)">RECRUIT</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">PROBATIONARY CONSTABLE</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">CONSTABLE</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">SENIOR CONSTABLE</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">LEADING SENIOR CONSTABLE</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">DETECTIVE CONSTABLE</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">SERGEANT</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">DETECTIVE SERGEANT</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">SENIOR SERGEANT</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">DETECTIVE SENIOR SERGEANT</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">INSPECTOR</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">SENIOR INSPECTOR</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">SUPERINTENDENT</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">COMMANDER</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">DEPUTY COMMISSIONER</div>
+              <div class="cdd-opt" onclick="pickCDD('rank','p-rank','rank-label',this)">COMMISSIONER</div>
+            </div>
+          </div>
         </div>
         <div class="fg">
           <label class="fl">Division <span class="r">*</span></label>
-          <select id="p-division" onchange="updatePC();live()">
-            <option>GENERAL DUTIES</option><option>ORU HIGHWAY</option><option>CRIME COMMAND</option>
-            <option>CIRT</option><option>AIRWING</option><option>MARINE</option>
-            <option>SHERIFFS OFFICE</option><option>LEGAL SERVICES</option><option>COMMISSIONERS OFFICE</option>
-          </select>
+          <div class="cdd-wrap" id="div-wrap">
+            <button type="button" class="cdd-btn" id="div-btn" onclick="toggleCDD('div')">
+              <span id="div-label">GENERAL DUTIES</span>
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cdd-list" id="div-list">
+              <div class="cdd-opt selected" onclick="pickCDD('div','p-division','div-label',this)">GENERAL DUTIES</div>
+              <div class="cdd-opt" onclick="pickCDD('div','p-division','div-label',this)">ORU HIGHWAY</div>
+              <div class="cdd-opt" onclick="pickCDD('div','p-division','div-label',this)">CRIME COMMAND</div>
+              <div class="cdd-opt" onclick="pickCDD('div','p-division','div-label',this)">CIRT</div>
+              <div class="cdd-opt" onclick="pickCDD('div','p-division','div-label',this)">AIRWING</div>
+              <div class="cdd-opt" onclick="pickCDD('div','p-division','div-label',this)">MARINE</div>
+              <div class="cdd-opt" onclick="pickCDD('div','p-division','div-label',this)">SHERIFFS OFFICE</div>
+              <div class="cdd-opt" onclick="pickCDD('div','p-division','div-label',this)">LEGAL SERVICES</div>
+              <div class="cdd-opt" onclick="pickCDD('div','p-division','div-label',this)">COMMISSIONERS OFFICE</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -870,26 +900,36 @@
   function closeDD(){document.getElementById('dd-menu').classList.remove('open')}
   document.addEventListener('click',function(e){
     if(!document.getElementById('dd-wrap').contains(e.target))closeDD();
-    if(!document.getElementById('rt-wrap').contains(e.target))closeRTDD();
+    if(!document.getElementById('rt-wrap')?.contains(e.target)&&!document.getElementById('rank-wrap')?.contains(e.target)&&!document.getElementById('div-wrap')?.contains(e.target))closeAllCDD();
   });
 
+  /* Generic custom dropdown helpers */
+  const CDD_IDS=['rt','rank','div'];
+  function closeAllCDD(){CDD_IDS.forEach(k=>{document.getElementById(k+'-btn')?.classList.remove('open');document.getElementById(k+'-list')?.classList.remove('open');})}
+  function toggleCDD(key){
+    const isOpen=document.getElementById(key+'-list').classList.contains('open');
+    closeAllCDD();
+    if(!isOpen){document.getElementById(key+'-btn').classList.add('open');document.getElementById(key+'-list').classList.add('open');}
+  }
+  function pickCDD(key,hiddenId,labelId,el){
+    const val=el.textContent.trim();
+    document.getElementById(hiddenId).value=val;
+    document.getElementById(labelId).textContent=val;
+    document.getElementById(key+'-list').querySelectorAll('.cdd-opt').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    closeAllCDD();
+    updatePC();live();
+  }
+
   /* Report Type custom dropdown */
-  function toggleRTDD(){
-    const btn=document.getElementById('rt-btn');
-    const list=document.getElementById('rt-list');
-    const open=list.classList.contains('open');
-    if(open){closeRTDD();}else{btn.classList.add('open');list.classList.add('open');}
-  }
-  function closeRTDD(){
-    document.getElementById('rt-btn').classList.remove('open');
-    document.getElementById('rt-list').classList.remove('open');
-  }
+  function toggleRTDD(){toggleCDD('rt')}
+  function closeRTDD(){document.getElementById('rt-btn').classList.remove('open');document.getElementById('rt-list').classList.remove('open');}
   function pickRT(val,label){
     document.getElementById('r-type').value=val;
     document.getElementById('rt-label').textContent=label;
-    document.querySelectorAll('.cdd-opt').forEach(o=>o.classList.remove('selected'));
+    document.getElementById('rt-list').querySelectorAll('.cdd-opt').forEach(o=>o.classList.remove('selected'));
     event.target.classList.add('selected');
-    closeRTDD();
+    closeAllCDD();
     selType();
   }
 
@@ -912,7 +952,11 @@
   /* Boot */
   (function(){
     const s=localStorage.getItem('airs_rp');
-    if(s){try{const p=JSON.parse(s);['name','rank','callsign','division'].forEach(k=>{if(p[k])document.getElementById('p-'+k).value=p[k]})}catch{}}
+    if(s){try{const p=JSON.parse(s);
+      ['name','callsign'].forEach(k=>{if(p[k])document.getElementById('p-'+k).value=p[k]});
+      if(p.rank){document.getElementById('p-rank').value=p.rank;document.getElementById('rank-label').textContent=p.rank;document.getElementById('rank-list').querySelectorAll('.cdd-opt').forEach(o=>{o.classList.toggle('selected',o.textContent.trim()===p.rank)});}
+      if(p.division){document.getElementById('p-division').value=p.division;document.getElementById('div-label').textContent=p.division;document.getElementById('div-list').querySelectorAll('.cdd-opt').forEach(o=>{o.classList.toggle('selected',o.textContent.trim()===p.division)});}
+    }catch{}}
     updatePC();
     resetDateTime();
   })();
