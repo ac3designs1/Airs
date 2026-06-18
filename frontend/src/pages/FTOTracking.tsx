@@ -86,7 +86,9 @@ export default function FTOTracking() {
               <p className="text-slate-500 text-sm">Field Training Officer shift hours log</p>
             </div>
           </div>
-          <button onClick={() => setShowForm(true)} className="btn-primary flex items-center gap-2">
+          <button onClick={() => setShowForm(true)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:brightness-110 active:scale-95"
+            style={{ background: 'linear-gradient(135deg,#b45309,#d97706)', border: '1px solid rgba(234,179,8,0.30)', boxShadow: '0 0 16px rgba(234,179,8,0.15)' }}>
             <Plus className="w-4 h-4" /> Log FTO Shift
           </button>
         </div>
