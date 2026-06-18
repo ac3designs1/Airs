@@ -205,7 +205,7 @@
       </div>
       <div class="fg">
         <label class="fl">Callsign <span class="r">*</span></label>
-        <input type="text" id="p-callsign" placeholder="e.g. 107" oninput="live()" />
+        <input type="text" id="p-callsign" placeholder="e.g. 107" oninput="if(sMode){const t=document.getElementById('r-type').value;buildStructFields(t);}live()" />
       </div>
       <div class="fg">
         <label class="fl">Division <span class="r">*</span></label>
@@ -440,54 +440,57 @@
   /* Mode */
   /* ── Structured mode templates ── */
   const STRUCT_TMPL = {
-    'INCIDENT REPORT': [
-      {id:'sf_sd', label:'Scene Description',   val:'I responded to a [CALL TYPE] at [LOCATION].\n\nOn arrival, [SCENE DESCRIPTION].'},
-      {id:'sf_pi', label:'Persons Involved',     val:'[PERSON NAME] - [ROLE / RELATIONSHIP]'},
-      {id:'sf_at', label:'Actions Taken',        val:'[DESCRIBE ACTIONS TAKEN BY OFFICER]'},
-      {id:'sf_oc', label:'Outcome',              val:'[HOW THE INCIDENT CONCLUDED]'},
-    ],
     'ARREST REPORT': [
-      {id:'sf_sd', label:'Scene Description',   val:'I responded to a [CALL TYPE] at [LOCATION].\n\nOn arrival, [SCENE DESCRIPTION].'},
+      {id:'sf_sd', label:'Scene Description',   val:'[CALLSIGN] responded to a [CALL TYPE] at [LOCATION].\n\nOn arrival, [SCENE DESCRIPTION].'},
       {id:'sf_si', label:'Suspect Information', val:'The suspect was identified as [SUSPECT NAME], described as [SUSPECT DESCRIPTION]. The suspect was last seen [LAST SEEN DETAILS].'},
       {id:'sf_sc', label:'Scene Conclusion',    val:'The suspect got away by [HOW THEY GOT AWAY].'},
-      {id:'sf_pr', label:'Processing',          val:'Suspect was held at station for processing. I read the suspect their caution.\n\nDuring a search, the following items were located:\n• [ITEM]\n• [ITEM]'},
+      {id:'sf_pr', label:'Processing',          val:'Suspect was held at station for processing. [CALLSIGN] read the suspect their caution.\n\nDuring a search, the following items were located:\n• [ITEM]\n• [ITEM]'},
       {id:'sf_co', label:'Charges and Outcome', val:'[SUSPECT NAME] is wanted for the above-mentioned charges.'},
     ],
     'TRAFFIC STOP REPORT': [
-      {id:'sf_st', label:'Stop Circumstances',  val:'I conducted a traffic stop on a [VEHICLE DESCRIPTION] at [LOCATION] for [REASON].'},
+      {id:'sf_st', label:'Stop Circumstances',  val:'[CALLSIGN] conducted a traffic stop on a [VEHICLE DESCRIPTION] at [LOCATION] for [REASON].'},
       {id:'sf_dr', label:'Driver Details',      val:'The driver was identified as [NAME], [DESCRIPTION].'},
       {id:'sf_vc', label:'Vehicle Check',       val:'A check of the vehicle registration returned [RESULT].'},
       {id:'sf_oc', label:'Outcome',             val:'[RESULT OF STOP - INFRINGEMENT / WARNING / ARREST]'},
     ],
     'USE OF FORCE REPORT': [
-      {id:'sf_ci', label:'Circumstances',       val:'I was called to [LOCATION] for [REASON].'},
+      {id:'sf_ci', label:'Circumstances',       val:'[CALLSIGN] was called to [LOCATION] for [REASON].'},
       {id:'sf_ta', label:'Threat Assessment',   val:'The subject [NAME] was [BEHAVIOUR / THREAT LEVEL].'},
-      {id:'sf_fu', label:'Force Used',          val:'I used [FORCE TYPE] to [REASON FOR FORCE].'},
+      {id:'sf_fu', label:'Force Used',          val:'[CALLSIGN] used [FORCE TYPE] due to [REASON FOR FORCE].'},
       {id:'sf_oc', label:'Outcome',             val:'[RESULT - SUBJECT DETAINED / MEDICAL ATTENTION ETC]'},
     ],
     'VEHICLE PURSUIT REPORT': [
-      {id:'sf_pi', label:'Pursuit Initiation',  val:'I initiated a pursuit of a [VEHICLE DESCRIPTION] at [LOCATION] for [REASON].'},
+      {id:'sf_pi', label:'Pursuit Initiation',  val:'[CALLSIGN] initiated a pursuit of a [VEHICLE DESCRIPTION] at [LOCATION] for [REASON].'},
       {id:'sf_pd', label:'Pursuit Details',     val:'The pursuit travelled through [ROUTE] at speeds of approximately [SPEED].'},
       {id:'sf_pt', label:'Pursuit Termination', val:'The pursuit was terminated at [LOCATION] because [REASON].'},
       {id:'sf_oc', label:'Outcome',             val:'[RESULT - ARREST / ESCAPED / SUBJECT IDENTIFIED]'},
     ],
     'SEARCH & SEIZURE REPORT': [
-      {id:'sf_gs', label:'Grounds for Search',  val:'I had grounds to search [SUBJECT] at [LOCATION] due to [REASON].'},
+      {id:'sf_gs', label:'Grounds for Search',  val:'[CALLSIGN] had grounds to search [SUBJECT] at [LOCATION] due to [REASON].'},
       {id:'sf_if', label:'Items Found',         val:'During the search, the following items were located:\n• [ITEM]\n• [ITEM]'},
       {id:'sf_oc', label:'Outcome',             val:'[RESULT OF SEARCH - ITEMS SEIZED / CLEAR]'},
+    ],
+    'INCIDENT REPORT': [
+      {id:'sf_sd', label:'Scene Description',   val:'[CALLSIGN] responded to a [CALL TYPE] at [LOCATION].\n\nOn arrival, [SCENE DESCRIPTION].'},
+      {id:'sf_pi', label:'Persons Involved',     val:'[PERSON NAME] - [ROLE / RELATIONSHIP]'},
+      {id:'sf_at', label:'Actions Taken',        val:'[DESCRIBE ACTIONS TAKEN BY OFFICER]'},
+      {id:'sf_oc', label:'Outcome',              val:'[HOW THE INCIDENT CONCLUDED]'},
     ],
   };
 
   function buildStructFields(type){
     const container=document.getElementById('struct-fields');
     const tmpl=STRUCT_TMPL[type]||STRUCT_TMPL['INCIDENT REPORT'];
+    const callsign=(document.getElementById('p-callsign').value||'').trim()||'[CALLSIGN]';
     container.innerHTML='';
     tmpl.forEach(sec=>{
       const wrap=document.createElement('div');
       wrap.className='sf-section';
       wrap.innerHTML=`<div class="sf-label"><span class="sf-label-star">✦</span>${sec.label}</div>`;
       const ta=document.createElement('textarea');
-      ta.id=sec.id; ta.rows=4; ta.value=sec.val;
+      ta.id=sec.id;
+      ta.rows=Math.max(3, sec.val.split('\n').length+1);
+      ta.value=sec.val.replace(/\[CALLSIGN\]/g, callsign);
       ta.oninput=()=>live();
       wrap.appendChild(ta);
       container.appendChild(wrap);
