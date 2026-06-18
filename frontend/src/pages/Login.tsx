@@ -136,24 +136,6 @@ export default function Login() {
             Custom scripts, whitelisted factions, and a community built for serious roleplay.
           </p>
 
-          {/* Stats row */}
-          <div className="flex items-center gap-10 mt-10">
-            {[
-              { val: '200+', label: 'Player Slots' },
-              { val: '50+',  label: 'Custom Scripts' },
-              { val: '10+',  label: 'Active Factions' },
-              { val: '30+',  label: 'Unique Jobs' },
-            ].map(s => (
-              <div key={s.label} className="text-center">
-                <div className="text-2xl font-black"
-                  style={{ background: 'linear-gradient(135deg,#e879f9,#a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                  {s.val}
-                </div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600 mt-0.5">{s.label}</div>
-              </div>
-            ))}
-          </div>
-
           {/* Feature pills */}
           <div className="flex flex-wrap justify-center gap-2 mt-8">
             {['Live Dispatch','Officer Roster','Warrant System','FTO Training','Certifications','Shift Tracking'].map(f => (
