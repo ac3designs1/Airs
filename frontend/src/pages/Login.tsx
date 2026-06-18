@@ -84,9 +84,6 @@ export default function Login() {
             background:'radial-gradient(ellipse, rgba(236,72,153,0.14) 0%, transparent 65%)', filter:'blur(70px)' }} />
           <div style={{ position:'absolute', top:'40%', right:'10%', width:'40%', height:'40%', borderRadius:'50%',
             background:'radial-gradient(ellipse, rgba(99,102,241,0.10) 0%, transparent 65%)', filter:'blur(50px)' }} />
-          {/* Subtle grid */}
-          <div className="absolute inset-0"
-            style={{ backgroundImage:'linear-gradient(rgba(168,85,247,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.04) 1px,transparent 1px)', backgroundSize:'50px 50px', opacity:1 }} />
         </div>
 
         {/* ── Top bar ── */}
