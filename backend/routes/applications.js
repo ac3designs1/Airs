@@ -1,10 +1,13 @@
 const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-const https = require('https');
-const { db } = require('../db/schema');
+const router  = express.Router();
+const https   = require('https');
+const { db }  = require('../db/schema');
 const { authenticateToken } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
+// Lazy-require to avoid circular dep — onboarding is loaded after applications in app.js
+function getCreateRecruit() {
+  return require('./onboarding').createRecruitFromApplication;
+}
 
 const LEADERSHIP = ['admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
@@ -193,45 +196,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
     // ── Approved: create recruit officer + DM ──────────────────
     if (status === 'approved') {
-      // Skip if ANY officer already has this discord_id (UNIQUE constraint)
-      const existing = app.discord_id
-        ? db.prepare('SELECT id FROM officers WHERE discord_id = ?').get(app.discord_id)
-        : null;
-
-      if (!existing) {
-        const nameParts = (app.full_name || '').trim().split(/\s+/);
-        const firstName = nameParts[0] || 'New';
-        const lastName  = nameParts.slice(1).join(' ') || 'Officer';
-        const ts        = Date.now().toString().slice(-6);
-        const randomPwd = bcrypt.hashSync(uuidv4(), 10);
-
-        // Unique username
-        const baseUser = (app.discord_username || app.discord || `officer_${ts}`)
-          .toLowerCase().replace(/[^a-z0-9_]/g, '_').slice(0, 28);
-        let finalUsername = baseUser;
-        let n = 1;
-        while (db.prepare('SELECT id FROM officers WHERE username = ?').get(finalUsername)) {
-          finalUsername = `${baseUser}_${n++}`;
-        }
-
-        // Unique badge
-        let badge = `RCT${ts}`;
-        let bn = 1;
-        while (db.prepare('SELECT id FROM officers WHERE badge_number = ?').get(badge)) {
-          badge = `RCT${ts}${bn++}`;
-        }
-
-        db.prepare(`
-          INSERT INTO officers
-            (id,badge_number,username,password,first_name,last_name,rank,department,role,status,callsign,discord_id,discord_username,avatar_url)
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-        `).run(
-          uuidv4(), badge, finalUsername, randomPwd,
-          firstName, lastName, 'Recruit', 'Academy', 'recruit', 'off_duty',
-          `RCT-${ts}`,
-          app.discord_id || null, app.discord_username || null, app.discord_avatar || null,
-        );
-      }
+      // Use shared function — handles uniqueness checks and all edge cases
+      getCreateRecruit()(app);
 
       if (app.discord_id) {
         sendDiscordDM(app.discord_id,
