@@ -130,10 +130,10 @@ export default function Login() {
           </h1>
 
           <p className="text-slate-300 text-center text-base leading-relaxed max-w-sm font-semibold uppercase tracking-wider text-[13px]">
-            Australia's Premier Roleplay Experience
+            Melbourne Police Force MDT
           </p>
           <p className="text-slate-600 text-center text-sm leading-relaxed max-w-sm mt-2">
-            Custom scripts, whitelisted factions, and a community built for serious roleplay.
+            Melbourne's premier FiveM law enforcement CAD & MDT system. Secure, real-time, and built for serious roleplay.
           </p>
 
           {/* Feature pills */}
