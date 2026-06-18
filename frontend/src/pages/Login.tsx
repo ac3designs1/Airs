@@ -95,52 +95,34 @@ export default function Login() {
 
         {/* Top left logo */}
         <div className="relative z-10 p-10">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', boxShadow: '0 0 20px rgba(168,85,247,0.40)' }}>
-              <Shield className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <div className="text-white font-black text-sm tracking-tight">NextAirs</div>
-              <div className="text-[10px] font-mono font-bold tracking-widest uppercase" style={{ color: '#a855f7' }}>Melbourne Police Force</div>
-            </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: '0 0 6px rgba(34,197,94,0.8)' }} />
+            <span className="text-xs font-mono text-slate-600 uppercase tracking-widest">Next RP · Melbourne</span>
           </div>
         </div>
 
         {/* Centre hero */}
         <div className={`relative z-10 flex-1 flex flex-col items-center justify-center px-12 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
 
-          {/* Subtitle */}
-          <p className="text-[11px] font-bold uppercase tracking-[0.25em] mb-5"
-            style={{ color: 'rgba(168,85,247,0.70)' }}>
-            Australian FiveM Roleplay
-          </p>
+          {/* AIRS Logo */}
+          <div className="mb-8 select-none" style={{ filter: 'drop-shadow(0 0 40px rgba(168,85,247,0.50))' }}>
+            <img
+              src="/airs-logo.png"
+              alt="AIRS Logo"
+              style={{ width: '340px', maxWidth: '90%', opacity: 0.92 }}
+              draggable={false}
+            />
+          </div>
 
-          {/* Big title */}
-          <h1 className="text-[72px] font-black text-center leading-none mb-6 select-none"
-            style={{
-              letterSpacing: '-0.03em',
-              background: 'linear-gradient(135deg, #e879f9 0%, #a855f7 40%, #818cf8 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              filter: 'drop-shadow(0 0 40px rgba(168,85,247,0.45))',
-            }}>
-            NEXT RP
-          </h1>
-
-          <p className="text-slate-300 text-center text-base leading-relaxed max-w-sm font-semibold uppercase tracking-wider text-[13px]">
-            ADVANCED INTERNAL REPORTING SYSTEM
-          </p>
-          <p className="text-slate-600 text-center text-sm leading-relaxed max-w-sm mt-2">
-            Melbourne's premier FiveM law enforcement system. Secure, real-time, and built for serious roleplay.
+          <p className="text-slate-500 text-center text-sm leading-relaxed max-w-xs mt-1">
+            Melbourne's premier FiveM law enforcement system — secure, real-time, and built for serious roleplay.
           </p>
 
           {/* Feature pills */}
           <div className="flex flex-wrap justify-center gap-2 mt-8">
             {['Live Dispatch','Officer Roster','Warrant System','FTO Training','Certifications','Shift Tracking'].map(f => (
               <span key={f} className="px-3 py-1.5 rounded-full text-xs font-semibold"
-                style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.20)', color: 'rgba(168,85,247,0.80)' }}>
+                style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.20)', color: 'rgba(168,85,247,0.70)' }}>
                 {f}
               </span>
             ))}
@@ -153,7 +135,7 @@ export default function Login() {
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: '0 0 6px rgba(34,197,94,0.8)' }} />
             <span className="text-xs font-mono text-slate-600">SYSTEM ONLINE</span>
           </div>
-          <span className="text-xs font-mono text-slate-700">NextAirs v2.0 · AIRS v2.0</span>
+          <span className="text-xs font-mono text-slate-700">AIRS · Next RP v2.0</span>
         </div>
 
         {/* Right border */}
@@ -176,15 +158,9 @@ export default function Login() {
         </div>
 
         {/* Mobile logo */}
-        <div className="lg:hidden flex items-center gap-3 mb-10">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', boxShadow: '0 0 18px rgba(168,85,247,0.35)' }}>
-            <Shield className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <div className="text-white font-black text-base">NextAirs</div>
-            <div className="text-[10px] font-mono" style={{ color: '#a855f7' }}>NEXT RP · MELBOURNE</div>
-          </div>
+        <div className="lg:hidden flex flex-col items-center mb-10">
+          <img src="/airs-logo.png" alt="AIRS" draggable={false}
+            style={{ width: '180px', opacity: 0.90, filter: 'drop-shadow(0 0 20px rgba(168,85,247,0.45))' }} />
         </div>
 
         <div className={`w-full max-w-sm relative z-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>

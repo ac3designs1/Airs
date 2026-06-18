@@ -169,15 +169,9 @@ export default function Apply() {
 
         {/* Logo */}
         <div className="relative z-10 p-10">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-              style={{ background:'linear-gradient(135deg,#7c3aed,#a855f7)', boxShadow:'0 0 20px rgba(168,85,247,0.40)' }}>
-              <Shield className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <div className="text-white font-black text-sm tracking-tight">NextAirs</div>
-              <div className="text-[10px] font-mono font-bold tracking-widest uppercase" style={{ color:'#a855f7' }}>Melbourne Police Force</div>
-            </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: '0 0 6px rgba(34,197,94,0.8)' }} />
+            <span className="text-xs font-mono text-slate-600 uppercase tracking-widest">Next RP · Melbourne</span>
           </div>
         </div>
 
@@ -232,7 +226,7 @@ export default function Apply() {
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow:'0 0 6px rgba(34,197,94,0.8)' }} />
             <span className="text-xs font-mono text-slate-600">RECRUITING NOW</span>
           </div>
-          <span className="text-xs font-mono text-slate-700">NextAirs v2.0 · AIRS v2.0</span>
+          <span className="text-xs font-mono text-slate-700">AIRS · Next RP v2.0</span>
         </div>
 
         {/* Right border */}
@@ -248,11 +242,9 @@ export default function Apply() {
         <div className={`${wideMode ? 'flex' : 'lg:hidden flex'} items-center justify-between px-6 h-14 flex-shrink-0`}
           style={{ borderBottom:'1px solid rgba(168,85,247,0.10)' }}>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
-              <Shield className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-white font-black text-sm">NextAirs</span>
-            <span className="text-slate-700 text-xs font-mono hidden sm:block">· Melbourne Police Force</span>
+            <img src="/airs-logo.png" alt="AIRS" draggable={false}
+              style={{ height: '22px', width: 'auto', filter: 'drop-shadow(0 0 6px rgba(168,85,247,0.5))' }} />
+            <span className="text-slate-700 text-xs font-mono hidden sm:block">Melbourne Police Force</span>
           </div>
           <a href="/login" className="text-xs text-slate-500 hover:text-purple-400 transition-colors flex items-center gap-1">
             Officer login <ChevronRight className="w-3 h-3" />

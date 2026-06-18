@@ -167,20 +167,14 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
       {/* ── Logo ──────────────────────────────────────────── */}
       <div className="flex items-center justify-between px-4 h-[60px] flex-shrink-0"
         style={{ borderBottom: '1px solid rgba(168,85,247,0.10)' }}>
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)' }}>
-              <Shield className="w-4.5 h-4.5 text-white" style={{ width: 17, height: 17 }} />
+          <div className="flex items-center gap-2.5">
+            <div className="relative flex-shrink-0">
+              <img src="/airs-logo.png" alt="AIRS" draggable={false}
+                style={{ height: '28px', width: 'auto', filter: 'drop-shadow(0 0 8px rgba(168,85,247,0.55))' }} />
             </div>
-            <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 rounded-full border-2 animate-pulse"
-              style={{ borderColor: '#06060a', boxShadow: '0 0 6px rgba(34,197,94,0.9)' }} />
+            <div className="absolute -top-0.5 right-3 w-2 h-2 bg-green-400 rounded-full border-2 animate-pulse"
+              style={{ borderColor: '#06060a', boxShadow: '0 0 5px rgba(34,197,94,0.9)' }} />
           </div>
-          <div>
-            <div className="text-white font-black text-sm leading-none tracking-tight">NextAirs</div>
-            <div className="text-[9px] font-mono font-bold mt-0.5 tracking-widest uppercase" style={{ color: '#a855f7' }}>ADV. INTERNAL REPORTING</div>
-          </div>
-        </div>
         <button className="md:hidden p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5" onClick={() => setMobileOpen(false)}>
           <X className="w-4 h-4" />
         </button>
