@@ -65,7 +65,7 @@ const TIERS = [
 ];
 
 const DIVISION_EOIS: DivEOI[] = [
-  { name:'CIRT',    category:'Tactical', requirements:['FTO Certified','Minimum 6 months service','Supervisor recommendation','No active strikes'] },
+  { name:'Critical Incident Response Team (CIRT)', category:'Tactical', requirements:['FTO Certified','Minimum 6 months service','Supervisor recommendation','No active strikes'] },
   { name:'Highway', category:'Highway',  requirements:['Minimum 3 months service','Advanced driver training','Clean service record'] },
 ];
 
@@ -425,25 +425,6 @@ export default function Certifications() {
               );
             })}
 
-            {/* SOG — invite only */}
-            <div className="rounded-xl p-4 border opacity-40" style={{background:'#111c31',borderColor:'rgba(6,182,212,0.08)'}}>
-              <div className="flex items-center gap-1.5 mb-2.5">
-                <span className="chip chip-red text-[9px]">Tactical</span>
-                <span className="chip chip-gray text-[9px]">Invite Only</span>
-              </div>
-              <p className="font-black text-slate-400 text-sm mb-1">SOG</p>
-              <div className="space-y-1 mb-3">
-                {['CIRT experience required','12+ months service','Commander invitation only'].map((r,i)=>(
-                  <div key={i} className="flex items-center gap-2 text-[12px] text-slate-600">
-                    <div className="w-1 h-1 rounded-full bg-slate-700 flex-shrink-0"/>{r}
-                  </div>
-                ))}
-              </div>
-              <div className="w-full py-1.5 rounded-lg text-[11px] font-semibold text-slate-600 text-center flex items-center justify-center gap-1.5"
-                style={{background:'rgba(71,85,105,0.08)',border:'1px solid rgba(71,85,105,0.12)'}}>
-                <Lock className="w-3 h-3"/> Invite Only
-              </div>
-            </div>
           </div>
         </div>
       )}
