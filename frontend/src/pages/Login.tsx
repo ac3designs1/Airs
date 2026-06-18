@@ -20,7 +20,7 @@ const DISCORD_ERRORS: Record<string, { icon: typeof AlertCircle; msg: string }> 
   no_account:   { icon: UserX,       msg: 'No officer account is linked to your Discord. Contact leadership to get access.' },
   terminated:   { icon: XCircle,     msg: 'Your account has been terminated. Contact an administrator.' },
   cancelled:    { icon: AlertCircle, msg: 'Discord sign-in was cancelled.' },
-  server_error: { icon: AlertCircle, msg: 'Discord sign-in failed. Try again or use the admin bypass.' },
+  server_error: { icon: AlertCircle, msg: 'Access denied. Please contact leadership.' },
   already_linked: { icon: AlertCircle, msg: 'That Discord account is already linked to another officer.' },
 };
 
