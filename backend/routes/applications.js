@@ -34,7 +34,7 @@ try { db.exec('ALTER TABLE applications ADD COLUMN discord_username TEXT'); } ca
 try { db.exec('ALTER TABLE applications ADD COLUMN discord_avatar TEXT'); } catch {}
 
 // ── POST /api/applications — public, no auth ──────────────────
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const {
     full_name, discord, discord_id, discord_username, discord_avatar,
     age, timezone, experience, why_join, availability, referral,
@@ -54,6 +54,15 @@ router.post('/', (req, res) => {
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
   `).run(id, full_name, discord, discord_id || null, discord_username || null, discord_avatar || null,
     age, timezone, experience || '', why_join, availability || '', referral || '');
+
+  // Send confirmation DM to applicant
+  if (discord_id) {
+    await sendDiscordDM(
+      discord_id,
+      `👋 **Hey ${full_name}!**\n\nThank you for applying to join **Next RP Melbourne Police**! ✅\n\nYour application has been received and is currently under review by our leadership team. Here's what to expect:\n\n⏱️ **Review time:** 24–72 hours\n📋 **What's next:** If shortlisted, you'll be contacted for an interview\n🎓 **If approved:** You'll complete a short initial training session before getting full access\n\nYou can check your application status at any time by visiting our apply page and signing in with Discord.\n\n*— Next RP Leadership Team*`,
+    );
+  }
+
   res.status(201).json({ message: 'Application submitted', id });
 });
 
@@ -159,6 +168,22 @@ router.put('/:id', authenticateToken, async (req, res) => {
         app.discord_avatar || null,
       );
     }
+
+    // Send approval DM
+    if (app.discord_id) {
+      await sendDiscordDM(
+        app.discord_id,
+        `🎉 **Congratulations ${app.full_name}!**\n\nYour application to join **Next RP Melbourne Police** has been **approved**! Welcome to the team! 🚔\n\n**What happens now:**\n1️⃣ Sign in to the NextAirs MDT using Discord at our website\n2️⃣ You'll be placed in the **Initial Training** queue\n3️⃣ Leadership will contact you to schedule your training sessions\n4️⃣ Once training is complete you'll get full MDT access and your official callsign\n\n**Your starting rank:** Recruit · Academy Division\n\nWe're excited to have you on board. See you out there! 🫡\n\n*— Next RP Leadership Team*`,
+      );
+    }
+  }
+
+  // Send denial DM
+  if (status === 'denied' && app.discord_id) {
+    await sendDiscordDM(
+      app.discord_id,
+      `👋 **Hey ${app.full_name},**\n\nThank you for taking the time to apply to **Next RP Melbourne Police**.\n\nAfter careful consideration, we're unable to approve your application at this time. This decision may be based on a number of factors and doesn't reflect your potential as a roleplayer.\n\nYou're welcome to reapply in the future. In the meantime, feel free to explore the server and continue building your RP experience.\n\nWe appreciate your interest and hope to see you again!\n\n*— Next RP Leadership Team*`,
+    );
   }
 
   res.json(db.prepare('SELECT * FROM applications WHERE id = ?').get(req.params.id));

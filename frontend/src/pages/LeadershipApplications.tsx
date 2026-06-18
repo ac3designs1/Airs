@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import {
   ClipboardList, Search, CheckCircle2, XCircle, Clock, MessageSquare,
-  ChevronDown, User, Calendar, Globe, Trash2, X
+  ChevronDown, User, Calendar, Globe, Trash2, Loader2
 } from 'lucide-react';
 import api from '../api/client';
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { format, formatDistanceToNow } from 'date-fns';
+import toast from 'react-hot-toast';
 
 interface Application {
   id: string; full_name: string; discord: string; age: number;
@@ -36,7 +37,7 @@ export default function LeadershipApplications() {
   const [filter,     setFilter]     = useState<'all' | Application['status']>('all');
   const [selected,   setSelected]   = useState<Application | null>(null);
   const [noteText,   setNoteText]   = useState('');
-  const [saving,     setSaving]     = useState(false);
+  const [saving,     setSaving]     = useState<string | null>(null);
 
   useEffect(() => {
     api.get('/applications').then(r => { setApps(r.data); setLoading(false); }).catch(() => setLoading(false));
@@ -56,13 +57,25 @@ export default function LeadershipApplications() {
     denied: apps.filter(a => a.status === 'denied').length,
   };
 
+  const STATUS_MSGS: Record<string, string> = {
+    approved:  '✅ Application approved — Discord DM sent!',
+    denied:    '❌ Application denied — Discord DM sent.',
+    interview: '📅 Moved to interview.',
+    pending:   'Reset to pending.',
+  };
+
   async function updateStatus(id: string, status: Application['status'], notes?: string) {
-    setSaving(true);
+    setSaving(status);
     try {
       const updated = await api.put(`/applications/${id}`, { status, review_notes: notes ?? noteText });
-      setApps(prev => prev.map(a => a.id === id ? updated.data : a));
-      if (selected?.id === id) setSelected(updated.data);
-    } catch { /* ignore */ } finally { setSaving(false); }
+      setApps(prev => prev.map(a => a.id === id ? { ...a, ...updated.data } : a));
+      if (selected?.id === id) setSelected(s => s ? { ...s, ...updated.data } : s);
+      toast.success(STATUS_MSGS[status] ?? 'Updated');
+    } catch {
+      toast.error('Failed to update status. Try again.');
+    } finally {
+      setSaving(null);
+    }
   }
 
   async function deleteApp(id: string) {
@@ -233,26 +246,23 @@ export default function LeadershipApplications() {
 
                 {/* Action buttons */}
                 <div className="grid grid-cols-2 gap-2 pt-1">
-                  <button onClick={() => updateStatus(selected.id, 'interview', noteText)} disabled={saving}
-                    className="py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2"
-                    style={{ background: 'rgba(56,189,248,0.10)', border: '1px solid rgba(56,189,248,0.25)', color: '#38bdf8' }}>
-                    <Clock className="w-3.5 h-3.5" /> Move to Interview
-                  </button>
-                  <button onClick={() => updateStatus(selected.id, 'approved', noteText)} disabled={saving}
-                    className="py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2"
-                    style={{ background: 'rgba(34,197,94,0.10)', border: '1px solid rgba(34,197,94,0.25)', color: '#4ade80' }}>
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Approve
-                  </button>
-                  <button onClick={() => updateStatus(selected.id, 'pending', noteText)} disabled={saving}
-                    className="py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2"
-                    style={{ background: 'rgba(100,116,139,0.10)', border: '1px solid rgba(100,116,139,0.20)', color: '#94a3b8' }}>
-                    <ChevronDown className="w-3.5 h-3.5" /> Reset to Pending
-                  </button>
-                  <button onClick={() => updateStatus(selected.id, 'denied', noteText)} disabled={saving}
-                    className="py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2"
-                    style={{ background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.25)', color: '#f87171' }}>
-                    <XCircle className="w-3.5 h-3.5" /> Deny
-                  </button>
+                  {([
+                    { s: 'interview', label: 'Move to Interview', Icon: Clock,        bg: 'rgba(56,189,248,0.10)',  border: 'rgba(56,189,248,0.25)',  color: '#38bdf8' },
+                    { s: 'approved',  label: 'Approve',           Icon: CheckCircle2, bg: 'rgba(34,197,94,0.10)',  border: 'rgba(34,197,94,0.25)',   color: '#4ade80' },
+                    { s: 'pending',   label: 'Reset to Pending',  Icon: ChevronDown,  bg: 'rgba(100,116,139,0.10)',border: 'rgba(100,116,139,0.20)', color: '#94a3b8' },
+                    { s: 'denied',    label: 'Deny',              Icon: XCircle,      bg: 'rgba(239,68,68,0.10)', border: 'rgba(239,68,68,0.25)',   color: '#f87171' },
+                  ] as const).map(({ s, label, Icon, bg, border, color }) => (
+                    <button key={s}
+                      onClick={() => updateStatus(selected.id, s as Application['status'], noteText)}
+                      disabled={saving !== null}
+                      className="py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+                      style={{ background: saving === s ? `${bg}` : bg, border: `1px solid ${border}`, color }}>
+                      {saving === s
+                        ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        : <Icon className="w-3.5 h-3.5" />}
+                      {saving === s ? 'Saving…' : label}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
