@@ -10,13 +10,8 @@ router.use(authenticateToken);
 
 router.get('/', (req, res) => {
   const { department } = req.query;
-  const isLeadership = LEADERSHIP.includes(req.user.role);
-  // Commissioner accounts are only visible to leadership (they are hidden from standard roster)
   let query = `SELECT id, username, first_name, last_name, rank, department, status, callsign, role, created_at, last_login
     FROM officers WHERE username != 'admin'`;
-  if (!isLeadership) {
-    query += ` AND role != 'commissioner'`;
-  }
   const params = [];
   if (department) { query += ' AND department = ?'; params.push(department); }
   query += ' ORDER BY department, rank, last_name';
