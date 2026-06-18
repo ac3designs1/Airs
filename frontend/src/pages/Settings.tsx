@@ -110,7 +110,7 @@ export default function Settings() {
             <p className="text-[10px] text-slate-600 mt-1">Your character's in-game name shown on the roster.</p>
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-wider font-semibold text-slate-500 mb-1.5">MDT Callsign</label>
+            <label className="block text-[11px] uppercase tracking-wider font-semibold text-slate-500 mb-1.5">AIRS Callsign</label>
             <input value={callsign} onChange={e => setCallsign(e.target.value)}
               placeholder="e.g. GD-102" className="nx-input w-full font-mono" />
           </div>
@@ -214,7 +214,7 @@ export default function Settings() {
                   ? `@${(user as unknown as { discord_username?: string }).discord_username}`
                   : 'Not linked'}
               </p>
-              <p className="text-xs text-slate-500">Used for MDT login</p>
+              <p className="text-xs text-slate-500">Used for AIRS login</p>
             </div>
           </div>
           {(user as unknown as { discord_username?: string }).discord_username && (

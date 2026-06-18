@@ -23,7 +23,7 @@ const SKILL_STAGES = [
       { id: 's1-1', name: 'Attending Jobs',   desc: 'Show competency in responding to and handling various job types', stageId: 1 },
       { id: 's1-2', name: 'Priority Levels',  desc: 'Understand and correctly apply different priority response levels', stageId: 1 },
       { id: 's1-3', name: 'Radio COMMS',       desc: 'Display proper radio communication protocols and etiquette', stageId: 1 },
-      { id: 's1-4', name: 'Use Of MDT & CAD', desc: 'Demonstrate proficiency in using the MDT and CAD systems', stageId: 1 },
+      { id: 's1-4', name: 'Use Of AIRS & AIRS', desc: 'Demonstrate proficiency in using the AIRS and AIRS systems', stageId: 1 },
     ]},
   { id: 2, label: 'Level Two',   short: 'L2', color: '#818cf8', bg: 'rgba(129,140,248,0.10)', border: 'rgba(129,140,248,0.22)',
     requirements: [

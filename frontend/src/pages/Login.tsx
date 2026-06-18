@@ -101,7 +101,7 @@ export default function Login() {
               <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
-              <div className="text-white font-black text-sm tracking-tight">NextAirs MDT</div>
+              <div className="text-white font-black text-sm tracking-tight">NextAirs</div>
               <div className="text-[10px] font-mono font-bold tracking-widest uppercase" style={{ color: '#a855f7' }}>Melbourne Police Force</div>
             </div>
           </div>
@@ -130,10 +130,10 @@ export default function Login() {
           </h1>
 
           <p className="text-slate-300 text-center text-base leading-relaxed max-w-sm font-semibold uppercase tracking-wider text-[13px]">
-            Melbourne Police Force MDT
+            ADVANCED INTERNAL REPORTING SYSTEM
           </p>
           <p className="text-slate-600 text-center text-sm leading-relaxed max-w-sm mt-2">
-            Melbourne's premier FiveM law enforcement CAD & MDT system. Secure, real-time, and built for serious roleplay.
+            Melbourne's premier FiveM law enforcement system. Secure, real-time, and built for serious roleplay.
           </p>
 
           {/* Feature pills */}
@@ -153,7 +153,7 @@ export default function Login() {
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: '0 0 6px rgba(34,197,94,0.8)' }} />
             <span className="text-xs font-mono text-slate-600">SYSTEM ONLINE</span>
           </div>
-          <span className="text-xs font-mono text-slate-700">NextAirs v2.0 · FIVEM CAD</span>
+          <span className="text-xs font-mono text-slate-700">NextAirs v2.0 · AIRS v2.0</span>
         </div>
 
         {/* Right border */}
@@ -182,7 +182,7 @@ export default function Login() {
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div>
-            <div className="text-white font-black text-base">NextAirs MDT</div>
+            <div className="text-white font-black text-base">NextAirs</div>
             <div className="text-[10px] font-mono" style={{ color: '#a855f7' }}>NEXT RP · MELBOURNE</div>
           </div>
         </div>
@@ -195,7 +195,7 @@ export default function Login() {
               Officer Portal
             </div>
             <h2 className="text-3xl font-black text-white mb-2" style={{ letterSpacing: '-0.02em' }}>Welcome Back</h2>
-            <p className="text-slate-600 text-sm">Sign in to access the MDT system.</p>
+            <p className="text-slate-600 text-sm">Sign in to access AIRS � Advanced Internal Reporting System.</p>
           </div>
 
           {/* Error */}

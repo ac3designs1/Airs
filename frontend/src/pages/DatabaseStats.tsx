@@ -69,7 +69,7 @@ export default function DatabaseStats() {
         {[
           { label: 'DB Engine', value: 'SQLite', sub: 'WAL mode enabled', icon: Database, color: 'text-emerald-400', bg: 'rgba(16,185,129,0.10)' },
           { label: 'Status',    value: 'Online', sub: 'All systems operational', icon: Activity, color: 'text-emerald-400', bg: 'rgba(16,185,129,0.10)' },
-          { label: 'Version',   value: 'v3.0.0', sub: 'NextAirs MDT', icon: Shield, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
+          { label: 'Version',   value: 'v3.0.0', sub: 'NextAirs', icon: Shield, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
           { label: 'Tables',    value: '22', sub: 'database tables', icon: Database, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
         ].map(s => (
           <div key={s.label} className="glass rounded-xl p-4">

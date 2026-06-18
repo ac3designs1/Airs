@@ -178,7 +178,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
           </div>
           <div>
             <div className="text-white font-black text-sm leading-none tracking-tight">NextAirs</div>
-            <div className="text-[9px] font-mono font-bold mt-0.5 tracking-widest uppercase" style={{ color: '#a855f7' }}>MELPOL MDT</div>
+            <div className="text-[9px] font-mono font-bold mt-0.5 tracking-widest uppercase" style={{ color: '#a855f7' }}>ADV. INTERNAL REPORTING</div>
           </div>
         </div>
         <button className="md:hidden p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5" onClick={() => setMobileOpen(false)}>

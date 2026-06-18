@@ -149,7 +149,7 @@ export default function Citizens() {
           </div>
           <div>
             <h1 className="text-xl font-black text-white">Citizens Records</h1>
-            <p className="text-slate-500 text-sm mt-0.5">MDT civilian database — search by name</p>
+            <p className="text-slate-500 text-sm mt-0.5">AIRS civilian database — search by name</p>
           </div>
         </div>
         <button onClick={() => { setShowForm(true); setForm({ ...blank }); }}

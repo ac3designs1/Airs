@@ -175,7 +175,7 @@ export default function Apply() {
               <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
-              <div className="text-white font-black text-sm tracking-tight">NextAirs MDT</div>
+              <div className="text-white font-black text-sm tracking-tight">NextAirs</div>
               <div className="text-[10px] font-mono font-bold tracking-widest uppercase" style={{ color:'#a855f7' }}>Melbourne Police Force</div>
             </div>
           </div>
@@ -232,7 +232,7 @@ export default function Apply() {
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow:'0 0 6px rgba(34,197,94,0.8)' }} />
             <span className="text-xs font-mono text-slate-600">RECRUITING NOW</span>
           </div>
-          <span className="text-xs font-mono text-slate-700">NextAirs v2.0 · FIVEM CAD</span>
+          <span className="text-xs font-mono text-slate-700">NextAirs v2.0 · AIRS v2.0</span>
         </div>
 
         {/* Right border */}
@@ -251,7 +251,7 @@ export default function Apply() {
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
               <Shield className="w-4 h-4 text-white" />
             </div>
-            <span className="text-white font-black text-sm">NextAirs MDT</span>
+            <span className="text-white font-black text-sm">NextAirs</span>
             <span className="text-slate-700 text-xs font-mono hidden sm:block">· Melbourne Police Force</span>
           </div>
           <a href="/login" className="text-xs text-slate-500 hover:text-purple-400 transition-colors flex items-center gap-1">

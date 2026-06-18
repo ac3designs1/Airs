@@ -76,7 +76,7 @@ export default function PendingActivation() {
               <div className="flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-slate-300 leading-relaxed">
-                  Your application has been <span className="text-purple-400 font-semibold">approved</span>. Before you get full access to the NextAirs MDT, you must complete your <span className="text-white font-semibold">Initial Training</span> with a senior officer or FTO. Leadership will contact you on Discord to schedule your sessions.
+                  Your application has been <span className="text-purple-400 font-semibold">approved</span>. Before you get full access to the NextAirs, you must complete your <span className="text-white font-semibold">Initial Training</span> with a senior officer or FTO. Leadership will contact you on Discord to schedule your sessions.
                 </p>
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function PendingActivation() {
               {[
                 'Leadership will contact you on Discord to schedule your training sessions',
                 'Complete all checklist items with your assigned FTO or senior officer',
-                'Once signed off, you\'ll get full access to the NextAirs MDT system',
+                'Once signed off, you\'ll get full access to the NextAirs system',
                 'You\'ll be assigned your official callsign and issued equipment',
               ].map((s, i) => (
                 <div key={i} className="flex items-start gap-2.5">

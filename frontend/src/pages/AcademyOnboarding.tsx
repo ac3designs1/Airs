@@ -139,7 +139,7 @@ export default function AcademyOnboarding() {
       await api.post(`/onboarding/${selected.id}/activate`);
       setRecruits(prev => prev.map(r => r.id === selected.id ? { ...r, onboarding_complete: 1, onboarding_activated_by: `${auth.user?.first_name} ${auth.user?.last_name}` } : r));
       setSelected(prev => prev ? { ...prev, onboarding_complete: 1 } : prev);
-      toast.success(`${selected.first_name} ${selected.last_name} activated! They now have full MDT access.`);
+      toast.success(`${selected.first_name} ${selected.last_name} activated! They now have full AIRS access.`);
     } catch { toast.error('Failed to activate'); }
     finally { setSaving(null); }
   };

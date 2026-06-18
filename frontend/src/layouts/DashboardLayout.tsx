@@ -22,7 +22,7 @@ export default function DashboardLayout() {
               style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)' }} />
           </div>
           <div className="text-center">
-            <p className="text-white font-black tracking-tight">NextAirs MDT</p>
+            <p className="text-white font-black tracking-tight">NextAirs</p>
             <p className="text-slate-500 text-xs mt-1 font-mono">Loading system…</p>
           </div>
           <div className="flex gap-1.5">
