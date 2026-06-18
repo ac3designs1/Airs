@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,7 +7,6 @@ import { Shield } from 'lucide-react';
 
 export default function DashboardLayout() {
   const { auth } = useAuth();
-  const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   if (auth.loading) {
@@ -37,15 +36,6 @@ export default function DashboardLayout() {
   }
 
   if (!auth.user) return <Navigate to="/login" replace />;
-
-  // Gate: recruits who haven't completed onboarding see the pending activation screen
-  if (
-    auth.user.role === 'recruit' &&
-    auth.user.onboarding_complete !== 1 &&
-    location.pathname !== '/pending-activation'
-  ) {
-    return <Navigate to="/pending-activation" replace />;
-  }
 
   return (
     <div className="min-h-screen flex bg-dots" style={{ background: '#07090f' }}>
