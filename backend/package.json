@@ -1,8 +1,11 @@
 {
-  "name": "apolloairs-backend",
-  "version": "1.0.0",
-  "description": "ApolloAIRS Police Records & CAD System - Backend API",
+  "name": "nextairs-backend",
+  "version": "2.0.0",
+  "description": "NextAirs MDT — Police CAD/Records Backend API",
   "main": "server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"

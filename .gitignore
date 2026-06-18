@@ -11,6 +11,9 @@ frontend/.vite/
 backend/db/*.db
 backend/db/*.db-shm
 backend/db/*.db-wal
+*.db
+*.db-shm
+*.db-wal
 
 # Environment files — NEVER commit these
 .env
