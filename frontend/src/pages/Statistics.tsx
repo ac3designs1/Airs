@@ -57,7 +57,7 @@ export default function Statistics() {
           {/* KPI grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: 'Total Hours', value: `${stats.total_hours}h`, sub: `${stats.month_hours}h this month`, icon: Clock, color: 'text-cyan-400', bg: 'rgba(6,182,212,0.10)' },
+              { label: 'Total Hours', value: `${stats.total_hours}h`, sub: `${stats.month_hours}h this month`, icon: Clock, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
               { label: 'Incidents Filed', value: stats.incidents, sub: 'cases as primary officer', icon: FileText, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
               { label: 'Arrests', value: stats.arrests, sub: 'arrest reports authored', icon: Shield, color: 'text-red-400', bg: 'rgba(239,68,68,0.10)' },
               { label: 'Warrants Issued', value: stats.warrants_issued, sub: 'warrants signed', icon: AlertTriangle, color: 'text-orange-400', bg: 'rgba(249,115,22,0.10)' },

@@ -79,7 +79,7 @@ export default function DivisionTransfers() {
         </div>
         <div className="flex gap-2">
           {isLeader && (
-            <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.08)' }}>
+            <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.08)' }}>
               {(['mine', 'all'] as const).map(v => (
                 <button key={v} onClick={() => setView(v)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${view === v ? 'bg-indigo-500/20 text-indigo-300' : 'text-slate-500 hover:text-slate-300'}`}>
@@ -97,7 +97,7 @@ export default function DivisionTransfers() {
       </div>
 
       {/* Status filter */}
-      <div className="flex p-1 gap-1 rounded-xl w-fit" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
+      <div className="flex p-1 gap-1 rounded-xl w-fit" style={{ background: 'rgba(168,85,247,0.05)', border: '1px solid rgba(168,85,247,0.08)' }}>
         {['', 'pending', 'approved', 'denied'].map(s => (
           <button key={s} onClick={() => setFilter(s)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${filter === s ? 'bg-indigo-500/20 text-indigo-300' : 'text-slate-500 hover:text-slate-300'}`}>
@@ -122,7 +122,7 @@ export default function DivisionTransfers() {
                       <span className="text-xs text-slate-500">{format(parseISO(t.created_at), 'dd MMM yyyy')}</span>
                     </div>
                     <div className="font-bold text-white">
-                      {t.officer_callsign ? <><span className="font-mono text-cyan-400 mr-2 text-sm">{t.officer_callsign}</span></> : ''}
+                      {t.officer_callsign ? <><span className="font-mono text-purple-400 mr-2 text-sm">{t.officer_callsign}</span></> : ''}
                       {t.officer_name}
                     </div>
                     <div className="flex items-center gap-2 mt-1 text-sm">
@@ -150,7 +150,7 @@ export default function DivisionTransfers() {
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
-            style={{ background: '#0d1526', border: '1px solid rgba(99,102,241,0.20)' }}>
+            style={{ background: '#0d0a14', border: '1px solid rgba(99,102,241,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
               style={{ borderBottom: '1px solid rgba(99,102,241,0.12)', background: 'rgba(99,102,241,0.05)' }}>
               <h2 className="text-base font-bold text-white">Division Transfer Request</h2>
@@ -193,7 +193,7 @@ export default function DivisionTransfers() {
       {selected && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
-            style={{ background: '#0d1526', border: '1px solid rgba(99,102,241,0.20)' }}>
+            style={{ background: '#0d0a14', border: '1px solid rgba(99,102,241,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
               style={{ borderBottom: '1px solid rgba(99,102,241,0.12)', background: 'rgba(99,102,241,0.05)' }}>
               <div>
@@ -209,7 +209,7 @@ export default function DivisionTransfers() {
                 { l: 'Time in Current Division', v: selected.time_in_current },
                 { l: 'Long-term Goals', v: selected.long_term_goals },
               ].filter(q => q.v).map(q => (
-                <div key={q.l} className="rounded-xl p-3.5" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
+                <div key={q.l} className="rounded-xl p-3.5" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(168,85,247,0.06)' }}>
                   <div className="text-[10px] uppercase tracking-wider text-slate-600 font-semibold mb-1">{q.l}</div>
                   <p className="text-sm text-slate-300 leading-relaxed">{q.v}</p>
                 </div>

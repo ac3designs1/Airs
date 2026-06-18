@@ -71,7 +71,7 @@ export default function TerminationApproval() {
       </div>
 
       {/* Status filter */}
-      <div className="flex p-1 gap-1 rounded-xl w-fit" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
+      <div className="flex p-1 gap-1 rounded-xl w-fit" style={{ background: 'rgba(168,85,247,0.05)', border: '1px solid rgba(168,85,247,0.08)' }}>
         {['pending', 'approved', 'denied', ''].map(s => (
           <button key={s} onClick={() => setStatusF(s)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusF === s ? 'bg-red-500/20 text-red-300' : 'text-slate-500 hover:text-slate-300'}`}>
@@ -100,7 +100,7 @@ export default function TerminationApproval() {
                     </div>
                     <div className="font-bold text-white">{t.officer_name ?? '—'}</div>
                     <div className="text-xs text-slate-500 mt-0.5">
-                      {t.officer_callsign && <span className="font-mono text-cyan-400 mr-2">{t.officer_callsign}</span>}
+                      {t.officer_callsign && <span className="font-mono text-purple-400 mr-2">{t.officer_callsign}</span>}
                       {t.rank} · {t.department}
                     </div>
                     <p className="text-sm text-slate-300 mt-2">{t.reason}</p>
@@ -125,7 +125,7 @@ export default function TerminationApproval() {
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
-            style={{ background: '#0d1526', border: '1px solid rgba(239,68,68,0.20)' }}>
+            style={{ background: '#0d0a14', border: '1px solid rgba(239,68,68,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4"
               style={{ borderBottom: '1px solid rgba(239,68,68,0.12)', background: 'rgba(239,68,68,0.05)' }}>
               <h2 className="text-base font-bold text-white">Submit Termination Request</h2>
@@ -166,7 +166,7 @@ export default function TerminationApproval() {
       {selected && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
-            style={{ background: '#0d1526', border: '1px solid rgba(239,68,68,0.20)' }}>
+            style={{ background: '#0d0a14', border: '1px solid rgba(239,68,68,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4"
               style={{ borderBottom: '1px solid rgba(239,68,68,0.12)', background: 'rgba(239,68,68,0.05)' }}>
               <div>

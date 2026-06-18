@@ -51,7 +51,7 @@ export default function DutyAnalytics() {
       {/* Top KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Officers', value: total,   icon: Users,     color: 'text-cyan-400',    bg: 'rgba(6,182,212,0.10)' },
+          { label: 'Total Officers', value: total,   icon: Users,     color: 'text-purple-400',    bg: 'rgba(168,85,247,0.10)' },
           { label: 'On Duty Now',    value: onDuty,  icon: Activity,  color: 'text-green-400',  bg: 'rgba(34,197,94,0.10)' },
           { label: 'Off Duty',       value: total - onDuty, icon: Clock, color: 'text-slate-400', bg: 'rgba(71,85,105,0.10)' },
           { label: 'Departments',    value: data?.by_department.filter(d => d.total > 0).length ?? 0, icon: Shield, color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
@@ -71,7 +71,7 @@ export default function DutyAnalytics() {
           {/* Officers by department */}
           <div className="glass rounded-2xl p-5">
             <h2 className="font-semibold text-white text-sm mb-4 flex items-center gap-2">
-              <Users className="w-4 h-4 text-cyan-400" /> Officers by Division
+              <Users className="w-4 h-4 text-purple-400" /> Officers by Division
             </h2>
             {(data?.by_department ?? []).length === 0 ? (
               <p className="text-slate-600 text-sm">No data yet.</p>
@@ -92,7 +92,7 @@ export default function DutyAnalytics() {
                           <span className="text-slate-500">{d.total} total</span>
                         </div>
                       </div>
-                      <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(6,182,212,0.06)' }}>
+                      <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(168,85,247,0.06)' }}>
                         <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
                       </div>
                     </div>
@@ -116,7 +116,7 @@ export default function DutyAnalytics() {
                   return (
                     <div key={r.rank} className="flex items-center gap-3">
                       <div className="w-32 text-xs text-slate-400 truncate flex-shrink-0">{r.rank}</div>
-                      <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(6,182,212,0.06)' }}>
+                      <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(168,85,247,0.06)' }}>
                         <div className="h-full rounded-full" style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#6366f1,#a855f7)' }} />
                       </div>
                       <span className="text-xs font-bold text-slate-400 w-6 text-right flex-shrink-0">{r.total}</span>
@@ -139,7 +139,7 @@ export default function DutyAnalytics() {
                 {[
                   { label: 'On Duty',  value: onDuty, color: '#22c55e', bg: 'rgba(34,197,94,0.10)' },
                   { label: 'Off Duty', value: total - onDuty, color: '#475569', bg: 'rgba(71,85,105,0.10)' },
-                  { label: 'Total',    value: total, color: '#06b6d4', bg: 'rgba(6,182,212,0.10)' },
+                  { label: 'Total',    value: total, color: '#a855f7', bg: 'rgba(168,85,247,0.10)' },
                 ].map(s => (
                   <div key={s.label} className="rounded-xl p-4 text-center" style={{ background: s.bg, border: `1px solid ${s.color}22` }}>
                     <div className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
@@ -160,7 +160,7 @@ export default function DutyAnalytics() {
             ) : (
               <div className="space-y-2.5">
                 {(data?.recent_promotions ?? []).map((p, i) => (
-                  <div key={i} className="flex items-center justify-between gap-2 py-2" style={{ borderBottom: i < (data?.recent_promotions.length ?? 0) - 1 ? '1px solid rgba(6,182,212,0.06)' : 'none' }}>
+                  <div key={i} className="flex items-center justify-between gap-2 py-2" style={{ borderBottom: i < (data?.recent_promotions.length ?? 0) - 1 ? '1px solid rgba(168,85,247,0.06)' : 'none' }}>
                     <div>
                       <div className="text-sm font-semibold text-white">{p.officer_name}</div>
                       <div className="text-xs text-slate-500">

@@ -271,7 +271,7 @@ export default function Apply() {
             {/* ── Loading existing application check ── */}
             {checkingExisting && (
               <div className="glass rounded-2xl p-8 text-center mb-4">
-                <Loader className="w-6 h-6 text-cyan-400 animate-spin mx-auto mb-3" />
+                <Loader className="w-6 h-6 text-purple-400 animate-spin mx-auto mb-3" />
                 <p className="text-slate-400 text-sm">Checking for existing application…</p>
               </div>
             )}
@@ -294,7 +294,7 @@ export default function Apply() {
                       <p className="text-sm font-semibold text-white">@{discordUsername}</p>
                       <p className="text-xs text-indigo-400">Signed in with Discord</p>
                     </div>
-                    <button onClick={refreshStatus} className="text-slate-500 hover:text-cyan-400 transition-colors p-1">
+                    <button onClick={refreshStatus} className="text-slate-500 hover:text-purple-400 transition-colors p-1">
                       <RefreshCw className="w-4 h-4" />
                     </button>
                   </div>
@@ -383,14 +383,14 @@ export default function Apply() {
                   </div>
                   <h2 className="text-3xl font-bold text-white mb-2">Application Submitted!</h2>
                   <p className="text-slate-400 mb-6">
-                    Thanks <span className="text-cyan-400 font-semibold">{form.full_name}</span>. Leadership will be in touch via Discord.
+                    Thanks <span className="text-purple-400 font-semibold">{form.full_name}</span>. Leadership will be in touch via Discord.
                   </p>
                   <div className="glass rounded-xl p-4 mb-6 text-left">
                     <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Application ID</p>
                     <div className="flex items-center gap-2">
-                      <code className="text-cyan-400 font-mono text-xs flex-1 break-all">{submittedId}</code>
+                      <code className="text-purple-400 font-mono text-xs flex-1 break-all">{submittedId}</code>
                       <button onClick={() => navigator.clipboard.writeText(submittedId)}
-                        className="text-xs text-slate-500 hover:text-cyan-400 px-2 py-1 rounded border border-slate-700">Copy</button>
+                        className="text-xs text-slate-500 hover:text-purple-400 px-2 py-1 rounded border border-slate-700">Copy</button>
                     </div>
                   </div>
                   <div className="glass rounded-xl p-4 text-left space-y-2">

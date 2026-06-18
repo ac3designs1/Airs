@@ -72,31 +72,31 @@ const DIVISION_EOIS: DivEOI[] = [
 
 const CAT_CLS: Record<string,string> = {
   Training:'chip-blue', Tactical:'chip-red', Specialist:'chip-purple',
-  Investigative:'chip-indigo', Highway:'chip-gold', Division:'chip-cyan',
+  Investigative:'chip-indigo', Highway:'chip-gold', Division:'chip-purple',
 };
 
 const LEADERSHIP = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
 
 /* ─── Shared modal shell ─────────────────────────────────────── */
-function Modal({ onClose, accent='rgba(6,182,212,0.22)', children }: {
+function Modal({ onClose, accent='rgba(168,85,247,0.22)', children }: {
   onClose:()=>void; accent?:string; children:React.ReactNode;
 }) {
   return (
     <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
       <div className="modal-card w-full sm:max-w-lg rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col"
-        style={{ background:'#0d1526', border:`1px solid ${accent}` }}>
+        style={{ background:'#0d0a14', border:`1px solid ${accent}` }}>
         {children}
       </div>
     </div>
   );
 }
 
-function ModalHeader({ title, sub, accent='rgba(6,182,212,0.10)', onClose, icon }:{
+function ModalHeader({ title, sub, accent='rgba(168,85,247,0.10)', onClose, icon }:{
   title:string; sub?:string; accent?:string; onClose:()=>void; icon?:React.ReactNode;
 }) {
   return (
     <div className="flex items-center justify-between px-5 py-4 flex-shrink-0"
-      style={{ borderBottom:'1px solid rgba(6,182,212,0.08)', background:accent }}>
+      style={{ borderBottom:'1px solid rgba(168,85,247,0.08)', background:accent }}>
       <div className="flex items-center gap-3">
         {icon}
         <div>
@@ -256,7 +256,7 @@ export default function Certifications() {
               {allApps.map((app,i,arr)=>(
                 <div key={app.id}
                   className="flex items-center justify-between gap-4 px-5 py-3.5 hover:bg-white/[0.01] transition-colors"
-                  style={{borderBottom:i<arr.length-1?'1px solid rgba(6,182,212,0.06)':'none'}}>
+                  style={{borderBottom:i<arr.length-1?'1px solid rgba(168,85,247,0.06)':'none'}}>
                   <div className="flex items-center gap-3 min-w-0">
                     <span className={`chip text-[10px] flex-shrink-0 ${CAT_CLS[app.cert_category]??'chip-gray'}`}>{app.cert_category}</span>
                     <div className="min-w-0">
@@ -296,7 +296,7 @@ export default function Certifications() {
               <div key={tier.label}>
                 {/* Tier header */}
                 <div className="flex items-center gap-3 mb-3">
-                  <div className={`chip text-[10px] font-black ${tierUnlocked?'chip-cyan':'chip-gray'}`}>
+                  <div className={`chip text-[10px] font-black ${tierUnlocked?'chip-purple':'chip-gray'}`}>
                     {tier.label}
                   </div>
                   {!tierUnlocked&&(
@@ -314,14 +314,14 @@ export default function Certifications() {
                       <div key={cert.name}
                         className={`rounded-xl p-4 transition-all border ${locked?'opacity-50':'hover:border-amber-500/25'}`}
                         style={{
-                          background: state==='approved'?'rgba(34,197,94,0.05)': state==='pending'?'rgba(234,179,8,0.05)':'#111c31',
-                          borderColor: state==='approved'?'rgba(34,197,94,0.22)': state==='pending'?'rgba(234,179,8,0.22)':'rgba(6,182,212,0.12)',
+                          background: state==='approved'?'rgba(34,197,94,0.05)': state==='pending'?'rgba(234,179,8,0.05)':'#110d1c',
+                          borderColor: state==='approved'?'rgba(34,197,94,0.22)': state==='pending'?'rgba(234,179,8,0.22)':'rgba(168,85,247,0.12)',
                         }}>
 
                         {/* Tags row */}
                         <div className="flex items-center gap-1.5 flex-wrap mb-2.5">
                           <span className={`chip text-[9px] ${CAT_CLS[cert.category]??'chip-gray'}`}>{cert.category}</span>
-                          {cert.divReq&&<span className="chip chip-cyan text-[9px]">{cert.divReq}</span>}
+                          {cert.divReq&&<span className="chip chip-purple text-[9px]">{cert.divReq}</span>}
                           {state==='approved'&&<span className="chip chip-green text-[9px] flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5"/>Certified</span>}
                           {state==='pending' &&<span className="chip chip-yellow text-[9px] flex items-center gap-1"><Clock className="w-2.5 h-2.5"/>Pending</span>}
                           {state==='denied'  &&<span className="chip chip-red text-[9px]">Denied</span>}
@@ -345,7 +345,7 @@ export default function Certifications() {
                         )}
                         {state==='div_locked'&&(
                           <div className="w-full py-1.5 rounded-lg text-[11px] font-semibold text-center flex items-center justify-center gap-1.5"
-                            style={{background:'rgba(6,182,212,0.06)',border:'1px solid rgba(6,182,212,0.14)',color:'#67e8f9'}}>
+                            style={{background:'rgba(168,85,247,0.06)',border:'1px solid rgba(168,85,247,0.14)',color:'#67e8f9'}}>
                             <Lock className="w-3.5 h-3.5"/>{cert.divReq} Division Required
                           </div>
                         )}
@@ -388,14 +388,14 @@ export default function Certifications() {
               const status = getStatus(`Division Transfer — ${div.name}`);
               return (
                 <div key={div.name}
-                  className="rounded-xl p-4 border transition-all hover:border-cyan-500/25"
+                  className="rounded-xl p-4 border transition-all hover:border-purple-500/25"
                   style={{
-                    background: status==='approved'?'rgba(34,197,94,0.05)':status==='pending'?'rgba(6,182,212,0.05)':'#111c31',
-                    borderColor: status==='approved'?'rgba(34,197,94,0.22)':status==='pending'?'rgba(6,182,212,0.22)':'rgba(6,182,212,0.12)',
+                    background: status==='approved'?'rgba(34,197,94,0.05)':status==='pending'?'rgba(168,85,247,0.05)':'#110d1c',
+                    borderColor: status==='approved'?'rgba(34,197,94,0.22)':status==='pending'?'rgba(168,85,247,0.22)':'rgba(168,85,247,0.12)',
                   }}>
                   <div className="flex items-center gap-1.5 mb-2.5">
-                    <span className={`chip text-[9px] ${CAT_CLS[div.category]??'chip-cyan'}`}>{div.category}</span>
-                    <span className="chip chip-cyan text-[9px]">EOI</span>
+                    <span className={`chip text-[9px] ${CAT_CLS[div.category]??'chip-purple'}`}>{div.category}</span>
+                    <span className="chip chip-purple text-[9px]">EOI</span>
                     {status==='approved'&&<span className="chip chip-green text-[9px] flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5"/>Accepted</span>}
                     {status==='pending' &&<span className="chip chip-yellow text-[9px] flex items-center gap-1"><Clock className="w-2.5 h-2.5"/>Pending</span>}
                     {status==='denied'  &&<span className="chip chip-red text-[9px]">Unsuccessful</span>}
@@ -412,13 +412,13 @@ export default function Certifications() {
                   {status==='not_applied'&&(
                     <button onClick={()=>{setApplyingDiv(div);setDivEoi({div_bring:'',div_time:'',div_goals:''}); }}
                       className="w-full py-1.5 rounded-lg text-sm font-bold text-white transition-all hover:brightness-110 flex items-center justify-center gap-1.5"
-                      style={{background:'linear-gradient(135deg,#0891b2,#0284c7)'}}>
+                      style={{background:'linear-gradient(135deg,#7c3aed,#7c3aed)'}}>
                       Submit EOI <ArrowRight className="w-3.5 h-3.5"/>
                     </button>
                   )}
                   {status==='denied'&&(
                     <button onClick={()=>{setApplyingDiv(div);setDivEoi({div_bring:'',div_time:'',div_goals:''}); }}
-                      className="w-full py-1.5 rounded-lg text-sm font-medium text-slate-400 border border-slate-700/50 hover:border-cyan-500/30 transition-all">
+                      className="w-full py-1.5 rounded-lg text-sm font-medium text-slate-400 border border-slate-700/50 hover:border-purple-500/30 transition-all">
                       Re-apply
                     </button>
                   )}
@@ -462,10 +462,10 @@ export default function Certifications() {
 
       {/* ── Division EOI Modal ───────────────────────────────── */}
       {applyingDiv&&(
-        <Modal onClose={()=>setApplyingDiv(null)} accent="rgba(6,182,212,0.22)">
-          <ModalHeader title="Division EOI" sub={`${applyingDiv.name} Division Transfer`} accent="rgba(6,182,212,0.05)"
+        <Modal onClose={()=>setApplyingDiv(null)} accent="rgba(168,85,247,0.22)">
+          <ModalHeader title="Division EOI" sub={`${applyingDiv.name} Division Transfer`} accent="rgba(168,85,247,0.05)"
             onClose={()=>setApplyingDiv(null)}
-            icon={<div className="p-2 rounded-xl" style={{background:'rgba(6,182,212,0.12)',border:'1px solid rgba(6,182,212,0.22)'}}><FileText className="w-4 h-4 text-cyan-400"/></div>}
+            icon={<div className="p-2 rounded-xl" style={{background:'rgba(168,85,247,0.12)',border:'1px solid rgba(168,85,247,0.22)'}}><FileText className="w-4 h-4 text-purple-400"/></div>}
           />
           <form onSubmit={submitDivEOI} className="p-5 space-y-4 overflow-y-auto">
             {[
@@ -504,7 +504,7 @@ export default function Certifications() {
               {l:'Skills / Time in Division',        v:reviewTarget.skills},
               {l:'Goals',                            v:reviewTarget.goals},
             ].map(q=>(
-              <div key={q.l} className="rounded-xl p-3.5" style={{background:'rgba(6,182,212,0.03)',border:'1px solid rgba(6,182,212,0.08)'}}>
+              <div key={q.l} className="rounded-xl p-3.5" style={{background:'rgba(168,85,247,0.03)',border:'1px solid rgba(168,85,247,0.08)'}}>
                 <div className="text-[9px] uppercase tracking-wider text-slate-600 font-black mb-1">{q.l}</div>
                 <p className="text-sm text-slate-300 leading-relaxed">{q.v||'—'}</p>
               </div>

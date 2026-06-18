@@ -89,7 +89,7 @@ export default function LeadershipApplications() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="page-header scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(245,158,11,0.12),rgba(251,191,36,0.04),rgba(6,182,212,0.06))', border: '1px solid rgba(245,158,11,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(245,158,11,0.12),rgba(251,191,36,0.04),rgba(168,85,247,0.06))', border: '1px solid rgba(245,158,11,0.18)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="p-3 rounded-xl" style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.25)' }}>
@@ -138,7 +138,7 @@ export default function LeadershipApplications() {
             <div className="glass rounded-xl p-6 text-center text-slate-600">
               <ClipboardList className="w-10 h-10 mx-auto mb-2 opacity-20" />
               <p className="text-sm">No applications found</p>
-              {counts.all === 0 && <p className="text-xs text-slate-700 mt-1">Share the link <span className="text-cyan-400 font-mono">/apply</span> to receive applications</p>}
+              {counts.all === 0 && <p className="text-xs text-slate-700 mt-1">Share the link <span className="text-purple-400 font-mono">/apply</span> to receive applications</p>}
             </div>
           ) : filtered.map(a => {
             const sc = STATUS_CFG[a.status];
@@ -146,11 +146,11 @@ export default function LeadershipApplications() {
             return (
               <button key={a.id} onClick={() => { setSelected(a); setNoteText(a.review_notes ?? ''); }}
                 className="w-full text-left rounded-xl p-4 transition-all"
-                style={{ background: sel ? 'rgba(245,158,11,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(245,158,11,0.30)' : 'rgba(6,182,212,0.06)'}` }}>
+                style={{ background: sel ? 'rgba(245,158,11,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(245,158,11,0.30)' : 'rgba(168,85,247,0.06)'}` }}>
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div>
                     <div className="font-semibold text-white text-sm">{a.full_name}</div>
-                    <div className="text-xs text-cyan-400 font-mono mt-0.5">{a.discord}</div>
+                    <div className="text-xs text-purple-400 font-mono mt-0.5">{a.discord}</div>
                   </div>
                   <span className={`chip text-[10px] flex-shrink-0 ${sc.cls}`}>{sc.label}</span>
                 </div>
@@ -178,7 +178,7 @@ export default function LeadershipApplications() {
           ) : (
             <div className="glass rounded-2xl overflow-hidden flex flex-col h-full">
               {/* Applicant header */}
-              <div className="p-5 flex items-start justify-between gap-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+              <div className="p-5 flex items-start justify-between gap-4" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-bold text-white flex-shrink-0"
                     style={{ background: 'linear-gradient(135deg,#d97706,#f59e0b)' }}>
@@ -186,7 +186,7 @@ export default function LeadershipApplications() {
                   </div>
                   <div>
                     <h2 className="text-lg font-bold text-white">{selected.full_name}</h2>
-                    <p className="text-cyan-400 font-mono text-sm">{selected.discord}</p>
+                    <p className="text-purple-400 font-mono text-sm">{selected.discord}</p>
                     <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
                       <span className="flex items-center gap-1"><User className="w-3 h-3" /> Age {selected.age}</span>
                       <span className="flex items-center gap-1"><Globe className="w-3 h-3" /> {selected.timezone}</span>
@@ -210,7 +210,7 @@ export default function LeadershipApplications() {
                     { l: 'Availability', v: selected.availability },
                     { l: 'Referral', v: selected.referral },
                   ].map(r => (
-                    <div key={r.l} className="rounded-xl p-3" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
+                    <div key={r.l} className="rounded-xl p-3" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(168,85,247,0.06)' }}>
                       <div className="text-[10px] uppercase tracking-wider text-slate-600 font-semibold mb-1">{r.l}</div>
                       <div className="text-sm text-slate-300">{r.v}</div>
                     </div>
@@ -218,13 +218,13 @@ export default function LeadershipApplications() {
                 </div>
 
                 {/* Experience */}
-                <div className="rounded-xl p-4" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
+                <div className="rounded-xl p-4" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(168,85,247,0.06)' }}>
                   <div className="text-[10px] uppercase tracking-wider text-slate-600 font-semibold mb-2">FiveM Experience</div>
                   <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">{selected.experience || 'No experience listed.'}</p>
                 </div>
 
                 {/* Why join */}
-                <div className="rounded-xl p-4" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
+                <div className="rounded-xl p-4" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(168,85,247,0.06)' }}>
                   <div className="text-[10px] uppercase tracking-wider text-slate-600 font-semibold mb-2">Why they want to join</div>
                   <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">{selected.why_join}</p>
                 </div>

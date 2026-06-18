@@ -109,8 +109,8 @@ export default function CommandCentre() {
             <Link key={i} to={a.to}
               className="flex items-center justify-between p-3.5 rounded-xl border transition-all hover:brightness-110"
               style={{
-                background: a.level === 'critical' ? 'rgba(239,68,68,0.08)' : a.level === 'warn' ? 'rgba(249,115,22,0.08)' : 'rgba(6,182,212,0.06)',
-                borderColor: a.level === 'critical' ? 'rgba(239,68,68,0.28)' : a.level === 'warn' ? 'rgba(249,115,22,0.28)' : 'rgba(6,182,212,0.20)',
+                background: a.level === 'critical' ? 'rgba(239,68,68,0.08)' : a.level === 'warn' ? 'rgba(249,115,22,0.08)' : 'rgba(168,85,247,0.06)',
+                borderColor: a.level === 'critical' ? 'rgba(239,68,68,0.28)' : a.level === 'warn' ? 'rgba(249,115,22,0.28)' : 'rgba(168,85,247,0.20)',
                 color: a.level === 'critical' ? '#fca5a5' : a.level === 'warn' ? '#fdba74' : '#7dd3fc',
               }}>
               <div className="flex items-center gap-3">
@@ -149,12 +149,12 @@ export default function CommandCentre() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
         {/* Active Calls */}
         <div className="glass rounded-2xl overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+          <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
             <div className="flex items-center gap-2">
               <Siren className="w-4 h-4 text-red-400" />
               <h2 className="font-semibold text-white">Active Dispatch Calls</h2>
             </div>
-            <Link to="/in-city-requests" className="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
+            <Link to="/in-city-requests" className="flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 transition-colors">
               All calls <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
@@ -193,12 +193,12 @@ export default function CommandCentre() {
 
         {/* Active Warrants */}
         <div className="glass rounded-2xl overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+          <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-orange-400" />
               <h2 className="font-semibold text-white">Outstanding Warrants</h2>
             </div>
-            <Link to="/warrants" className="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
+            <Link to="/warrants" className="flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 transition-colors">
               All warrants <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
@@ -233,8 +233,8 @@ export default function CommandCentre() {
       {/* Recent Activity */}
       {stats?.recent_activity && stats.recent_activity.length > 0 && (
         <div className="glass rounded-2xl overflow-hidden">
-          <div className="flex items-center gap-2 px-5 py-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
-            <Activity className="w-4 h-4 text-cyan-400" />
+          <div className="flex items-center gap-2 px-5 py-4" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
+            <Activity className="w-4 h-4 text-purple-400" />
             <h2 className="font-semibold text-white">Recent System Activity</h2>
             <span className="text-[10px] text-slate-600 ml-auto">Last refresh: {formatDistanceToNow(lastRefresh, { addSuffix: true })}</span>
           </div>
@@ -242,7 +242,7 @@ export default function CommandCentre() {
             {stats.recent_activity.slice(0, 8).map(a => (
               <div key={a.id} className="flex items-center justify-between px-5 py-3 hover:bg-white/[0.02] transition-colors">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(6,182,212,0.6)' }} />
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(168,85,247,0.6)' }} />
                   <p className="text-sm text-slate-300 truncate">{a.details ?? a.action}</p>
                   {a.officer_name && <span className="text-xs text-slate-600 flex-shrink-0">by {a.officer_name}</span>}
                 </div>

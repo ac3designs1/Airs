@@ -73,7 +73,7 @@ export default function BOLOs() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2 items-center">
-        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
+        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(168,85,247,0.05)', border: '1px solid rgba(168,85,247,0.08)' }}>
           {['active', 'cancelled'].map(s => (
             <button key={s} onClick={() => setStatus(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${status === s ? 'bg-orange-500/20 text-orange-300' : 'text-slate-500 hover:text-slate-300'}`}>
@@ -98,7 +98,7 @@ export default function BOLOs() {
         <div className="grid md:grid-cols-2 gap-3">
           {filtered.map(b => (
             <div key={b.id} className="glass rounded-xl p-5 border transition-all hover:border-orange-500/20"
-              style={{ borderColor: b.armed || b.dangerous ? 'rgba(239,68,68,0.25)' : 'rgba(6,182,212,0.06)' }}>
+              style={{ borderColor: b.armed || b.dangerous ? 'rgba(239,68,68,0.25)' : 'rgba(168,85,247,0.06)' }}>
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap gap-1.5 mb-2">
@@ -145,7 +145,7 @@ export default function BOLOs() {
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col"
-            style={{ background: '#0d1526', border: '1px solid rgba(249,115,22,0.20)' }}>
+            style={{ background: '#0d0a14', border: '1px solid rgba(249,115,22,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
               style={{ borderBottom: '1px solid rgba(249,115,22,0.12)', background: 'rgba(249,115,22,0.05)' }}>
               <h2 className="text-base font-bold text-white">Issue BOLO</h2>

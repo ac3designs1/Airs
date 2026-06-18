@@ -33,20 +33,20 @@ export default function PendingActivation() {
       {/* Ambient glow */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute w-[600px] h-[600px] rounded-full -top-60 -left-60 opacity-20"
-          style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%)' }} />
         <div className="absolute inset-0 opacity-[0.025]"
           style={{ backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
       </div>
 
       {/* Nav */}
-      <div className="relative z-10 flex items-center justify-between px-8 h-16 border-b border-cyan-500/10">
+      <div className="relative z-10 flex items-center justify-between px-8 h-16 border-b border-purple-500/10">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0284c7,#06b6d4)' }}>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
             <Shield className="w-4 h-4 text-white" />
           </div>
           <div>
             <div className="text-white font-bold text-sm leading-none">NextAirs</div>
-            <div className="text-[10px] font-mono text-cyan-500">NEXT RP · MELBOURNE POLICE</div>
+            <div className="text-[10px] font-mono text-purple-500">NEXT RP · MELBOURNE POLICE</div>
           </div>
         </div>
         <button onClick={logout} className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-red-400 transition-colors">
@@ -61,22 +61,22 @@ export default function PendingActivation() {
           <div className="glass rounded-2xl p-6">
             <div className="flex items-center gap-4 mb-5">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)', boxShadow: '0 0 30px rgba(6,182,212,0.3)' }}>
+                style={{ background: 'linear-gradient(135deg,#7c3aed,#6366f1)', boxShadow: '0 0 30px rgba(168,85,247,0.3)' }}>
                 <Shield className="w-7 h-7 text-white" />
               </div>
               <div>
                 <h1 className="text-lg font-bold text-white">
                   Welcome, {auth.user?.first_name}!
                 </h1>
-                <p className="text-cyan-400 text-sm font-mono">{auth.user?.callsign || 'Academy · Recruit'}</p>
+                <p className="text-purple-400 text-sm font-mono">{auth.user?.callsign || 'Academy · Recruit'}</p>
               </div>
             </div>
 
-            <div className="p-4 rounded-xl mb-4" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.15)' }}>
+            <div className="p-4 rounded-xl mb-4" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.15)' }}>
               <div className="flex items-start gap-2.5">
-                <Clock className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                <Clock className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-slate-300 leading-relaxed">
-                  Your application has been <span className="text-cyan-400 font-semibold">approved</span>. Before you get full access to the NextAirs MDT, you must complete your <span className="text-white font-semibold">Initial Training</span> with a senior officer or FTO. Leadership will contact you on Discord to schedule your sessions.
+                  Your application has been <span className="text-purple-400 font-semibold">approved</span>. Before you get full access to the NextAirs MDT, you must complete your <span className="text-white font-semibold">Initial Training</span> with a senior officer or FTO. Leadership will contact you on Discord to schedule your sessions.
                 </p>
               </div>
             </div>
@@ -86,7 +86,7 @@ export default function PendingActivation() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs text-slate-500 font-medium">Training Progress</span>
-                  <span className="text-xs font-bold" style={{ color: pct === 100 ? '#22c55e' : '#06b6d4' }}>
+                  <span className="text-xs font-bold" style={{ color: pct === 100 ? '#22c55e' : '#a855f7' }}>
                     {progress.completedCount}/{progress.total} completed
                   </span>
                 </div>
@@ -96,7 +96,7 @@ export default function PendingActivation() {
                       width: `${pct}%`,
                       background: pct === 100
                         ? 'linear-gradient(90deg,#22c55e,#16a34a)'
-                        : 'linear-gradient(90deg,#0284c7,#6366f1)',
+                        : 'linear-gradient(90deg,#7c3aed,#6366f1)',
                     }} />
                 </div>
               </div>
@@ -117,17 +117,17 @@ export default function PendingActivation() {
                   return (
                     <div key={item.id} className="px-5 py-3.5 flex items-start gap-3.5">
                       <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold transition-all ${
-                        done ? 'bg-green-500/20 border border-green-500/40' : inProg ? 'border border-cyan-500/40 bg-cyan-500/10' : 'bg-slate-800/60 border border-slate-700/50'
+                        done ? 'bg-green-500/20 border border-green-500/40' : inProg ? 'border border-purple-500/40 bg-purple-500/10' : 'bg-slate-800/60 border border-slate-700/50'
                       }`}>
                         {done
                           ? <CheckCircle className="w-3.5 h-3.5 text-green-400" />
                           : inProg
-                            ? <Clock className="w-3 h-3 text-cyan-400" />
+                            ? <Clock className="w-3 h-3 text-purple-400" />
                             : <span className="text-slate-600">{i + 1}</span>
                         }
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-medium leading-tight ${done ? 'text-slate-400 line-through decoration-slate-600' : inProg ? 'text-cyan-300' : 'text-white'}`}>
+                        <p className={`text-sm font-medium leading-tight ${done ? 'text-slate-400 line-through decoration-slate-600' : inProg ? 'text-purple-300' : 'text-white'}`}>
                           {item.name}
                         </p>
                         <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">{item.desc}</p>
@@ -163,7 +163,7 @@ export default function PendingActivation() {
                 'You\'ll be assigned your official callsign and issued equipment',
               ].map((s, i) => (
                 <div key={i} className="flex items-start gap-2.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/50 flex-shrink-0 mt-1.5" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500/50 flex-shrink-0 mt-1.5" />
                   <p className="text-xs text-slate-500 leading-relaxed">{s}</p>
                 </div>
               ))}

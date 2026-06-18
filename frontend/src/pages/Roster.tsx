@@ -20,7 +20,7 @@ const ROLE_CLS: Record<string, string> = {
 };
 const DEPT_CLS: Record<string, string> = {
   Academy:              'chip-green',
-  GD:                   'chip-cyan',
+  GD:                   'chip-purple',
   Highway:              'chip-gold',
   CIRT:                 'chip-red',
   SOG:                  'chip-purple',
@@ -68,7 +68,7 @@ export default function Roster() {
       <div className="page-header scan-line">
         <div className="flex items-center gap-4">
           <div className="ph-icon">
-            <Users className="w-6 h-6 text-cyan-400" />
+            <Users className="w-6 h-6 text-purple-400" />
           </div>
           <div>
             <h1 className="text-xl font-black text-white">Officer Roster</h1>
@@ -115,7 +115,7 @@ export default function Roster() {
       <div className="glass rounded-2xl overflow-hidden">
         <div className="card-header">
           <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-cyan-400" />
+            <Shield className="w-4 h-4 text-purple-400" />
             <span className="text-sm font-bold text-white">Active Personnel</span>
           </div>
           {deptFilter && (
@@ -160,13 +160,13 @@ export default function Roster() {
                     <tr key={o.id}>
                       <td>
                         {o.callsign
-                          ? <span className="font-mono font-bold text-sm text-cyan-400">{o.callsign}</span>
+                          ? <span className="font-mono font-bold text-sm text-purple-400">{o.callsign}</span>
                           : <span className="text-slate-600 italic text-xs">No callsign</span>}
                       </td>
                       <td>
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black text-white flex-shrink-0"
-                            style={{ background: o.role === 'commissioner' ? 'linear-gradient(135deg,#b45309,#f59e0b)' : 'linear-gradient(135deg,#0891b2,#1d4ed8)' }}>
+                            style={{ background: o.role === 'commissioner' ? 'linear-gradient(135deg,#b45309,#f59e0b)' : 'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
                             {o.first_name[0]}{o.last_name[0]}
                           </div>
                           <div>

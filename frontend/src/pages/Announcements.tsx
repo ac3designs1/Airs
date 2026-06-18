@@ -105,7 +105,7 @@ export default function Announcements() {
       {/* Form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d1526', border: '1px solid rgba(245,158,11,0.18)' }}>
+          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d0a14', border: '1px solid rgba(245,158,11,0.18)' }}>
             <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(245,158,11,0.12)', background: 'rgba(245,158,11,0.05)' }}>
               <h2 className="text-base font-bold text-white">{editing ? 'Edit Announcement' : 'New Announcement'}</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>
@@ -174,7 +174,7 @@ export default function Announcements() {
                   </div>
                   {canManage && (
                     <div className="flex gap-1.5 flex-shrink-0">
-                      <button onClick={() => openEdit(a)} className="p-1.5 rounded-lg text-slate-600 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors"><Edit2 className="w-3.5 h-3.5" /></button>
+                      <button onClick={() => openEdit(a)} className="p-1.5 rounded-lg text-slate-600 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><Edit2 className="w-3.5 h-3.5" /></button>
                       <button onClick={() => del(a.id)} className="p-1.5 rounded-lg text-slate-600 hover:text-red-400 hover:bg-red-500/10 transition-colors"><Trash2 className="w-3.5 h-3.5" /></button>
                     </div>
                   )}

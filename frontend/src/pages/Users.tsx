@@ -21,7 +21,7 @@ const ROLE_CLS: Record<string, string> = {
   senior_command: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
   leadership:     'text-amber-400 bg-amber-500/10 border-amber-500/30',
   supervisor:     'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
-  officer:        'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+  officer:        'text-purple-400 bg-purple-500/10 border-purple-500/30',
   recruit:        'text-purple-400 bg-purple-500/10 border-purple-500/30',
 };
 
@@ -79,10 +79,10 @@ export default function Users() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden p-5"
-        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.10),rgba(99,102,241,0.05))', border: '1px solid rgba(6,182,212,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(168,85,247,0.10),rgba(99,102,241,0.05))', border: '1px solid rgba(168,85,247,0.18)' }}>
         <div className="flex items-center gap-4">
-          <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
-            <UsersIcon className="w-6 h-6 text-cyan-400" />
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.25)' }}>
+            <UsersIcon className="w-6 h-6 text-purple-400" />
           </div>
           <div>
             <h1 className="text-xl font-black text-white">User Management</h1>
@@ -112,16 +112,16 @@ export default function Users() {
           <tbody>
             {loading ? (
               <tr><td colSpan={7} className="py-12 text-center text-slate-600">
-                <div className="w-7 h-7 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto" />
+                <div className="w-7 h-7 border-2 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto" />
               </td></tr>
             ) : filtered.length === 0 ? (
               <tr><td colSpan={7} className="py-10 text-center text-slate-600 text-sm">No officers found</td></tr>
             ) : filtered.map((o, i) => (
-              <tr key={o.id} className={i % 2 ? 'bg-cyan-500/[0.015]' : ''}>
+              <tr key={o.id} className={i % 2 ? 'bg-purple-500/[0.015]' : ''}>
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                      style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
+                      style={{ background: 'linear-gradient(135deg,#7c3aed,#6366f1)' }}>
                       {o.first_name[0]}{o.last_name[0]}
                     </div>
                     <div>
@@ -131,7 +131,7 @@ export default function Users() {
                   </div>
                 </td>
                 <td className="font-mono text-slate-400 text-sm">{o.username}</td>
-                <td className="font-mono text-cyan-400 text-xs">{o.callsign || '—'}</td>
+                <td className="font-mono text-purple-400 text-xs">{o.callsign || '—'}</td>
                 <td>
                   <span className="chip chip-blue text-[11px]">{o.department}</span>
                 </td>
@@ -148,7 +148,7 @@ export default function Users() {
                 <td>
                   <div className="flex items-center gap-2">
                     <button onClick={() => openEdit(o)}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors">
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     {o.id !== auth.user?.id && (
@@ -170,8 +170,8 @@ export default function Users() {
       {editing && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
-            style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+            style={{ background: '#0a1020', border: '1px solid rgba(168,85,247,0.18)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
               <div>
                 <h2 className="font-bold text-white">Edit Officer</h2>
                 <p className="text-xs text-slate-500 mt-0.5">{editing.first_name} {editing.last_name}</p>

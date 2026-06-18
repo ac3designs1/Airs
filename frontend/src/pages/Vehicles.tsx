@@ -114,7 +114,7 @@ export default function Vehicles() {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <span className="font-mono text-cyan-400 text-xl font-bold">{v.plate}</span>
+            <span className="font-mono text-purple-400 text-xl font-bold">{v.plate}</span>
             {v.stolen ? <span className="chip chip-red text-xs animate-pulse">⚠ STOLEN</span> : null}
           </div>
           <p className="text-white font-semibold">{[v.year, v.color, v.make, v.model].filter(Boolean).join(' ') || 'Unknown Vehicle'}</p>
@@ -155,7 +155,7 @@ export default function Vehicles() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="page-header scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(16,185,129,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(168,85,247,0.06))', border: '1px solid rgba(16,185,129,0.18)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.25)' }}>
             <Car className="w-6 h-6 text-emerald-400" />
@@ -166,7 +166,7 @@ export default function Vehicles() {
           </div>
         </div>
           <div className="flex gap-2">
-            <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.08)' }}>
+            <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.08)' }}>
               {(['search', 'browse'] as const).map(m => (
                 <button key={m} onClick={() => setMode(m)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${mode === m ? 'bg-emerald-500/20 text-emerald-300' : 'text-slate-500 hover:text-slate-300'}`}>
@@ -205,7 +205,7 @@ export default function Vehicles() {
           {notFound && (
             <div className="glass rounded-xl p-6 text-center">
               <Car className="w-10 h-10 mx-auto mb-2 text-slate-700" />
-              <p className="text-slate-400 font-semibold">No vehicle found for plate <span className="font-mono text-cyan-400">{plate}</span></p>
+              <p className="text-slate-400 font-semibold">No vehicle found for plate <span className="font-mono text-purple-400">{plate}</span></p>
               <p className="text-slate-600 text-sm mt-1">Plate not registered in system.</p>
             </div>
           )}
@@ -246,7 +246,7 @@ export default function Vehicles() {
       {/* Form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d1526', border: '1px solid rgba(16,185,129,0.18)' }}>
+          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d0a14', border: '1px solid rgba(16,185,129,0.18)' }}>
             <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(16,185,129,0.10)', background: 'rgba(16,185,129,0.05)' }}>
               <h2 className="text-base font-bold text-white">{editTarget ? 'Edit Vehicle' : 'Register Vehicle'}</h2>
               <button onClick={() => { setShowForm(false); setEditTarget(null); }} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>

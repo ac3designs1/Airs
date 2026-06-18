@@ -16,7 +16,7 @@ interface Stats {
 }
 
 const PANELS = [
-  { title: 'User Management',    desc: 'Manage officer accounts, roles and access',    icon: Users,         to: '/users',             accent: '#06b6d4', glow: 'rgba(6,182,212,0.15)'  },
+  { title: 'User Management',    desc: 'Manage officer accounts, roles and access',    icon: Users,         to: '/users',             accent: '#a855f7', glow: 'rgba(168,85,247,0.15)'  },
   { title: 'Role Permissions',   desc: 'Configure access matrix for each role',        icon: Key,           to: '/role-permissions',  accent: '#a78bfa', glow: 'rgba(167,139,250,0.15)' },
   { title: 'Divisions',          desc: 'Department and division configuration',        icon: Shield,        to: '/divisions',         accent: '#6366f1', glow: 'rgba(99,102,241,0.15)'  },
   { title: 'Database Stats',     desc: 'System performance and database health',       icon: Database,      to: '/database-stats',    accent: '#22c55e', glow: 'rgba(34,197,94,0.15)'   },
@@ -38,7 +38,7 @@ export default function Admin() {
   if (!isAdmin) return <Navigate to="/dashboard" replace />;
 
   const kpis = [
-    { label: 'Total Officers', value: stats?.total_officers ?? '—', color: '#06b6d4', icon: Users },
+    { label: 'Total Officers', value: stats?.total_officers ?? '—', color: '#a855f7', icon: Users },
     { label: 'Active Warrants', value: stats?.active_warrants ?? '—', color: '#ef4444', icon: AlertTriangle },
     { label: 'Live Calls', value: stats?.active_calls ?? '—', color: '#a78bfa', icon: Activity },
     { label: 'Citizens on File', value: stats?.total_citizens ?? '—', color: '#22c55e', icon: Database },
@@ -109,7 +109,7 @@ export default function Admin() {
       {/* System info */}
       <div className="glass rounded-2xl p-5">
         <div className="flex items-center gap-2 mb-4">
-          <Server className="w-4 h-4 text-cyan-400" />
+          <Server className="w-4 h-4 text-purple-400" />
           <h2 className="font-semibold text-white text-sm">System Information</h2>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -123,7 +123,7 @@ export default function Admin() {
             { label: 'Active BOLOs', value: stats?.active_bolos ?? '—' },
             { label: 'Status', value: 'Operational', green: true },
           ].map(i => (
-            <div key={i.label} className="rounded-xl p-3" style={{ background: 'rgba(6,182,212,0.04)', border: '1px solid rgba(6,182,212,0.08)' }}>
+            <div key={i.label} className="rounded-xl p-3" style={{ background: 'rgba(168,85,247,0.04)', border: '1px solid rgba(168,85,247,0.08)' }}>
               <p className="text-[10px] text-slate-600 uppercase tracking-wider">{i.label}</p>
               <p className={`font-semibold text-sm mt-1 ${i.green ? 'text-green-400' : 'text-white'}`}>{i.value}</p>
             </div>

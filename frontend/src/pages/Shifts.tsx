@@ -83,7 +83,7 @@ export default function Shifts() {
           <div>
             <h1 className="text-xl font-black text-white">Duty Shifts</h1>
             <p className="text-slate-500 text-sm mt-0.5">{auth.user?.first_name} {auth.user?.last_name}
-              {auth.user?.callsign && <span className="text-cyan-400 font-mono font-bold ml-2">{auth.user.callsign}</span>}
+              {auth.user?.callsign && <span className="text-purple-400 font-mono font-bold ml-2">{auth.user.callsign}</span>}
             </p>
           </div>
         </div>
@@ -111,7 +111,7 @@ export default function Shifts() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: 'This Week',      value: fmtMins(stats.week_mins),    icon: Calendar,    color: '#06b6d4' },
+          { label: 'This Week',      value: fmtMins(stats.week_mins),    icon: Calendar,    color: '#a855f7' },
           { label: 'Total Hours',    value: fmtMins(stats.total_mins),   icon: Clock,       color: '#a78bfa' },
           { label: 'Total Shifts',   value: stats.total_shifts.toString(), icon: CheckCircle, color: '#22c55e' },
           { label: isLeader ? 'Active Officers' : 'Current Status', value: isLeader ? stats.active_shifts.toString() : (active ? 'On Duty' : 'Off Duty'), icon: BarChart2, color: active ? '#22c55e' : '#475569' },
@@ -163,7 +163,7 @@ export default function Shifts() {
       <div className="glass rounded-2xl overflow-hidden">
         <div className="card-header">
           <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-cyan-400" />
+            <FileText className="w-4 h-4 text-purple-400" />
             <span className="text-sm font-bold text-white">Shift History</span>
           </div>
           {isLeader && (
@@ -196,7 +196,7 @@ export default function Shifts() {
                 {display.map(s => (
                   <tr key={s.id}>
                     {isLeader && <td className="font-semibold text-white">{s.officer_name}</td>}
-                    {isLeader && <td className="font-mono text-cyan-400 text-sm">{s.callsign || '—'}</td>}
+                    {isLeader && <td className="font-mono text-purple-400 text-sm">{s.callsign || '—'}</td>}
                     {isLeader && <td className="text-slate-400 text-xs">{s.department || '—'}</td>}
                     {!isLeader && <td className="text-slate-500 text-xs">{format(parseISO(s.start_time), 'dd MMM yyyy')}</td>}
                     <td className="font-mono text-slate-300">{format(parseISO(s.start_time), 'HH:mm')}</td>

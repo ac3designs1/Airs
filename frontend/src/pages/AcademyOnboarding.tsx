@@ -29,7 +29,7 @@ interface Progress {
 
 const STATUS_STYLE: Record<string, { label: string; cls: string }> = {
   completed:   { label: 'Done',        cls: 'text-green-400 bg-green-500/10 border-green-500/25' },
-  in_progress: { label: 'In Progress', cls: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/25' },
+  in_progress: { label: 'In Progress', cls: 'text-purple-400 bg-purple-500/10 border-purple-500/25' },
   not_started: { label: 'Pending',     cls: 'text-slate-500 bg-slate-800/60 border-slate-700/50' },
 };
 
@@ -158,10 +158,10 @@ export default function AcademyOnboarding() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="page-header scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(6,182,212,0.20)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(168,85,247,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(168,85,247,0.20)' }}>
         <div className="flex items-center gap-4 flex-1">
-          <div className="p-3 rounded-xl flex-shrink-0" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.30)' }}>
-            <GraduationCap className="w-6 h-6 text-cyan-400" />
+          <div className="p-3 rounded-xl flex-shrink-0" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.30)' }}>
+            <GraduationCap className="w-6 h-6 text-purple-400" />
           </div>
           <div className="flex-1">
             <h1 className="text-xl font-black text-white flex items-center gap-2">
@@ -175,7 +175,7 @@ export default function AcademyOnboarding() {
           </div>
           <button onClick={openAddModal}
             className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm text-white transition-all hover:scale-[1.02]"
-            style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)', border: '1px solid rgba(6,182,212,0.3)' }}>
+            style={{ background: 'linear-gradient(135deg,#7c3aed,#6366f1)', border: '1px solid rgba(168,85,247,0.3)' }}>
             <UserPlus className="w-4 h-4" /> Add Officer
           </button>
         </div>
@@ -198,7 +198,7 @@ export default function AcademyOnboarding() {
                   className={`flex-1 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                     filter === f ? 'text-white' : 'text-slate-500 hover:text-slate-300'
                   }`}
-                  style={filter === f ? { background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' } : { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  style={filter === f ? { background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.25)' } : { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                   {f}
                 </button>
               ))}
@@ -207,7 +207,7 @@ export default function AcademyOnboarding() {
 
           {loading ? (
             <div className="glass rounded-xl p-8 text-center">
-              <div className="w-6 h-6 border-2 border-cyan-500/30 border-t-sky-400 rounded-full animate-spin mx-auto mb-2" />
+              <div className="w-6 h-6 border-2 border-purple-500/30 border-t-sky-400 rounded-full animate-spin mx-auto mb-2" />
               <p className="text-slate-600 text-sm">Loading…</p>
             </div>
           ) : filtered.length === 0 ? (
@@ -217,12 +217,12 @@ export default function AcademyOnboarding() {
             </div>
           ) : filtered.map(r => (
             <button key={r.id} onClick={() => loadProgress(r)}
-              className={`w-full glass rounded-xl p-4 text-left transition-all hover:border-cyan-500/25 ${selected?.id === r.id ? 'border-cyan-500/30' : ''}`}
-              style={selected?.id === r.id ? { borderColor: 'rgba(6,182,212,0.3)', background: 'rgba(6,182,212,0.05)' } : {}}>
+              className={`w-full glass rounded-xl p-4 text-left transition-all hover:border-purple-500/25 ${selected?.id === r.id ? 'border-purple-500/30' : ''}`}
+              style={selected?.id === r.id ? { borderColor: 'rgba(168,85,247,0.3)', background: 'rgba(168,85,247,0.05)' } : {}}>
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm text-white flex-shrink-0"
-                    style={{ background: r.onboarding_complete ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
+                    style={{ background: r.onboarding_complete ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#7c3aed,#6366f1)' }}>
                     {r.first_name[0]}
                   </div>
                   <div className="min-w-0">
@@ -257,7 +257,7 @@ export default function AcademyOnboarding() {
               <div className="flex items-center justify-between gap-4 flex-wrap">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg text-white"
-                    style={{ background: selected.onboarding_complete ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
+                    style={{ background: selected.onboarding_complete ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#7c3aed,#6366f1)' }}>
                     {selected.first_name[0]}
                   </div>
                   <div>
@@ -298,7 +298,7 @@ export default function AcademyOnboarding() {
                 <div className="mt-4">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-xs text-slate-500">Training progress</span>
-                    <span className="text-xs font-bold" style={{ color: pct === 100 ? '#22c55e' : '#06b6d4' }}>
+                    <span className="text-xs font-bold" style={{ color: pct === 100 ? '#22c55e' : '#a855f7' }}>
                       {progress.completedCount}/{progress.total}
                     </span>
                   </div>
@@ -306,7 +306,7 @@ export default function AcademyOnboarding() {
                     <div className="h-full rounded-full transition-all duration-500"
                       style={{
                         width: `${pct}%`,
-                        background: pct === 100 ? 'linear-gradient(90deg,#22c55e,#16a34a)' : 'linear-gradient(90deg,#0284c7,#6366f1)',
+                        background: pct === 100 ? 'linear-gradient(90deg,#22c55e,#16a34a)' : 'linear-gradient(90deg,#7c3aed,#6366f1)',
                       }} />
                   </div>
                   {!allDone && (
@@ -322,7 +322,7 @@ export default function AcademyOnboarding() {
             {/* Checklist */}
             {!progress ? (
               <div className="glass rounded-2xl p-8 text-center">
-                <div className="w-6 h-6 border-2 border-cyan-500/30 border-t-sky-400 rounded-full animate-spin mx-auto mb-2" />
+                <div className="w-6 h-6 border-2 border-purple-500/30 border-t-sky-400 rounded-full animate-spin mx-auto mb-2" />
               </div>
             ) : (
               <div className="glass rounded-2xl overflow-hidden">
@@ -339,7 +339,7 @@ export default function AcademyOnboarding() {
                         <div className="flex items-start gap-3">
                           {/* Toggle checkbox */}
                           <button onClick={() => toggleItem(item)} disabled={saving === item.id || !!selected.onboarding_complete}
-                            className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 transition-all ${done ? 'bg-green-500/20 border border-green-500/40 hover:bg-green-500/30' : 'bg-slate-800 border border-slate-600 hover:border-cyan-500/50'} ${selected.onboarding_complete ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}>
+                            className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 transition-all ${done ? 'bg-green-500/20 border border-green-500/40 hover:bg-green-500/30' : 'bg-slate-800 border border-slate-600 hover:border-purple-500/50'} ${selected.onboarding_complete ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}>
                             {saving === item.id
                               ? <div className="w-3 h-3 border border-white/20 border-t-white rounded-full animate-spin" />
                               : done ? <CheckCircle className="w-3.5 h-3.5 text-green-400" /> : null}
@@ -364,7 +364,7 @@ export default function AcademyOnboarding() {
                                 <input value={noteText} onChange={e => setNoteText(e.target.value)}
                                   placeholder="Add a note…" className="nx-input text-xs flex-1" />
                                 <button onClick={() => saveNote(item)}
-                                  className="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-sky-600 hover:bg-cyan-500 transition-colors">
+                                  className="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-sky-600 hover:bg-purple-500 transition-colors">
                                   Save
                                 </button>
                                 <button onClick={() => setNoteFor(null)} className="p-1.5 text-slate-500 hover:text-white"><X className="w-3.5 h-3.5" /></button>
@@ -374,7 +374,7 @@ export default function AcademyOnboarding() {
                                 {item.notes && <span className="text-[11px] text-slate-500 italic">"{item.notes}"</span>}
                                 {!selected.onboarding_complete && (
                                   <button onClick={() => { setNoteFor(item.id); setNoteText(item.notes ?? ''); }}
-                                    className="text-[11px] text-slate-600 hover:text-cyan-400 transition-colors">
+                                    className="text-[11px] text-slate-600 hover:text-purple-400 transition-colors">
                                     {item.notes ? 'Edit note' : '+ Add note'}
                                   </button>
                                 )}
@@ -398,9 +398,9 @@ export default function AcademyOnboarding() {
       {/* ── Manual Add Modal ── */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.25)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.10)' }}>
-              <h2 className="font-bold text-white flex items-center gap-2"><UserPlus className="w-4 h-4 text-cyan-400" /> Add Officer to Training</h2>
+          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(168,85,247,0.25)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(168,85,247,0.10)' }}>
+              <h2 className="font-bold text-white flex items-center gap-2"><UserPlus className="w-4 h-4 text-purple-400" /> Add Officer to Training</h2>
               <button onClick={() => setShowAddModal(false)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>
             <div className="p-5 space-y-3">
@@ -415,11 +415,11 @@ export default function AcademyOnboarding() {
                   .filter(o => `${o.first_name} ${o.last_name} ${o.callsign ?? ''}`.toLowerCase().includes(addSearch.toLowerCase()))
                   .map(o => (
                     <button key={o.id} onClick={() => manualAdd(o.id)} disabled={addSaving}
-                      className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-left transition-all hover:border-cyan-500/30 disabled:opacity-60"
+                      className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-left transition-all hover:border-purple-500/30 disabled:opacity-60"
                       style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                       <div className="flex items-center gap-3 min-w-0">
                         <div className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white flex-shrink-0"
-                          style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
+                          style={{ background: 'linear-gradient(135deg,#7c3aed,#6366f1)' }}>
                           {o.first_name[0]}
                         </div>
                         <div className="min-w-0">

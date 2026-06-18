@@ -19,7 +19,7 @@ const STATUS_CFG = {
   suspended:  { cls: 'chip-yellow', label: 'Suspended' },
 };
 const TYPE_COLORS: Record<string, string> = {
-  'Traffic':  '#06b6d4', 'Assault': '#ef4444', 'Robbery': '#f97316',
+  'Traffic':  '#a855f7', 'Assault': '#ef4444', 'Robbery': '#f97316',
   'Drug': '#a855f7', 'Domestic': '#ec4899', 'Other': '#64748b',
 };
 const TYPES = ['Traffic', 'Assault', 'Robbery', 'Drug', 'Domestic', 'Firearms', 'Theft', 'Fraud', 'Missing Person', 'Other'];
@@ -139,7 +139,7 @@ export default function Incidents() {
             return (
               <button key={i.id} onClick={() => setSelected(i)}
                 className="w-full text-left rounded-xl p-4 transition-all"
-                style={{ background: sel ? 'rgba(168,85,247,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(168,85,247,0.28)' : 'rgba(6,182,212,0.06)'}` }}>
+                style={{ background: sel ? 'rgba(168,85,247,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(168,85,247,0.28)' : 'rgba(168,85,247,0.06)'}` }}>
                 <div className="flex items-center justify-between gap-2 mb-1">
                   <span className="font-mono text-xs text-slate-500">{i.case_number}</span>
                   <span className={`chip text-[10px] ${sc.cls}`}>{sc.label}</span>
@@ -166,7 +166,7 @@ export default function Incidents() {
             </div>
           ) : (
             <div className="glass rounded-2xl overflow-hidden flex flex-col max-h-[580px]">
-              <div className="px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+              <div className="px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
@@ -223,7 +223,7 @@ export default function Incidents() {
       {/* Form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col" style={{ background: '#0d1526', border: '1px solid rgba(168,85,247,0.20)' }}>
+          <div className="w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col" style={{ background: '#0d0a14', border: '1px solid rgba(168,85,247,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(168,85,247,0.12)', background: 'rgba(168,85,247,0.05)' }}>
               <h2 className="text-base font-bold text-white">{editing ? 'Edit Incident' : 'New Incident Report'}</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>

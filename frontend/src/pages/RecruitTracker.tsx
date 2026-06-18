@@ -77,12 +77,12 @@ const STATUS_LABEL: Record<Status, string> = {
 };
 const STATUS_CLS: Record<Status, string> = {
   not_started: 'text-slate-400 bg-slate-800/80 border-slate-700',
-  in_progress:  'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+  in_progress:  'text-purple-400 bg-purple-500/10 border-purple-500/30',
   completed:    'text-green-400 bg-green-500/10 border-green-500/30',
   failed:       'text-red-400 bg-red-500/10 border-red-500/30',
 };
-const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/5' : s === 'current' ? 'border-cyan-500/25 bg-cyan-500/5' : 'border-slate-800/80 bg-transparent';
-const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-cyan-400' : 'text-slate-600';
+const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/5' : s === 'current' ? 'border-purple-500/25 bg-purple-500/5' : 'border-slate-800/80 bg-transparent';
+const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-purple-400' : 'text-slate-600';
 
 const EDITABLE_ROLES = ['commissioner', 'commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
@@ -292,11 +292,11 @@ export default function RecruitTracker() {
 
       {/* Header */}
       <div className="page-header scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(34,197,94,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(168,85,247,0.12),rgba(34,197,94,0.06))', border: '1px solid rgba(168,85,247,0.18)' }}>
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
-              <GraduationCap className="w-6 h-6 text-cyan-400" />
+            <div className="p-3 rounded-xl" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.25)' }}>
+              <GraduationCap className="w-6 h-6 text-purple-400" />
             </div>
             <div>
               <h1 className="text-xl font-black text-white">Recruit Management</h1>
@@ -309,7 +309,7 @@ export default function RecruitTracker() {
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Recruits',  value: recruits.length,      icon: Users,        color: 'text-cyan-400' },
+          { label: 'Total Recruits',  value: recruits.length,      icon: Users,        color: 'text-purple-400' },
           { label: 'Avg Skills',      value: `${avgPct}%`,          icon: BarChart2,    color: 'text-green-400' },
           { label: 'In FTO Programme',value: trainingRecords.length, icon: UserCheck,   color: 'text-purple-400' },
           { label: 'FTO Complete',    value: trainingComplete,       icon: TrendingUp,  color: 'text-amber-400' },
@@ -331,7 +331,7 @@ export default function RecruitTracker() {
         <div className="w-60 flex-shrink-0 flex flex-col gap-2">
           <div className="glass rounded-2xl p-4 space-y-3">
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-cyan-400" />
+              <Users className="w-4 h-4 text-purple-400" />
               <span className="text-sm font-semibold text-white">Recruits</span>
               <span className="ml-auto text-[10px] text-slate-600 font-mono">{recruits.length} total</span>
             </div>
@@ -339,7 +339,7 @@ export default function RecruitTracker() {
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600" />
               <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search recruits…"
                 className="w-full pl-8 pr-3 py-2 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none"
-                style={{ background: 'rgba(15,23,42,0.7)', border: '1px solid rgba(6,182,212,0.10)' }} />
+                style={{ background: 'rgba(15,23,42,0.7)', border: '1px solid rgba(168,85,247,0.10)' }} />
             </div>
           </div>
 
@@ -350,7 +350,7 @@ export default function RecruitTracker() {
               <div className="glass rounded-xl p-4 text-center space-y-1">
                 <UserCheck className="w-8 h-8 mx-auto text-slate-700" />
                 <p className="text-xs text-slate-500 font-semibold">No recruits</p>
-                <p className="text-[10px] text-slate-600 leading-snug">Assign the <span className="text-cyan-400 font-mono">recruit</span> role via User Management</p>
+                <p className="text-[10px] text-slate-600 leading-snug">Assign the <span className="text-purple-400 font-mono">recruit</span> role via User Management</p>
               </div>
             ) : filtered.map(r => {
               const d = skillTotalDone(r.id, progress);
@@ -359,9 +359,9 @@ export default function RecruitTracker() {
               return (
                 <button key={r.id} onClick={() => setSelected(r)}
                   className="w-full text-left rounded-xl px-3 py-2.5 flex items-center gap-3 transition-all group"
-                  style={{ background: sel ? 'rgba(6,182,212,0.12)' : 'rgba(15,23,42,0.5)', border: `1px solid ${sel ? 'rgba(6,182,212,0.35)' : 'rgba(6,182,212,0.06)'}` }}>
+                  style={{ background: sel ? 'rgba(168,85,247,0.12)' : 'rgba(15,23,42,0.5)', border: `1px solid ${sel ? 'rgba(168,85,247,0.35)' : 'rgba(168,85,247,0.06)'}` }}>
                   <div className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-bold text-white"
-                    style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
+                    style={{ background: 'linear-gradient(135deg,#7c3aed,#6366f1)' }}>
                     {r.first_name[0]}{r.last_name[0]}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -391,11 +391,11 @@ export default function RecruitTracker() {
             <div className="glass rounded-2xl overflow-hidden flex flex-col h-full">
 
               {/* Recruit banner + tabs */}
-              <div className="px-5 pt-4 pb-0" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+              <div className="px-5 pt-4 pb-0" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
                 <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-white"
-                      style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
+                      style={{ background: 'linear-gradient(135deg,#7c3aed,#6366f1)' }}>
                       {selected.first_name[0]}{selected.last_name[0]}
                     </div>
                     <div>
@@ -405,7 +405,7 @@ export default function RecruitTracker() {
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <span className="text-xl font-bold text-cyan-400">{skillTotalDone(selected.id, progress)}</span>
+                      <span className="text-xl font-bold text-purple-400">{skillTotalDone(selected.id, progress)}</span>
                       <span className="text-slate-600">/{TOTAL_REQS}</span>
                       <div className="text-[10px] text-slate-600">skills done</div>
                     </div>
@@ -430,7 +430,7 @@ export default function RecruitTracker() {
                     <button key={t.key} onClick={() => setTab(t.key as typeof tab)}
                       className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-xl transition-all ${
                         tab === t.key
-                          ? 'bg-cyan-500/10 text-cyan-300 border-b-2 border-sky-400'
+                          ? 'bg-purple-500/10 text-purple-300 border-b-2 border-sky-400'
                           : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'
                       }`}>
                       <t.icon className="w-3.5 h-3.5" />
@@ -454,7 +454,7 @@ export default function RecruitTracker() {
                           className="flex flex-col items-start px-4 py-2.5 rounded-t-xl transition-all min-w-[110px]"
                           style={{
                             background: active ? 'rgba(15,23,42,0.9)' : 'rgba(15,23,42,0.4)',
-                            border: `1px solid ${active ? s.border : 'rgba(6,182,212,0.06)'}`,
+                            border: `1px solid ${active ? s.border : 'rgba(168,85,247,0.06)'}`,
                             borderBottom: active ? '1px solid transparent' : undefined,
                           }}>
                           <span className="text-xs font-bold" style={{ color: active ? s.color : '#64748b' }}>{s.label}</span>
@@ -470,7 +470,7 @@ export default function RecruitTracker() {
                   <div className="flex-1 overflow-y-auto" style={{ borderTop: `1px solid ${stage.border}` }}>
                     <table className="w-full">
                       <thead>
-                        <tr style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+                        <tr style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
                           {['REQUIREMENT', 'STATUS', 'COMPLETED BY', 'ACTIONS'].map(h => (
                             <th key={h} className="px-4 py-3 text-left text-[10px] font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">{h}</th>
                           ))}
@@ -484,7 +484,7 @@ export default function RecruitTracker() {
                             : prog.status === 'failed' ? XCircle : Clock;
                           return (
                             <tr key={req.id} className="hover:bg-slate-800/20 transition-colors"
-                              style={{ borderBottom: i < stageReqs.length - 1 ? '1px solid rgba(6,182,212,0.06)' : 'none' }}>
+                              style={{ borderBottom: i < stageReqs.length - 1 ? '1px solid rgba(168,85,247,0.06)' : 'none' }}>
                               <td className="px-4 py-3.5 min-w-[200px]">
                                 <div className="font-semibold text-white text-sm">{req.name}</div>
                                 <div className="text-xs text-slate-500 mt-0.5">{req.desc}</div>
@@ -510,8 +510,8 @@ export default function RecruitTracker() {
                                     <>
                                       {prog.status === 'not_started' && (
                                         <button onClick={() => setSkillStatus(selected.id, req.id, 'in_progress')}
-                                          className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-cyan-400"
-                                          style={{ background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.25)' }}>
+                                          className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-purple-400"
+                                          style={{ background: 'rgba(168,85,247,0.12)', border: '1px solid rgba(168,85,247,0.25)' }}>
                                           Start
                                         </button>
                                       )}
@@ -545,7 +545,7 @@ export default function RecruitTracker() {
                                   )}
                                   <button onClick={() => { setNoteModal({ rid: selected.id, reqId: req.id }); setNoteText(prog.notes ?? ''); }}
                                     className={`p-1.5 rounded-lg transition-colors ${prog.notes ? 'text-amber-400' : 'text-slate-600 hover:text-slate-400'}`}
-                                    style={{ background: prog.notes ? 'rgba(245,158,11,0.10)' : 'rgba(6,182,212,0.06)', border: `1px solid ${prog.notes ? 'rgba(245,158,11,0.20)' : 'rgba(6,182,212,0.08)'}` }}>
+                                    style={{ background: prog.notes ? 'rgba(245,158,11,0.10)' : 'rgba(168,85,247,0.06)', border: `1px solid ${prog.notes ? 'rgba(245,158,11,0.20)' : 'rgba(168,85,247,0.08)'}` }}>
                                     <MessageSquare className="w-3.5 h-3.5" />
                                   </button>
                                 </div>
@@ -600,7 +600,7 @@ export default function RecruitTracker() {
                           return (
                             <div key={s.name} className={`rounded-xl p-4 border ${stageBg(s.status)}`}>
                               <div className="flex items-center gap-2 mb-1">
-                                <div className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(6,182,212,0.1)', color: '#64748b' }}>
+                                <div className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(168,85,247,0.1)', color: '#64748b' }}>
                                   Stage {i + 1}
                                 </div>
                               </div>
@@ -609,7 +609,7 @@ export default function RecruitTracker() {
                                 <span className={`text-sm font-semibold ${stageColor(s.status)}`}>{s.name}</span>
                               </div>
                               {s.date && <div className="text-xs text-slate-600 mt-1">{format(new Date(s.date), 'dd MMM yyyy')}</div>}
-                              {s.status === 'current' && <div className="text-[10px] text-cyan-400 mt-1 font-bold">● Current Stage</div>}
+                              {s.status === 'current' && <div className="text-[10px] text-purple-400 mt-1 font-bold">● Current Stage</div>}
                             </div>
                           );
                         })}
@@ -630,7 +630,7 @@ export default function RecruitTracker() {
                           ) : (
                             <button onClick={() => setShowSignOff(true)}
                               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-105 active:scale-100"
-                              style={{ background: 'linear-gradient(135deg,#7c3aed,#06b6d4)', border: '1px solid rgba(124,58,237,0.5)', boxShadow: '0 0 20px rgba(124,58,237,0.3)' }}>
+                              style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', border: '1px solid rgba(124,58,237,0.5)', boxShadow: '0 0 20px rgba(124,58,237,0.3)' }}>
                               <Award className="w-4 h-4" /> Final Sign-Off
                             </button>
                           )}
@@ -649,8 +649,8 @@ export default function RecruitTracker() {
       {noteModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl"
-            style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
-            <div className="flex items-center justify-between p-4" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+            style={{ background: '#0a1020', border: '1px solid rgba(168,85,247,0.18)' }}>
+            <div className="flex items-center justify-between p-4" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
               <h3 className="font-bold text-white text-sm">Add Note</h3>
               <button onClick={() => setNoteModal(null)} className="text-slate-500 hover:text-white p-1 rounded-lg hover:bg-white/5">
                 <X className="w-4 h-4" />
@@ -673,7 +673,7 @@ export default function RecruitTracker() {
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
             style={{ background: '#0a1020', border: '1px solid rgba(124,58,237,0.35)' }}>
-            <div className="p-6" style={{ background: 'linear-gradient(135deg,rgba(124,58,237,0.15),rgba(6,182,212,0.08))', borderBottom: '1px solid rgba(124,58,237,0.20)' }}>
+            <div className="p-6" style={{ background: 'linear-gradient(135deg,rgba(124,58,237,0.15),rgba(168,85,247,0.08))', borderBottom: '1px solid rgba(124,58,237,0.20)' }}>
               <div className="flex items-center gap-3 mb-1">
                 <div className="p-2.5 rounded-xl" style={{ background: 'rgba(124,58,237,0.2)', border: '1px solid rgba(124,58,237,0.35)' }}>
                   <Award className="w-5 h-5 text-purple-400" />
@@ -683,10 +683,10 @@ export default function RecruitTracker() {
               <p className="text-slate-400 text-sm mt-2">This will complete FTO training and promote the recruit.</p>
             </div>
             <div className="p-6 space-y-4">
-              <div className="rounded-xl p-4" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.12)' }}>
+              <div className="rounded-xl p-4" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.12)' }}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg,#7c3aed,#06b6d4)' }}>
+                    style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
                     {selected.first_name[0]}{selected.last_name[0]}
                   </div>
                   <div>
@@ -716,7 +716,7 @@ export default function RecruitTracker() {
                 </button>
                 <button onClick={finalSignOff} disabled={signingOff}
                   className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold text-white transition-all"
-                  style={{ background: 'linear-gradient(135deg,#7c3aed,#06b6d4)', border: '1px solid rgba(124,58,237,0.5)' }}>
+                  style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', border: '1px solid rgba(124,58,237,0.5)' }}>
                   {signingOff ? (
                     <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Signing Off…</>
                   ) : (
@@ -733,13 +733,13 @@ export default function RecruitTracker() {
       {showAddFTO && selected && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl"
-            style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+            style={{ background: '#0a1020', border: '1px solid rgba(168,85,247,0.18)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
               <h2 className="font-bold text-white">Enrol in FTO Programme</h2>
               <button onClick={() => setShowAddFTO(false)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>
             <form onSubmit={addToFTO} className="p-5 space-y-4">
-              <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.12)' }}>
+              <div className="p-3 rounded-xl" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.12)' }}>
                 <p className="text-sm text-white font-semibold">{selected.first_name} {selected.last_name}</p>
                 <p className="text-xs text-slate-500">{selected.rank} · {selected.department}</p>
               </div>

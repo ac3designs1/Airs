@@ -21,19 +21,19 @@ interface Call {
   priority: number; status: string; created_at: string;
 }
 
-const P_CLR: Record<number, string> = { 1: '#ef4444', 2: '#f59e0b', 3: '#06b6d4' };
-const P_BG:  Record<number, string> = { 1: 'rgba(239,68,68,0.10)',  2: 'rgba(245,158,11,0.10)', 3: 'rgba(6,182,212,0.08)' };
+const P_CLR: Record<number, string> = { 1: '#ef4444', 2: '#f59e0b', 3: '#a855f7' };
+const P_BG:  Record<number, string> = { 1: 'rgba(239,68,68,0.10)',  2: 'rgba(245,158,11,0.10)', 3: 'rgba(168,85,247,0.08)' };
 const P_LBL: Record<number, string> = { 1: 'EMERGENCY', 2: 'URGENT', 3: 'ROUTINE' };
 
 const QUICK_LINKS = [
-  { to: '/roster',           icon: Users,         label: 'Roster',    color: '#06b6d4' },
+  { to: '/roster',           icon: Users,         label: 'Roster',    color: '#a855f7' },
   { to: '/warrants',         icon: AlertTriangle, label: 'Warrants',  color: '#ef4444' },
   { to: '/in-city-requests', icon: Radio,         label: 'Dispatch',  color: '#a78bfa' },
   { to: '/certifications',   icon: Star,          label: 'Certs',     color: '#f59e0b' },
   { to: '/shifts',           icon: Clock,         label: 'Shifts',    color: '#22c55e' },
   { to: '/leave-requests',   icon: ArrowRightLeft,label: 'Leave',     color: '#818cf8' },
   { to: '/reports',          icon: FileText,      label: 'Reports',   color: '#64748b' },
-  { to: '/statistics',       icon: BarChart2,     label: 'Stats',     color: '#22d3ee' },
+  { to: '/statistics',       icon: BarChart2,     label: 'Stats',     color: '#c084fc' },
 ] as const;
 
 function SkeletonBox({ h = 'h-8', w = 'w-12' }: { h?: string; w?: string }) {
@@ -79,10 +79,10 @@ export default function Dashboard() {
       <div className="relative rounded-2xl overflow-hidden"
         style={{
           background: isComm
-            ? 'linear-gradient(135deg, #1c1200 0%, #0d1526 55%, #0a1020 100%)'
-            : 'linear-gradient(135deg, #021020 0%, #0d1526 55%, #0a1020 100%)',
-          border: `1px solid ${isComm ? 'rgba(245,158,11,0.22)' : 'rgba(6,182,212,0.18)'}`,
-          boxShadow: `0 8px 48px ${isComm ? 'rgba(245,158,11,0.06)' : 'rgba(6,182,212,0.06)'}`,
+            ? 'linear-gradient(135deg, #1c1200 0%, #0d0a14 55%, #0a0618 100%)'
+            : 'linear-gradient(135deg, #0c0618 0%, #0d0a14 55%, #08050f 100%)',
+          border: `1px solid ${isComm ? 'rgba(245,158,11,0.22)' : 'rgba(168,85,247,0.18)'}`,
+          boxShadow: `0 8px 48px ${isComm ? 'rgba(245,158,11,0.06)' : 'rgba(168,85,247,0.06)'}`,
         }}>
 
         {/* Background accents */}
@@ -92,7 +92,7 @@ export default function Dashboard() {
             width: '320px', height: '320px', borderRadius: '50%',
             background: isComm
               ? 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%)',
+              : 'radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%)',
           }} />
           <div style={{
             position: 'absolute', bottom: '-40px', left: '20%',
@@ -115,15 +115,15 @@ export default function Dashboard() {
                   style={{
                     background: isComm
                       ? 'linear-gradient(135deg, #92400e, #f59e0b)'
-                      : 'linear-gradient(135deg, #0e7490, #1d4ed8)',
+                      : 'linear-gradient(135deg, #6d28d9, #a855f7)',
                     boxShadow: isComm
                       ? '0 0 28px rgba(245,158,11,0.45), 0 4px 16px rgba(0,0,0,0.4)'
-                      : '0 0 28px rgba(6,182,212,0.35), 0 4px 16px rgba(0,0,0,0.4)',
+                      : '0 0 28px rgba(168,85,247,0.35), 0 4px 16px rgba(0,0,0,0.4)',
                   }}>
                   {initials}
                 </div>
                 {/* Status dot */}
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#0d1526]"
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#0d0a14]"
                   style={{ background: statusColor, boxShadow: `0 0 8px ${statusColor}` }} />
               </div>
 
@@ -142,7 +142,7 @@ export default function Dashboard() {
                   {user.callsign && (
                     <>
                       <span className="text-slate-700">·</span>
-                      <span className="font-mono font-bold text-[13px]" style={{ color: isComm ? '#fcd34d' : '#22d3ee' }}>
+                      <span className="font-mono font-bold text-[13px]" style={{ color: isComm ? '#fcd34d' : '#c084fc' }}>
                         {user.callsign}
                       </span>
                     </>
@@ -159,7 +159,7 @@ export default function Dashboard() {
             {/* Right — clock + action */}
             <div className="flex flex-col items-start sm:items-end gap-3">
               <div className="text-right">
-                <div className="font-mono font-black text-3xl tracking-tight leading-none" style={{ color: isComm ? '#fcd34d' : '#22d3ee' }}>
+                <div className="font-mono font-black text-3xl tracking-tight leading-none" style={{ color: isComm ? '#fcd34d' : '#c084fc' }}>
                   {timeStr}
                 </div>
                 <div className="text-xs text-slate-500 mt-1">{dateStr} · Melbourne AEST</div>
@@ -179,7 +179,7 @@ export default function Dashboard() {
           </div>
 
           {/* Duty bar */}
-          <div className="mt-5 pt-4" style={{ borderTop: `1px solid ${isComm ? 'rgba(245,158,11,0.10)' : 'rgba(6,182,212,0.08)'}` }}>
+          <div className="mt-5 pt-4" style={{ borderTop: `1px solid ${isComm ? 'rgba(245,158,11,0.10)' : 'rgba(168,85,247,0.08)'}` }}>
             <div className="flex items-center gap-3">
               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-600 w-28 flex-shrink-0">
                 Force Strength
@@ -190,11 +190,11 @@ export default function Dashboard() {
                     width: `${dutyPct}%`,
                     background: isComm
                       ? 'linear-gradient(90deg,#b45309,#f59e0b)'
-                      : 'linear-gradient(90deg,#0891b2,#22c55e)',
+                      : 'linear-gradient(90deg,#7c3aed,#22c55e)',
                   }} />
               </div>
               <span className="font-mono font-black text-sm w-10 text-right flex-shrink-0"
-                style={{ color: isComm ? '#fcd34d' : '#06b6d4' }}>
+                style={{ color: isComm ? '#fcd34d' : '#a855f7' }}>
                 {loading ? '—' : `${dutyPct}%`}
               </span>
               <span className="text-xs text-slate-600 hidden sm:block">
@@ -210,7 +210,7 @@ export default function Dashboard() {
       ════════════════════════════════════════════════════════ */}
       <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
         {([
-          { label: 'Officers',    value: stats?.total_officers,  icon: Users,         color: '#06b6d4', to: '/roster' },
+          { label: 'Officers',    value: stats?.total_officers,  icon: Users,         color: '#a855f7', to: '/roster' },
           { label: 'On Duty',     value: stats ? `${stats.on_duty}/${stats.total_officers}` : undefined, icon: Activity, color: '#22c55e' },
           { label: 'Live Calls',  value: stats?.active_calls,    icon: Siren,         color: '#a78bfa', pulse: (stats?.active_calls ?? 0) > 0 },
           { label: 'Warrants',    value: stats?.active_warrants, icon: AlertTriangle, color: '#ef4444', to: '/warrants' },
@@ -220,7 +220,7 @@ export default function Dashboard() {
           const inner = (
             <div key={s.label} className="relative rounded-xl p-4 overflow-hidden transition-all group cursor-pointer"
               style={{
-                background: `linear-gradient(145deg, ${s.color}0f 0%, #0d1526 100%)`,
+                background: `linear-gradient(145deg, ${s.color}0f 0%, #0d0a14 100%)`,
                 border: `1px solid ${s.color}22`,
               }}>
               {/* Pulse ring for active calls */}
@@ -304,8 +304,8 @@ export default function Dashboard() {
             ) : (
               <div className="space-y-2">
                 {calls.map(c => {
-                  const clr = P_CLR[c.priority] ?? '#06b6d4';
-                  const bg  = P_BG[c.priority]  ?? 'rgba(6,182,212,0.06)';
+                  const clr = P_CLR[c.priority] ?? '#a855f7';
+                  const bg  = P_BG[c.priority]  ?? 'rgba(168,85,247,0.06)';
                   return (
                     <div key={c.id}
                       className="flex items-center gap-3 px-4 py-3 rounded-xl border transition-all hover:brightness-110"
@@ -354,13 +354,13 @@ export default function Dashboard() {
           {/* Officer Card */}
           <div className="glass rounded-2xl overflow-hidden">
             <div className="px-5 py-4 flex items-center gap-2"
-              style={{ borderBottom: '1px solid rgba(6,182,212,0.08)', background: 'rgba(6,182,212,0.02)' }}>
-              <Shield className="w-4 h-4 text-cyan-500" />
+              style={{ borderBottom: '1px solid rgba(168,85,247,0.08)', background: 'rgba(168,85,247,0.02)' }}>
+              <Shield className="w-4 h-4 text-purple-500" />
               <span className="text-sm font-black text-white">Your Record</span>
             </div>
             <div className="px-5 py-3">
               {[
-                { label: 'Call Sign', value: user.callsign || '—', mono: true,  color: '#22d3ee' },
+                { label: 'Call Sign', value: user.callsign || '—', mono: true,  color: '#c084fc' },
                 { label: 'Rank',      value: user.rank },
                 { label: 'Division',  value: user.department },
                 { label: 'Role',      value: isComm ? 'Commissioner' : (user.role?.replace(/_/g, ' ')), cap: true, color: isComm ? '#fcd34d' : undefined },
@@ -442,21 +442,21 @@ export default function Dashboard() {
       {stats?.recent_activity && stats.recent_activity.length > 0 && (
         <div className="glass rounded-2xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-4"
-            style={{ borderBottom: '1px solid rgba(6,182,212,0.08)', background: 'rgba(6,182,212,0.02)' }}>
-            <div className="p-2 rounded-xl" style={{ background: 'rgba(6,182,212,0.10)', border: '1px solid rgba(6,182,212,0.18)' }}>
-              <Activity className="w-4 h-4 text-cyan-400" />
+            style={{ borderBottom: '1px solid rgba(168,85,247,0.08)', background: 'rgba(168,85,247,0.02)' }}>
+            <div className="p-2 rounded-xl" style={{ background: 'rgba(168,85,247,0.10)', border: '1px solid rgba(168,85,247,0.18)' }}>
+              <Activity className="w-4 h-4 text-purple-400" />
             </div>
             <h2 className="text-sm font-black text-white">Recent Activity</h2>
-            <span className="chip chip-cyan text-[10px] ml-auto">{Math.min(stats.recent_activity.length, 8)} entries</span>
+            <span className="chip chip-purple text-[10px] ml-auto">{Math.min(stats.recent_activity.length, 8)} entries</span>
           </div>
           <div>
             {stats.recent_activity.slice(0, 8).map((a, i, arr) => (
               <div key={a.id}
                 className="flex items-center gap-4 px-5 py-3 hover:bg-white/[0.01] transition-colors"
-                style={{ borderBottom: i < arr.length - 1 ? '1px solid rgba(6,182,212,0.05)' : 'none' }}>
+                style={{ borderBottom: i < arr.length - 1 ? '1px solid rgba(168,85,247,0.05)' : 'none' }}>
                 {/* Timeline dot */}
                 <div className="relative flex-shrink-0 flex flex-col items-center">
-                  <div className="w-2 h-2 rounded-full" style={{ background: '#06b6d4', boxShadow: '0 0 6px rgba(6,182,212,0.5)' }} />
+                  <div className="w-2 h-2 rounded-full" style={{ background: '#a855f7', boxShadow: '0 0 6px rgba(168,85,247,0.5)' }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-slate-300 truncate">{a.details ?? a.action}</p>

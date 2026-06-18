@@ -84,7 +84,7 @@ export default function FPOTracker() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2 items-center">
-        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
+        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(168,85,247,0.05)', border: '1px solid rgba(168,85,247,0.08)' }}>
           {['active', 'revoked', 'expired'].map(s => (
             <button key={s} onClick={() => setStatus(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${status === s ? 'bg-blue-500/20 text-blue-300' : 'text-slate-500 hover:text-slate-300'}`}>{s}</button>
@@ -114,7 +114,7 @@ export default function FPOTracker() {
                   </div>
                   <div className="font-bold text-white">{f.officer_name ?? '—'}</div>
                   <div className="text-xs text-slate-500 mt-0.5">
-                    {f.officer_callsign && <span className="font-mono text-cyan-400 mr-2">{f.officer_callsign}</span>}
+                    {f.officer_callsign && <span className="font-mono text-purple-400 mr-2">{f.officer_callsign}</span>}
                     {f.rank} · {f.department}
                   </div>
                   {f.notes && <p className="text-xs text-slate-600 mt-1.5">{f.notes}</p>}
@@ -140,7 +140,7 @@ export default function FPOTracker() {
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
-            style={{ background: '#0d1526', border: '1px solid rgba(59,130,246,0.20)' }}>
+            style={{ background: '#0d0a14', border: '1px solid rgba(59,130,246,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4"
               style={{ borderBottom: '1px solid rgba(59,130,246,0.12)', background: 'rgba(59,130,246,0.05)' }}>
               <h2 className="text-base font-bold text-white">Issue FPO Certification</h2>

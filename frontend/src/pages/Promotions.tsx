@@ -84,7 +84,7 @@ export default function Promotions() {
       {/* Promo form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d1526', border: '1px solid rgba(168,85,247,0.20)' }}>
+          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d0a14', border: '1px solid rgba(168,85,247,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(168,85,247,0.12)', background: 'rgba(168,85,247,0.05)' }}>
               <h2 className="text-base font-bold text-white">Issue Promotion</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>
@@ -154,7 +154,7 @@ export default function Promotions() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <span className="font-bold text-white">{p.officer_name}</span>
-                    {p.callsign && <span className="text-cyan-400 font-mono text-xs">{p.callsign}</span>}
+                    {p.callsign && <span className="text-purple-400 font-mono text-xs">{p.callsign}</span>}
                     {p.department && <span className="text-slate-600 text-xs">{p.department}</span>}
                   </div>
                   <div className="flex items-center gap-2 flex-wrap text-sm">

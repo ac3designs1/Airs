@@ -59,7 +59,7 @@ export default function LeaveRequests() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="page-header scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(99,102,241,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(99,102,241,0.20)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(99,102,241,0.12),rgba(168,85,247,0.06))', border: '1px solid rgba(99,102,241,0.20)' }}>
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-xl" style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)' }}>
             <ArrowRightLeft className="w-6 h-6 text-indigo-400" />
@@ -89,7 +89,7 @@ export default function LeaveRequests() {
       {/* Submit form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d1526', border: '1px solid rgba(99,102,241,0.20)' }}>
+          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0d0a14', border: '1px solid rgba(99,102,241,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(99,102,241,0.12)', background: 'rgba(99,102,241,0.05)' }}>
               <h2 className="text-base font-bold text-white">Submit Leave Request</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>
@@ -146,13 +146,13 @@ export default function LeaveRequests() {
                     <div className="flex items-center gap-3 flex-wrap mb-2">
                       <span className={`chip flex items-center gap-1 text-xs ${sc.cls}`}><Icon className="w-3 h-3" />{r.status}</span>
                       <span className="chip chip-blue text-[10px]">{r.leave_type}</span>
-                      {isLeader && r.callsign && <span className="font-mono text-cyan-400 text-xs">{r.callsign}</span>}
+                      {isLeader && r.callsign && <span className="font-mono text-purple-400 text-xs">{r.callsign}</span>}
                     </div>
                     {isLeader && <div className="font-semibold text-white mb-1">{r.officer_name}</div>}
                     <div className="flex items-center gap-3 text-sm text-slate-400 flex-wrap">
                       <span>{format(parseISO(r.start_date), 'dd MMM')} – {format(parseISO(r.end_date), 'dd MMM yyyy')}</span>
                       <span className="text-slate-600">·</span>
-                      <span className="text-cyan-400 font-semibold">{days} day{days !== 1 ? 's' : ''}</span>
+                      <span className="text-purple-400 font-semibold">{days} day{days !== 1 ? 's' : ''}</span>
                     </div>
                     {r.reason && <p className="text-sm text-slate-500 mt-2 leading-relaxed">{r.reason}</p>}
                     {r.reviewed_by && (

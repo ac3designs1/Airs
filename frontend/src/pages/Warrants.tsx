@@ -106,7 +106,7 @@ export default function Warrants() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
-        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.08)' }}>
+        <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(168,85,247,0.05)', border: '1px solid rgba(168,85,247,0.08)' }}>
           {['active', 'served', 'cancelled', 'expired'].map(s => (
             <button key={s} onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${statusFilter === s ? 'bg-red-500/20 text-red-300' : 'text-slate-500 hover:text-slate-300'}`}>
@@ -123,7 +123,7 @@ export default function Warrants() {
       {/* Issue warrant modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col" style={{ background: '#0d1526', border: '1px solid rgba(239,68,68,0.20)' }}>
+          <div className="w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col" style={{ background: '#0d0a14', border: '1px solid rgba(239,68,68,0.20)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(239,68,68,0.12)', background: 'rgba(239,68,68,0.05)' }}>
               <h2 className="text-base font-bold text-white">Issue Warrant</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>
@@ -148,17 +148,17 @@ export default function Warrants() {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600" />
                     <input value={citizenQ} onChange={e => setCitizenQ(e.target.value)} placeholder="Search citizen name…" className="nx-input pl-9 w-full" />
                     {citizenRes.length > 0 && (
-                      <div className="absolute top-full mt-1 w-full rounded-xl overflow-hidden z-10 shadow-xl" style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.18)' }}>
+                      <div className="absolute top-full mt-1 w-full rounded-xl overflow-hidden z-10 shadow-xl" style={{ background: '#0d0a14', border: '1px solid rgba(168,85,247,0.18)' }}>
                         {citizenRes.map(c => (
                           <button key={c.id} type="button" onClick={() => { setSelectedCit(c); setCitizenQ(''); setCitizenRes([]); }}
-                            className="w-full text-left px-4 py-2.5 hover:bg-cyan-500/10 transition-colors">
+                            className="w-full text-left px-4 py-2.5 hover:bg-purple-500/10 transition-colors">
                             <div className="text-sm text-white font-medium">{c.first_name} {c.last_name}</div>
                             {c.dob && <div className="text-xs text-slate-500">DOB: {format(parseISO(c.dob), 'dd/MM/yyyy')}</div>}
                           </button>
                         ))}
                       </div>
                     )}
-                    {citizenQ && !citizenRes.length && <p className="text-xs text-slate-600 mt-1">No citizens found. <a href="/citizens" target="_blank" className="text-cyan-400 underline">Create record first</a>.</p>}
+                    {citizenQ && !citizenRes.length && <p className="text-xs text-slate-600 mt-1">No citizens found. <a href="/citizens" target="_blank" className="text-purple-400 underline">Create record first</a>.</p>}
                   </div>
                 )}
               </div>

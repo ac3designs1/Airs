@@ -83,7 +83,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
 
   const sections: NavSection[] = [
     {
-      id: 'overview', title: 'Overview', icon: LayoutDashboard, accentColor: '#06b6d4',
+      id: 'overview', title: 'Overview', icon: LayoutDashboard, accentColor: '#a855f7',
       items: [
         { id: 'cmd', title: 'Command Centre', path: '/command-centre', icon: AlertOctagon, roles: ['commissioner','admin','administrator','leadership','senior_command'], badge: stats.activeCalls || undefined },
         { id: 'db', title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
@@ -162,23 +162,23 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
   const user = auth.user;
 
   const SidebarContent = (
-    <div className="h-full flex flex-col select-none" style={{ background: '#080d1a', borderRight: '1px solid rgba(6,182,212,0.12)' }}>
+    <div className="h-full flex flex-col select-none" style={{ background: '#06060a', borderRight: '1px solid rgba(168,85,247,0.12)' }}>
 
       {/* ── Logo ──────────────────────────────────────────── */}
       <div className="flex items-center justify-between px-4 h-[60px] flex-shrink-0"
-        style={{ borderBottom: '1px solid rgba(6,182,212,0.10)' }}>
+        style={{ borderBottom: '1px solid rgba(168,85,247,0.10)' }}>
         <div className="flex items-center gap-3">
           <div className="relative">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #0891b2, #1d4ed8)' }}>
+              style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)' }}>
               <Shield className="w-4.5 h-4.5 text-white" style={{ width: 17, height: 17 }} />
             </div>
             <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 rounded-full border-2 animate-pulse"
-              style={{ borderColor: '#080d1a', boxShadow: '0 0 6px rgba(34,197,94,0.9)' }} />
+              style={{ borderColor: '#06060a', boxShadow: '0 0 6px rgba(34,197,94,0.9)' }} />
           </div>
           <div>
             <div className="text-white font-black text-sm leading-none tracking-tight">NextAirs</div>
-            <div className="text-[9px] font-mono font-bold mt-0.5 tracking-widest uppercase" style={{ color: '#06b6d4' }}>MELPOL MDT</div>
+            <div className="text-[9px] font-mono font-bold mt-0.5 tracking-widest uppercase" style={{ color: '#a855f7' }}>MELPOL MDT</div>
           </div>
         </div>
         <button className="md:hidden p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5" onClick={() => setMobileOpen(false)}>
@@ -188,11 +188,11 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
 
       {/* ── Officer card ──────────────────────────────────── */}
       {user && (
-        <div className="px-3 py-3 flex-shrink-0" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+        <div className="px-3 py-3 flex-shrink-0" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
           <div className="rounded-xl px-3 py-2.5 flex items-center gap-3 relative"
-            style={{ background: 'rgba(6,182,212,0.05)', border: '1px solid rgba(6,182,212,0.12)' }}>
+            style={{ background: 'rgba(168,85,247,0.05)', border: '1px solid rgba(168,85,247,0.12)' }}>
             <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-black text-white flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, #0891b2, #1d4ed8)' }}>
+              style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)' }}>
               {user.first_name[0]}{user.last_name[0]}
             </div>
             <div className="flex-1 min-w-0">
@@ -206,7 +206,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
             <div className="relative flex-shrink-0">
               <button onClick={() => setStatusOpen(o => !o)}
                 className="flex items-center gap-1.5 px-2 py-1 rounded-lg transition-colors hover:bg-white/5"
-                style={{ background: 'rgba(6,182,212,0.06)' }}>
+                style={{ background: 'rgba(168,85,247,0.06)' }}>
                 <div className="w-2 h-2 rounded-full flex-shrink-0"
                   style={{ background: statusConf.dot, boxShadow: statusConf.glow }} />
                 <ChevronDown className="w-3 h-3 text-slate-500" />
@@ -215,10 +215,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setStatusOpen(false)} />
                   <div className="absolute right-0 top-full mt-1.5 w-40 rounded-xl overflow-hidden z-50 shadow-xl"
-                    style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.20)' }}>
+                    style={{ background: '#0d0a14', border: '1px solid rgba(168,85,247,0.20)' }}>
                     {(Object.entries(STATUS_CONFIG) as [Status, typeof STATUS_CONFIG[Status]][]).map(([s, c]) => (
                       <button key={s} onClick={() => changeStatus(s)}
-                        className={`w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left transition-colors ${currentStatus === s ? 'text-white bg-cyan-500/10' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
+                        className={`w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left transition-colors ${currentStatus === s ? 'text-white bg-purple-500/10' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: c.dot, boxShadow: currentStatus === s ? c.glow : 'none' }} />
                         {c.label}
                       </button>
@@ -261,8 +261,8 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
                       <NavLink key={item.id} to={item.path} onClick={() => setMobileOpen(false)}
                         className={`group flex items-center justify-between px-3 py-2 rounded-[10px] text-sm transition-all ${active ? 'nav-active' : 'nav-item text-slate-500'}`}>
                         <div className="flex items-center gap-2.5">
-                          <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-cyan-400' : 'text-slate-600 group-hover:text-slate-400'}`} />
-                          <span className={`font-semibold text-sm ${active ? 'text-cyan-300' : 'group-hover:text-slate-300'}`}>{item.title}</span>
+                          <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-purple-400' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                          <span className={`font-semibold text-sm ${active ? 'text-purple-300' : 'group-hover:text-slate-300'}`}>{item.title}</span>
                         </div>
                         {item.badge != null && item.badge > 0 && (
                           <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold"
@@ -282,7 +282,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
 
       {/* ── Footer ────────────────────────────────────────── */}
       <div className="flex-shrink-0 px-4 py-3 flex items-center justify-between"
-        style={{ borderTop: '1px solid rgba(6,182,212,0.08)' }}>
+        style={{ borderTop: '1px solid rgba(168,85,247,0.08)' }}>
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"
             style={{ boxShadow: '0 0 6px rgba(34,197,94,0.8)' }} />

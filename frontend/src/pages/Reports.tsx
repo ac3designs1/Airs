@@ -74,10 +74,10 @@ export default function Reports() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="page-header scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(168,85,247,0.12),rgba(168,85,247,0.06))', border: '1px solid rgba(168,85,247,0.18)' }}>
         <div className="flex items-center gap-4">
-          <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
-            <FileText className="w-6 h-6 text-cyan-400" />
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.25)' }}>
+            <FileText className="w-6 h-6 text-purple-400" />
           </div>
           <div>
             <h1 className="text-xl font-black text-white">Reports</h1>
@@ -86,7 +86,7 @@ export default function Reports() {
         </div>
         <button onClick={() => { setEditing(false); setForm({ title: '', type: 'General', content: '' }); setShowForm(true); }}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
-          style={{ background: 'linear-gradient(135deg,#0e7490,#0284c7)', border: '1px solid rgba(6,182,212,0.3)', boxShadow: '0 4px 14px rgba(6,182,212,0.20)' }}>
+          style={{ background: 'linear-gradient(135deg,#7c3aed,#7c3aed)', border: '1px solid rgba(168,85,247,0.3)', boxShadow: '0 4px 14px rgba(168,85,247,0.20)' }}>
           <Plus className="w-4 h-4" /> New Report
         </button>
       </div>
@@ -123,7 +123,7 @@ export default function Reports() {
             return (
               <button key={r.id} onClick={() => setSelected(r)}
                 className="w-full text-left rounded-xl p-3.5 transition-all"
-                style={{ background: sel ? 'rgba(6,182,212,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(6,182,212,0.28)' : 'rgba(6,182,212,0.06)'}` }}>
+                style={{ background: sel ? 'rgba(168,85,247,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(168,85,247,0.28)' : 'rgba(168,85,247,0.06)'}` }}>
                 <div className="flex items-center justify-between gap-1 mb-1">
                   <span className="font-mono text-[10px] text-slate-600">{r.report_number}</span>
                   <span className={`chip text-[10px] ${sc.cls}`}>{sc.label}</span>
@@ -146,7 +146,7 @@ export default function Reports() {
             </div>
           ) : (
             <div className="glass rounded-2xl overflow-hidden flex flex-col max-h-[540px]">
-              <div className="px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+              <div className="px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
@@ -188,9 +188,9 @@ export default function Reports() {
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
-            style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.18)' }}>
+            style={{ background: '#0d0a14', border: '1px solid rgba(168,85,247,0.18)' }}>
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
-              style={{ borderBottom: '1px solid rgba(6,182,212,0.10)', background: 'rgba(6,182,212,0.05)' }}>
+              style={{ borderBottom: '1px solid rgba(168,85,247,0.10)', background: 'rgba(168,85,247,0.05)' }}>
               <h2 className="text-base font-bold text-white">{editing ? 'Edit Report' : 'New Report'}</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5"><X className="w-4 h-4" /></button>
             </div>
@@ -214,7 +214,7 @@ export default function Reports() {
               <div className="flex gap-3 pt-1">
                 <button type="button" onClick={() => setShowForm(false)} className="flex-1 py-2.5 rounded-xl border border-slate-700/50 text-slate-400 text-sm hover:text-white">Cancel</button>
                 <button type="submit" disabled={saving} className="flex-1 py-2.5 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2"
-                  style={{ background: 'linear-gradient(135deg,#0e7490,#0284c7)' }}>
+                  style={{ background: 'linear-gradient(135deg,#7c3aed,#7c3aed)' }}>
                   <Save className="w-4 h-4" />{saving ? 'Saving…' : editing ? 'Save Changes' : 'Submit Report'}
                 </button>
               </div>

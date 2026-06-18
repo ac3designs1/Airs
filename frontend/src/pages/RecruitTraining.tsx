@@ -18,8 +18,8 @@ function buildInitialStatuses(): StageStatus[] {
   return STAGES_DEF.map((name, i) => ({ name, status: i === 0 ? 'current' : 'pending' }));
 }
 
-const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-cyan-400' : 'text-slate-600';
-const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/05' : s === 'current' ? 'border-cyan-500/25 bg-cyan-500/05' : 'border-slate-800/80';
+const stageColor = (s: string) => s === 'complete' ? 'text-green-400' : s === 'current' ? 'text-purple-400' : 'text-slate-600';
+const stageBg = (s: string) => s === 'complete' ? 'border-green-500/25 bg-green-500/05' : s === 'current' ? 'border-purple-500/25 bg-purple-500/05' : 'border-slate-800/80';
 
 const LEADERSHIP = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
 const EMPTY_FORM = { officer_id: '', fto_name: '' };
@@ -89,7 +89,7 @@ export default function RecruitTraining() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="page-header scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(34,197,94,0.10),rgba(6,182,212,0.06))', border: '1px solid rgba(34,197,94,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(34,197,94,0.10),rgba(168,85,247,0.06))', border: '1px solid rgba(34,197,94,0.18)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="p-3 rounded-xl" style={{ background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.25)' }}>
@@ -111,7 +111,7 @@ export default function RecruitTraining() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: 'In Training', value: records.length, color: 'text-cyan-400' },
+          { label: 'In Training', value: records.length, color: 'text-purple-400' },
           { label: 'Completed',   value: records.filter(r => r.stage_index >= STAGES_DEF.length - 1 && r.stage_statuses.every(s => s.status === 'complete')).length, color: 'text-green-400' },
           { label: 'In Progress', value: records.filter(r => r.stage_index < STAGES_DEF.length - 1).length, color: 'text-yellow-400' },
         ].map(s => (
@@ -125,8 +125,8 @@ export default function RecruitTraining() {
       {/* Add recruit modal */}
       {showAdd && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+          <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(168,85,247,0.18)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
               <h2 className="font-bold text-white">Add Recruit to Training</h2>
               <button onClick={() => setShowAdd(false)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>
@@ -172,13 +172,13 @@ export default function RecruitTraining() {
                 <button onClick={() => setExpanded(isOpen ? null : rec.recruit_officer_id)}
                   className="w-full flex items-center gap-4 p-4 hover:bg-white/5 transition-colors text-left">
                   <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-bold text-white"
-                    style={{ background: 'linear-gradient(135deg,#059669,#06b6d4)' }}>
+                    style={{ background: 'linear-gradient(135deg,#059669,#a855f7)' }}>
                     {rec.recruit_name.split(' ').map(n => n[0]).join('').slice(0,2)}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-white">{rec.recruit_name}</span>
-                      {rec.callsign && <span className="text-xs text-cyan-400 font-mono">{rec.callsign}</span>}
+                      {rec.callsign && <span className="text-xs text-purple-400 font-mono">{rec.callsign}</span>}
                     </div>
                     <div className="flex items-center gap-3 mt-1">
                       <div className="flex-1 h-1.5 rounded-full bg-slate-800 max-w-[140px]">
@@ -195,7 +195,7 @@ export default function RecruitTraining() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-4 pb-4 space-y-2" style={{ borderTop: '1px solid rgba(6,182,212,0.06)' }}>
+                  <div className="px-4 pb-4 space-y-2" style={{ borderTop: '1px solid rgba(168,85,247,0.06)' }}>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-3">
                       {rec.stage_statuses.map((s, i) => {
                         const Icon = s.status === 'complete' ? CheckCircle : s.status === 'current' ? Clock : X;

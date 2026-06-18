@@ -19,7 +19,7 @@ const CAT_ICON: Record<string, React.ComponentType<{ className?: string }>> = {
 const CAT_COLOR: Record<string, { chip: string; border: string }> = {
   'Medal of Valor':    { chip: 'chip chip-red',    border: 'rgba(239,68,68,0.20)' },
   'Life-Saving Award': { chip: 'chip chip-pink',   border: 'rgba(236,72,153,0.20)' },
-  'Commendation':      { chip: 'chip chip-blue',   border: 'rgba(6,182,212,0.20)' },
+  'Commendation':      { chip: 'chip chip-blue',   border: 'rgba(168,85,247,0.20)' },
   'Unit Citation':     { chip: 'chip chip-purple', border: 'rgba(168,85,247,0.20)' },
   'Community Service': { chip: 'chip chip-green',  border: 'rgba(34,197,94,0.20)' },
 };
@@ -117,8 +117,8 @@ export default function Rewards() {
       {/* Issue award modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(6,182,212,0.18)' }}>
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+          <div className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl" style={{ background: '#0a1020', border: '1px solid rgba(168,85,247,0.18)' }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
               <h2 className="font-bold text-white">Issue Award</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>
@@ -191,7 +191,7 @@ export default function Rewards() {
                       <span className={style.chip}>{r.category}</span>
                     </div>
                     <h3 className="font-semibold text-white">{r.title}</h3>
-                    <p className="text-sm text-cyan-400 font-mono mt-0.5">{r.officer_name}{r.callsign ? ` · ${r.callsign}` : ''}</p>
+                    <p className="text-sm text-purple-400 font-mono mt-0.5">{r.officer_name}{r.callsign ? ` · ${r.callsign}` : ''}</p>
                     {r.description && <p className="text-sm text-slate-400 mt-2 leading-relaxed">{r.description}</p>}
                     <div className="flex items-center justify-between mt-3">
                       <div className="text-xs text-slate-600">

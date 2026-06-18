@@ -86,8 +86,8 @@ export default function Citizens() {
 
   const FormPanel = ({ title, onClose }: { title: string; onClose: () => void }) => (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col" style={{ background: '#0d1526', border: '1px solid rgba(6,182,212,0.18)' }}>
-        <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(6,182,212,0.10)', background: 'rgba(6,182,212,0.05)' }}>
+      <div className="w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col" style={{ background: '#0d0a14', border: '1px solid rgba(168,85,247,0.18)' }}>
+        <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(168,85,247,0.10)', background: 'rgba(168,85,247,0.05)' }}>
           <h2 className="text-base font-bold text-white">{title}</h2>
           <button onClick={onClose} className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"><X className="w-4 h-4" /></button>
         </div>
@@ -129,7 +129,7 @@ export default function Citizens() {
           <div className="flex gap-3 mt-5">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-slate-700/50 text-slate-400 text-sm hover:text-white transition-colors">Cancel</button>
             <button type="submit" disabled={saving} className="flex-1 py-2.5 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2"
-              style={{ background: 'linear-gradient(135deg,#0284c7,#06b6d4)' }}>
+              style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
               <Save className="w-4 h-4" />{saving ? 'Saving…' : 'Save Record'}
             </button>
           </div>
@@ -142,10 +142,10 @@ export default function Citizens() {
     <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="page-header scan-line"
-        style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(168,85,247,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(168,85,247,0.18)' }}>
         <div className="flex items-center gap-4">
-          <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
-            <Users className="w-6 h-6 text-cyan-400" />
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.25)' }}>
+            <Users className="w-6 h-6 text-purple-400" />
           </div>
           <div>
             <h1 className="text-xl font-black text-white">Citizens Records</h1>
@@ -154,7 +154,7 @@ export default function Citizens() {
         </div>
         <button onClick={() => { setShowForm(true); setForm({ ...blank }); }}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
-          style={{ background: 'linear-gradient(135deg,#0284c7,#06b6d4)', border: '1px solid rgba(6,182,212,0.3)', boxShadow: '0 4px 14px rgba(6,182,212,0.20)' }}>
+          style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', border: '1px solid rgba(168,85,247,0.3)', boxShadow: '0 4px 14px rgba(168,85,247,0.20)' }}>
           <Plus className="w-4 h-4" /> New Record
         </button>
       </div>
@@ -179,7 +179,7 @@ export default function Citizens() {
             {!loading && search && citizens.length === 0 && (
               <div className="glass rounded-xl p-5 text-center">
                 <p className="text-slate-600 text-sm">No records found for <span className="text-slate-400">"{search}"</span></p>
-                <button onClick={() => { setShowForm(true); setForm({ ...blank }); }} className="mt-3 text-xs text-cyan-400 hover:text-cyan-300 underline">Create new record?</button>
+                <button onClick={() => { setShowForm(true); setForm({ ...blank }); }} className="mt-3 text-xs text-purple-400 hover:text-purple-300 underline">Create new record?</button>
               </div>
             )}
             {citizens.map(c => {
@@ -188,7 +188,7 @@ export default function Citizens() {
               return (
                 <button key={c.id} onClick={() => openDetail(c)}
                   className="w-full text-left rounded-xl p-4 transition-all"
-                  style={{ background: sel ? 'rgba(6,182,212,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(6,182,212,0.30)' : 'rgba(6,182,212,0.06)'}` }}>
+                  style={{ background: sel ? 'rgba(168,85,247,0.08)' : 'rgba(15,23,42,0.6)', border: `1px solid ${sel ? 'rgba(168,85,247,0.30)' : 'rgba(168,85,247,0.06)'}` }}>
                   <div className="flex items-center justify-between gap-2 mb-1">
                     <span className="font-semibold text-white text-sm">{c.first_name} {c.last_name}</span>
                     <span className={`chip text-[10px] flex-shrink-0 ${lic.cls}`}>{lic.label}</span>
@@ -218,11 +218,11 @@ export default function Citizens() {
           ) : detail ? (
             <div className="glass rounded-2xl overflow-hidden flex flex-col max-h-[620px]">
               {/* Person header */}
-              <div className="p-5 flex-shrink-0" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+              <div className="p-5 flex-shrink-0" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-xl flex items-center justify-center text-xl font-black text-white flex-shrink-0"
-                      style={{ background: 'linear-gradient(135deg,#0284c7,#6366f1)' }}>
+                      style={{ background: 'linear-gradient(135deg,#7c3aed,#6366f1)' }}>
                       {detail.first_name[0]}{detail.last_name[0]}
                     </div>
                     <div>
@@ -245,7 +245,7 @@ export default function Citizens() {
                     </div>
                   </div>
                   <button onClick={() => { setEditing(true); setForm({ first_name: detail.first_name, last_name: detail.last_name, dob: detail.dob ?? '', gender: detail.gender ?? '', ethnicity: detail.ethnicity ?? '', height: detail.height ?? '', weight: detail.weight ?? '', eye_color: detail.eye_color ?? '', hair_color: detail.hair_color ?? '', address: detail.address ?? '', phone: detail.phone ?? '', occupation: detail.occupation ?? '', license_status: detail.license_status, license_class: detail.license_class ?? 'B', notes: detail.notes ?? '' }); setShowForm(true); }}
-                    className="p-2 rounded-xl text-slate-500 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors flex-shrink-0">
+                    className="p-2 rounded-xl text-slate-500 hover:text-purple-400 hover:bg-purple-500/10 transition-colors flex-shrink-0">
                     <Edit2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -265,7 +265,7 @@ export default function Citizens() {
                     { icon: Phone, l: 'Phone', v: detail.phone || '—' },
                     { icon: MapPin, l: 'Address', v: detail.address || '—' },
                   ].map(r => (
-                    <div key={r.l} className="rounded-xl p-3" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
+                    <div key={r.l} className="rounded-xl p-3" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(168,85,247,0.06)' }}>
                       <div className="text-[10px] uppercase tracking-wider text-slate-600 font-semibold mb-1 flex items-center gap-1">
                         <r.icon className="w-3 h-3" />{r.l}
                       </div>
@@ -287,8 +287,8 @@ export default function Citizens() {
                     <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-600 mb-2 flex items-center gap-1.5"><Car className="w-3.5 h-3.5" />Registered Vehicles ({detail.vehicles!.length})</div>
                     <div className="space-y-1.5">
                       {detail.vehicles!.map(v => (
-                        <div key={v.id} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
-                          <span className="font-mono text-cyan-400 text-sm font-bold">{v.plate}</span>
+                        <div key={v.id} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(168,85,247,0.06)' }}>
+                          <span className="font-mono text-purple-400 text-sm font-bold">{v.plate}</span>
                           <span className="text-sm text-slate-300">{[v.year, v.color, v.make, v.model].filter(Boolean).join(' ')}</span>
                           {v.stolen ? <span className="chip chip-red text-[10px] ml-auto">STOLEN</span> : null}
                           {v.impounded ? <span className="chip chip-yellow text-[10px] ml-auto">IMPOUNDED</span> : null}
@@ -304,7 +304,7 @@ export default function Citizens() {
                     <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-600 mb-2 flex items-center gap-1.5"><AlertTriangle className="w-3.5 h-3.5 text-red-400" />Warrants ({detail.warrants!.length})</div>
                     <div className="space-y-1.5">
                       {detail.warrants!.map(w => (
-                        <div key={w.id} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: w.status === 'active' ? 'rgba(239,68,68,0.06)' : 'rgba(15,23,42,0.6)', border: `1px solid ${w.status === 'active' ? 'rgba(239,68,68,0.20)' : 'rgba(6,182,212,0.06)'}` }}>
+                        <div key={w.id} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: w.status === 'active' ? 'rgba(239,68,68,0.06)' : 'rgba(15,23,42,0.6)', border: `1px solid ${w.status === 'active' ? 'rgba(239,68,68,0.20)' : 'rgba(168,85,247,0.06)'}` }}>
                           <span className={`chip text-[10px] flex-shrink-0 ${w.status === 'active' ? 'chip-red' : 'chip-gray'}`}>{w.type}</span>
                           <span className="text-sm text-slate-300 flex-1 truncate">{charges(w.charges)}</span>
                           <span className="text-xs text-slate-600">{format(parseISO(w.issued_date), 'dd/MM/yy')}</span>
@@ -320,7 +320,7 @@ export default function Citizens() {
                     <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-600 mb-2 flex items-center gap-1.5"><FileText className="w-3.5 h-3.5" />Arrest History ({detail.arrests!.length})</div>
                     <div className="space-y-1.5">
                       {detail.arrests!.map(a => (
-                        <div key={a.id} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(6,182,212,0.06)' }}>
+                        <div key={a.id} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(168,85,247,0.06)' }}>
                           <span className="font-mono text-slate-500 text-xs flex-shrink-0">{a.case_number}</span>
                           <span className="text-sm text-slate-300 flex-1 truncate">{charges(a.charges)}</span>
                           <span className="text-xs text-slate-600">{format(parseISO(a.created_at), 'dd/MM/yy')}</span>
