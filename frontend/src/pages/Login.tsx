@@ -124,11 +124,11 @@ export default function Login() {
 
           {/* 4 feature chips — single row */}
           <div className="flex items-center gap-3">
-            {FEATURES.slice(0, 4).map(({ icon: Icon, label, color }) => (
+            {FEATURES.slice(0, 4).map(({ icon: Icon, label }) => (
               <div key={label}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap"
-                style={{ background:`${color}12`, border:`1px solid ${color}30`, color }}>
-                <Icon style={{ width:14, height:14, flexShrink:0 }} />
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap"
+                style={{ background:'rgba(168,85,247,0.09)', border:'1px solid rgba(168,85,247,0.22)', color:'rgba(192,132,252,0.85)' }}>
+                <Icon style={{ width:13, height:13, flexShrink:0 }} />
                 {label}
               </div>
             ))}
