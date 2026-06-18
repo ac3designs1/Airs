@@ -10,289 +10,424 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #06060a;
-      --surface: #0d0a14;
-      --card:    #110d1c;
-      --border:  rgba(168,85,247,0.16);
-      --purple:  #a855f7;
-      --purple-d:#7c3aed;
-      --purple-l:#c084fc;
-      --text:    #e2e8f0;
-      --muted:   #64748b;
-      --faint:   #1a1228;
+      --bg:       #06060a;
+      --surface:  #0c0915;
+      --card:     #110d1c;
+      --card2:    #130f1f;
+      --border:   rgba(168,85,247,0.14);
+      --border-hi:rgba(168,85,247,0.30);
+      --purple:   #a855f7;
+      --purple-d: #7c3aed;
+      --purple-l: #c084fc;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --faint:    #1a1228;
+      --radius:   12px;
     }
 
     html, body {
       height: 100%; background: var(--bg); color: var(--text);
       font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
-    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.25); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.22); border-radius: 99px; }
 
-    /* ── Header ── */
+    /* ════════ HEADER ════════ */
     .header {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 24px; height: 58px;
-      background: rgba(6,6,10,0.96); border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(14px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 56px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+      background: rgba(6,6,10,0.96); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
     }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .header-logo {
-      width: 32px; height: 32px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
+    .hdr-left { display: flex; align-items: center; gap: 12px; }
+    .hdr-logo {
+      width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
       background: linear-gradient(135deg,#7c3aed,#a855f7);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 14px rgba(168,85,247,0.35);
     }
-    .header-logo svg { width: 18px; height: 18px; color: #fff; }
-    .header-title { font-size: 15px; font-weight: 800; color: #fff; }
-    .header-title span { color: var(--purple-l); }
-    .header-right { display: flex; align-items: center; gap: 10px; }
-    .clock-badge {
-      font-family: 'JetBrains Mono', monospace; font-size: 12px;
-      color: var(--purple-l); background: rgba(168,85,247,0.08);
-      border: 1px solid rgba(168,85,247,0.18); border-radius: 8px;
-      padding: 4px 10px; letter-spacing: 0.04em;
+    .hdr-logo svg { width: 17px; height: 17px; stroke: #fff; }
+    .hdr-title { font-size: 14px; font-weight: 800; color: #fff; letter-spacing: -.01em; }
+    .hdr-title em { font-style: normal; color: var(--purple-l); }
+    .hdr-divider { width: 1px; height: 18px; background: rgba(168,85,247,0.18); }
+    .hdr-sub { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .hdr-right { display: flex; align-items: center; gap: 8px; }
+    .clock {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+      color: var(--purple-l); letter-spacing: .06em;
+      padding: 5px 12px; border-radius: 8px;
+      background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.16);
     }
     .hdr-btn {
       display: flex; align-items: center; gap: 6px;
-      padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
-      background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.18);
-      color: var(--purple-l); transition: all .15s;
+      padding: 6px 13px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif;
+      background: rgba(168,85,247,0.07); border: 1px solid rgba(168,85,247,0.18);
+      color: var(--purple-l);
     }
-    .hdr-btn:hover { background: rgba(168,85,247,0.16); }
-    .hdr-btn svg { width: 14px; height: 14px; }
+    .hdr-btn:hover { background: rgba(168,85,247,0.14); border-color: rgba(168,85,247,0.3); }
+    .hdr-btn svg { width: 13px; height: 13px; stroke: currentColor; }
 
-    /* ── 3-Column Layout ── */
+    /* ════════ WORKSPACE ════════ */
     .workspace {
-      display: grid;
-      grid-template-columns: 260px 1fr 340px;
-      gap: 0; height: calc(100vh - 58px); overflow: hidden;
+      position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+      display: grid; grid-template-columns: 240px 1fr 360px;
+      overflow: hidden;
     }
 
+    /* ════════ PANELS ════════ */
     .panel {
-      display: flex; flex-direction: column; overflow-y: auto;
+      display: flex; flex-direction: column; overflow: hidden;
       border-right: 1px solid var(--border);
-      background: var(--surface);
     }
-    .panel:last-child { border-right: none; }
+    .panel-scroll { overflow-y: auto; flex: 1; padding: 16px; }
+    .panel-hdr {
+      flex-shrink: 0; padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(168,85,247,0.03);
+    }
+    .panel-hdr-title {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--purple);
+    }
+    .panel-hdr-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    /* Left panel */
+    .panel-left { background: var(--surface); }
+    /* Middle panel */
+    .panel-mid  { background: var(--card); border-right: 1px solid var(--border); }
+    /* Right panel */
     .panel-right {
-      display: flex; flex-direction: column; overflow-y: auto;
-      background: #0a0814;
+      background: var(--card2); display: flex; flex-direction: column; overflow: hidden;
     }
 
-    .panel-header {
-      padding: 16px 16px 12px; border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 10;
-      background: inherit; backdrop-filter: blur(8px);
+    /* ════════ FORM ELEMENTS ════════ */
+    .field { margin-bottom: 14px; }
+    .field:last-child { margin-bottom: 0; }
+    .fld-label {
+      display: block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--muted); margin-bottom: 6px;
     }
-    .panel-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
-    .panel-body { padding: 14px; flex: 1; }
-
-    /* ── Form Elements ── */
-    label {
-      display: block; font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: .06em;
-      color: var(--muted); margin-bottom: 5px; margin-top: 12px;
-    }
-    label:first-child { margin-top: 0; }
-    label .req { color: #f87171; }
+    .fld-label .req { color: #f87171; margin-left: 2px; }
 
     input[type="text"], select, textarea {
-      width: 100%; padding: 8px 11px; font-size: 13px; font-family: 'Inter', sans-serif;
-      background: rgba(168,85,247,0.04); border: 1px solid rgba(168,85,247,0.16);
-      border-radius: 8px; color: var(--text); outline: none; transition: border .15s;
+      width: 100%; padding: 9px 12px; font-size: 13px; font-family: 'Inter', sans-serif;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(168,85,247,0.14);
+      border-radius: 9px; color: var(--text); outline: none; transition: all .15s;
       -webkit-appearance: none;
     }
+    input[type="text"]:hover, select:hover, textarea:hover {
+      border-color: rgba(168,85,247,0.25);
+    }
     input[type="text"]:focus, select:focus, textarea:focus {
-      border-color: rgba(168,85,247,0.45); box-shadow: 0 0 0 3px rgba(168,85,247,0.08);
+      border-color: rgba(168,85,247,0.50);
+      background: rgba(168,85,247,0.04);
+      box-shadow: 0 0 0 3px rgba(168,85,247,0.09);
     }
     select { cursor: pointer; color-scheme: dark; }
-    textarea { resize: vertical; font-family: 'Inter', sans-serif; line-height: 1.5; }
+    textarea { resize: vertical; line-height: 1.55; }
+    ::placeholder { color: rgba(100,116,139,0.6); }
 
-    /* ── Buttons ── */
-    .btn-row { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 13px; border-radius: 8px; font-size: 12px; font-weight: 600;
-      cursor: pointer; transition: all .15s; border: 1px solid transparent; font-family: 'Inter', sans-serif;
+    /* ════════ REPORT TYPE TABS ════════ */
+    .type-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px;
     }
-    .btn svg { width: 13px; height: 13px; }
-    .btn-save { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.25); color: #86efac; }
-    .btn-save:hover { background: rgba(34,197,94,0.20); }
-    .btn-export { background: rgba(59,130,246,0.10); border-color: rgba(59,130,246,0.25); color: #93c5fd; }
-    .btn-export:hover { background: rgba(59,130,246,0.18); }
+    .type-btn {
+      display: flex; flex-direction: column; align-items: flex-start;
+      padding: 10px 11px; border-radius: 10px; cursor: pointer; transition: all .15s;
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(168,85,247,0.12);
+      font-family: 'Inter', sans-serif;
+    }
+    .type-btn:hover { background: rgba(168,85,247,0.07); border-color: rgba(168,85,247,0.25); }
+    .type-btn.active {
+      background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.45);
+      box-shadow: 0 0 0 1px rgba(168,85,247,0.15) inset;
+    }
+    .type-btn-icon {
+      width: 26px; height: 26px; border-radius: 7px; margin-bottom: 7px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(168,85,247,0.10); border: 1px solid rgba(168,85,247,0.18);
+    }
+    .type-btn.active .type-btn-icon { background: rgba(168,85,247,0.20); border-color: rgba(168,85,247,0.4); }
+    .type-btn-icon svg { width: 13px; height: 13px; stroke: var(--purple-l); }
+    .type-btn-name { font-size: 11px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .type-btn.active .type-btn-name { color: var(--purple-l); }
+
+    /* ════════ SECTION DIVIDER ════════ */
+    .sec-divider {
+      display: flex; align-items: center; gap: 8px;
+      margin: 14px 0 12px; font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+    }
+    .sec-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ════════ ACTION BUTTONS ════════ */
+    .save-row { display: flex; gap: 6px; margin-top: 16px; }
+    .save-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+      padding: 8px 10px; border-radius: 9px; font-size: 11px; font-weight: 700;
+      cursor: pointer; transition: all .15s; border: 1px solid transparent;
+      font-family: 'Inter', sans-serif;
+    }
+    .save-btn svg { width: 12px; height: 12px; stroke: currentColor; }
+    .btn-save   { background: rgba(34,197,94,0.10);  border-color: rgba(34,197,94,0.22);  color: #86efac; }
+    .btn-export { background: rgba(59,130,246,0.10); border-color: rgba(59,130,246,0.22); color: #93c5fd; }
     .btn-import { background: rgba(168,85,247,0.08); border-color: rgba(168,85,247,0.22); color: var(--purple-l); }
+    .btn-save:hover   { background: rgba(34,197,94,0.18);  }
+    .btn-export:hover { background: rgba(59,130,246,0.18); }
     .btn-import:hover { background: rgba(168,85,247,0.16); }
-    .btn-generate {
-      width: 100%; justify-content: center; padding: 10px 16px;
-      background: linear-gradient(135deg,#7c3aed,#a855f7);
-      color: #fff; font-size: 13px; border-radius: 10px; margin-top: 14px;
-      box-shadow: 0 4px 14px rgba(168,85,247,0.25);
-    }
-    .btn-generate:hover { opacity: .9; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(168,85,247,0.35); }
 
-    /* Right panel action buttons */
-    .out-actions { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); }
-    .out-btn {
-      flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-      padding: 8px 10px; border-radius: 8px; font-size: 12px; font-weight: 600;
-      cursor: pointer; transition: all .15s; border: 1px solid transparent; font-family: 'Inter', sans-serif;
+    .gen-btn {
+      width: 100%; margin-top: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 11px 16px; border-radius: 10px; font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: all .18s; border: 1px solid rgba(168,85,247,0.35);
+      font-family: 'Inter', sans-serif; color: #fff;
+      background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+      box-shadow: 0 4px 16px rgba(168,85,247,0.28), inset 0 1px 0 rgba(255,255,255,0.08);
     }
-    .out-btn svg { width: 13px; height: 13px; }
-    .out-btn-copy { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.25); color: #93c5fd; }
-    .out-btn-copy:hover { background: rgba(59,130,246,0.22); }
-    .out-btn-dl   { background: rgba(168,85,247,0.08); border-color: rgba(168,85,247,0.22); color: var(--purple-l); }
-    .out-btn-dl:hover { background: rgba(168,85,247,0.16); }
-    .out-btn-clr  { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.22); color: #fca5a5; }
-    .out-btn-clr:hover { background: rgba(239,68,68,0.16); }
+    .gen-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(168,85,247,0.38); }
+    .gen-btn:active { transform: translateY(0); }
+    .gen-btn svg { width: 14px; height: 14px; stroke: #fff; }
 
-    /* ── Output textarea ── */
-    #output-box {
-      flex: 1; width: 100%; padding: 16px;
-      font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.75;
-      background: transparent; border: none; color: #e2e8f0;
-      resize: none; outline: none; letter-spacing: 0.01em;
-    }
-
-    /* ── Mode toggle ── */
+    /* ════════ MODE TOGGLE ════════ */
     .mode-row {
       display: flex; align-items: center; justify-content: space-between;
-      margin-top: 12px; padding: 7px 11px; border-radius: 8px;
-      background: rgba(168,85,247,0.04); border: 1px solid rgba(168,85,247,0.12);
+      padding: 8px 12px; border-radius: 9px; margin-bottom: 10px;
+      background: rgba(168,85,247,0.04); border: 1px solid rgba(168,85,247,0.10);
     }
-    .mode-label { font-size: 11px; color: var(--muted); }
+    .mode-label-txt { font-size: 11px; color: var(--muted); }
+    .mode-label-txt b { color: var(--purple-l); font-weight: 600; }
     .mode-toggle {
       font-size: 11px; font-weight: 600; color: var(--purple-l); cursor: pointer;
-      padding: 3px 10px; border-radius: 6px; background: rgba(168,85,247,0.10);
-      border: 1px solid rgba(168,85,247,0.20); transition: all .15s;
+      padding: 3px 10px; border-radius: 6px;
+      background: rgba(168,85,247,0.10); border: 1px solid rgba(168,85,247,0.20);
+      transition: all .15s; font-family: 'Inter', sans-serif;
     }
     .mode-toggle:hover { background: rgba(168,85,247,0.18); }
 
-    /* ── Char counter ── */
-    .counter-row { display: flex; justify-content: flex-end; margin-top: 4px; }
-    .counter { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+    /* ════════ COUNTER ════════ */
+    .counter-row { display: flex; justify-content: flex-end; margin-top: 3px; }
+    .counter { font-size: 10px; color: rgba(100,116,139,0.5); font-family: 'JetBrains Mono', monospace; }
 
-    /* ── Section separator ── */
-    .sep { height: 1px; background: var(--border); margin: 14px 0; }
-
-    /* ── Live preview label ── */
-    .preview-label {
-      padding: 10px 14px 8px; font-size: 11px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+    /* ════════ OUTPUT PANEL ════════ */
+    .out-label {
+      flex-shrink: 0; padding: 14px 16px 12px;
       border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(168,85,247,0.03);
     }
-
-    /* ── Divider label ── */
-    .officer-crest {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 6px; padding: 16px 0 4px;
+    .out-label-title {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--purple);
     }
-    .crest-img { width: 44px; height: 44px; opacity: .7; }
-    .crest-text { font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); text-align: center; }
+    .out-status {
+      font-size: 10px; font-weight: 600; color: rgba(100,116,139,0.6);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    #output-box {
+      flex: 1; overflow-y: auto; padding: 18px 16px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.85;
+      color: #c4b5fd; background: transparent; border: none; outline: none;
+      resize: none; width: 100%;
+      white-space: pre; overflow-x: auto;
+    }
+    #output-box::placeholder { color: rgba(100,116,139,0.35); font-style: italic; font-size: 12px; }
 
-    /* ── Toast ── */
+    .out-actions {
+      flex-shrink: 0; display: flex; gap: 6px; padding: 12px 14px;
+      border-top: 1px solid var(--border); background: rgba(168,85,247,0.02);
+    }
+    .out-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+      padding: 8px 8px; border-radius: 9px; font-size: 11px; font-weight: 700;
+      cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif;
+      border: 1px solid transparent;
+    }
+    .out-btn svg { width: 12px; height: 12px; stroke: currentColor; }
+    .out-copy { background: rgba(59,130,246,0.10); border-color: rgba(59,130,246,0.22); color: #93c5fd; }
+    .out-dl   { background: rgba(168,85,247,0.08); border-color: rgba(168,85,247,0.20); color: var(--purple-l); }
+    .out-clr  { background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.20);  color: #fca5a5; }
+    .out-copy:hover { background: rgba(59,130,246,0.18); }
+    .out-dl:hover   { background: rgba(168,85,247,0.16); }
+    .out-clr:hover  { background: rgba(239,68,68,0.16); }
+
+    /* ════════ PROFILE CARD ════════ */
+    .profile-card {
+      padding: 12px; border-radius: 10px; margin-bottom: 14px;
+      background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.12);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .profile-avatar {
+      width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
+      background: linear-gradient(135deg,#7c3aed,#a855f7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: #fff;
+      text-transform: uppercase;
+    }
+    .profile-info { flex: 1; min-width: 0; }
+    .profile-name { font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-rank { font-size: 10px; color: var(--muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ════════ TOAST ════════ */
     #toast {
-      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-      background: #1e1628; border: 1px solid rgba(168,85,247,0.35);
-      border-radius: 10px; padding: 10px 18px;
-      font-size: 13px; font-weight: 600; color: var(--purple-l);
-      display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      position: fixed; bottom: 22px; right: 22px; z-index: 9999;
+      padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      color: var(--purple-l); background: #1a1228;
+      border: 1px solid rgba(168,85,247,0.35);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      display: none; animation: slideUp .2s ease;
     }
+    @keyframes slideUp { from { transform:translateY(8px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 
-    /* ── Hidden file input ── */
     #file-input { display: none; }
 
-    /* ── Mobile warning ── */
-    @media (max-width: 768px) {
-      .workspace { grid-template-columns: 1fr; height: auto; overflow: visible; }
-      .panel, .panel-right { border-right: none; border-bottom: 1px solid var(--border); }
-      #output-box { min-height: 280px; }
+    /* ════════ MODAL ════════ */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.78); backdrop-filter: blur(8px);
+      overflow-y: auto; padding: 40px 20px;
+    }
+    .modal-box {
+      max-width: 700px; margin: 0 auto;
+      background: #110d1c; border: 1px solid rgba(168,85,247,0.22);
+      border-radius: 16px; overflow: hidden;
+    }
+    .modal-hdr {
+      padding: 20px 24px; border-bottom: 1px solid rgba(168,85,247,0.10);
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(168,85,247,0.03);
+    }
+    .modal-hdr-title { font-size: 15px; font-weight: 800; color: #fff; }
+    .modal-close {
+      width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; cursor: pointer; color: var(--muted); font-size: 18px;
+      background: none; border: none; transition: all .15s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    .modal-body { padding: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .modal-card {
+      padding: 16px; border-radius: 11px; border: 1px solid;
+    }
+    .modal-card-title {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; margin-bottom: 10px;
+    }
+    .modal-card-content { font-size: 12px; color: #cbd5e1; line-height: 2; }
+
+    @media (max-width: 900px) {
+      .workspace { grid-template-columns: 1fr; position: relative; top: auto; overflow: auto; }
+      html, body { overflow: auto; }
+      .panel, .panel-right { height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+      #output-box { min-height: 260px; }
+      .modal-body { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- Header -->
+<!-- ═══ Header ═══ -->
 <header class="header">
-  <div class="header-left">
-    <div class="header-logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+  <div class="hdr-left">
+    <div class="hdr-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
     </div>
-    <span class="header-title">Next RP &nbsp;<span>AIRS</span>&nbsp; — Report Generator</span>
+    <span class="hdr-title">Next&nbsp;RP &nbsp;<em>AIRS</em></span>
+    <div class="hdr-divider"></div>
+    <span class="hdr-sub">Report Generator</span>
   </div>
-  <div class="header-right">
-    <div class="clock-badge" id="clock">00:00:00</div>
+  <div class="hdr-right">
+    <div class="clock" id="clock">00:00:00</div>
     <button class="hdr-btn" onclick="openCheatsheet()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       Police Cheat Sheet
     </button>
   </div>
 </header>
 
-<!-- 3-Column Workspace -->
+<!-- ═══ Workspace ═══ -->
 <div class="workspace">
 
-  <!-- ══ LEFT: Officer Info ══ -->
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">Officer Details</div>
+  <!-- ── LEFT: Officer Details ── -->
+  <div class="panel panel-left">
+    <div class="panel-hdr">
+      <div class="panel-hdr-title">Officer Details</div>
+      <div class="panel-hdr-sub">Your persistent profile</div>
     </div>
-    <div class="panel-body">
+    <div class="panel-scroll">
 
-      <label>Name <span class="req">*</span></label>
-      <input type="text" id="p-name" placeholder="Display name / IC name" oninput="liveUpdate()" />
+      <!-- Live profile card -->
+      <div class="profile-card" id="profile-card">
+        <div class="profile-avatar" id="avatar-initials">?</div>
+        <div class="profile-info">
+          <div class="profile-name" id="preview-name">Display name</div>
+          <div class="profile-rank" id="preview-rank-div">RECRUIT · GENERAL DUTIES</div>
+        </div>
+      </div>
 
-      <label>Rank <span class="req">*</span></label>
-      <select id="p-rank" onchange="liveUpdate()">
-        <option value="RECRUIT">RECRUIT</option>
-        <option value="PROBATIONARY CONSTABLE">PROBATIONARY CONSTABLE</option>
-        <option value="CONSTABLE">CONSTABLE</option>
-        <option value="SENIOR CONSTABLE">SENIOR CONSTABLE</option>
-        <option value="LEADING SENIOR CONSTABLE">LEADING SENIOR CONSTABLE</option>
-        <option value="DETECTIVE CONSTABLE">DETECTIVE CONSTABLE</option>
-        <option value="SERGEANT">SERGEANT</option>
-        <option value="DETECTIVE SERGEANT">DETECTIVE SERGEANT</option>
-        <option value="SENIOR SERGEANT">SENIOR SERGEANT</option>
-        <option value="DETECTIVE SENIOR SERGEANT">DETECTIVE SENIOR SERGEANT</option>
-        <option value="INSPECTOR">INSPECTOR</option>
-        <option value="SENIOR INSPECTOR">SENIOR INSPECTOR</option>
-        <option value="SUPERINTENDENT">SUPERINTENDENT</option>
-        <option value="COMMANDER">COMMANDER</option>
-        <option value="DEPUTY COMMISSIONER">DEPUTY COMMISSIONER</option>
-        <option value="COMMISSIONER">COMMISSIONER</option>
-      </select>
+      <div class="field">
+        <label class="fld-label">Name <span class="req">*</span></label>
+        <input type="text" id="p-name" placeholder="Display name / IC name" oninput="updateProfileCard(); liveUpdate()" />
+      </div>
 
-      <label>Callsign <span class="req">*</span></label>
-      <input type="text" id="p-callsign" placeholder="e.g. 107" oninput="liveUpdate()" />
+      <div class="field">
+        <label class="fld-label">Rank <span class="req">*</span></label>
+        <select id="p-rank" onchange="updateProfileCard(); liveUpdate()">
+          <option>RECRUIT</option>
+          <option>PROBATIONARY CONSTABLE</option>
+          <option>CONSTABLE</option>
+          <option>SENIOR CONSTABLE</option>
+          <option>LEADING SENIOR CONSTABLE</option>
+          <option>DETECTIVE CONSTABLE</option>
+          <option>SERGEANT</option>
+          <option>DETECTIVE SERGEANT</option>
+          <option>SENIOR SERGEANT</option>
+          <option>DETECTIVE SENIOR SERGEANT</option>
+          <option>INSPECTOR</option>
+          <option>SENIOR INSPECTOR</option>
+          <option>SUPERINTENDENT</option>
+          <option>COMMANDER</option>
+          <option>DEPUTY COMMISSIONER</option>
+          <option>COMMISSIONER</option>
+        </select>
+      </div>
 
-      <label>Division <span class="req">*</span></label>
-      <select id="p-division" onchange="liveUpdate()">
-        <option value="GENERAL DUTIES">GENERAL DUTIES</option>
-        <option value="ORU HIGHWAY">ORU HIGHWAY</option>
-        <option value="CRIME COMMAND">CRIME COMMAND</option>
-        <option value="CIRT">CIRT</option>
-        <option value="AIRWING">AIRWING</option>
-        <option value="MARINE">MARINE</option>
-        <option value="SHERIFFS OFFICE">SHERIFFS OFFICE</option>
-        <option value="LEGAL SERVICES">LEGAL SERVICES</option>
-        <option value="COMMISSIONERS OFFICE">COMMISSIONERS OFFICE</option>
-      </select>
+      <div class="field">
+        <label class="fld-label">Callsign <span class="req">*</span></label>
+        <input type="text" id="p-callsign" placeholder="e.g. 107" oninput="liveUpdate()" />
+      </div>
 
-      <div class="btn-row">
-        <button class="btn btn-save" onclick="saveProfile()" title="Save officer details to browser">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      <div class="field">
+        <label class="fld-label">Division <span class="req">*</span></label>
+        <select id="p-division" onchange="updateProfileCard(); liveUpdate()">
+          <option>GENERAL DUTIES</option>
+          <option>ORU HIGHWAY</option>
+          <option>CRIME COMMAND</option>
+          <option>CIRT</option>
+          <option>AIRWING</option>
+          <option>MARINE</option>
+          <option>SHERIFFS OFFICE</option>
+          <option>LEGAL SERVICES</option>
+          <option>COMMISSIONERS OFFICE</option>
+        </select>
+      </div>
+
+      <div class="save-row">
+        <button class="save-btn btn-save" onclick="saveProfile()">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
           Save
         </button>
-        <button class="btn btn-export" onclick="exportJSON()" title="Export report as JSON">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Export JSON
+        <button class="save-btn btn-export" onclick="exportJSON()">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
+          Export
         </button>
-        <button class="btn btn-import" onclick="document.getElementById('file-input').click()" title="Import report from JSON">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          Import JSON
+        <button class="save-btn btn-import" onclick="document.getElementById('file-input').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/></svg>
+          Import
         </button>
       </div>
       <input type="file" id="file-input" accept=".json" onchange="importJSON(event)" />
@@ -300,130 +435,148 @@
     </div>
   </div>
 
-  <!-- ══ MIDDLE: Report Details ══ -->
-  <div class="panel" style="border-right:1px solid var(--border); background:var(--card)">
-    <div class="panel-header" style="background:var(--card)">
-      <div class="panel-title">Report Details</div>
+  <!-- ── MIDDLE: Report Details ── -->
+  <div class="panel panel-mid">
+    <div class="panel-hdr">
+      <div class="panel-hdr-title">Report Details</div>
+      <div class="panel-hdr-sub">Select a type and fill in the fields</div>
     </div>
-    <div class="panel-body">
+    <div class="panel-scroll">
 
-      <label>Report Type <span class="req">*</span></label>
-      <select id="r-type" onchange="onTypeChange(); liveUpdate()">
-        <option value="INCIDENT REPORT">Incident Report</option>
-        <option value="TRAFFIC STOP REPORT">Traffic Stop</option>
-        <option value="ARREST REPORT">Arrest Report</option>
-        <option value="SEARCH & SEIZURE REPORT">Search & Seizure</option>
-        <option value="VEHICLE PURSUIT REPORT">Vehicle Pursuit</option>
-        <option value="USE OF FORCE REPORT">Use of Force</option>
-      </select>
-
-      <div id="extra-fields"></div>
-
-      <label>Evidence <span class="req">*</span></label>
-      <textarea id="r-evidence" rows="3" placeholder="One item per line" oninput="liveUpdate()"></textarea>
-
-      <label>Charges <span class="req">*</span></label>
-      <textarea id="r-charges" rows="3" placeholder="One item per line" oninput="liveUpdate()"></textarea>
-
-      <div class="mode-row">
-        <span class="mode-label">Mode: <span id="mode-label-text">Free Text Mode</span></span>
-        <span class="mode-toggle" onclick="toggleMode()">Switch to Structured Mode</span>
+      <!-- Report type grid -->
+      <div class="sec-divider">Report Type</div>
+      <div class="type-grid" id="type-grid">
+        <button class="type-btn active" data-type="INCIDENT REPORT" onclick="selectType(this)">
+          <div class="type-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="type-btn-name">Incident Report</div>
+        </button>
+        <button class="type-btn" data-type="TRAFFIC STOP REPORT" onclick="selectType(this)">
+          <div class="type-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+          <div class="type-btn-name">Traffic Stop</div>
+        </button>
+        <button class="type-btn" data-type="ARREST REPORT" onclick="selectType(this)">
+          <div class="type-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <div class="type-btn-name">Arrest Report</div>
+        </button>
+        <button class="type-btn" data-type="SEARCH &amp; SEIZURE REPORT" onclick="selectType(this)">
+          <div class="type-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div class="type-btn-name">Search &amp; Seizure</div>
+        </button>
+        <button class="type-btn" data-type="VEHICLE PURSUIT REPORT" onclick="selectType(this)">
+          <div class="type-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div class="type-btn-name">Vehicle Pursuit</div>
+        </button>
+        <button class="type-btn" data-type="USE OF FORCE REPORT" onclick="selectType(this)">
+          <div class="type-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="type-btn-name">Use of Force</div>
+        </button>
       </div>
 
-      <label id="narrative-label" style="margin-top:12px">Report Narrative</label>
-      <textarea id="r-narrative" rows="6" placeholder="Write the narrative here..." oninput="updateCounter(); liveUpdate()"></textarea>
-      <div class="counter-row"><span class="counter" id="char-count">0 chars</span></div>
+      <!-- Extra fields injected here -->
+      <div id="extra-fields"></div>
 
-      <label>Supervisor Approved</label>
-      <input type="text" id="r-supervisor" placeholder="Name / Callsign" oninput="liveUpdate()" />
+      <div class="sec-divider">Report Content</div>
 
-      <button class="btn-generate btn" onclick="liveUpdate()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      <div class="field">
+        <label class="fld-label">Evidence <span class="req">*</span></label>
+        <textarea id="r-evidence" rows="3" placeholder="One item per line" oninput="liveUpdate()"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="fld-label">Charges <span class="req">*</span></label>
+        <textarea id="r-charges" rows="3" placeholder="One item per line" oninput="liveUpdate()"></textarea>
+      </div>
+
+      <div class="mode-row">
+        <span class="mode-label-txt">Mode: <b id="mode-label-text">Free Text</b></span>
+        <button class="mode-toggle" onclick="toggleMode()">Switch to Structured Mode</button>
+      </div>
+
+      <div class="field">
+        <label class="fld-label" id="narrative-label">Report Narrative</label>
+        <textarea id="r-narrative" rows="6" placeholder="Write the narrative here..." oninput="updateCounter(); liveUpdate()"></textarea>
+        <div class="counter-row"><span class="counter" id="char-count">0 chars</span></div>
+      </div>
+
+      <div class="field">
+        <label class="fld-label">Supervisor Approved</label>
+        <input type="text" id="r-supervisor" placeholder="Name / Callsign" oninput="liveUpdate()" />
+      </div>
+
+      <button class="gen-btn" onclick="liveUpdate()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         Generate Report
       </button>
 
     </div>
   </div>
 
-  <!-- ══ RIGHT: Generated Output ══ -->
+  <!-- ── RIGHT: Output ── -->
   <div class="panel-right">
-    <div class="preview-label">Generated Report 📋</div>
+    <div class="out-label">
+      <div class="out-label-title">Generated Report 📋</div>
+      <div class="out-status" id="out-status">— empty —</div>
+    </div>
     <textarea id="output-box" spellcheck="false" placeholder="Fill in the form to generate your report..."></textarea>
     <div class="out-actions">
-      <button class="out-btn out-btn-copy" onclick="copyReport()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      <button class="out-btn out-copy" onclick="copyReport()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
         Copy Report
       </button>
-      <button class="out-btn out-btn-dl" onclick="downloadReport()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <button class="out-btn out-dl" onclick="downloadReport()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
         Download .txt
       </button>
-      <button class="out-btn out-btn-clr" onclick="clearAll()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+      <button class="out-btn out-clr" onclick="clearAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
         Clear Report
       </button>
     </div>
   </div>
 
-</div><!-- end workspace -->
+</div>
 
 <!-- Toast -->
 <div id="toast">✓ Copied to clipboard</div>
 
-<!-- ═══ MODAL: Cheat Sheet ═══ -->
-<div id="modal-cheatsheet" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);overflow-y:auto;padding:40px 20px">
-  <div style="max-width:680px;margin:0 auto;background:#110d1c;border:1px solid rgba(168,85,247,0.22);border-radius:16px;overflow:hidden">
-    <div style="padding:20px 24px;border-bottom:1px solid rgba(168,85,247,0.12);display:flex;align-items:center;justify-content:space-between">
-      <div style="font-size:16px;font-weight:800;color:#fff">Police Cheat Sheet</div>
-      <button onclick="document.getElementById('modal-cheatsheet').style.display='none'" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:20px;line-height:1">×</button>
+<!-- ═══ Modal: Cheat Sheet ═══ -->
+<div class="modal-overlay" id="modal-cheatsheet" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title">Police Cheat Sheet</div>
+      <button class="modal-close" onclick="document.getElementById('modal-cheatsheet').style.display='none'">×</button>
     </div>
-    <div style="padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
-      <div style="background:rgba(168,85,247,0.05);border:1px solid rgba(168,85,247,0.12);border-radius:10px;padding:16px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#a855f7;margin-bottom:10px">Common Charges</div>
-        <div style="font-size:12px;color:#cbd5e1;line-height:2">
-          Assault · Grievous Bodily Harm · Murder<br>
-          Robbery · Armed Robbery · Burglary<br>
-          Theft · Grand Theft Auto · Fraud<br>
-          Drug Possession · Drug Trafficking<br>
-          Evading Police · Reckless Driving<br>
-          Weapons Possession · Threatening Behaviour<br>
-          Obstruct Police · Resist Arrest<br>
-          Public Nuisance · Disorderly Conduct
+    <div class="modal-body">
+      <div class="modal-card" style="background:rgba(168,85,247,0.05);border-color:rgba(168,85,247,0.15)">
+        <div class="modal-card-title" style="color:#a855f7">Common Charges</div>
+        <div class="modal-card-content">
+          Assault · Grievous Bodily Harm · Murder<br>Robbery · Armed Robbery · Burglary<br>
+          Theft · Grand Theft Auto · Fraud<br>Drug Possession · Drug Trafficking<br>
+          Evading Police · Reckless Driving<br>Weapons Possession · Threatening Behaviour<br>
+          Obstruct Police · Resist Arrest<br>Public Nuisance · Disorderly Conduct
         </div>
       </div>
-      <div style="background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:10px;padding:16px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#60a5fa;margin-bottom:10px">Radio Codes</div>
-        <div style="font-size:12px;color:#cbd5e1;line-height:2">
-          10-4 — Acknowledged<br>
-          10-7 — Out of Service<br>
-          10-8 — In Service<br>
-          10-10 — Off Duty<br>
-          10-20 — Location<br>
-          10-23 — Arrived on Scene<br>
-          10-97 — Arrived at Scene<br>
-          Code 1 — Routine · Code 2 — Urgent<br>
-          Code 3 — Emergency
+      <div class="modal-card" style="background:rgba(59,130,246,0.05);border-color:rgba(59,130,246,0.15)">
+        <div class="modal-card-title" style="color:#60a5fa">Radio Codes</div>
+        <div class="modal-card-content">
+          10-4 — Acknowledged<br>10-7 — Out of Service<br>10-8 — In Service<br>
+          10-10 — Off Duty<br>10-20 — Location<br>10-23 — Arrived on Scene<br>
+          Code 1 — Routine<br>Code 2 — Urgent · Code 3 — Emergency
         </div>
       </div>
-      <div style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.12);border-radius:10px;padding:16px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4ade80;margin-bottom:10px">Pursuit Protocols</div>
-        <div style="font-size:12px;color:#cbd5e1;line-height:1.9">
-          Initiate: call out vehicle + direction<br>
-          Request supervisor authorisation<br>
-          Max 2 units unless supervisor approved<br>
-          Abandon if risk outweighs benefit<br>
-          Document: start/end location, speeds,<br>
-          reason, outcome & units involved
+      <div class="modal-card" style="background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.15)">
+        <div class="modal-card-title" style="color:#4ade80">Pursuit Protocols</div>
+        <div class="modal-card-content">
+          Initiate: call out vehicle + direction<br>Request supervisor authorisation<br>
+          Max 2 units unless approved<br>Abandon if risk outweighs benefit<br>
+          Document: start/end location, speeds,<br>reason, outcome &amp; units involved
         </div>
       </div>
-      <div style="background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.12);border-radius:10px;padding:16px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fbbf24;margin-bottom:10px">Use of Force Scale</div>
-        <div style="font-size:12px;color:#cbd5e1;line-height:2">
-          1 — Verbal commands<br>
-          2 — Physical restraint<br>
-          3 — OC Spray / Taser<br>
-          4 — Baton / Less-lethal<br>
-          5 — Lethal force (last resort)<br>
+      <div class="modal-card" style="background:rgba(245,158,11,0.05);border-color:rgba(245,158,11,0.15)">
+        <div class="modal-card-title" style="color:#fbbf24">Use of Force Scale</div>
+        <div class="modal-card-content">
+          1 — Verbal commands<br>2 — Physical restraint<br>3 — OC Spray / Taser<br>
+          4 — Baton / Less-lethal<br>5 — Lethal force (last resort)<br>
           Document all levels used
         </div>
       </div>
@@ -432,53 +585,38 @@
 </div>
 
 <script>
-  // ── Clock ──
-  function updateClock() {
-    const now = new Date();
+  /* ── Clock ── */
+  function tick() {
     document.getElementById('clock').textContent =
-      now.toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Australia/Melbourne', hour12:false });
+      new Date().toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Australia/Melbourne', hour12:false });
   }
-  updateClock(); setInterval(updateClock, 1000);
+  tick(); setInterval(tick, 1000);
 
-  // ── Get current AEST time/date ──
+  /* ── AEST time/date ── */
   function getAEST() {
-    const now = new Date();
-    const time = now.toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit', timeZone:'Australia/Melbourne', hour12:false });
-    const date = now.toLocaleDateString('en-AU', { day:'2-digit', month:'2-digit', year:'numeric', timeZone:'Australia/Melbourne' });
-    return { time, date };
+    const n = new Date();
+    return {
+      time: n.toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit', timeZone:'Australia/Melbourne', hour12:false }),
+      date: n.toLocaleDateString('en-AU', { day:'2-digit', month:'2-digit', year:'numeric', timeZone:'Australia/Melbourne' }),
+    };
   }
 
-  // ── Mode toggle ──
-  let structuredMode = false;
-  function toggleMode() {
-    structuredMode = !structuredMode;
-    const lbl = document.getElementById('narrative-label');
-    const tog = document.querySelector('.mode-toggle');
-    const mll = document.getElementById('mode-label-text');
-    if (structuredMode) {
-      lbl.textContent = 'Report (Structured)';
-      tog.textContent = 'Switch to Free Text Mode';
-      mll.textContent = 'Structured Mode';
-    } else {
-      lbl.textContent = 'Report Narrative';
-      tog.textContent = 'Switch to Structured Mode';
-      mll.textContent = 'Free Text Mode';
-    }
+  /* ── Report type selection ── */
+  let currentType = 'INCIDENT REPORT';
+  function selectType(btn) {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentType = btn.dataset.type;
+    renderExtraFields();
     liveUpdate();
   }
 
-  // ── Char counter ──
-  function updateCounter() {
-    const n = (document.getElementById('r-narrative').value || '').length;
-    document.getElementById('char-count').textContent = n + ' chars';
-  }
-
-  // ── Extra fields per report type ──
+  /* ── Extra fields per type ── */
   const TYPE_EXTRA = {
     'TRAFFIC STOP REPORT': [
-      { id:'x-plate', label:'Vehicle Plate', placeholder:'e.g. ABC123' },
-      { id:'x-veh',   label:'Vehicle Description', placeholder:'Make / Model / Colour' },
-      { id:'x-driver',label:'Driver Name', placeholder:'First Last' },
+      { id:'x-plate',  label:'Vehicle Plate',       placeholder:'e.g. ABC123' },
+      { id:'x-veh',    label:'Vehicle Description', placeholder:'Make / Model / Colour' },
+      { id:'x-driver', label:'Driver Name',         placeholder:'First Last' },
     ],
     'ARREST REPORT': [
       { id:'x-suspect', label:'Suspect Name', placeholder:'First Last' },
@@ -495,109 +633,134 @@
       { id:'x-duration', label:'Duration',         placeholder:'e.g. 4 minutes' },
     ],
     'USE OF FORCE REPORT': [
-      { id:'x-subject',  label:'Subject Name',  placeholder:'First Last' },
-      { id:'x-threat',   label:'Threat Level',  placeholder:'e.g. Level 3 – Taser' },
-      { id:'x-force',    label:'Force Used',    placeholder:'Describe force applied' },
+      { id:'x-subject', label:'Subject Name',  placeholder:'First Last' },
+      { id:'x-threat',  label:'Threat Level',  placeholder:'e.g. Level 3 – Taser' },
+      { id:'x-force',   label:'Force Used',    placeholder:'Describe force applied' },
     ],
   };
 
-  function onTypeChange() {
-    const type = document.getElementById('r-type').value;
-    const fields = TYPE_EXTRA[type] || [];
-    let html = '';
-    for (const f of fields) {
-      html += `<label>${f.label}</label><input type="text" id="${f.id}" placeholder="${f.placeholder}" oninput="liveUpdate()" />`;
-    }
-    document.getElementById('extra-fields').innerHTML = html;
+  function renderExtraFields() {
+    const fields = TYPE_EXTRA[currentType] || [];
+    const container = document.getElementById('extra-fields');
+    if (!fields.length) { container.innerHTML = ''; return; }
+    container.innerHTML = `<div class="sec-divider">Additional Details</div>` +
+      fields.map(f => `
+        <div class="field">
+          <label class="fld-label">${f.label}</label>
+          <input type="text" id="${f.id}" placeholder="${f.placeholder}" oninput="liveUpdate()" />
+        </div>`).join('');
   }
-  onTypeChange();
+  renderExtraFields();
 
-  function getExtra(id) {
-    const el = document.getElementById(id);
-    return el ? el.value.trim() : '';
+  function getX(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+  /* ── Profile card ── */
+  function updateProfileCard() {
+    const name = document.getElementById('p-name').value.trim();
+    const rank = document.getElementById('p-rank').value;
+    const div  = document.getElementById('p-division').value;
+    const initials = name ? name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase() : '?';
+    document.getElementById('avatar-initials').textContent = initials;
+    document.getElementById('preview-name').textContent    = name || 'Display name';
+    document.getElementById('preview-rank-div').textContent = `${rank} · ${div}`;
   }
 
-  // ── Signed footer ──
+  /* ── Mode toggle ── */
+  let structuredMode = false;
+  function toggleMode() {
+    structuredMode = !structuredMode;
+    document.getElementById('narrative-label').textContent = structuredMode ? 'Report (Structured)' : 'Report Narrative';
+    document.querySelector('.mode-toggle').textContent = structuredMode ? 'Switch to Free Text Mode' : 'Switch to Structured Mode';
+    document.getElementById('mode-label-text').textContent = structuredMode ? 'Structured' : 'Free Text';
+    liveUpdate();
+  }
+
+  function updateCounter() {
+    const n = (document.getElementById('r-narrative').value || '').length;
+    document.getElementById('char-count').textContent = n + ' chars';
+  }
+
+  /* ── Footer builder ── */
   function buildFooter() {
     const name = (document.getElementById('p-name').value || '').trim().toUpperCase();
     const rank = document.getElementById('p-rank').value;
     const cs   = (document.getElementById('p-callsign').value || '').trim();
     const div  = document.getElementById('p-division').value;
     const sup  = (document.getElementById('r-supervisor').value || '').trim();
-
-    let footer = `Signed,\n${name || '[NAME]'}\n${rank} | ${cs || '[CALLSIGN]'}\n${div} | MELBOURNE POLICE`;
-    if (sup) footer += `\n\nSupervisor Approved: ${sup}`;
-    return footer;
+    let f = `Signed,\n${name || '[NAME]'}\n${rank} | ${cs || '[CALLSIGN]'}\n${div} | MELBOURNE POLICE`;
+    if (sup) f += `\n\nSupervisor Approved: ${sup}`;
+    return f;
   }
 
-  // ── Core: build report text ──
+  /* ── Core builder ── */
   function buildReport() {
     const { time, date } = getAEST();
-    const type    = document.getElementById('r-type').value;
     const ev      = (document.getElementById('r-evidence').value  || '').trim();
     const charges = (document.getElementById('r-charges').value   || '').trim();
     const narr    = (document.getElementById('r-narrative').value || '').trim();
+    const extras  = TYPE_EXTRA[currentType] || [];
 
-    let out = `${type}\n`;
+    let out = `${currentType}\n`;
     out += `TIME: ${time}\n`;
     out += `DATE: ${date}\n`;
 
-    // Extra fields for special report types
-    const extras = TYPE_EXTRA[type] || [];
     for (const f of extras) {
-      const val = getExtra(f.id);
-      if (val) out += `${f.label.toUpperCase()}: ${val}\n`;
+      const v = getX(f.id);
+      if (v) out += `${f.label.toUpperCase()}: ${v}\n`;
     }
 
     out += `EVIDENCE:\n${ev}\n`;
     out += `\nCHARGES:\n${charges}\n`;
     out += `\nREPORT:\n${narr}\n`;
     out += `\n\n${buildFooter()}`;
-
     return out;
   }
 
-  // ── Live update output ──
+  /* ── Live update ── */
   function liveUpdate() {
-    document.getElementById('output-box').value = buildReport();
+    const out = buildReport();
+    document.getElementById('output-box').value = out;
+    const lines = out.split('\n').length;
+    document.getElementById('out-status').textContent = `${lines} lines`;
     updateCounter();
   }
 
-  // ── Copy ──
+  /* ── Copy ── */
   function copyReport() {
     const txt = document.getElementById('output-box').value;
     if (!txt.trim()) return;
-    navigator.clipboard.writeText(txt).then(() => {
-      const t = document.getElementById('toast');
-      t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 2000);
-    });
+    navigator.clipboard.writeText(txt).then(() => toast('✓ Copied to clipboard'));
   }
 
-  // ── Download ──
+  /* ── Download ── */
   function downloadReport() {
     const txt = document.getElementById('output-box').value;
     if (!txt.trim()) return;
-    const type = document.getElementById('r-type').value.replace(/\s+/g,'_').toLowerCase();
     const a = document.createElement('a');
     a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(txt);
-    a.download = `AIRS_${type}_${Date.now()}.txt`;
+    a.download = `AIRS_${currentType.replace(/\s+/g,'_')}_${Date.now()}.txt`;
     a.click();
   }
 
-  // ── Clear ──
+  /* ── Clear ── */
   function clearAll() {
     ['r-evidence','r-charges','r-narrative','r-supervisor'].forEach(id => {
       const el = document.getElementById(id); if (el) el.value = '';
     });
-    (TYPE_EXTRA[document.getElementById('r-type').value] || []).forEach(f => {
-      const el = document.getElementById(f.id); if (el) el.value = '';
-    });
+    (TYPE_EXTRA[currentType] || []).forEach(f => { const el = document.getElementById(f.id); if (el) el.value = ''; });
     document.getElementById('output-box').value = '';
+    document.getElementById('out-status').textContent = '— empty —';
     updateCounter();
   }
 
-  // ── Save profile to localStorage ──
+  /* ── Toast ── */
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg; el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 2000);
+  }
+
+  /* ── Save profile ── */
   function saveProfile() {
     localStorage.setItem('airs_profile', JSON.stringify({
       name: document.getElementById('p-name').value,
@@ -605,81 +768,56 @@
       callsign: document.getElementById('p-callsign').value,
       division: document.getElementById('p-division').value,
     }));
-    const t = document.getElementById('toast');
-    t.textContent = '✓ Profile saved';
-    t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; t.textContent = '✓ Copied to clipboard'; }, 2000);
+    toast('✓ Profile saved');
   }
 
-  // ── Export JSON ──
+  /* ── Export JSON ── */
   function exportJSON() {
-    const data = {
-      profile: {
-        name: document.getElementById('p-name').value,
-        rank: document.getElementById('p-rank').value,
-        callsign: document.getElementById('p-callsign').value,
-        division: document.getElementById('p-division').value,
-      },
-      report: {
-        type: document.getElementById('r-type').value,
-        evidence: document.getElementById('r-evidence').value,
-        charges: document.getElementById('r-charges').value,
-        narrative: document.getElementById('r-narrative').value,
-        supervisor: document.getElementById('r-supervisor').value,
-      }
+    const d = {
+      profile: { name: document.getElementById('p-name').value, rank: document.getElementById('p-rank').value, callsign: document.getElementById('p-callsign').value, division: document.getElementById('p-division').value },
+      report:  { type: currentType, evidence: document.getElementById('r-evidence').value, charges: document.getElementById('r-charges').value, narrative: document.getElementById('r-narrative').value, supervisor: document.getElementById('r-supervisor').value },
     };
     const a = document.createElement('a');
-    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data, null, 2));
-    a.download = `AIRS_report_${Date.now()}.json`;
-    a.click();
+    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(d, null, 2));
+    a.download = `AIRS_report_${Date.now()}.json`; a.click();
   }
 
-  // ── Import JSON ──
+  /* ── Import JSON ── */
   function importJSON(e) {
     const file = e.target.files[0]; if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
+    const r = new FileReader();
+    r.onload = ev => {
       try {
         const d = JSON.parse(ev.target.result);
         if (d.profile) {
-          if (d.profile.name)     document.getElementById('p-name').value     = d.profile.name;
-          if (d.profile.rank)     document.getElementById('p-rank').value     = d.profile.rank;
-          if (d.profile.callsign) document.getElementById('p-callsign').value = d.profile.callsign;
-          if (d.profile.division) document.getElementById('p-division').value = d.profile.division;
+          ['name','rank','callsign','division'].forEach(k => { if (d.profile[k]) document.getElementById('p-'+k).value = d.profile[k]; });
+          updateProfileCard();
         }
         if (d.report) {
-          if (d.report.type)       document.getElementById('r-type').value      = d.report.type;
-          if (d.report.evidence)   document.getElementById('r-evidence').value  = d.report.evidence;
-          if (d.report.charges)    document.getElementById('r-charges').value   = d.report.charges;
-          if (d.report.narrative)  document.getElementById('r-narrative').value = d.report.narrative;
-          if (d.report.supervisor) document.getElementById('r-supervisor').value= d.report.supervisor;
+          if (d.report.type) {
+            currentType = d.report.type;
+            document.querySelectorAll('.type-btn').forEach(b => { b.classList.toggle('active', b.dataset.type === currentType); });
+            renderExtraFields();
+          }
+          ['evidence','charges','narrative','supervisor'].forEach(k => { if (d.report[k]) document.getElementById('r-'+k).value = d.report[k]; });
         }
-        onTypeChange(); liveUpdate();
+        liveUpdate(); toast('✓ Report imported');
       } catch { alert('Invalid JSON file'); }
     };
-    reader.readAsText(file);
-    e.target.value = '';
+    r.readAsText(file); e.target.value = '';
   }
 
-  // ── Modal ──
-  function openCheatsheet() {
-    document.getElementById('modal-cheatsheet').style.display = 'block';
-  }
-  document.getElementById('modal-cheatsheet').addEventListener('click', function(e) {
-    if (e.target === this) this.style.display = 'none';
-  });
+  /* ── Modal ── */
+  function openCheatsheet() { document.getElementById('modal-cheatsheet').style.display = 'block'; }
 
-  // ── Load saved profile on start ──
-  (function() {
-    const saved = localStorage.getItem('airs_profile');
-    if (saved) {
+  /* ── Boot: load saved profile ── */
+  (function boot() {
+    const s = localStorage.getItem('airs_profile');
+    if (s) {
       try {
-        const p = JSON.parse(saved);
-        if (p.name)     document.getElementById('p-name').value     = p.name;
-        if (p.rank)     document.getElementById('p-rank').value     = p.rank;
-        if (p.callsign) document.getElementById('p-callsign').value = p.callsign;
-        if (p.division) document.getElementById('p-division').value = p.division;
-        liveUpdate();
+        const p = JSON.parse(s);
+        ['name','rank','callsign','division'].forEach(k => { if (p[k]) document.getElementById('p-'+k).value = p[k]; });
+        updateProfileCard(); liveUpdate();
       } catch {}
     }
   })();
