@@ -68,7 +68,7 @@ router.post('/:officer_id/final-signoff', (req, res) => {
 
   // Promote officer: role → officer, rank → Probationary Constable
   const fromRank = officer.rank || 'Recruit';
-  db.prepare(`UPDATE officers SET role='officer', rank='Probationary Constable', updated_at=CURRENT_TIMESTAMP WHERE id=?`)
+  db.prepare(`UPDATE officers SET role='officer', rank='Probationary Constable' WHERE id=?`)
     .run(officer_id);
 
   // Log the promotion
