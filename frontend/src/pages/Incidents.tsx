@@ -94,22 +94,20 @@ export default function Incidents() {
       {/* Header */}
       <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(168,85,247,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(168,85,247,0.20)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.25)' }}>
-              <FileText className="w-6 h-6 text-purple-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-white">Incident Reports</h1>
-              <p className="text-slate-500 text-sm">{incidents.length} case{incidents.length !== 1 ? 's' : ''} loaded</p>
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.25)' }}>
+            <FileText className="w-6 h-6 text-purple-400" />
           </div>
-          <button onClick={openCreate}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110"
-            style={{ background: 'linear-gradient(135deg,#a855f7,#7c3aed)', border: '1px solid rgba(168,85,247,0.3)' }}>
-            <Plus className="w-4 h-4" /> New Report
-          </button>
+          <div>
+            <h1 className="text-xl font-black text-white">Incident Reports</h1>
+            <p className="text-slate-500 text-sm mt-0.5">{incidents.length} case{incidents.length !== 1 ? 's' : ''} loaded</p>
+          </div>
         </div>
+        <button onClick={openCreate}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
+          style={{ background: 'linear-gradient(135deg,#a855f7,#7c3aed)', border: '1px solid rgba(168,85,247,0.3)', boxShadow: '0 4px 14px rgba(168,85,247,0.25)' }}>
+          <Plus className="w-4 h-4" /> New Report
+        </button>
       </div>
 
       {/* Filters */}

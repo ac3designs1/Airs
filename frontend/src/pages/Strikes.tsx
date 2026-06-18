@@ -76,24 +76,22 @@ export default function Strikes() {
       {/* Header */}
       <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.12),rgba(245,158,11,0.04))', border: '1px solid rgba(239,68,68,0.18)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)' }}>
-              <AlertOctagon className="w-6 h-6 text-red-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-white">Strikes & Demerits</h1>
-              <p className="text-slate-500 text-sm">{active} active · {strikes.length} total records</p>
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)' }}>
+            <AlertOctagon className="w-6 h-6 text-red-400" />
           </div>
-          {isLeader && (
-            <button onClick={() => setShowForm(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110"
-              style={{ background: 'linear-gradient(135deg,#ef4444,#dc2626)', border: '1px solid rgba(239,68,68,0.3)' }}>
-              <Plus className="w-4 h-4" /> Issue Strike
-            </button>
-          )}
+          <div>
+            <h1 className="text-xl font-black text-white">Strikes & Demerits</h1>
+            <p className="text-slate-500 text-sm mt-0.5">{active} active · {strikes.length} total records</p>
+          </div>
         </div>
+        {isLeader && (
+          <button onClick={() => setShowForm(true)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
+            style={{ background: 'linear-gradient(135deg,#ef4444,#dc2626)', border: '1px solid rgba(239,68,68,0.3)', boxShadow: '0 4px 14px rgba(239,68,68,0.20)' }}>
+            <Plus className="w-4 h-4" /> Issue Strike
+          </button>
+        )}
       </div>
 
       {/* Filters */}

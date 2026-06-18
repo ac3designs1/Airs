@@ -54,22 +54,20 @@ export default function TerminationApproval() {
     <div className="space-y-5 animate-fade-in">
       <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.12),rgba(249,115,22,0.06))', border: '1px solid rgba(239,68,68,0.18)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)' }}>
-              <AlertTriangle className="w-6 h-6 text-red-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-white">Termination Approval</h1>
-              <p className="text-slate-500 text-sm">Review and process termination requests</p>
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)' }}>
+            <AlertTriangle className="w-6 h-6 text-red-400" />
           </div>
-          <button onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110"
-            style={{ background: 'linear-gradient(135deg,#ef4444,#dc2626)', border: '1px solid rgba(239,68,68,0.3)' }}>
-            <Plus className="w-4 h-4" /> New Request
-          </button>
+          <div>
+            <h1 className="text-xl font-black text-white">Termination Approval</h1>
+            <p className="text-slate-500 text-sm mt-0.5">Review and process termination requests</p>
+          </div>
         </div>
+        <button onClick={() => setShowForm(true)}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
+          style={{ background: 'linear-gradient(135deg,#ef4444,#dc2626)', border: '1px solid rgba(239,68,68,0.3)', boxShadow: '0 4px 14px rgba(239,68,68,0.20)' }}>
+          <Plus className="w-4 h-4" /> New Request
+        </button>
       </div>
 
       {/* Status filter */}

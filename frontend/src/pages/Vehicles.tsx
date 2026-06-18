@@ -156,16 +156,15 @@ export default function Vehicles() {
       {/* Header */}
       <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(16,185,129,0.18)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.25)' }}>
-              <Car className="w-6 h-6 text-emerald-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-white">Vehicles</h1>
-              <p className="text-slate-500 text-sm">Plate lookup & vehicle registry</p>
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.25)' }}>
+            <Car className="w-6 h-6 text-emerald-400" />
           </div>
+          <div>
+            <h1 className="text-xl font-black text-white">Vehicles</h1>
+            <p className="text-slate-500 text-sm mt-0.5">Plate lookup & vehicle registry</p>
+          </div>
+        </div>
           <div className="flex gap-2">
             <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.08)' }}>
               {(['search', 'browse'] as const).map(m => (
@@ -183,7 +182,6 @@ export default function Vehicles() {
               </button>
             )}
           </div>
-        </div>
       </div>
 
       {/* Plate lookup */}

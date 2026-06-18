@@ -55,22 +55,20 @@ export default function BOLOs() {
       {/* Header */}
       <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(249,115,22,0.12),rgba(239,68,68,0.06))', border: '1px solid rgba(249,115,22,0.20)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.25)' }}>
-              <AlertCircle className="w-6 h-6 text-orange-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-white">BOLOs</h1>
-              <p className="text-slate-500 text-sm">Be On the Lookout — {filtered.length} {status}</p>
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.25)' }}>
+            <AlertCircle className="w-6 h-6 text-orange-400" />
           </div>
-          <button onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110"
-            style={{ background: 'linear-gradient(135deg,#ea580c,#dc2626)', border: '1px solid rgba(249,115,22,0.3)' }}>
-            <Plus className="w-4 h-4" /> Issue BOLO
-          </button>
+          <div>
+            <h1 className="text-xl font-black text-white">BOLOs</h1>
+            <p className="text-slate-500 text-sm mt-0.5">Be On the Lookout — {filtered.length} {status}</p>
+          </div>
         </div>
+        <button onClick={() => setShowForm(true)}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
+          style={{ background: 'linear-gradient(135deg,#ea580c,#dc2626)', border: '1px solid rgba(249,115,22,0.3)', boxShadow: '0 4px 14px rgba(249,115,22,0.25)' }}>
+          <Plus className="w-4 h-4" /> Issue BOLO
+        </button>
       </div>
 
       {/* Filters */}

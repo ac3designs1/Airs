@@ -68,33 +68,31 @@ export default function DivisionTransfers() {
     <div className="space-y-5 animate-fade-in">
       <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(99,102,241,0.12),rgba(59,130,246,0.06))', border: '1px solid rgba(99,102,241,0.20)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)' }}>
-              <ArrowRightLeft className="w-6 h-6 text-indigo-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-white">Division Transfers</h1>
-              <p className="text-slate-500 text-sm">{pendingCount} pending review</p>
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)' }}>
+            <ArrowRightLeft className="w-6 h-6 text-indigo-400" />
           </div>
-          <div className="flex gap-2">
-            {isLeader && (
-              <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.08)' }}>
-                {(['mine', 'all'] as const).map(v => (
-                  <button key={v} onClick={() => setView(v)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${view === v ? 'bg-indigo-500/20 text-indigo-300' : 'text-slate-500 hover:text-slate-300'}`}>
-                    {v === 'mine' ? 'Mine' : `All${pendingCount ? ` (${pendingCount})` : ''}`}
-                  </button>
-                ))}
-              </div>
-            )}
-            <button onClick={() => setShowForm(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110"
-              style={{ background: 'linear-gradient(135deg,#4f46e5,#6366f1)', border: '1px solid rgba(99,102,241,0.30)' }}>
-              <Plus className="w-4 h-4" /> Request Transfer
-            </button>
+          <div>
+            <h1 className="text-xl font-black text-white">Division Transfers</h1>
+            <p className="text-slate-500 text-sm mt-0.5">{pendingCount} pending review</p>
           </div>
+        </div>
+        <div className="flex gap-2">
+          {isLeader && (
+            <div className="flex p-1 gap-1 rounded-xl" style={{ background: 'rgba(6,182,212,0.06)', border: '1px solid rgba(6,182,212,0.08)' }}>
+              {(['mine', 'all'] as const).map(v => (
+                <button key={v} onClick={() => setView(v)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${view === v ? 'bg-indigo-500/20 text-indigo-300' : 'text-slate-500 hover:text-slate-300'}`}>
+                  {v === 'mine' ? 'Mine' : `All${pendingCount ? ` (${pendingCount})` : ''}`}
+                </button>
+              ))}
+            </div>
+          )}
+          <button onClick={() => setShowForm(true)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
+            style={{ background: 'linear-gradient(135deg,#4f46e5,#6366f1)', border: '1px solid rgba(99,102,241,0.30)', boxShadow: '0 4px 14px rgba(99,102,241,0.20)' }}>
+            <Plus className="w-4 h-4" /> Request Transfer
+          </button>
         </div>
       </div>
 

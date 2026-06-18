@@ -75,22 +75,20 @@ export default function Reports() {
       {/* Header */}
       <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.12),rgba(6,182,212,0.06))', border: '1px solid rgba(6,182,212,0.18)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
-              <FileText className="w-6 h-6 text-cyan-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-white">Reports</h1>
-              <p className="text-slate-500 text-sm">{reports.length} report{reports.length !== 1 ? 's' : ''} {isLeader ? '(all officers)' : '(yours)'}</p>
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.25)' }}>
+            <FileText className="w-6 h-6 text-cyan-400" />
           </div>
-          <button onClick={() => { setEditing(false); setForm({ title: '', type: 'General', content: '' }); setShowForm(true); }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110"
-            style={{ background: 'linear-gradient(135deg,#0e7490,#0284c7)', border: '1px solid rgba(6,182,212,0.3)' }}>
-            <Plus className="w-4 h-4" /> New Report
-          </button>
+          <div>
+            <h1 className="text-xl font-black text-white">Reports</h1>
+            <p className="text-slate-500 text-sm mt-0.5">{reports.length} report{reports.length !== 1 ? 's' : ''} {isLeader ? '(all officers)' : '(yours)'}</p>
+          </div>
         </div>
+        <button onClick={() => { setEditing(false); setForm({ title: '', type: 'General', content: '' }); setShowForm(true); }}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
+          style={{ background: 'linear-gradient(135deg,#0e7490,#0284c7)', border: '1px solid rgba(6,182,212,0.3)', boxShadow: '0 4px 14px rgba(6,182,212,0.20)' }}>
+          <Plus className="w-4 h-4" /> New Report
+        </button>
       </div>
 
       {/* Filters */}

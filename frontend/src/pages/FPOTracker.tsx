@@ -64,24 +64,22 @@ export default function FPOTracker() {
       {/* Header */}
       <div className="page-header scan-line"
         style={{ background: 'linear-gradient(135deg,rgba(59,130,246,0.12),rgba(99,102,241,0.06))', border: '1px solid rgba(59,130,246,0.18)' }}>
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.25)' }}>
-              <Shield className="w-6 h-6 text-blue-400" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-white">FPO Tracker</h1>
-              <p className="text-slate-500 text-sm">Field Placement Officer certifications — {filtered.length} {status}</p>
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="p-3 rounded-xl" style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.25)' }}>
+            <Shield className="w-6 h-6 text-blue-400" />
           </div>
-          {isLeader && (
-            <button onClick={() => setShowForm(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110"
-              style={{ background: 'linear-gradient(135deg,#1d4ed8,#3b82f6)', border: '1px solid rgba(59,130,246,0.3)' }}>
-              <Plus className="w-4 h-4" /> Issue FPO
-            </button>
-          )}
+          <div>
+            <h1 className="text-xl font-black text-white">FPO Tracker</h1>
+            <p className="text-slate-500 text-sm mt-0.5">Field Placement Officer certifications — {filtered.length} {status}</p>
+          </div>
         </div>
+        {isLeader && (
+          <button onClick={() => setShowForm(true)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02]"
+            style={{ background: 'linear-gradient(135deg,#1d4ed8,#3b82f6)', border: '1px solid rgba(59,130,246,0.3)', boxShadow: '0 4px 14px rgba(59,130,246,0.20)' }}>
+            <Plus className="w-4 h-4" /> Issue FPO
+          </button>
+        )}
       </div>
 
       {/* Filters */}
