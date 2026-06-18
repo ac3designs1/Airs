@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Next RP — Report Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #06060a;
+      --surface:  #0d0a14;
+      --card:     #110d1c;
+      --border:   rgba(168,85,247,0.16);
+      --purple:   #a855f7;
+      --purple-d: #7c3aed;
+      --purple-l: #c084fc;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --faint:    #1e1628;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.25); border-radius: 99px; }
+
+    /* ── Layout ── */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px; height: 62px;
+      background: rgba(6,6,10,0.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-left { display: flex; align-items: center; gap: 14px; }
+
+    .logo-badge {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg,#7c3aed,#a855f7);
+      box-shadow: 0 0 16px rgba(168,85,247,0.40);
+      flex-shrink: 0;
+    }
+    .logo-badge svg { width: 18px; height: 18px; color: white; }
+
+    .logo-text { line-height: 1; }
+    .logo-title { font-size: 14px; font-weight: 900; color: white; letter-spacing: -0.02em; }
+    .logo-sub { font-size: 9px; font-family: 'JetBrains Mono', monospace; font-weight: 600;
+      color: var(--purple); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px; }
+
+    .header-nav { display: flex; align-items: center; gap: 4px; }
+
+    .nav-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 14px; border-radius: 10px;
+      font-size: 12.5px; font-weight: 600; color: var(--muted);
+      background: none; border: 1px solid transparent;
+      cursor: pointer; transition: all 0.14s; font-family: 'Inter', sans-serif;
+    }
+    .nav-btn:hover { background: rgba(168,85,247,0.08); border-color: rgba(168,85,247,0.18); color: var(--text); }
+    .nav-btn.active { background: rgba(168,85,247,0.14); border-color: rgba(168,85,247,0.30); color: var(--purple-l); }
+    .nav-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .clock {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; font-weight: 600;
+      color: var(--purple-l);
+      padding: 6px 14px; border-radius: 10px;
+      background: rgba(168,85,247,0.07);
+      border: 1px solid rgba(168,85,247,0.15);
+      letter-spacing: 0.04em;
+    }
+
+    .online-dot {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 10px; font-family: 'JetBrains Mono', monospace;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+    }
+    .online-dot::before {
+      content: ''; display: block;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.9);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    /* ── Main content ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 36px 24px 80px; }
+
+    .page-title {
+      font-size: 28px; font-weight: 900; color: white;
+      letter-spacing: -0.03em; margin-bottom: 6px;
+    }
+    .page-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+
+    /* ── Report type selector ── */
+    .section-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(168,85,247,0.60);
+      margin-bottom: 12px;
+    }
+
+    .report-types {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+      gap: 10px; margin-bottom: 28px;
+    }
+
+    .report-type-btn {
+      display: flex; flex-direction: column; align-items: flex-start;
+      gap: 6px; padding: 16px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; cursor: pointer; transition: all 0.15s;
+      text-align: left; font-family: 'Inter', sans-serif;
+    }
+    .report-type-btn:hover { border-color: rgba(168,85,247,0.30); background: #160f28; }
+    .report-type-btn.selected {
+      border-color: var(--purple); background: rgba(168,85,247,0.10);
+      box-shadow: 0 0 20px rgba(168,85,247,0.12);
+    }
+    .report-type-btn .rt-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.22);
+      margin-bottom: 2px;
+    }
+    .report-type-btn.selected .rt-icon { background: rgba(168,85,247,0.22); }
+    .report-type-btn .rt-icon svg { width: 18px; height: 18px; color: var(--purple-l); }
+    .report-type-btn .rt-name { font-size: 13px; font-weight: 700; color: white; }
+    .report-type-btn .rt-desc { font-size: 11px; color: var(--muted); }
+
+    /* ── Form ── */
+    .form-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; margin-bottom: 20px;
+    }
+    .form-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(168,85,247,0.08);
+      background: rgba(168,85,247,0.03);
+    }
+    .form-header-title { font-size: 14px; font-weight: 800; color: white; }
+    .form-header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    .form-body { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-body.single-col { grid-template-columns: 1fr; }
+    .form-body.three-col { grid-template-columns: 1fr 1fr 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field.full { grid-column: 1/-1; }
+    .field label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: rgba(168,85,247,0.65);
+    }
+    .field input, .field select, .field textarea {
+      width: 100%; background: rgba(168,85,247,0.05);
+      border: 1.5px solid rgba(168,85,247,0.16);
+      border-radius: 10px; color: var(--text);
+      padding: 10px 13px; font-family: 'Inter', sans-serif;
+      font-size: 13.5px; outline: none;
+      transition: border-color 0.16s, box-shadow 0.16s;
+      appearance: none; -webkit-appearance: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: rgba(168,85,247,0.50);
+      box-shadow: 0 0 0 3px rgba(168,85,247,0.09);
+    }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(100,116,139,0.50); }
+    .field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+    .field select option { background: #110d1c; }
+
+    /* ── Output ── */
+    .output-section { margin-top: 20px; }
+    #output-box {
+      width: 100%; min-height: 240px;
+      background: rgba(0,0,0,0.3); border: 1.5px solid rgba(168,85,247,0.18);
+      border-radius: 12px; color: #c084fc;
+      padding: 16px; font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px; line-height: 1.8;
+      outline: none; resize: vertical;
+      white-space: pre-wrap;
+    }
+
+    .action-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 11px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      transition: all 0.14s; font-family: 'Inter', sans-serif;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg,#7c3aed,#a855f7);
+      color: white; border-color: rgba(168,85,247,0.40);
+      box-shadow: 0 4px 18px rgba(168,85,247,0.30);
+    }
+    .btn-primary:hover { filter: brightness(1.10); transform: translateY(-1px); }
+    .btn-ghost {
+      background: rgba(168,85,247,0.06); color: var(--purple-l);
+      border-color: rgba(168,85,247,0.22);
+    }
+    .btn-ghost:hover { background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.35); }
+    .btn-danger {
+      background: rgba(239,68,68,0.10); color: #f87171;
+      border-color: rgba(239,68,68,0.28);
+    }
+    .btn-danger:hover { background: rgba(239,68,68,0.18); }
+    .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface); border: 1px solid rgba(168,85,247,0.22);
+      border-radius: 20px; width: 100%; max-width: 680px;
+      max-height: 82vh; display: flex; flex-direction: column;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.70);
+      animation: modalIn 0.22s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .modal.wide { max-width: 860px; }
+    @keyframes modalIn { from{opacity:0;transform:translateY(16px) scale(0.97)} to{opacity:1;transform:none} }
+
+    .modal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px; border-bottom: 1px solid rgba(168,85,247,0.10);
+      flex-shrink: 0;
+    }
+    .modal-head h2 { font-size: 17px; font-weight: 900; color: white; }
+    .modal-head p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; background: none;
+      border: 1px solid rgba(168,85,247,0.12); color: var(--muted); transition: all 0.12s;
+    }
+    .modal-close:hover { background: rgba(168,85,247,0.10); color: white; }
+    .modal-close svg { width: 14px; height: 14px; }
+
+    .modal-body { overflow-y: auto; padding: 22px; flex: 1; }
+
+    /* ── Cheat sheet ── */
+    .code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .code-group { background: rgba(168,85,247,0.04); border: 1px solid rgba(168,85,247,0.10); border-radius: 12px; padding: 14px; }
+    .code-group h3 { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.10em; color: var(--purple-l); margin-bottom: 10px; }
+    .code-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(168,85,247,0.06); }
+    .code-row:last-child { border-bottom: none; }
+    .code-key { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--purple-l); }
+    .code-val { font-size: 12px; color: #94a3b8; }
+
+    /* ── Legislation ── */
+    .leg-section { margin-bottom: 20px; }
+    .leg-section h3 { font-size: 13px; font-weight: 800; color: white; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(168,85,247,0.10); }
+    .leg-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(168,85,247,0.05); }
+    .leg-item:last-child { border-bottom: none; }
+    .leg-code { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--purple); min-width: 70px; padding-top: 1px; }
+    .leg-desc { font-size: 12.5px; color: #94a3b8; line-height: 1.5; }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      padding: 12px 20px; border-radius: 12px;
+      background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.30);
+      color: #4ade80; font-size: 13px; font-weight: 600;
+      display: none; animation: toastIn 0.2s ease-out;
+    }
+    @keyframes toastIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+    /* ── Chips ── */
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .chip-green { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.28); color: #4ade80; }
+    .chip-red   { background: rgba(239,68,68,0.12);  border: 1px solid rgba(239,68,68,0.28);  color: #f87171; }
+    .chip-gold  { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.28); color: #fcd34d; }
+    .chip-blue  { background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.28); color: #818cf8; }
+
+    @media (max-width: 640px) {
+      .header-nav { display: none; }
+      .form-body { grid-template-columns: 1fr; }
+      .form-body.three-col { grid-template-columns: 1fr 1fr; }
+      .code-grid { grid-template-columns: 1fr; }
+      .report-types { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════ HEADER ═══════ -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="logo-title">Next RP</div>
+        <div class="logo-sub">Report Suite · AIRS</div>
+      </div>
+      <div class="online-dot" style="margin-left:8px">Online</div>
+    </div>
+
+    <nav class="header-nav">
+      <button class="nav-btn" onclick="openModal('modal-cheatsheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Cheat Sheet
+      </button>
+      <button class="nav-btn" onclick="openModal('modal-legislation')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        Legislation
+      </button>
+      <button class="nav-btn" onclick="openModal('modal-feedback')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Feedback
+      </button>
+      <a href="/dashboard" class="nav-btn" style="text-decoration:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        AIRS Dashboard
+      </a>
+    </nav>
+
+    <div class="clock" id="clock">00:00:00</div>
+  </header>
+
+  <!-- ═══════ MAIN ═══════ -->
+  <main class="main">
+    <div style="margin-bottom:28px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+        <h1 class="page-title" style="margin-bottom:0">Report Generator</h1>
+        <span class="chip chip-green">Live</span>
+      </div>
+      <p class="page-sub">Select a report type below, fill in the details, and copy the formatted report.</p>
+    </div>
+
+    <!-- Report type selector -->
+    <div class="section-label">Select Report Type</div>
+    <div class="report-types" id="report-types">
+
+      <button class="report-type-btn selected" data-type="traffic" onclick="selectType(this,'traffic')">
+        <div class="rt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v9a2 2 0 01-2 2h-2"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+        </div>
+        <div class="rt-name">Traffic Stop</div>
+        <div class="rt-desc">Vehicle & driver infringement</div>
+      </button>
+
+      <button class="report-type-btn" data-type="arrest" onclick="selectType(this,'arrest')">
+        <div class="rt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+        </div>
+        <div class="rt-name">Arrest Report</div>
+        <div class="rt-desc">Custody & charges</div>
+      </button>
+
+      <button class="report-type-btn" data-type="incident" onclick="selectType(this,'incident')">
+        <div class="rt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="rt-name">Incident Report</div>
+        <div class="rt-desc">General incident log</div>
+      </button>
+
+      <button class="report-type-btn" data-type="search" onclick="selectType(this,'search')">
+        <div class="rt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="rt-name">Search & Seizure</div>
+        <div class="rt-desc">Premises or vehicle search</div>
+      </button>
+
+      <button class="report-type-btn" data-type="pursuit" onclick="selectType(this,'pursuit')">
+        <div class="rt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="rt-name">Vehicle Pursuit</div>
+        <div class="rt-desc">Pursuit initiation & end</div>
+      </button>
+
+      <button class="report-type-btn" data-type="use-of-force" onclick="selectType(this,'use-of-force')">
+        <div class="rt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="rt-name">Use of Force</div>
+        <div class="rt-desc">Force justification report</div>
+      </button>
+
+    </div>
+
+    <!-- Dynamic form -->
+    <div id="form-container"></div>
+
+    <!-- Output -->
+    <div class="output-section">
+      <div class="section-label">Generated Report</div>
+      <div class="form-card">
+        <div class="form-header">
+          <div>
+            <div class="form-header-title">Report Output</div>
+            <div class="form-header-sub">Copy and paste this into your report channel</div>
+          </div>
+          <span class="chip chip-blue" id="report-type-chip">Traffic Stop</span>
+        </div>
+        <div style="padding:16px">
+          <textarea id="output-box" readonly placeholder="Fill in the form above and click Generate Report..."></textarea>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="btn btn-primary" onclick="generateReport()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Generate Report
+        </button>
+        <button class="btn btn-ghost" onclick="copyReport()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy to Clipboard
+        </button>
+        <button class="btn btn-danger" onclick="clearForm()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+          Clear
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══════ MODAL: CHEAT SHEET ═══════ -->
+  <div class="modal-overlay" id="modal-cheatsheet">
+    <div class="modal wide">
+      <div class="modal-head">
+        <div>
+          <h2>Police Cheat Sheet</h2>
+          <p>Quick reference for codes, signals, and procedures</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-cheatsheet')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="code-grid">
+          <div class="code-group">
+            <h3>Radio Codes</h3>
+            <div class="code-row"><span class="code-key">10-4</span><span class="code-val">Acknowledged / Copy</span></div>
+            <div class="code-row"><span class="code-key">10-6</span><span class="code-val">Busy — Stand By</span></div>
+            <div class="code-row"><span class="code-key">10-7</span><span class="code-val">Out of Service</span></div>
+            <div class="code-row"><span class="code-key">10-8</span><span class="code-val">In Service / Available</span></div>
+            <div class="code-row"><span class="code-key">10-10</span><span class="code-val">Off Duty</span></div>
+            <div class="code-row"><span class="code-key">10-20</span><span class="code-val">Location</span></div>
+            <div class="code-row"><span class="code-key">10-23</span><span class="code-val">Arrived on Scene</span></div>
+            <div class="code-row"><span class="code-key">10-76</span><span class="code-val">En Route</span></div>
+            <div class="code-row"><span class="code-key">10-99</span><span class="code-val">Officer Needs Assistance</span></div>
+          </div>
+          <div class="code-group">
+            <h3>Priority Codes</h3>
+            <div class="code-row"><span class="code-key">Code 1</span><span class="code-val">Routine — No Lights/Siren</span></div>
+            <div class="code-row"><span class="code-key">Code 2</span><span class="code-val">Urgent — No Siren</span></div>
+            <div class="code-row"><span class="code-key">Code 3</span><span class="code-val">Emergency — Lights &amp; Siren</span></div>
+            <div class="code-row"><span class="code-key">Code 4</span><span class="code-val">Scene Secure — No Further Units</span></div>
+            <div class="code-row"><span class="code-key">Code 6</span><span class="code-val">Out for Investigation</span></div>
+            <div class="code-row"><span class="code-key">Code 7</span><span class="code-val">Meal Break</span></div>
+          </div>
+          <div class="code-group">
+            <h3>Charges Reference</h3>
+            <div class="code-row"><span class="code-key">S/A</span><span class="code-val">Simple Assault</span></div>
+            <div class="code-row"><span class="code-key">A/A</span><span class="code-val">Aggravated Assault</span></div>
+            <div class="code-row"><span class="code-key">AOPWI</span><span class="code-val">Assault — Officer w/ Intent</span></div>
+            <div class="code-row"><span class="code-key">B&amp;E</span><span class="code-val">Breaking &amp; Entering</span></div>
+            <div class="code-row"><span class="code-key">POM</span><span class="code-val">Possession of Marijuana</span></div>
+            <div class="code-row"><span class="code-key">POW</span><span class="code-val">Possession of Weapon</span></div>
+            <div class="code-row"><span class="code-key">ELUDING</span><span class="code-val">Failure to Yield / Pursuit</span></div>
+            <div class="code-row"><span class="code-key">MUAC</span><span class="code-val">Murder Under the Criminal Code</span></div>
+          </div>
+          <div class="code-group">
+            <h3>Vehicle Offences</h3>
+            <div class="code-row"><span class="code-key">DUI</span><span class="code-val">Driving Under Influence</span></div>
+            <div class="code-row"><span class="code-key">RD</span><span class="code-val">Reckless Driving</span></div>
+            <div class="code-row"><span class="code-key">FYR</span><span class="code-val">Failure to Yield to Red</span></div>
+            <div class="code-row"><span class="code-key">UDL</span><span class="code-val">Unlicensed Driver</span></div>
+            <div class="code-row"><span class="code-key">URV</span><span class="code-val">Unregistered Vehicle</span></div>
+            <div class="code-row"><span class="code-key">SPEED</span><span class="code-val">Speeding Infringement</span></div>
+            <div class="code-row"><span class="code-key">FTC</span><span class="code-val">Failure to Comply — Traffic Stop</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ MODAL: LEGISLATION ═══════ -->
+  <div class="modal-overlay" id="modal-legislation">
+    <div class="modal wide">
+      <div class="modal-head">
+        <div><h2>Legislation Reference</h2><p>Key laws applicable to Next RP — Melbourne Police</p></div>
+        <button class="modal-close" onclick="closeModal('modal-legislation')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="leg-section">
+          <h3>Criminal Code</h3>
+          <div class="leg-item"><span class="leg-code">CC s.1</span><span class="leg-desc">Murder — Intentional killing of another person with malice aforethought. Life imprisonment.</span></div>
+          <div class="leg-item"><span class="leg-code">CC s.2</span><span class="leg-desc">Manslaughter — Unintentional killing resulting from criminal negligence or recklessness.</span></div>
+          <div class="leg-item"><span class="leg-code">CC s.3</span><span class="leg-desc">Assault — Intentional act causing apprehension of immediate harmful or offensive contact.</span></div>
+          <div class="leg-item"><span class="leg-code">CC s.4</span><span class="leg-desc">Aggravated Assault — Assault with a deadly weapon or causing serious bodily harm.</span></div>
+          <div class="leg-item"><span class="leg-code">CC s.5</span><span class="leg-desc">Assault on Police Officer — Assault upon a law enforcement officer in the performance of duties.</span></div>
+          <div class="leg-item"><span class="leg-code">CC s.6</span><span class="leg-desc">Robbery — Taking property from a person using force or threat of force.</span></div>
+          <div class="leg-item"><span class="leg-code">CC s.7</span><span class="leg-desc">Kidnapping — Unlawful detention or carrying away of a person against their will.</span></div>
+          <div class="leg-item"><span class="leg-code">CC s.8</span><span class="leg-desc">Possession of Illegal Weapon — Unlicensed possession of a restricted or prohibited weapon.</span></div>
+        </div>
+        <div class="leg-section">
+          <h3>Traffic Act</h3>
+          <div class="leg-item"><span class="leg-code">TA s.1</span><span class="leg-desc">Reckless Driving — Operating a vehicle in a manner dangerous to the public.</span></div>
+          <div class="leg-item"><span class="leg-code">TA s.2</span><span class="leg-desc">Driving Under Influence — Operating a vehicle while impaired by alcohol or substances.</span></div>
+          <div class="leg-item"><span class="leg-code">TA s.3</span><span class="leg-desc">Failure to Stop — Failing to stop for a police officer when lawfully directed to do so.</span></div>
+          <div class="leg-item"><span class="leg-code">TA s.4</span><span class="leg-desc">Unlicensed Driving — Operating a motor vehicle without a valid driver's licence.</span></div>
+          <div class="leg-item"><span class="leg-code">TA s.5</span><span class="leg-desc">Unregistered Vehicle — Operating a vehicle that is not registered with the relevant authority.</span></div>
+          <div class="leg-item"><span class="leg-code">TA s.6</span><span class="leg-desc">Speeding — Exceeding the posted speed limit on any public road or highway.</span></div>
+        </div>
+        <div class="leg-section">
+          <h3>Public Security Act</h3>
+          <div class="leg-item"><span class="leg-code">PS s.1</span><span class="leg-desc">Trespassing — Unlawful entry or remaining on private or restricted property.</span></div>
+          <div class="leg-item"><span class="leg-code">PS s.2</span><span class="leg-desc">Disorderly Conduct — Behaviour that causes public alarm, nuisance or disturbance.</span></div>
+          <div class="leg-item"><span class="leg-code">PS s.3</span><span class="leg-desc">Obstruction of Police — Wilfully obstructing, hindering or resisting a police officer.</span></div>
+          <div class="leg-item"><span class="leg-code">PS s.4</span><span class="leg-desc">Breach of Peace — Acting in a way likely to cause a breach of the peace.</span></div>
+        </div>
+        <div class="leg-section">
+          <h3>Weapons Act</h3>
+          <div class="leg-item"><span class="leg-code">WA s.1</span><span class="leg-desc">Prohibited Weapon — Possession of a prohibited weapon without lawful excuse.</span></div>
+          <div class="leg-item"><span class="leg-code">WA s.2</span><span class="leg-desc">Carrying Concealed — Carrying a concealed weapon in a public place without authority.</span></div>
+          <div class="leg-item"><span class="leg-code">WA s.3</span><span class="leg-desc">Brandishing — Displaying a weapon in a threatening or intimidating manner.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ MODAL: FEEDBACK ═══════ -->
+  <div class="modal-overlay" id="modal-feedback">
+    <div class="modal">
+      <div class="modal-head">
+        <div><h2>Submit Feedback</h2><p>Report issues or suggestions for the AIRS system</p></div>
+        <button class="modal-close" onclick="closeModal('modal-feedback')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="field">
+            <label>Your Name / Callsign</label>
+            <input type="text" id="fb-name" placeholder="e.g. Senior Constable Smith · SC-42" />
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select id="fb-cat">
+              <option>Bug Report</option>
+              <option>Feature Request</option>
+              <option>UI/UX Suggestion</option>
+              <option>Report Template Issue</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea id="fb-desc" placeholder="Describe the issue or suggestion in detail..." style="min-height:110px"></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="submitFeedback()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Submit Feedback
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast">✓ Copied to clipboard!</div>
+
+  <script>
+    // ── Clock ──
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent =
+        now.toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Australia/Melbourne', hour12:false });
+    }
+    updateClock(); setInterval(updateClock, 1000);
+
+    // ── Modal ──
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    document.querySelectorAll('.modal-overlay').forEach(el =>
+      el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); })
+    );
+
+    // ── Report type selection ──
+    let currentType = 'traffic';
+    const FORMS = {
+      traffic: {
+        title: 'Traffic Stop Report',
+        sub: 'Vehicle stop, infringement & driver details',
+        chip: 'Traffic Stop',
+        fields: [
+          ['Officer Name & Callsign','officer','text','e.g. Constable J. Smith · GD-12','half'],
+          ['Date & Time','datetime','datetime-local','','half'],
+          ['Location of Stop','location','text','e.g. Intersection of Collins St & Spencer St','full'],
+          ['Vehicle Plate','plate','text','e.g. 1AB 2CD','third'],
+          ['Vehicle Description','veh-desc','text','e.g. 2019 White Toyota Camry','third'],
+          ['Registered Owner','reg-owner','text','','third'],
+          ['Driver Name','driver-name','text','','half'],
+          ['Driver Licence','driver-lic','text','','half'],
+          ['Reason for Stop','stop-reason','text','e.g. Speeding — 80km/h in 50km/h zone','full'],
+          ['Charges / Infringements','charges','textarea','List each charge on a new line','full'],
+          ['Outcome','outcome','select','','full',['Warning Issued','Infringement Notice','Vehicle Impounded','Arrested','No Further Action']],
+          ['Additional Notes','notes','textarea','Any additional information...','full'],
+        ]
+      },
+      arrest: {
+        title: 'Arrest Report',
+        sub: 'Suspect custody and charges documentation',
+        chip: 'Arrest',
+        fields: [
+          ['Arresting Officer & Callsign','officer','text','','half'],
+          ['Date & Time of Arrest','datetime','datetime-local','','half'],
+          ['Location of Arrest','location','text','','full'],
+          ['Suspect Full Name','suspect-name','text','','half'],
+          ['Date of Birth','suspect-dob','date','','half'],
+          ['Physical Description','suspect-desc','text','e.g. Male, 6\'1", brown hair, tattoo on neck','full'],
+          ['Charges','charges','textarea','List each charge on a new line','full'],
+          ['Arrest Circumstances','circumstances','textarea','Describe the events leading to the arrest','full'],
+          ['Evidence Seized','evidence','textarea','List evidence collected','full'],
+          ['Bail Conditions / Remand','bail','select','','full',['Released — No Charge','Released on Bail','Remanded in Custody','Issued Court Summons']],
+          ['Additional Notes','notes','textarea','','full'],
+        ]
+      },
+      incident: {
+        title: 'Incident Report',
+        sub: 'General incident documentation',
+        chip: 'Incident',
+        fields: [
+          ['Reporting Officer & Callsign','officer','text','','half'],
+          ['Date & Time','datetime','datetime-local','','half'],
+          ['Incident Location','location','text','','full'],
+          ['Incident Type','inc-type','select','','half',['Assault','Robbery','Disturbance','Suspicious Activity','Medical Assist','Fire','Other']],
+          ['Priority Level','priority','select','','half',['Code 1 — Routine','Code 2 — Urgent','Code 3 — Emergency']],
+          ['Persons Involved','persons','textarea','Name, role, and contact if known','full'],
+          ['Incident Description','description','textarea','Detailed account of the incident','full'],
+          ['Actions Taken','actions','textarea','What officers did at the scene','full'],
+          ['Outcome / Disposition','outcome','select','','full',['No Further Action','Report Filed','Arrest Made','Referred to Detectives','Medical Referral']],
+          ['Additional Notes','notes','textarea','','full'],
+        ]
+      },
+      search: {
+        title: 'Search & Seizure Report',
+        sub: 'Grounds, consent, and items seized',
+        chip: 'Search & Seizure',
+        fields: [
+          ['Officer Name & Callsign','officer','text','','half'],
+          ['Date & Time','datetime','datetime-local','','half'],
+          ['Location Searched','location','text','','full'],
+          ['Subject / Premises Name','subject','text','','half'],
+          ['Search Type','search-type','select','','half',['Person','Vehicle','Premises','Bag/Container']],
+          ['Legal Basis for Search','legal-basis','select','','full',['Probable Cause','Consent Given','Search Warrant — Warrant No.','Arrest Incident','Exigent Circumstances']],
+          ['Warrant Number (if applicable)','warrant-no','text','Leave blank if not applicable','half'],
+          ['Consenting Party','consent-party','text','Name of person who consented (or N/A)','half'],
+          ['Items Seized','seized','textarea','List all items seized, with descriptions','full'],
+          ['Items Returned','returned','textarea','Items returned to owner (if any)','full'],
+          ['Additional Notes','notes','textarea','','full'],
+        ]
+      },
+      pursuit: {
+        title: 'Vehicle Pursuit Report',
+        sub: 'Pursuit initiation, events, and termination',
+        chip: 'Pursuit',
+        fields: [
+          ['Initiating Officer & Callsign','officer','text','','half'],
+          ['Date & Time Initiated','datetime','datetime-local','','half'],
+          ['Initial Location','start-loc','text','Where the pursuit began','half'],
+          ['Termination Location','end-loc','text','Where the pursuit ended','half'],
+          ['Fleeing Vehicle Description','veh-desc','text','Make, model, colour, plate','full'],
+          ['Reason for Initial Stop','stop-reason','text','Why was the vehicle being stopped','full'],
+          ['Max Speed Reached','max-speed','text','e.g. ~130km/h','half'],
+          ['Duration','duration','text','e.g. 4 minutes','half'],
+          ['Units Involved','units','textarea','List all units that joined the pursuit','full'],
+          ['Pursuit Events','events','textarea','Describe key events during the pursuit','full'],
+          ['Termination Reason','termination','select','','full',['Vehicle Stopped — Occupants Detained','Vehicle Stopped — Occupants Fled on Foot','Pursuit Terminated — Safety Concerns','Pursuit Terminated — Lost Visual','Vehicle Crashed','Spike Strip Deployed']],
+          ['Outcome','outcome','textarea','What happened after the pursuit ended','full'],
+        ]
+      },
+      'use-of-force': {
+        title: 'Use of Force Report',
+        sub: 'Justification and force level documentation',
+        chip: 'Use of Force',
+        fields: [
+          ['Officer Name & Callsign','officer','text','','half'],
+          ['Date & Time','datetime','datetime-local','','half'],
+          ['Location of Incident','location','text','','full'],
+          ['Subject Name','subject','text','','half'],
+          ['Subject Description','subject-desc','text','','half'],
+          ['Threat Level','threat','select','','full',['Verbal Threat','Physical Resistance','Armed — Non-Lethal','Armed — Lethal Threat']],
+          ['Force Used','force-used','select','','full',['Verbal Commands Only','Physical Restraint','Taser / CEW','Baton','Firearm — Warning Shot','Firearm — Directed Shot','Other']],
+          ['Circumstances Leading to Force','circumstances','textarea','Describe what led to force being required','full'],
+          ['De-escalation Attempts','deescalation','textarea','What attempts were made before force was used','full'],
+          ['Injuries Sustained','injuries','textarea','Officer and/or subject injuries','full'],
+          ['Medical Attention Required','medical','select','','half',['None Required','First Aid Applied','Ambulance Called','Hospital Transport']],
+          ['Supervisor Notified','supervisor','text','Name & callsign of supervisor notified','half'],
+          ['Additional Notes','notes','textarea','','full'],
+        ]
+      },
+    };
+
+    function selectType(el, type) {
+      document.querySelectorAll('.report-type-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      currentType = type;
+      renderForm(type);
+      document.getElementById('report-type-chip').textContent = FORMS[type].chip;
+    }
+
+    function renderForm(type) {
+      const f = FORMS[type];
+      let html = `<div class="form-card"><div class="form-header"><div><div class="form-header-title">${f.title}</div><div class="form-header-sub">${f.sub}</div></div></div><div class="form-body" id="inner-form">`;
+      f.fields.forEach(([label, id, inputType, placeholder, span, options]) => {
+        const cls = span === 'full' ? ' full' : span === 'third' ? '' : '';
+        html += `<div class="field${cls}"><label>${label}</label>`;
+        if (inputType === 'textarea') {
+          html += `<textarea id="f-${id}" placeholder="${placeholder || ''}"></textarea>`;
+        } else if (inputType === 'select' && options) {
+          html += `<select id="f-${id}">${options.map(o=>`<option>${o}</option>`).join('')}</select>`;
+        } else {
+          html += `<input type="${inputType}" id="f-${id}" placeholder="${placeholder || ''}" />`;
+        }
+        html += `</div>`;
+      });
+      html += `</div></div>`;
+      document.getElementById('form-container').innerHTML = html;
+    }
+
+    function getVal(id) {
+      const el = document.getElementById(`f-${id}`);
+      return el ? el.value.trim() : '';
+    }
+
+    function now() {
+      return new Date().toLocaleString('en-AU', { timeZone: 'Australia/Melbourne', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:false });
+    }
+
+    function generateReport() {
+      const t = currentType;
+      let out = '';
+      const sep = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+      const gen = `[Generated: ${now()} AEST via Next RP AIRS Report Suite]`;
+
+      if (t === 'traffic') {
+        out = `${sep}\n📋 TRAFFIC STOP REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
+          `📌 OFFICER:      ${getVal('officer') || 'N/A'}\n` +
+          `📅 DATE/TIME:    ${getVal('datetime') || 'N/A'}\n` +
+          `📍 LOCATION:     ${getVal('location') || 'N/A'}\n\n` +
+          `🚗 VEHICLE DETAILS\n` +
+          `   Plate:        ${getVal('plate') || 'N/A'}\n` +
+          `   Description:  ${getVal('veh-desc') || 'N/A'}\n` +
+          `   Reg. Owner:   ${getVal('reg-owner') || 'N/A'}\n\n` +
+          `👤 DRIVER DETAILS\n` +
+          `   Name:         ${getVal('driver-name') || 'N/A'}\n` +
+          `   Licence:      ${getVal('driver-lic') || 'N/A'}\n\n` +
+          `⚠️  REASON FOR STOP\n   ${getVal('stop-reason') || 'N/A'}\n\n` +
+          `📋 CHARGES / INFRINGEMENTS\n   ${(getVal('charges') || 'None').replace(/\n/g, '\n   ')}\n\n` +
+          `✅ OUTCOME:      ${getVal('outcome') || 'N/A'}\n\n` +
+          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
+      } else if (t === 'arrest') {
+        out = `${sep}\n🔒 ARREST REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
+          `📌 ARRESTING OFFICER: ${getVal('officer') || 'N/A'}\n` +
+          `📅 DATE/TIME:         ${getVal('datetime') || 'N/A'}\n` +
+          `📍 LOCATION:          ${getVal('location') || 'N/A'}\n\n` +
+          `👤 SUSPECT DETAILS\n` +
+          `   Name:         ${getVal('suspect-name') || 'N/A'}\n` +
+          `   DOB:          ${getVal('suspect-dob') || 'N/A'}\n` +
+          `   Description:  ${getVal('suspect-desc') || 'N/A'}\n\n` +
+          `⚖️  CHARGES\n   ${(getVal('charges') || 'None').replace(/\n/g, '\n   ')}\n\n` +
+          `📖 CIRCUMSTANCES\n   ${(getVal('circumstances') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
+          `🗂️  EVIDENCE SEIZED\n   ${(getVal('evidence') || 'None').replace(/\n/g, '\n   ')}\n\n` +
+          `🏛️  BAIL/REMAND:      ${getVal('bail') || 'N/A'}\n\n` +
+          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
+      } else if (t === 'incident') {
+        out = `${sep}\n🚨 INCIDENT REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
+          `📌 REPORTING OFFICER: ${getVal('officer') || 'N/A'}\n` +
+          `📅 DATE/TIME:         ${getVal('datetime') || 'N/A'}\n` +
+          `📍 LOCATION:          ${getVal('location') || 'N/A'}\n` +
+          `📋 INCIDENT TYPE:     ${getVal('inc-type') || 'N/A'}\n` +
+          `🚦 PRIORITY:          ${getVal('priority') || 'N/A'}\n\n` +
+          `👥 PERSONS INVOLVED\n   ${(getVal('persons') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
+          `📝 DESCRIPTION\n   ${(getVal('description') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
+          `✅ ACTIONS TAKEN\n   ${(getVal('actions') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
+          `📊 OUTCOME:           ${getVal('outcome') || 'N/A'}\n\n` +
+          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
+      } else if (t === 'search') {
+        out = `${sep}\n🔍 SEARCH & SEIZURE REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
+          `📌 OFFICER:           ${getVal('officer') || 'N/A'}\n` +
+          `📅 DATE/TIME:         ${getVal('datetime') || 'N/A'}\n` +
+          `📍 LOCATION:          ${getVal('location') || 'N/A'}\n` +
+          `👤 SUBJECT/PREMISES:  ${getVal('subject') || 'N/A'}\n` +
+          `🔎 SEARCH TYPE:       ${getVal('search-type') || 'N/A'}\n` +
+          `⚖️  LEGAL BASIS:       ${getVal('legal-basis') || 'N/A'}\n` +
+          `📋 WARRANT NO:        ${getVal('warrant-no') || 'N/A'}\n` +
+          `✍️  CONSENT BY:        ${getVal('consent-party') || 'N/A'}\n\n` +
+          `📦 ITEMS SEIZED\n   ${(getVal('seized') || 'None').replace(/\n/g, '\n   ')}\n\n` +
+          `↩️  ITEMS RETURNED\n   ${(getVal('returned') || 'None').replace(/\n/g, '\n   ')}\n\n` +
+          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
+      } else if (t === 'pursuit') {
+        out = `${sep}\n🚔 VEHICLE PURSUIT REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
+          `📌 INITIATING OFFICER: ${getVal('officer') || 'N/A'}\n` +
+          `📅 DATE/TIME:          ${getVal('datetime') || 'N/A'}\n` +
+          `📍 START LOCATION:     ${getVal('start-loc') || 'N/A'}\n` +
+          `🏁 END LOCATION:       ${getVal('end-loc') || 'N/A'}\n` +
+          `⏱️  DURATION:           ${getVal('duration') || 'N/A'}\n` +
+          `💨 MAX SPEED:          ${getVal('max-speed') || 'N/A'}\n\n` +
+          `🚗 FLEEING VEHICLE:    ${getVal('veh-desc') || 'N/A'}\n` +
+          `⚠️  REASON FOR STOP:   ${getVal('stop-reason') || 'N/A'}\n\n` +
+          `👮 UNITS INVOLVED\n   ${(getVal('units') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
+          `📖 PURSUIT EVENTS\n   ${(getVal('events') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
+          `🛑 TERMINATION:        ${getVal('termination') || 'N/A'}\n\n` +
+          `✅ OUTCOME\n   ${(getVal('outcome') || 'N/A').replace(/\n/g, '\n   ')}\n\n${sep}\n${gen}`;
+      } else if (t === 'use-of-force') {
+        out = `${sep}\n⚡ USE OF FORCE REPORT — NEXT RP MELBOURNE POLICE\n${sep}\n\n` +
+          `📌 OFFICER:            ${getVal('officer') || 'N/A'}\n` +
+          `📅 DATE/TIME:          ${getVal('datetime') || 'N/A'}\n` +
+          `📍 LOCATION:           ${getVal('location') || 'N/A'}\n` +
+          `👤 SUBJECT:            ${getVal('subject') || 'N/A'}\n` +
+          `📋 DESCRIPTION:        ${getVal('subject-desc') || 'N/A'}\n\n` +
+          `⚠️  THREAT LEVEL:      ${getVal('threat') || 'N/A'}\n` +
+          `💥 FORCE USED:         ${getVal('force-used') || 'N/A'}\n\n` +
+          `📖 CIRCUMSTANCES\n   ${(getVal('circumstances') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
+          `🕊️  DE-ESCALATION ATTEMPTS\n   ${(getVal('deescalation') || 'N/A').replace(/\n/g, '\n   ')}\n\n` +
+          `🏥 INJURIES:           ${(getVal('injuries') || 'None').replace(/\n/g, '\n   ')}\n` +
+          `🚑 MEDICAL:            ${getVal('medical') || 'N/A'}\n` +
+          `👮 SUPERVISOR:         ${getVal('supervisor') || 'N/A'}\n\n` +
+          `📝 NOTES\n   ${getVal('notes') || 'None'}\n\n${sep}\n${gen}`;
+      }
+
+      document.getElementById('output-box').value = out;
+    }
+
+    function copyReport() {
+      const txt = document.getElementById('output-box').value;
+      if (!txt.trim()) return;
+      navigator.clipboard.writeText(txt).then(() => {
+        const t = document.getElementById('toast');
+        t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, 2200);
+      });
+    }
+
+    function clearForm() {
+      document.querySelectorAll('#inner-form input, #inner-form select, #inner-form textarea').forEach(el => {
+        if (el.tagName === 'SELECT') el.selectedIndex = 0;
+        else el.value = '';
+      });
+      document.getElementById('output-box').value = '';
+    }
+
+    function submitFeedback() {
+      const name = document.getElementById('fb-name').value.trim();
+      const cat  = document.getElementById('fb-cat').value;
+      const desc = document.getElementById('fb-desc').value.trim();
+      if (!desc) return;
+      const t = document.getElementById('toast');
+      t.textContent = '✓ Feedback submitted!';
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; t.textContent = '✓ Copied to clipboard!'; }, 2500);
+      document.getElementById('fb-name').value = '';
+      document.getElementById('fb-desc').value = '';
+      closeModal('modal-feedback');
+      console.log('Feedback:', { name, cat, desc });
+    }
+
+    // Init
+    renderForm('traffic');
+  </script>
+</body>
+</html>
