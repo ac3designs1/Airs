@@ -12,6 +12,9 @@ interface Officer {
   callsign: string;
   role: string;
   created_at: string;
+  onboarding_complete?: number;
+  in_city_name?: string;
+  discord_username?: string;
 }
 
 interface AuthState {

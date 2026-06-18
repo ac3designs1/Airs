@@ -114,6 +114,7 @@ function createApp(options = {}) {
   app.use('/api/rewards', require('./routes/rewards'));
   app.use('/api/feedback', require('./routes/feedback'));
   app.use('/api/recruit-stages', require('./routes/recruit_stages'));
+  app.use('/api/onboarding', require('./routes/onboarding'));
   app.use('/api/stats', require('./routes/stats'));
 
   app.get('/api/health', (req, res) => {

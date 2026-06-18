@@ -44,6 +44,8 @@ import Vehicles from './pages/Vehicles';
 import Incidents from './pages/Incidents';
 import BOLOs from './pages/BOLOs';
 import LeadershipCommand from './pages/LeadershipCommand';
+import AcademyOnboarding from './pages/AcademyOnboarding';
+import PendingActivation from './pages/PendingActivation';
 
 export default function App() {
   return (
@@ -55,6 +57,7 @@ export default function App() {
           <Route path="/register" element={<Navigate to="/apply" replace />} />
           <Route path="/apply" element={<Apply />} />
           <Route path="/auth/discord" element={<DiscordCallback />} />
+          <Route path="/pending-activation" element={<PendingActivation />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
           {/* Dashboard routes */}
@@ -99,6 +102,7 @@ export default function App() {
             <Route path="/incidents" element={<Incidents />} />
             <Route path="/bolos" element={<BOLOs />} />
             <Route path="/leadership-command" element={<LeadershipCommand />} />
+            <Route path="/academy-onboarding" element={<AcademyOnboarding />} />
 
             {/* Catch-all */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

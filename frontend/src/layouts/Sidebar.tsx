@@ -7,7 +7,7 @@ import {
   X, Bell, Sword, UserCheck,
   ListChecks, Database, Key, AlertOctagon, Radio,
   TrendingUp, BookOpen, Megaphone, BadgeAlert, UserPlus, Car,
-  MessageSquare
+  MessageSquare, GraduationCap
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../api/client';
@@ -126,6 +126,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
       roles: ['admin','administrator','leadership','senior_command','supervisor'],
       items: [
         { id: 'lc', title: 'Command Centre', path: '/leadership-command', icon: TrendingUp, badge: (stats.pendingLeave + stats.pendingApps) || undefined },
+        { id: 'academy-onboarding', title: 'Academy Onboarding', path: '/academy-onboarding', icon: GraduationCap },
         { id: 'applications', title: 'Applications', path: '/leadership-applications', icon: UserPlus, badge: stats.pendingApps || undefined },
         { id: 'pending-req', title: 'Pending Requests', path: '/pending-requests', icon: Bell, badge: stats.pendingLeave || undefined },
         { id: 'announcements', title: 'Announcements', path: '/announcements', icon: Megaphone },
