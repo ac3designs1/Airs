@@ -1,6 +1,21 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import api from '../api/client';
 
+export type SpecialRole = 'fto' | 'senior_fto' | 'cirt_fto' | 'academy_leadership';
+
+export const SPECIAL_ROLE_LABELS: Record<SpecialRole, string> = {
+  fto:               'FTO',
+  senior_fto:        'Senior FTO',
+  cirt_fto:          'CIRT FTO',
+  academy_leadership:'Academy Leadership',
+};
+
+export const ALL_SPECIAL_ROLES: SpecialRole[] = ['fto', 'senior_fto', 'cirt_fto', 'academy_leadership'];
+
+export function hasSpecialRole(user: Officer | null, role: SpecialRole): boolean {
+  return !!(user?.special_roles?.includes(role));
+}
+
 interface Officer {
   id: string;
   username: string;
@@ -11,6 +26,7 @@ interface Officer {
   status: string;
   callsign: string;
   role: string;
+  special_roles: SpecialRole[];
   created_at: string;
   onboarding_complete?: number;
   in_city_name?: string;

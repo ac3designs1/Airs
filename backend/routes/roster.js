@@ -10,17 +10,20 @@ router.use(authenticateToken);
 
 router.get('/', (req, res) => {
   const { department } = req.query;
-  let query = `SELECT id, username, first_name, last_name, rank, department, status, callsign, role, created_at, last_login
+  let query = `SELECT id, username, first_name, last_name, rank, department, status, callsign, role, special_roles, created_at, last_login
     FROM officers WHERE username != 'admin'`;
   const params = [];
   if (department) { query += ' AND department = ?'; params.push(department); }
   query += ' ORDER BY department, rank, last_name';
-  res.json(db.prepare(query).all(...params));
+  const rows = db.prepare(query).all(...params);
+  rows.forEach(r => { try { r.special_roles = JSON.parse(r.special_roles || '[]'); } catch { r.special_roles = []; } });
+  res.json(rows);
 });
 
 router.get('/:id', (req, res) => {
-  const officer = db.prepare('SELECT id, username, first_name, last_name, rank, department, status, callsign, role, created_at, last_login FROM officers WHERE id = ?').get(req.params.id);
+  const officer = db.prepare('SELECT id, username, first_name, last_name, rank, department, status, callsign, role, special_roles, created_at, last_login FROM officers WHERE id = ?').get(req.params.id);
   if (!officer) return res.status(404).json({ error: 'Not found' });
+  try { officer.special_roles = JSON.parse(officer.special_roles || '[]'); } catch { officer.special_roles = []; }
   res.json(officer);
 });
 
@@ -85,8 +88,33 @@ router.put('/:id', (req, res) => {
       .run(uuidv4(), req.user.id, 'officer_updated', `${editor} updated ${officer.first_name} ${officer.last_name}: ${changes.join(', ')}`);
   }
 
-  const updated = db.prepare('SELECT id, username, first_name, last_name, rank, department, status, callsign, role, created_at, last_login FROM officers WHERE id = ?').get(req.params.id);
-  res.json(updated);
+  const updatedRaw = db.prepare('SELECT id, username, first_name, last_name, rank, department, status, callsign, role, special_roles, created_at, last_login FROM officers WHERE id = ?').get(req.params.id);
+  if (updatedRaw) { try { updatedRaw.special_roles = JSON.parse(updatedRaw.special_roles || '[]'); } catch { updatedRaw.special_roles = []; } }
+  res.json(updatedRaw);
+});
+
+// PUT /roster/:id/special-roles — add or remove a special role
+const VALID_SPECIAL_ROLES = ['fto', 'senior_fto', 'cirt_fto', 'academy_leadership'];
+router.put('/:id/special-roles', (req, res) => {
+  const SENIOR = ['commissioner', 'admin', 'administrator', 'senior_command'];
+  if (!SENIOR.includes(req.user.role)) return res.status(403).json({ error: 'Senior Command or above required' });
+  const officer = db.prepare('SELECT id, first_name, last_name, special_roles FROM officers WHERE id=?').get(req.params.id);
+  if (!officer) return res.status(404).json({ error: 'Officer not found' });
+  const { action, role: specialRole } = req.body;
+  if (!['add', 'remove'].includes(action) || !VALID_SPECIAL_ROLES.includes(specialRole)) {
+    return res.status(400).json({ error: 'Invalid action or role' });
+  }
+  let roles;
+  try { roles = JSON.parse(officer.special_roles || '[]'); } catch { roles = []; }
+  if (action === 'add' && !roles.includes(specialRole)) roles.push(specialRole);
+  if (action === 'remove') roles = roles.filter(r => r !== specialRole);
+  db.prepare('UPDATE officers SET special_roles=? WHERE id=?').run(JSON.stringify(roles), officer.id);
+  const editorRow = db.prepare('SELECT first_name, last_name FROM officers WHERE id=?').get(req.user.id);
+  const editor = editorRow ? `${editorRow.first_name} ${editorRow.last_name}` : req.user.username;
+  db.prepare('INSERT INTO activity_log (id, officer_id, action, details) VALUES (?,?,?,?)')
+    .run(uuidv4(), req.user.id, 'special_role_change',
+      `${editor} ${action}ed special role "${specialRole}" ${action === 'add' ? 'to' : 'from'} ${officer.first_name} ${officer.last_name}`);
+  res.json({ special_roles: roles });
 });
 
 // Commissioner-only: silently assign / revoke the commissioner role

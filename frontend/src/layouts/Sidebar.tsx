@@ -9,7 +9,7 @@ import {
   TrendingUp, BookOpen, Megaphone, BadgeAlert, UserPlus, Car,
   MessageSquare, GraduationCap
 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, hasSpecialRole } from '../contexts/AuthContext';
 import api from '../api/client';
 
 type Status = 'on_duty' | 'busy' | 'off_duty';
@@ -17,12 +17,12 @@ type Status = 'on_duty' | 'busy' | 'off_duty';
 interface NavItem {
   id: string; title: string; path: string;
   icon: React.ComponentType<{ className?: string }>;
-  badge?: number; roles?: string[];
+  badge?: number; roles?: string[]; specialRoles?: string[];
 }
 interface NavSection {
   id: string; title: string;
   icon: React.ComponentType<{ className?: string }>;
-  items: NavItem[]; roles?: string[];
+  items: NavItem[]; roles?: string[]; specialRoles?: string[];
   accentColor?: string;
 }
 
@@ -79,13 +79,25 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
     api.put('/roster/status', { status: s }).catch(() => {});
   };
 
-  const canSee = (item: { roles?: string[] }) => !item.roles || item.roles.includes(role);
+  // canSee checks base role OR special roles
+  const user = auth.user;
+  const canSee = (item: { roles?: string[]; specialRoles?: string[] }) => {
+    if (!item.roles && !item.specialRoles) return true;
+    if (item.roles && item.roles.includes(role)) return true;
+    if (item.specialRoles && user?.special_roles?.some(sr => item.specialRoles!.includes(sr))) return true;
+    return false;
+  };
+
+  // Permission helpers
+  const SENIOR_CMD = ['commissioner','admin','administrator','senior_command'];
+  const LEADERSHIP  = ['commissioner','admin','administrator','leadership','senior_command'];
+  const ALL_STAFF   = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
 
   const sections: NavSection[] = [
     {
       id: 'overview', title: 'Overview', icon: LayoutDashboard, accentColor: '#a855f7',
       items: [
-        { id: 'cmd', title: 'Command Centre', path: '/command-centre', icon: AlertOctagon, roles: ['commissioner','admin','administrator','leadership','senior_command'], badge: stats.activeCalls || undefined },
+        { id: 'cmd', title: 'Command Centre', path: '/command-centre', icon: AlertOctagon, roles: LEADERSHIP, badge: stats.activeCalls || undefined },
         { id: 'db', title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
         { id: 'shifts', title: 'My Shifts', path: '/shifts', icon: Clock },
         { id: 'stats', title: 'Statistics', path: '/statistics', icon: BarChart2 },
@@ -99,7 +111,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
         { id: 'bolos', title: 'BOLOs', path: '/bolos', icon: AlertOctagon, badge: stats.activeBolos || undefined },
         { id: 'incidents', title: 'Incidents', path: '/incidents', icon: FileText },
         { id: 'reports', title: 'Reports', path: '/reports', icon: ClipboardList },
-        { id: 'fpo', title: 'FPO Tracker', path: '/fpo-tracker', icon: Shield },
+        { id: 'fpo', title: 'FPO Tracker', path: '/fpo-tracker', icon: Shield, roles: LEADERSHIP },
         { id: 'roster', title: 'Officer Roster', path: '/roster', icon: Users },
         { id: 'weapons', title: 'Weapons Inventory', path: '/weapons-inventory', icon: Sword },
       ],
@@ -114,46 +126,59 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
       ],
     },
     {
+      // Training section: visible to FTO special roles AND leadership+
       id: 'training', title: 'Training', icon: UserCheck, accentColor: '#22c55e',
+      roles: ALL_STAFF, specialRoles: ['fto','senior_fto','cirt_fto','academy_leadership'],
       items: [
-        { id: 'recruit-tracker', title: 'Recruit Management', path: '/recruit-tracker', icon: GraduationCap },
-        { id: 'fto', title: 'FTO Tracking', path: '/fto-tracking', icon: Award, roles: ['commissioner','admin','administrator','leadership','senior_command','supervisor'] },
+        {
+          id: 'recruit-tracker', title: 'Recruit Management', path: '/recruit-tracker', icon: GraduationCap,
+          roles: LEADERSHIP, specialRoles: ['fto','senior_fto','academy_leadership'],
+        },
+        {
+          id: 'cirt-recruit', title: 'CIRT Recruit Tracker', path: '/cirt-recruit-tracker', icon: Shield,
+          roles: SENIOR_CMD, specialRoles: ['cirt_fto'],
+        },
+        {
+          id: 'fto', title: 'FTO Tracking', path: '/fto-tracking', icon: Award,
+          roles: ALL_STAFF, specialRoles: ['fto','senior_fto'],
+        },
       ],
     },
     {
       id: 'leadership', title: 'Leadership', icon: TrendingUp, accentColor: '#f59e0b',
-      roles: ['commissioner','admin','administrator','leadership','senior_command','supervisor'],
+      roles: LEADERSHIP, specialRoles: ['academy_leadership'],
       items: [
-        { id: 'lc', title: 'Command Centre', path: '/leadership-command', icon: TrendingUp, badge: (stats.pendingLeave + stats.pendingApps) || undefined },
-        { id: 'academy-onboarding', title: 'Academy Onboarding', path: '/academy-onboarding', icon: GraduationCap },
-        { id: 'applications', title: 'Applications', path: '/leadership-applications', icon: UserPlus, badge: stats.pendingApps || undefined },
-        { id: 'pending-req', title: 'Pending Requests', path: '/pending-requests', icon: Bell, badge: stats.pendingLeave || undefined },
-        { id: 'announcements', title: 'Announcements', path: '/announcements', icon: Megaphone },
-        { id: 'promotions', title: 'Promotions', path: '/promotions', icon: TrendingUp },
-        { id: 'strikes', title: 'Strikes & Demerits', path: '/strikes', icon: BadgeAlert },
-        { id: 'termapproval', title: 'Termination Approval', path: '/termination-approval', icon: AlertTriangle },
-        { id: 'analytics', title: 'Duty Analytics', path: '/duty-analytics', icon: BarChart2 },
-        { id: 'mdt', title: 'Officer Management', path: '/mdt', icon: Users },
-        { id: 'termlogs', title: 'Termination Logs', path: '/termination-logs', icon: ListChecks },
-        { id: 'feedback-view', title: 'Feedback Review', path: '/feedback', icon: MessageSquare },
+        { id: 'lc',               title: 'Command Centre',      path: '/leadership-command',    icon: TrendingUp,  roles: LEADERSHIP, badge: (stats.pendingLeave + stats.pendingApps) || undefined },
+        { id: 'academy-onboarding', title: 'Academy Onboarding', path: '/academy-onboarding',   icon: GraduationCap, roles: LEADERSHIP },
+        { id: 'applications',     title: 'Applications',        path: '/leadership-applications', icon: UserPlus,  roles: SENIOR_CMD, specialRoles: ['academy_leadership'], badge: stats.pendingApps || undefined },
+        { id: 'pending-req',      title: 'Pending Requests',    path: '/pending-requests',      icon: Bell,        roles: LEADERSHIP, badge: stats.pendingLeave || undefined },
+        { id: 'announcements',    title: 'Announcements',       path: '/announcements',         icon: Megaphone,   roles: LEADERSHIP },
+        { id: 'promotions',       title: 'Promotions',          path: '/promotions',            icon: TrendingUp,  roles: LEADERSHIP },
+        { id: 'strikes',          title: 'Strikes & Demerits',  path: '/strikes',               icon: BadgeAlert,  roles: LEADERSHIP },
+        // Termination Approval: Senior Command + Commissioner ONLY
+        { id: 'termapproval',     title: 'Termination Approval', path: '/termination-approval', icon: AlertTriangle, roles: SENIOR_CMD },
+        { id: 'analytics',        title: 'Duty Analytics',      path: '/duty-analytics',        icon: BarChart2,   roles: LEADERSHIP },
+        { id: 'mdt',              title: 'Officer Management',  path: '/mdt',                   icon: Users,       roles: LEADERSHIP },
+        { id: 'termlogs',         title: 'Termination Logs',    path: '/termination-logs',      icon: ListChecks,  roles: SENIOR_CMD },
+        { id: 'feedback-view',    title: 'Feedback Review',     path: '/feedback',              icon: MessageSquare, roles: LEADERSHIP },
       ],
     },
     {
       id: 'admin', title: 'Administration', icon: Key, accentColor: '#f43f5e',
-      roles: ['commissioner','admin','administrator','leadership','senior_command'],
+      roles: SENIOR_CMD,
       items: [
-        { id: 'users', title: 'User Management', path: '/users', icon: Users },
-        { id: 'divisions', title: 'Divisions', path: '/divisions', icon: Briefcase },
-        { id: 'roles', title: 'Role Permissions', path: '/role-permissions', icon: Key, roles: ['commissioner','admin','administrator'] },
-        { id: 'admindb', title: 'Admin Panel', path: '/admin', icon: Settings },
-        { id: 'dbstats', title: 'Database Stats', path: '/database-stats', icon: Database, roles: ['commissioner','admin','administrator'] },
+        { id: 'users',   title: 'User Management',  path: '/users',            icon: Users,     roles: SENIOR_CMD },
+        { id: 'divisions', title: 'Divisions',      path: '/divisions',        icon: Briefcase, roles: SENIOR_CMD },
+        { id: 'roles',   title: 'Role Permissions', path: '/role-permissions', icon: Key,       roles: ['commissioner','admin','administrator'] },
+        { id: 'admindb', title: 'Admin Panel',      path: '/admin',            icon: Settings,  roles: ['commissioner','admin','administrator'] },
+        { id: 'dbstats', title: 'Database Stats',   path: '/database-stats',   icon: Database,  roles: ['commissioner','admin','administrator'] },
       ],
     },
     {
       id: 'personal', title: 'Personal', icon: Settings, accentColor: '#64748b',
       items: [
-        { id: 'settings', title: 'Settings', path: '/settings', icon: Settings },
-        { id: 'feedback', title: 'Feedback', path: '/feedback', icon: MessageSquare },
+        { id: 'settings',  title: 'Settings',  path: '/settings',  icon: Settings },
+        { id: 'feedback',  title: 'Feedback',  path: '/feedback',  icon: MessageSquare },
       ],
     },
   ];

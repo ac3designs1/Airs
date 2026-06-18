@@ -418,6 +418,7 @@ function initDb() {
   try { db.exec('ALTER TABLE officers ADD COLUMN onboarding_complete INTEGER DEFAULT 0'); } catch {}
   try { db.exec('ALTER TABLE officers ADD COLUMN onboarding_activated_by TEXT'); } catch {}
   try { db.exec('ALTER TABLE officers ADD COLUMN onboarding_activated_at TEXT'); } catch {}
+  try { db.exec("ALTER TABLE officers ADD COLUMN special_roles TEXT NOT NULL DEFAULT '[]'"); } catch {}
   // Create unique index for discord_id separately (this is idempotent)
   try { db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_officers_discord_id ON officers(discord_id) WHERE discord_id IS NOT NULL'); } catch {}
 

@@ -30,6 +30,7 @@ import OfficerManagement from './pages/OfficerManagement';
 import RecruitTraining from './pages/RecruitTraining';
 import RecruitTracker from './pages/RecruitTracker';
 import FTOTracking from './pages/FTOTracking';
+import CIRTRecruitTracker from './pages/CIRTRecruitTracker';
 import Divisions from './pages/Divisions';
 import RolePermissions from './pages/RolePermissions';
 import DatabaseStats from './pages/DatabaseStats';
@@ -89,6 +90,7 @@ export default function App() {
             <Route path="/mdt" element={<OfficerManagement />} />
             <Route path="/recruit-training" element={<Navigate to="/recruit-tracker" replace />} />
             <Route path="/recruit-tracker" element={<RecruitTracker />} />
+            <Route path="/cirt-recruit-tracker" element={<CIRTRecruitTracker />} />
             <Route path="/fto-tracking" element={<FTOTracking />} />
             <Route path="/divisions" element={<Divisions />} />
             <Route path="/role-permissions" element={<RolePermissions />} />

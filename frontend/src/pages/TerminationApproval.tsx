@@ -20,6 +20,7 @@ const STATUS_CFG = {
 
 export default function TerminationApproval() {
   const { auth } = useAuth();
+  const isSeniorCmd = ['commissioner','admin','administrator','senior_command'].includes(auth.user?.role ?? '');
   const [terms,    setTerms]    = useState<Termination[]>([]);
   const [loading,  setLoading]  = useState(true);
   const [statusF,  setStatusF]  = useState('pending');
@@ -49,6 +50,16 @@ export default function TerminationApproval() {
     await api.put(`/terminations/${id}`, { status, review_notes: reviewNotes });
     setSelected(null); setReviewNotes(''); load();
   };
+
+  if (!isSeniorCmd) {
+    return (
+      <div className="glass rounded-2xl p-10 text-center flex flex-col items-center gap-3">
+        <AlertTriangle className="w-10 h-10 text-red-400" />
+        <p className="text-white font-bold">Access Restricted</p>
+        <p className="text-slate-500 text-sm">Termination Approval is only accessible to Senior Command and the Commissioner's Office.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-5 animate-fade-in">

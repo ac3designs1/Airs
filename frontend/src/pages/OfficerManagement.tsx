@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Users, Search, Clock, Shield, TrendingUp, ChevronRight, X, FileText, Star } from 'lucide-react';
+import { Users, Search, Clock, Shield, TrendingUp, ChevronRight, X, FileText, Star, Plus, Trash2 } from 'lucide-react';
 import api from '../api/client';
 import { format } from 'date-fns';
 import { useAuth } from '../contexts/AuthContext';
+import { ALL_SPECIAL_ROLES, SPECIAL_ROLE_LABELS, type SpecialRole } from '../contexts/AuthContext';
 
 interface Officer {
   id: string; callsign: string; first_name: string; last_name: string;
-  rank: string; department: string; status: string; role: string; created_at: string; last_login?: string;
+  rank: string; department: string; status: string; role: string;
+  special_roles: SpecialRole[]; created_at: string; last_login?: string;
 }
 interface OfficerStats {
   total_hours: number; month_hours: number; total_shifts: number;
@@ -19,30 +21,57 @@ const STATUS_CLS: Record<string, string> = {
   off_duty: 'chip chip-gray', unavailable: 'chip chip-red',
 };
 
+const SPECIAL_ROLE_COLORS: Record<SpecialRole, string> = {
+  fto:               'bg-blue-500/15 text-blue-300 border border-blue-500/25',
+  senior_fto:        'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25',
+  cirt_fto:          'bg-red-500/15 text-red-300 border border-red-500/25',
+  academy_leadership:'bg-amber-500/15 text-amber-300 border border-amber-500/25',
+};
+
 export default function OfficerManagement() {
   const { auth } = useAuth();
-  const isLeadership = ['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(auth.user?.role ?? '');
+  const userRole = auth.user?.role ?? '';
+  const isSeniorCmd = ['commissioner','admin','administrator','senior_command'].includes(userRole);
+  const isLeadership = ['commissioner','admin','administrator','leadership','senior_command','supervisor'].includes(userRole);
 
-  const [officers,  setOfficers]  = useState<Officer[]>([]);
-  const [loading,   setLoading]   = useState(true);
-  const [search,    setSearch]    = useState('');
-  const [selected,  setSelected]  = useState<Officer | null>(null);
-  const [stats,     setStats]     = useState<OfficerStats | null>(null);
-  const [loadStats, setLoadStats] = useState(false);
+  const [officers,   setOfficers]   = useState<Officer[]>([]);
+  const [loading,    setLoading]    = useState(true);
+  const [search,     setSearch]     = useState('');
+  const [selected,   setSelected]   = useState<Officer | null>(null);
+  const [stats,      setStats]      = useState<OfficerStats | null>(null);
+  const [loadStats,  setLoadStats]  = useState(false);
+  const [srLoading,  setSrLoading]  = useState(false);
+  const [srError,    setSrError]    = useState('');
 
   useEffect(() => {
-    api.get('/roster').then(r => { setOfficers(r.data); setLoading(false); }).catch(() => setLoading(false));
+    api.get('/roster').then(r => {
+      setOfficers(r.data.map((o: Officer) => ({ ...o, special_roles: o.special_roles ?? [] })));
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, []);
 
   async function openDetail(o: Officer) {
-    setSelected(o); setStats(null);
+    setSelected({ ...o, special_roles: o.special_roles ?? [] });
+    setStats(null); setSrError('');
     if (!isLeadership) return;
     setLoadStats(true);
-    try {
-      const r = await api.get(`/stats/officer/${o.id}`);
-      setStats(r.data);
-    } catch { /* non-fatal */ }
+    try { const r = await api.get(`/stats/officer/${o.id}`); setStats(r.data); }
+    catch { /* non-fatal */ }
     finally { setLoadStats(false); }
+  }
+
+  async function toggleSpecialRole(role: SpecialRole, action: 'add' | 'remove') {
+    if (!selected) return;
+    setSrLoading(true); setSrError('');
+    try {
+      const r = await api.put(`/roster/${selected.id}/special-roles`, { action, role });
+      const updated = { ...selected, special_roles: r.data.special_roles };
+      setSelected(updated);
+      setOfficers(prev => prev.map(o => o.id === selected.id ? { ...o, special_roles: r.data.special_roles } : o));
+    } catch (e: unknown) {
+      const err = e as { response?: { data?: { error?: string } } };
+      setSrError(err.response?.data?.error ?? 'Failed to update role');
+    } finally { setSrLoading(false); }
   }
 
   const filtered = officers.filter(o => {
@@ -93,7 +122,7 @@ export default function OfficerManagement() {
               <h2 className="font-bold text-white">Officer Record</h2>
               <button onClick={() => setSelected(null)} className="p-1.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-lg"><X className="w-4 h-4" /></button>
             </div>
-            <div className="p-5 space-y-5">
+            <div className="p-5 space-y-5 max-h-[80vh] overflow-y-auto">
               {/* Avatar + name */}
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-black text-white flex-shrink-0"
@@ -119,11 +148,11 @@ export default function OfficerManagement() {
                     [...Array(6)].map((_,i) => <div key={i} className="skeleton rounded-xl h-16" />)
                   ) : stats ? [
                     { label: 'Hours (MTD)', value: `${stats.month_hours}h`, icon: Clock,     color: 'text-blue-400',   bg: 'rgba(59,130,246,0.10)' },
-                    { label: 'Total Hours', value: `${stats.total_hours}h`, icon: Clock,     color: 'text-purple-400',    bg: 'rgba(168,85,247,0.10)' },
+                    { label: 'Total Hours', value: `${stats.total_hours}h`, icon: Clock,     color: 'text-purple-400', bg: 'rgba(168,85,247,0.10)' },
                     { label: 'Incidents',   value: stats.incidents,         icon: FileText,  color: 'text-amber-400',  bg: 'rgba(245,158,11,0.10)' },
                     { label: 'Arrests',     value: stats.arrests,           icon: Shield,    color: 'text-red-400',    bg: 'rgba(239,68,68,0.10)' },
                     { label: 'Certs',       value: stats.certifications,    icon: Star,      color: 'text-yellow-400', bg: 'rgba(234,179,8,0.10)' },
-                    { label: 'Strikes',     value: stats.active_strikes,    icon: TrendingUp,color: stats.active_strikes > 0 ? 'text-red-400' : 'text-green-400', bg: stats.active_strikes > 0 ? 'rgba(239,68,68,0.10)' : 'rgba(34,197,94,0.10)' },
+                    { label: 'Strikes',     value: stats.active_strikes,    icon: TrendingUp, color: stats.active_strikes > 0 ? 'text-red-400' : 'text-green-400', bg: stats.active_strikes > 0 ? 'rgba(239,68,68,0.10)' : 'rgba(34,197,94,0.10)' },
                   ].map(s => (
                     <div key={s.label} className="rounded-xl p-3 text-center" style={{ background: s.bg, border: `1px solid ${s.bg.replace('0.10','0.20')}` }}>
                       <s.icon className={`w-4 h-4 mx-auto mb-1 ${s.color}`} />
@@ -147,6 +176,67 @@ export default function OfficerManagement() {
                   </div>
                 ))}
               </div>
+
+              {/* Special Roles — visible to all leadership, editable by senior_command+ */}
+              {isLeadership && (
+                <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(168,85,247,0.12)', background: 'rgba(168,85,247,0.03)' }}>
+                  <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(168,85,247,0.08)' }}>
+                    <span className="text-sm font-semibold text-slate-300">Special Roles / Permissions</span>
+                    {selected.special_roles.length > 0 && (
+                      <span className="text-xs text-purple-400">{selected.special_roles.length} active</span>
+                    )}
+                  </div>
+                  <div className="p-4 space-y-3">
+                    {/* Current special roles */}
+                    {selected.special_roles.length === 0 ? (
+                      <p className="text-sm text-slate-600 italic">No special roles assigned</p>
+                    ) : (
+                      <div className="flex flex-wrap gap-2">
+                        {selected.special_roles.map(sr => (
+                          <span key={sr} className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${SPECIAL_ROLE_COLORS[sr]}`}>
+                            {SPECIAL_ROLE_LABELS[sr]}
+                            {isSeniorCmd && (
+                              <button
+                                onClick={() => toggleSpecialRole(sr, 'remove')}
+                                disabled={srLoading}
+                                className="ml-0.5 hover:text-red-400 transition-colors"
+                                title={`Remove ${SPECIAL_ROLE_LABELS[sr]}`}
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                            )}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Add special role — Senior Command only */}
+                    {isSeniorCmd && (
+                      <div>
+                        <p className="text-xs text-slate-600 mb-2">Add role:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {ALL_SPECIAL_ROLES.filter(sr => !selected.special_roles.includes(sr)).map(sr => (
+                            <button
+                              key={sr}
+                              onClick={() => toggleSpecialRole(sr, 'add')}
+                              disabled={srLoading}
+                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all hover:opacity-80 disabled:opacity-40"
+                              style={{ background: 'rgba(168,85,247,0.08)', border: '1px dashed rgba(168,85,247,0.25)', color: '#c084fc' }}
+                            >
+                              <Plus className="w-3 h-3" />
+                              {SPECIAL_ROLE_LABELS[sr]}
+                            </button>
+                          ))}
+                          {ALL_SPECIAL_ROLES.every(sr => selected.special_roles.includes(sr)) && (
+                            <span className="text-xs text-slate-600 italic">All roles assigned</span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {srError && <p className="text-xs text-red-400">{srError}</p>}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -170,6 +260,11 @@ export default function OfficerManagement() {
                 <span className="font-semibold text-white">{o.first_name} {o.last_name}</span>
                 {o.callsign && <span className="text-xs font-mono text-purple-400">{o.callsign}</span>}
                 <span className={STATUS_CLS[o.status] ?? 'chip chip-gray'}>{o.status?.replace('_', ' ')}</span>
+                {(o.special_roles ?? []).map(sr => (
+                  <span key={sr} className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${SPECIAL_ROLE_COLORS[sr]}`}>
+                    {SPECIAL_ROLE_LABELS[sr]}
+                  </span>
+                ))}
               </div>
               <div className="text-sm text-slate-500 mt-0.5">{o.rank} · {o.department}</div>
             </div>

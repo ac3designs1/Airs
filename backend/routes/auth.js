@@ -123,6 +123,7 @@ router.get('/me', authenticateToken, (req, res) => {
     return res.status(403).json({ error: 'Account suspended' });
   }
   const { password: _pw, badge_number: _bn, ...safe } = officer;
+  try { safe.special_roles = JSON.parse(safe.special_roles || '[]'); } catch { safe.special_roles = []; }
   res.json(safe);
 });
 

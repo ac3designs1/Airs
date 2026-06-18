@@ -4,11 +4,12 @@ const { db } = require('../db/schema');
 const { authenticateToken } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
 
-const LEADERSHIP = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
+const LEADERSHIP  = ['commissioner','admin','administrator','leadership','senior_command','supervisor'];
+const SENIOR_CMD  = ['commissioner','admin','administrator','senior_command'];
 router.use(authenticateToken);
 
 router.get('/', (req, res) => {
-  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Leadership only' });
+  if (!SENIOR_CMD.includes(req.user.role)) return res.status(403).json({ error: 'Senior Command only' });
   const { status } = req.query;
   let q = 'SELECT * FROM terminations';
   const p = [];
@@ -18,7 +19,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Leadership only' });
+  if (!SENIOR_CMD.includes(req.user.role)) return res.status(403).json({ error: 'Senior Command only' });
   const { officer_id, reason, evidence } = req.body;
   if (!officer_id || !reason) return res.status(400).json({ error: 'officer_id and reason required' });
   const o = db.prepare('SELECT * FROM officers WHERE id = ?').get(officer_id);
@@ -34,7 +35,7 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  if (!LEADERSHIP.includes(req.user.role)) return res.status(403).json({ error: 'Leadership only' });
+  if (!SENIOR_CMD.includes(req.user.role)) return res.status(403).json({ error: 'Senior Command only' });
   const { status, review_notes } = req.body;
   const existing = db.prepare('SELECT * FROM terminations WHERE id = ?').get(req.params.id);
   if (!existing) return res.status(404).json({ error: 'Not found' });
