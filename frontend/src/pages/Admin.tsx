@@ -17,7 +17,7 @@ interface Stats {
 
 export default function Admin() {
   const { auth } = useAuth();
-  const isAdmin = ['administrator', 'leadership', 'senior_command'].includes(auth.user?.role ?? '');
+  const isAdmin = ['admin', 'administrator', 'leadership', 'senior_command'].includes(auth.user?.role ?? '');
   const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {

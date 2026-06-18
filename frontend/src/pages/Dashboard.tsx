@@ -34,7 +34,7 @@ const QUICK = [
 export default function Dashboard() {
   const { auth } = useAuth();
   const user = auth.user!;
-  const isAdmin = ['administrator', 'leadership', 'senior_command'].includes(user.role);
+  const isAdmin = ['admin', 'administrator', 'leadership', 'senior_command'].includes(user.role);
 
   const [stats, setStats] = useState<Stats | null>(null);
   const [calls, setCalls] = useState<Call[]>([]);
