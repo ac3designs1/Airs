@@ -57,9 +57,10 @@ router.put('/:id', (req, res) => {
 
   const { first_name, last_name, rank, department, role, callsign, status } = req.body;
 
-  // Only a current commissioner can assign/remove the commissioner role
-  if (role === 'commissioner' && req.user.role !== 'commissioner') {
-    return res.status(403).json({ error: 'Only the Commissioner can assign that role' });
+  // Only admin-level (admin, administrator, commissioner) can assign the commissioner role
+  const ADMIN_ROLES = ['commissioner', 'admin', 'administrator'];
+  if (role === 'commissioner' && !ADMIN_ROLES.includes(req.user.role)) {
+    return res.status(403).json({ error: 'Admin or above required to assign Commissioner role' });
   }
 
   db.prepare(`UPDATE officers SET first_name=?, last_name=?, rank=?, department=?, role=?, callsign=?, status=? WHERE id=?`).run(

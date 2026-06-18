@@ -31,8 +31,8 @@ const RANKS = [
   'Superintendent','Commander','Assistant Commissioner','Deputy Commissioner','Commissioner',
 ];
 const DEPARTMENTS = ['Academy','GD','Highway','CIRT','SOG'];
-// 'commissioner' is hidden — not assignable via UI dropdown
 const ROLES = ['recruit','officer','supervisor','leadership','senior_command','administrator','admin'];
+const ADMIN_ROLES_FOR_COMMISSIONER = ['commissioner','admin','administrator'];
 
 const ROLE_CLS: Record<string, string> = {
   admin: 'chip chip-red', administrator: 'chip chip-red', senior_command: 'chip chip-orange',
@@ -557,8 +557,12 @@ export default function LeadershipCommand() {
                 <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Role / Permission Level</label>
                 <select value={editing.role} onChange={e => setEditing(p => p ? { ...p, role: e.target.value } : null)}
                   className="nx-input" style={{ colorScheme: 'dark' }}>
+                  {ADMIN_ROLES_FOR_COMMISSIONER.includes(auth.user?.role ?? '') && (
+                    <option value="commissioner">commissioner — ⭐ Commissioner</option>
+                  )}
                   {ROLES.map(r => <option key={r}>{r}</option>)}
                 </select>
+                {editing.role === 'commissioner' && <p className="text-[10px] text-yellow-400 mt-1.5">⭐ Highest rank — displayed as Commissioner across the system.</p>}
                 {editing.role === 'recruit' && <p className="text-[10px] text-purple-400 mt-1.5">This officer will appear in the Recruit Tracker.</p>}
               </div>
               <div>

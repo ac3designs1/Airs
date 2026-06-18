@@ -10,8 +10,8 @@ interface Officer {
   rank: string; department: string; role: string; status: string;
 }
 
-// 'commissioner' intentionally excluded — it cannot be set via the dropdown UI
 const ROLES = ['recruit', 'officer', 'supervisor', 'leadership', 'senior_command', 'administrator', 'admin'] as const;
+const ADMIN_ROLES_FOR_COMMISSIONER = ['commissioner', 'admin', 'administrator'];
 const DEPARTMENTS = ['Academy', 'GD', 'Highway', 'CIRT', 'SOG'];
 
 const ROLE_CLS: Record<string, string> = {
@@ -190,19 +190,18 @@ export default function Users() {
               {/* Role */}
               <div>
                 <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Role</label>
-                {editing.role === 'commissioner' ? (
-                  <div className="nx-input flex items-center gap-2 opacity-60 cursor-not-allowed">
-                    <span className="text-yellow-300 font-bold">Commissioner</span>
-                    <span className="text-[10px] text-slate-600">— cannot be changed here</span>
-                  </div>
-                ) : (
-                  <div className="relative">
-                    <select value={editForm.role} onChange={e => setEditForm(f => ({ ...f, role: e.target.value }))}
-                      className="nx-input appearance-none pr-8" style={{ colorScheme: 'dark' }}>
-                      {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 pointer-events-none" />
-                  </div>
+                <div className="relative">
+                  <select value={editForm.role} onChange={e => setEditForm(f => ({ ...f, role: e.target.value }))}
+                    className="nx-input appearance-none pr-8" style={{ colorScheme: 'dark' }}>
+                    {ADMIN_ROLES_FOR_COMMISSIONER.includes(auth.user?.role ?? '') && (
+                      <option value="commissioner">commissioner — ⭐ Commissioner</option>
+                    )}
+                    {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 pointer-events-none" />
+                </div>
+                {editForm.role === 'commissioner' && (
+                  <p className="text-[10px] text-yellow-400 mt-1.5">⭐ This officer will be displayed as Commissioner — highest rank.</p>
                 )}
                 {editForm.role === 'recruit' && (
                   <p className="text-[10px] text-purple-400 mt-1.5">This officer will appear in the Recruit Tracker.</p>
