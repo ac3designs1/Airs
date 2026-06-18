@@ -181,7 +181,7 @@ router.get('/callback', async (req, res) => {
     }
 
     // Auto-link discord_id and update avatar/username
-    db.prepare('UPDATE officers SET discord_id=?, discord_username=?, avatar_url=COALESCE(?,avatar_url), last_login=datetime("now") WHERE id=?')
+    db.prepare("UPDATE officers SET discord_id=?, discord_username=?, avatar_url=COALESCE(?,avatar_url), last_login=datetime('now') WHERE id=?")
       .run(discordId, discordUsername, avatarUrl, officer.id);
 
     const token = issueJwt({ ...officer, discord_id: discordId });
