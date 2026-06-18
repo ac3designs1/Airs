@@ -434,6 +434,7 @@
             <div class="cdd-opt" onclick="pickRT('SEARCH &amp; SEIZURE REPORT','Search &amp; Seizure')">Search &amp; Seizure</div>
             <div class="cdd-opt" onclick="pickRT('VEHICLE PURSUIT REPORT','Vehicle Pursuit')">Vehicle Pursuit</div>
             <div class="cdd-opt" onclick="pickRT('USE OF FORCE REPORT','Use of Force')">Use of Force</div>
+            <div class="cdd-opt" onclick="pickRT('IMPOUND REPORT','Impound Report')">Impound Report</div>
           </div>
         </div>
       </div>
@@ -707,6 +708,11 @@
     'SEARCH & SEIZURE REPORT':[{id:'xsj',l:'Subject / Premises',p:'Name or address'},{id:'xw',l:'Warrant No.',p:'If applicable'}],
     'VEHICLE PURSUIT REPORT':[{id:'xpv',l:'Fleeing Vehicle',p:'Make / Model / Plate'},{id:'xsl',l:'Start Location',p:'Street / Area'},{id:'xel',l:'End Location',p:'Where terminated'},{id:'xdu',l:'Duration',p:'e.g. 4 minutes'}],
     'USE OF FORCE REPORT':[{id:'xuf',l:'Subject Name',p:'First Last'},{id:'xth',l:'Threat Level',p:'e.g. Level 3 – Taser'},{id:'xfc',l:'Force Used',p:'Describe force applied'}],
+    'IMPOUND REPORT':[
+      {id:'xni',l:'Notice of Impound',p:'Notice of Impound:'},
+      {id:'xis',l:'Impound Strike',p:'',type:'select',opts:['1st — 24 Hours','2nd — 48 Hours','3rd — 72 Hours','4th — 96 Hours (Permanent)']},
+      {id:'xip',l:'Plate',p:'e.g. ABC123'},
+    ],
   };
 
   let sMode=false;
@@ -714,9 +720,35 @@
     const type=document.getElementById('r-type').value;
     const fs=EX[type]||[];
     document.getElementById('xf').innerHTML=fs.length
-      ?fs.map(f=>`<div class="fg"><label class="fl">${f.l}</label><input type="text" id="${f.id}" placeholder="${f.p}" oninput="live()" /></div>`).join('')
+      ?fs.map(f=>{
+        if(f.type==='select'){
+          const opts=f.opts.map((o,i)=>`<div class="cdd-opt${i===0?' selected':''}" onclick="pickXDD('${f.id}',this)">${o}</div>`).join('');
+          return `<input type="hidden" id="${f.id}" value="${f.opts[0]}" />`+
+            `<div class="fg"><label class="fl">${f.l}</label>`+
+            `<div class="cdd-wrap" id="${f.id}-wrap">`+
+            `<button type="button" class="cdd-btn" id="${f.id}-btn" onclick="toggleXDD('${f.id}')">`+
+            `<span id="${f.id}-lbl">${f.opts[0]}</span>`+
+            `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`+
+            `</button><div class="cdd-list" id="${f.id}-list">${opts}</div></div></div>`;
+        }
+        return `<div class="fg"><label class="fl">${f.l}</label><input type="text" id="${f.id}" placeholder="${f.p}" oninput="live()" /></div>`;
+      }).join('')
       :'';
     if(sMode && typeof buildStructFields==='function') buildStructFields(type);
+    live();
+  }
+  function toggleXDD(id){
+    const isOpen=document.getElementById(id+'-list').classList.contains('open');
+    closeAllCDD();
+    if(!isOpen){document.getElementById(id+'-btn').classList.add('open');document.getElementById(id+'-list').classList.add('open');}
+  }
+  function pickXDD(id,el){
+    const val=el.textContent.trim();
+    document.getElementById(id).value=val;
+    document.getElementById(id+'-lbl').textContent=val;
+    document.getElementById(id+'-list').querySelectorAll('.cdd-opt').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    closeAllCDD();
     live();
   }
   selType();
@@ -760,6 +792,10 @@
       {id:'sf_pi', label:'Persons Involved',     val:'[PERSON NAME] - [ROLE / RELATIONSHIP]'},
       {id:'sf_at', label:'Actions Taken',        val:'[DESCRIBE ACTIONS TAKEN BY OFFICER]'},
       {id:'sf_oc', label:'Outcome',              val:'[HOW THE INCIDENT CONCLUDED]'},
+    ],
+    'IMPOUND REPORT': [
+      {id:'sf_ir', label:'Reason for Impound',  val:'[CALLSIGN] impounded a [VEHICLE DESCRIPTION] (Plate: [PLATE]) at [LOCATION].\n\nReason: [EXPLAIN REASON FOR IMPOUND]'},
+      {id:'sf_io', label:'Outcome',             val:'Vehicle was impounded and towed to [LOCATION/STATION]. Owner was notified.'},
     ],
   };
 
@@ -889,7 +925,7 @@
   /* Save/Export/Import */
   function saveProf(){localStorage.setItem('airs_rp',JSON.stringify({name:document.getElementById('p-name').value,rank:document.getElementById('p-rank').value,callsign:document.getElementById('p-callsign').value,division:document.getElementById('p-division').value}));toast('✓ Profile saved')}
   function expJSON(){const d={profile:{name:document.getElementById('p-name').value,rank:document.getElementById('p-rank').value,callsign:document.getElementById('p-callsign').value,division:document.getElementById('p-division').value},report:{type:document.getElementById('r-type').value,evidence:document.getElementById('r-ev').value,charges:document.getElementById('r-ch').value,narrative:document.getElementById('r-nr').value,supervisor:document.getElementById('r-sv').value}};const a=document.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(d,null,2));a.download=`AIRS_report_${Date.now()}.json`;a.click()}
-  function impJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.profile){['name','rank','callsign','division'].forEach(k=>{if(d.profile[k])document.getElementById('p-'+k).value=d.profile[k]})}if(d.report){if(d.report.type){document.getElementById('r-type').value=d.report.type;const lmap={'INCIDENT REPORT':'Incident Report','TRAFFIC STOP REPORT':'Traffic Stop','ARREST REPORT':'Arrest Report','SEARCH & SEIZURE REPORT':'Search & Seizure','VEHICLE PURSUIT REPORT':'Vehicle Pursuit','USE OF FORCE REPORT':'Use of Force'};document.getElementById('rt-label').textContent=lmap[d.report.type]||d.report.type;}['evidence','charges','narrative','supervisor'].forEach(k=>{const id={'evidence':'r-ev','charges':'r-ch','narrative':'r-nr','supervisor':'r-sv'}[k];if(id&&d.report[k])document.getElementById(id).value=d.report[k]});selType()}live();toast('✓ Imported')}catch{alert('Invalid JSON')}};r.readAsText(f);e.target.value=''}
+  function impJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.profile){['name','rank','callsign','division'].forEach(k=>{if(d.profile[k])document.getElementById('p-'+k).value=d.profile[k]})}if(d.report){if(d.report.type){document.getElementById('r-type').value=d.report.type;const lmap={'INCIDENT REPORT':'Incident Report','TRAFFIC STOP REPORT':'Traffic Stop','ARREST REPORT':'Arrest Report','SEARCH & SEIZURE REPORT':'Search & Seizure','VEHICLE PURSUIT REPORT':'Vehicle Pursuit','USE OF FORCE REPORT':'Use of Force','IMPOUND REPORT':'Impound Report'};document.getElementById('rt-label').textContent=lmap[d.report.type]||d.report.type;}['evidence','charges','narrative','supervisor'].forEach(k=>{const id={'evidence':'r-ev','charges':'r-ch','narrative':'r-nr','supervisor':'r-sv'}[k];if(id&&d.report[k])document.getElementById(id).value=d.report[k]});selType()}live();toast('✓ Imported')}catch{alert('Invalid JSON')}};r.readAsText(f);e.target.value=''}
 
   /* Modals */
   function openModal(id){document.getElementById(id).style.display='block'}
