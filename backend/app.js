@@ -81,10 +81,12 @@ function createApp(options = {}) {
   app.use('/api/', apiLimiter);
   app.set('io', options.io || createNoopIo());
 
+  // Discord OAuth must be registered BEFORE the main auth router
+  // so Express doesn't swallow /api/auth/discord/* into the auth router first
+  app.use('/api/auth/discord', require('./routes/discord_auth'));
   app.use('/api/auth/login', authLimiter);
   app.use('/api/auth/register', authLimiter);
   app.use('/api/auth', require('./routes/auth'));
-  app.use('/api/auth/discord', require('./routes/discord_auth'));
 
   app.post('/api/applications', publicFormLimiter);
 

@@ -52,7 +52,7 @@ export default function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<Navigate to="/apply" replace />} />
           <Route path="/apply" element={<Apply />} />
           <Route path="/auth/discord" element={<DiscordCallback />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

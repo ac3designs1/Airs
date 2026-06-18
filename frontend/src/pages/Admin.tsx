@@ -34,8 +34,8 @@ export default function Admin() {
             <Shield className="w-7 h-7 text-red-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
-            <p className="text-gray-400 text-sm">System panel — NextAirs v2.0</p>
+            <h1 className="text-2xl font-bold text-white">Leadership Panel</h1>
+            <p className="text-gray-400 text-sm">System administration — NextAirs v2.0</p>
           </div>
         </div>
       </div>

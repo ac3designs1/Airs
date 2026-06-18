@@ -26,6 +26,12 @@ interface NavSection {
   accentColor?: string;
 }
 
+const ROLE_LABELS: Record<string, string> = {
+  admin: 'Leadership', administrator: 'Leadership', leadership: 'Leadership',
+  senior_command: 'Senior Command', supervisor: 'Supervisor',
+  officer: 'Officer', recruit: 'Recruit',
+};
+
 const STATUS_CONFIG: Record<Status, { label: string; dot: string; glow: string }> = {
   on_duty:  { label: 'On Duty',  dot: '#22c55e', glow: '0 0 8px rgba(34,197,94,0.9)' },
   busy:     { label: 'Busy',     dot: '#eab308', glow: '0 0 8px rgba(234,179,8,0.9)' },
@@ -79,7 +85,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
     {
       id: 'overview', title: 'Overview', icon: LayoutDashboard, accentColor: '#0ea5e9',
       items: [
-        { id: 'cmd', title: 'Command Centre', path: '/command-centre', icon: AlertOctagon, roles: ['administrator','leadership','senior_command'], badge: stats.activeCalls || undefined },
+        { id: 'cmd', title: 'Command Centre', path: '/command-centre', icon: AlertOctagon, roles: ['admin','administrator','leadership','senior_command'], badge: stats.activeCalls || undefined },
         { id: 'db', title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
         { id: 'shifts', title: 'My Shifts', path: '/shifts', icon: Clock },
         { id: 'stats', title: 'Statistics', path: '/statistics', icon: BarChart2 },
@@ -119,7 +125,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
       items: [
         { id: 'recruit-tracker', title: 'Recruit Tracker', path: '/recruit-tracker', icon: UserCheck },
         { id: 'recruit', title: 'Recruit Training', path: '/recruit-training', icon: UserCheck },
-        { id: 'fto', title: 'FTO Tracking', path: '/fto-tracking', icon: Award, roles: ['administrator','leadership','senior_command','supervisor'] },
+        { id: 'fto', title: 'FTO Tracking', path: '/fto-tracking', icon: Award, roles: ['admin','administrator','leadership','senior_command','supervisor'] },
       ],
     },
     {
@@ -289,7 +295,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
         </div>
         {isAdmin && (
           <button onClick={() => nav('/admin')} className="text-[10px] font-mono text-rose-500/60 hover:text-rose-400 transition-colors">
-            ADMIN
+            LEADERSHIP
           </button>
         )}
       </div>

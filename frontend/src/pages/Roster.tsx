@@ -2,6 +2,14 @@ import { useEffect, useState } from 'react';
 import { Search, Users, ChevronDown } from 'lucide-react';
 import api from '../api/client';
 
+const ROLE_DISPLAY: Record<string, string> = {
+  admin: 'Leadership',
+  administrator: 'Leadership',
+  leadership: 'Leadership',
+  senior_command: 'Senior Command',
+  supervisor: 'Supervisor',
+};
+
 interface Officer {
   id: string;
   first_name: string;
@@ -135,8 +143,8 @@ export default function Roster() {
                       </div>
                       <div>
                         <div className="font-semibold text-white text-sm">{o.first_name} {o.last_name}</div>
-                        {['administrator','leadership','senior_command'].includes(o.role) && (
-                          <div className="text-[10px] text-rose-400 font-semibold uppercase tracking-wider">{o.role.replace('_',' ')}</div>
+                        {['admin','administrator','leadership','senior_command'].includes(o.role) && (
+                          <div className="text-[10px] text-rose-400 font-semibold uppercase tracking-wider">{ROLE_DISPLAY[o.role] ?? o.role.replace('_',' ')}</div>
                         )}
                       </div>
                     </div>
