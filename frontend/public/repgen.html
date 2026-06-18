@@ -185,7 +185,7 @@
   <!-- COL 1: Officer -->
   <div class="col">
     <div class="col-body">
-      <div class="col-title">Next RP AIRS — Report Generator 🔰</div>
+      <div class="col-title">Next RP AIRS — Report Generator</div>
 
       <div class="fg">
         <label class="fl">Name <span class="r">*</span></label>
@@ -205,7 +205,7 @@
       </div>
       <div class="fg">
         <label class="fl">Callsign <span class="r">*</span></label>
-        <input type="text" id="p-callsign" placeholder="e.g. 107" oninput="if(sMode){const t=document.getElementById('r-type').value;buildStructFields(t);}live()" />
+        <input type="text" id="p-callsign" placeholder="e.g. 107" oninput="live()" />
       </div>
       <div class="fg">
         <label class="fl">Division <span class="r">*</span></label>
@@ -229,7 +229,7 @@
   <!-- COL 2: Report Details -->
   <div class="col">
     <div class="col-body">
-      <div class="section-title"><span class="emoji">📋</span> Report Details</div>
+      <div class="section-title">Report Details</div>
 
       <div class="fg">
         <label class="fl">Date &amp; Time <span class="r">*</span></label>
@@ -282,7 +282,7 @@
       <div style="margin-top:12px">
         <div class="sv-row">
           <span class="sv-label">SUPERVISOR APPROVED</span>
-          <span class="sv-sep">✦</span>
+          <span class="sv-sep">|</span>
           <input type="text" id="r-sv" placeholder="Name / Callsign" oninput="live()" />
         </div>
       </div>
@@ -294,7 +294,7 @@
   <div class="col out-col">
     <div class="out-hdr">
       <div class="out-hdr-row">
-        <div class="out-hdr-ttl">Generated Report 📄</div>
+        <div class="out-hdr-ttl">Generated Report</div>
         <div class="out-hdr-meta" id="ometa">— empty —</div>
       </div>
     </div>
@@ -481,16 +481,15 @@
   function buildStructFields(type){
     const container=document.getElementById('struct-fields');
     const tmpl=STRUCT_TMPL[type]||STRUCT_TMPL['INCIDENT REPORT'];
-    const callsign=(document.getElementById('p-callsign').value||'').trim()||'[CALLSIGN]';
     container.innerHTML='';
     tmpl.forEach(sec=>{
       const wrap=document.createElement('div');
       wrap.className='sf-section';
-      wrap.innerHTML=`<div class="sf-label"><span class="sf-label-star">✦</span>${sec.label}</div>`;
+      wrap.innerHTML=`<div class="sf-label">${sec.label}</div>`;
       const ta=document.createElement('textarea');
       ta.id=sec.id;
       ta.rows=Math.max(3, sec.val.split('\n').length+1);
-      ta.value=sec.val.replace(/\[CALLSIGN\]/g, callsign);
+      ta.value=sec.val;
       ta.oninput=()=>live();
       wrap.appendChild(ta);
       container.appendChild(wrap);
