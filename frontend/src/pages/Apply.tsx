@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import {
   Shield, CheckCircle, AlertCircle, ChevronRight,
-  Clock, Users, Star, XCircle, Loader, RefreshCw
+  Clock, Users, Star, XCircle, Loader, RefreshCw, Zap, Lock, MessageCircle
 } from 'lucide-react';
 import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
@@ -397,51 +397,55 @@ export default function Apply() {
                 </div>
               ) : !discordAuthed ? (
                 /* Discord gate */
-                <div className="rounded-2xl overflow-hidden"
-                  style={{ background: 'linear-gradient(135deg,rgba(124,58,237,0.14),rgba(168,85,247,0.06))', border: '1px solid rgba(168,85,247,0.25)' }}>
-                  {/* Top banner */}
-                  <div className="px-8 pt-10 pb-8 text-center">
-                    <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
-                      style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', boxShadow: '0 0 50px rgba(168,85,247,0.50)' }}>
-                      <svg className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
-                      </svg>
+                <div className="space-y-4">
+                  {/* Header card */}
+                  <div className="rounded-2xl p-8 text-center relative overflow-hidden"
+                    style={{ background: 'linear-gradient(135deg,rgba(124,58,237,0.18),rgba(168,85,247,0.08))', border: '1px solid rgba(168,85,247,0.22)' }}>
+                    {/* Glow behind icon */}
+                    <div className="absolute top-4 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full pointer-events-none"
+                      style={{ background: 'radial-gradient(circle,rgba(168,85,247,0.25) 0%,transparent 70%)', filter: 'blur(20px)' }} />
+                    {/* Icon */}
+                    <div className="relative w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
+                      style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', boxShadow: '0 8px 32px rgba(168,85,247,0.50)' }}>
+                      <DiscordIcon size={8} />
                     </div>
-                    <h2 className="text-2xl font-black text-white mb-2">Connect Your Discord</h2>
-                    <p className="text-slate-400 text-sm leading-relaxed max-w-xs mx-auto">
-                      Required to apply. If you've applied before, we'll automatically pull up your application status.
+                    <h2 className="text-xl font-black text-white mb-2 tracking-tight">Connect Your Discord</h2>
+                    <p className="text-slate-500 text-sm leading-relaxed">
+                      Required to apply. Already applied? We'll pull up your status automatically.
                     </p>
                   </div>
 
-                  {/* Feature list */}
-                  <div className="mx-6 mb-6 rounded-xl p-4 space-y-2.5" style={{ background: 'rgba(0,0,0,0.30)', border: '1px solid rgba(168,85,247,0.10)' }}>
+                  {/* Feature pills */}
+                  <div className="grid grid-cols-1 gap-2">
                     {[
-                      { icon: '✅', t: 'One click — no passwords needed' },
-                      { icon: '🔒', t: 'We only access your username & avatar' },
-                      { icon: '📬', t: 'Receive updates directly in your DMs' },
+                      { icon: Zap,           label: 'One click — no password needed',       color: '#a855f7' },
+                      { icon: Lock,          label: 'Only accesses your username & avatar',  color: '#818cf8' },
+                      { icon: MessageCircle, label: 'Get status updates directly in your DMs', color: '#22c55e' },
                     ].map(f => (
-                      <div key={f.t} className="flex items-center gap-2.5 text-sm text-slate-400">
-                        <span>{f.icon}</span> {f.t}
+                      <div key={f.label} className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                        <div className="p-1.5 rounded-lg flex-shrink-0"
+                          style={{ background: `${f.color}15`, border: `1px solid ${f.color}25` }}>
+                          <f.icon className="w-3.5 h-3.5" style={{ color: f.color }} />
+                        </div>
+                        <span className="text-sm text-slate-400">{f.label}</span>
                       </div>
                     ))}
                   </div>
 
                   {error && (
-                    <div className="mx-6 mb-4 flex items-center gap-2 p-3 rounded-xl text-sm text-red-400 bg-red-500/10 border border-red-500/20">
+                    <div className="flex items-center gap-2 p-3 rounded-xl text-sm text-red-400 bg-red-500/10 border border-red-500/20">
                       <AlertCircle className="w-4 h-4 flex-shrink-0" />{error}
                     </div>
                   )}
 
-                  <div className="px-6 pb-8">
-                    <button onClick={handleDiscordAuth}
-                      className="w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-[1.02] active:scale-[0.99]"
-                      style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7,#c026d3)', boxShadow: '0 4px 30px rgba(168,85,247,0.45)', border: '1px solid rgba(168,85,247,0.45)' }}>
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
-                      </svg>
-                      Continue with Discord
-                    </button>
-                  </div>
+                  {/* CTA */}
+                  <button onClick={handleDiscordAuth}
+                    className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-black text-white text-base transition-all hover:scale-[1.02] hover:brightness-110 active:scale-[0.98]"
+                    style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7,#c026d3)', boxShadow: '0 8px 32px rgba(168,85,247,0.40)', border: '1px solid rgba(168,85,247,0.40)', letterSpacing: '-0.01em' }}>
+                    <DiscordIcon size={5} />
+                    Continue with Discord
+                  </button>
                 </div>
               ) : (
                 /* Multi-step application form */
