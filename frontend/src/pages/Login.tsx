@@ -195,7 +195,7 @@ export default function Login() {
               Officer Portal
             </div>
             <h2 className="text-3xl font-black text-white mb-2" style={{ letterSpacing: '-0.02em' }}>Welcome Back</h2>
-            <p className="text-slate-600 text-sm">Sign in to access AIRS — Advanced Internal Reporting System.</p>
+            <p className="text-slate-600 text-sm">Sign in to access AIRS ï¿½ Advanced Internal Reporting System.</p>
           </div>
 
           {/* Error */}
