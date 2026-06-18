@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const https = require('https');
 const { db } = require('../db/schema');
 const { authenticateToken } = require('../middleware/auth');
 
@@ -22,6 +23,36 @@ function discordAuthUrl(redirectUri, state) {
   return `https://discord.com/oauth2/authorize?${params}`;
 }
 
+// Use Node's native https module for reliability on Railway / all Node versions
+function httpsPost(hostname, path, headers, body) {
+  return new Promise((resolve, reject) => {
+    const req = https.request({ hostname, path, method: 'POST', headers }, (res) => {
+      let data = '';
+      res.on('data', d => { data += d; });
+      res.on('end', () => {
+        try { resolve({ ok: res.statusCode < 300, status: res.statusCode, json: () => JSON.parse(data) }); }
+        catch (e) { reject(new Error(`JSON parse error: ${e.message}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+function httpsGet(hostname, path, headers) {
+  return new Promise((resolve, reject) => {
+    https.get({ hostname, path, headers }, (res) => {
+      let data = '';
+      res.on('data', d => { data += d; });
+      res.on('end', () => {
+        try { resolve({ ok: res.statusCode < 300, status: res.statusCode, json: () => JSON.parse(data) }); }
+        catch (e) { reject(new Error(`JSON parse error: ${e.message}`)); }
+      });
+    }).on('error', reject);
+  });
+}
+
 async function exchangeCode(code, redirectUri) {
   const body = new URLSearchParams({
     client_id: CLIENT_ID,
@@ -29,21 +60,25 @@ async function exchangeCode(code, redirectUri) {
     grant_type: 'authorization_code',
     code,
     redirect_uri: redirectUri,
-  });
-  const res = await fetch('https://discord.com/api/oauth2/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body,
-  });
-  if (!res.ok) throw new Error('Token exchange failed');
+  }).toString();
+
+  const res = await httpsPost('discord.com', '/api/oauth2/token', {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Length': Buffer.byteLength(body),
+  }, body);
+
+  if (!res.ok) {
+    const payload = res.json();
+    throw new Error(`Token exchange failed (${res.status}): ${JSON.stringify(payload)}`);
+  }
   return res.json();
 }
 
 async function getDiscordUser(accessToken) {
-  const res = await fetch('https://discord.com/api/users/@me', {
-    headers: { Authorization: `Bearer ${accessToken}` },
+  const res = await httpsGet('discord.com', '/api/users/@me', {
+    Authorization: `Bearer ${accessToken}`,
   });
-  if (!res.ok) throw new Error('Failed to fetch Discord user');
+  if (!res.ok) throw new Error(`Failed to fetch Discord user (${res.status})`);
   return res.json();
 }
 
@@ -67,7 +102,10 @@ function issueJwt(officer) {
 
 // GET /api/auth/discord/login  →  redirect to Discord
 router.get('/login', (req, res) => {
-  if (!CLIENT_ID) return res.status(503).json({ error: 'Discord OAuth not configured' });
+  if (!CLIENT_ID || !CLIENT_SECRET) {
+    console.error('[Discord OAuth] DISCORD_CLIENT_ID or DISCORD_CLIENT_SECRET not set in environment');
+    return res.status(503).json({ error: 'Discord OAuth not configured — check server environment variables' });
+  }
   const redirectUri = `${BACKEND_URL}/api/auth/discord/callback`;
   res.redirect(discordAuthUrl(redirectUri, 'login'));
 });
@@ -113,7 +151,7 @@ router.get('/callback', async (req, res) => {
     // Redirect to frontend with token — frontend reads it from URL and stores in localStorage
     res.redirect(`${FRONTEND_URL}/auth/discord?token=${encodeURIComponent(token)}`);
   } catch (err) {
-    console.error('[Discord OAuth]', err.message);
+    console.error('[Discord OAuth login callback] ERROR:', err.message, err.stack);
     res.redirect(`${FRONTEND_URL}/login?discord_error=server_error`);
   }
 });

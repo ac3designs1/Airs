@@ -42,12 +42,14 @@ export default function Login() {
     setMounted(true);
     const t = setInterval(() => setFeatureIdx(i => (i + 1) % FEATURES.length), 2800);
 
-    // Handle Discord OAuth error params
+    // Handle Discord OAuth error params then clean URL
     const de = params.get('discord_error');
     if (de) {
       const tag = params.get('discord_tag');
       if (tag) setDiscordTag(decodeURIComponent(tag));
       setError(DISCORD_ERRORS[de]?.msg ?? 'Discord sign-in failed.');
+      // Remove query params from URL without triggering a navigation
+      window.history.replaceState({}, '', '/login');
     }
 
     return () => clearInterval(t);
