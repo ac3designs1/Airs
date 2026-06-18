@@ -24,8 +24,8 @@ export default defineConfig({
         splitStrings: true,
         splitStringsChunkLength: 4,
         // ── Identifier mangling ──────────────────────────────────
-        identifierNamesGenerator: 'mangled-shuffled',
-        identifiersPrefix: '_0x',
+        // hexadecimal generates unique _0xABCD names — no collision risk
+        identifierNamesGenerator: 'hexadecimal',
         renameGlobals: false,
         renameProperties: false,
         // ── Control flow obfuscation ────────────────────────────
