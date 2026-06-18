@@ -952,8 +952,10 @@
   });
 
   /* Generic custom dropdown helpers */
-  const CDD_IDS=['rt','rank','div'];
-  function closeAllCDD(){CDD_IDS.forEach(k=>{document.getElementById(k+'-btn')?.classList.remove('open');document.getElementById(k+'-list')?.classList.remove('open');})}
+  function closeAllCDD(){
+    document.querySelectorAll('.cdd-list.open').forEach(l=>l.classList.remove('open'));
+    document.querySelectorAll('.cdd-btn.open').forEach(b=>b.classList.remove('open'));
+  }
   function toggleCDD(key){
     const isOpen=document.getElementById(key+'-list').classList.contains('open');
     closeAllCDD();
