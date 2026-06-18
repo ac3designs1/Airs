@@ -454,7 +454,7 @@ export default function Apply() {
                             </select>
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Have you been banned from any FiveM server? <span className="text-rose-400">*</span></label>
+                            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Have you ever had any Staff Actions from Next RP? <span className="text-rose-400">*</span></label>
                             <select required value={form.previous_bans} onChange={e => set('previous_bans', e.target.value)}
                               className="nx-input" style={{ colorScheme: 'dark' }}>
                               <option>No</option>
