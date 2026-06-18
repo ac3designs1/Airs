@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Users, Search, CheckCircle2, Clock, XCircle, PlayCircle,
   BarChart2, TrendingUp, MessageSquare, X, UserCheck, ChevronRight,
-  CheckCircle, ChevronDown, Plus, GraduationCap,
+  CheckCircle, Plus, GraduationCap, Award,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { format } from 'date-fns';
@@ -113,6 +113,8 @@ export default function RecruitTracker() {
   const [showAddFTO,      setShowAddFTO]      = useState(false);
   const [ftoForm,         setFtoForm]         = useState({ fto_name: '' });
   const [savingFTO,       setSavingFTO]       = useState(false);
+  const [showSignOff,     setShowSignOff]     = useState(false);
+  const [signingOff,      setSigningOff]      = useState(false);
 
   /* ── Load recruits ────────────────────────────────────────────── */
   useEffect(() => {
@@ -239,6 +241,34 @@ export default function RecruitTracker() {
       setTrainingRecords(prev => prev.map(r => r.recruit_officer_id === selectedTraining.recruit_officer_id ? res.data : r));
       toast.success('Stage advanced');
     } catch { toast.error('Failed to advance stage'); }
+  }
+
+  async function finalSignOff() {
+    if (!selectedTraining || !selected) return;
+    setSigningOff(true);
+    try {
+      await api.post(`/recruit-stages/${selected.id}/final-signoff`);
+      // Mark all stages complete locally
+      const completedStatuses = selectedTraining.stage_statuses.map(s => ({
+        ...s, status: 'complete' as const,
+        date: s.date || new Date().toISOString().split('T')[0],
+      }));
+      setTrainingRecords(prev => prev.map(r =>
+        r.recruit_officer_id === selected.id
+          ? { ...r, stage_statuses: completedStatuses, stage_index: FTO_STAGES_DEF.length - 1 }
+          : r
+      ));
+      // Remove from recruit list — they're now Probationary Constable
+      setRecruits(prev => prev.filter(r => r.id !== selected.id));
+      setSelected(null);
+      setShowSignOff(false);
+      toast.success(`${selected.first_name} ${selected.last_name} has been promoted to Probationary Constable!`, { duration: 5000 });
+    } catch (e: unknown) {
+      const msg = (e as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Failed to complete sign-off';
+      toast.error(msg);
+    } finally {
+      setSigningOff(false);
+    }
   }
 
   /* ── Derived ─────────────────────────────────────────────────── */
@@ -585,7 +615,7 @@ export default function RecruitTracker() {
                         })}
                       </div>
 
-                      {/* Advance / complete actions */}
+                      {/* Advance / Final Sign-Off actions */}
                       {canEdit && (
                         <div className="flex justify-end pt-2">
                           {selectedTraining.stage_index < FTO_STAGES_DEF.length - 1 ? (
@@ -593,8 +623,17 @@ export default function RecruitTracker() {
                               <TrendingUp className="w-4 h-4" /> Advance to Next Stage
                             </button>
                           ) : selectedTraining.stage_statuses.every(s => s.status === 'complete') ? (
-                            <span className="chip chip-green text-sm">🎉 All stages complete — ready for promotion</span>
-                          ) : null}
+                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-green-400"
+                              style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)' }}>
+                              <CheckCircle className="w-4 h-4" /> All stages complete — promoted
+                            </span>
+                          ) : (
+                            <button onClick={() => setShowSignOff(true)}
+                              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-105 active:scale-100"
+                              style={{ background: 'linear-gradient(135deg,#7c3aed,#0ea5e9)', border: '1px solid rgba(124,58,237,0.5)', boxShadow: '0 0 20px rgba(124,58,237,0.3)' }}>
+                              <Award className="w-4 h-4" /> Final Sign-Off
+                            </button>
+                          )}
                         </div>
                       )}
                     </>
@@ -623,6 +662,67 @@ export default function RecruitTracker() {
               <div className="flex gap-2">
                 <button onClick={() => setNoteModal(null)} className="btn-ghost flex-1 py-2 text-sm">Cancel</button>
                 <button onClick={saveNote} disabled={savingNote} className="btn-primary flex-1 py-2 text-sm">{savingNote ? 'Saving…' : 'Save'}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Final Sign-Off confirmation modal ── */}
+      {showSignOff && selected && (
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
+            style={{ background: '#0a1020', border: '1px solid rgba(124,58,237,0.35)' }}>
+            <div className="p-6" style={{ background: 'linear-gradient(135deg,rgba(124,58,237,0.15),rgba(14,165,233,0.08))', borderBottom: '1px solid rgba(124,58,237,0.20)' }}>
+              <div className="flex items-center gap-3 mb-1">
+                <div className="p-2.5 rounded-xl" style={{ background: 'rgba(124,58,237,0.2)', border: '1px solid rgba(124,58,237,0.35)' }}>
+                  <Award className="w-5 h-5 text-purple-400" />
+                </div>
+                <h2 className="text-lg font-bold text-white">Final Sign-Off</h2>
+              </div>
+              <p className="text-slate-400 text-sm mt-2">This will complete FTO training and promote the recruit.</p>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="rounded-xl p-4" style={{ background: 'rgba(14,165,233,0.06)', border: '1px solid rgba(14,165,233,0.12)' }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg,#7c3aed,#0ea5e9)' }}>
+                    {selected.first_name[0]}{selected.last_name[0]}
+                  </div>
+                  <div>
+                    <p className="font-bold text-white">{selected.first_name} {selected.last_name}</p>
+                    <p className="text-xs text-slate-500">{selected.callsign ?? ''} · {selected.department}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-xl p-4 space-y-2" style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.15)' }}>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-slate-500">Current rank:</span>
+                  <span className="font-semibold text-white">{selected.rank || 'Recruit'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-purple-400" />
+                  <span className="text-slate-500 text-sm">Promoting to:</span>
+                  <span className="font-bold text-purple-300 text-sm">Probationary Constable</span>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-600 text-center">This action is logged and cannot be undone without using User Management.</p>
+
+              <div className="flex gap-3 pt-1">
+                <button onClick={() => setShowSignOff(false)} disabled={signingOff} className="btn-ghost flex-1">
+                  Cancel
+                </button>
+                <button onClick={finalSignOff} disabled={signingOff}
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold text-white transition-all"
+                  style={{ background: 'linear-gradient(135deg,#7c3aed,#0ea5e9)', border: '1px solid rgba(124,58,237,0.5)' }}>
+                  {signingOff ? (
+                    <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Signing Off…</>
+                  ) : (
+                    <><Award className="w-4 h-4" /> Confirm & Promote</>
+                  )}
+                </button>
               </div>
             </div>
           </div>
