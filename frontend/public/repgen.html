@@ -249,6 +249,31 @@
     .mcbody{font-size:12px;color:var(--dim);line-height:1.9}
     .leg-link{display:flex;align-items:center;gap:8px;padding:11px 14px;border-radius:9px;font-size:13px;font-weight:600;color:var(--txt);text-decoration:none;background:var(--p3);border:1px solid var(--brd);transition:.13s}
     .leg-link:hover{border-color:var(--purple);color:var(--purple-l);background:rgba(139,92,246,.08)}
+
+    /* CUSTOM DROPDOWN */
+    .cdd-wrap{position:relative;user-select:none}
+    .cdd-btn{
+      width:100%;display:flex;align-items:center;justify-content:space-between;
+      padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;font-weight:500;
+      background:var(--p1);border:1px solid var(--brd);border-radius:8px;
+      color:var(--txt);cursor:pointer;text-align:left;transition:.15s;
+    }
+    .cdd-btn:hover,.cdd-btn.open{border-color:rgba(139,92,246,.6);box-shadow:0 0 0 3px rgba(139,92,246,.12)}
+    .cdd-btn svg{flex-shrink:0;color:var(--dim);transition:transform .15s}
+    .cdd-btn.open svg{transform:rotate(180deg)}
+    .cdd-list{
+      display:none;position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:500;
+      background:var(--p2);border:1px solid var(--brd-p);border-radius:9px;
+      overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.65);
+    }
+    .cdd-list.open{display:block}
+    .cdd-opt{
+      padding:10px 14px;font-size:13px;font-family:'Inter',sans-serif;
+      color:var(--txt);cursor:pointer;transition:.12s;border-bottom:1px solid var(--brd);
+    }
+    .cdd-opt:last-child{border-bottom:none}
+    .cdd-opt:hover{background:rgba(139,92,246,.14);color:var(--purple-xl)}
+    .cdd-opt.selected{color:var(--purple-l);background:rgba(139,92,246,.1)}
   </style>
 </head>
 <body>
@@ -362,16 +387,25 @@
         </div>
       </div>
 
+      <!-- hidden real select keeps value for JS compatibility -->
+      <input type="hidden" id="r-type" value="INCIDENT REPORT" />
+
       <div class="fg">
         <label class="fl">Report Type <span class="r">*</span></label>
-        <select id="r-type" onchange="selType()">
-          <option value="INCIDENT REPORT">Incident Report</option>
-          <option value="TRAFFIC STOP REPORT">Traffic Stop</option>
-          <option value="ARREST REPORT">Arrest Report</option>
-          <option value="SEARCH &amp; SEIZURE REPORT">Search &amp; Seizure</option>
-          <option value="VEHICLE PURSUIT REPORT">Vehicle Pursuit</option>
-          <option value="USE OF FORCE REPORT">Use of Force</option>
-        </select>
+        <div class="cdd-wrap" id="rt-wrap">
+          <button type="button" class="cdd-btn" id="rt-btn" onclick="toggleRTDD()">
+            <span id="rt-label">Incident Report</span>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="cdd-list" id="rt-list">
+            <div class="cdd-opt" onclick="pickRT('INCIDENT REPORT','Incident Report')">Incident Report</div>
+            <div class="cdd-opt" onclick="pickRT('TRAFFIC STOP REPORT','Traffic Stop')">Traffic Stop</div>
+            <div class="cdd-opt" onclick="pickRT('ARREST REPORT','Arrest Report')">Arrest Report</div>
+            <div class="cdd-opt" onclick="pickRT('SEARCH &amp; SEIZURE REPORT','Search &amp; Seizure')">Search &amp; Seizure</div>
+            <div class="cdd-opt" onclick="pickRT('VEHICLE PURSUIT REPORT','Vehicle Pursuit')">Vehicle Pursuit</div>
+            <div class="cdd-opt" onclick="pickRT('USE OF FORCE REPORT','Use of Force')">Use of Force</div>
+          </div>
+        </div>
       </div>
 
       <div id="xf"></div>
@@ -825,16 +859,39 @@
   /* Save/Export/Import */
   function saveProf(){localStorage.setItem('airs_rp',JSON.stringify({name:document.getElementById('p-name').value,rank:document.getElementById('p-rank').value,callsign:document.getElementById('p-callsign').value,division:document.getElementById('p-division').value}));toast('✓ Profile saved')}
   function expJSON(){const d={profile:{name:document.getElementById('p-name').value,rank:document.getElementById('p-rank').value,callsign:document.getElementById('p-callsign').value,division:document.getElementById('p-division').value},report:{type:document.getElementById('r-type').value,evidence:document.getElementById('r-ev').value,charges:document.getElementById('r-ch').value,narrative:document.getElementById('r-nr').value,supervisor:document.getElementById('r-sv').value}};const a=document.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(d,null,2));a.download=`AIRS_report_${Date.now()}.json`;a.click()}
-  function impJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.profile){['name','rank','callsign','division'].forEach(k=>{if(d.profile[k])document.getElementById('p-'+k).value=d.profile[k]})}if(d.report){if(d.report.type)document.getElementById('r-type').value=d.report.type;['evidence','charges','narrative','supervisor'].forEach(k=>{const id={'evidence':'r-ev','charges':'r-ch','narrative':'r-nr','supervisor':'r-sv'}[k];if(id&&d.report[k])document.getElementById(id).value=d.report[k]});selType()}live();toast('✓ Imported')}catch{alert('Invalid JSON')}};r.readAsText(f);e.target.value=''}
+  function impJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.profile){['name','rank','callsign','division'].forEach(k=>{if(d.profile[k])document.getElementById('p-'+k).value=d.profile[k]})}if(d.report){if(d.report.type){document.getElementById('r-type').value=d.report.type;const lmap={'INCIDENT REPORT':'Incident Report','TRAFFIC STOP REPORT':'Traffic Stop','ARREST REPORT':'Arrest Report','SEARCH & SEIZURE REPORT':'Search & Seizure','VEHICLE PURSUIT REPORT':'Vehicle Pursuit','USE OF FORCE REPORT':'Use of Force'};document.getElementById('rt-label').textContent=lmap[d.report.type]||d.report.type;}['evidence','charges','narrative','supervisor'].forEach(k=>{const id={'evidence':'r-ev','charges':'r-ch','narrative':'r-nr','supervisor':'r-sv'}[k];if(id&&d.report[k])document.getElementById(id).value=d.report[k]});selType()}live();toast('✓ Imported')}catch{alert('Invalid JSON')}};r.readAsText(f);e.target.value=''}
 
   /* Modals */
   function openModal(id){document.getElementById(id).style.display='block'}
   function closeModal(id){document.getElementById(id).style.display='none'}
 
-  /* Dropdown */
+  /* Header Dropdown */
   function toggleDD(){document.getElementById('dd-menu').classList.toggle('open')}
   function closeDD(){document.getElementById('dd-menu').classList.remove('open')}
-  document.addEventListener('click',function(e){if(!document.getElementById('dd-wrap').contains(e.target))closeDD()});
+  document.addEventListener('click',function(e){
+    if(!document.getElementById('dd-wrap').contains(e.target))closeDD();
+    if(!document.getElementById('rt-wrap').contains(e.target))closeRTDD();
+  });
+
+  /* Report Type custom dropdown */
+  function toggleRTDD(){
+    const btn=document.getElementById('rt-btn');
+    const list=document.getElementById('rt-list');
+    const open=list.classList.contains('open');
+    if(open){closeRTDD();}else{btn.classList.add('open');list.classList.add('open');}
+  }
+  function closeRTDD(){
+    document.getElementById('rt-btn').classList.remove('open');
+    document.getElementById('rt-list').classList.remove('open');
+  }
+  function pickRT(val,label){
+    document.getElementById('r-type').value=val;
+    document.getElementById('rt-label').textContent=label;
+    document.querySelectorAll('.cdd-opt').forEach(o=>o.classList.remove('selected'));
+    event.target.classList.add('selected');
+    closeRTDD();
+    selType();
+  }
 
   /* Feedback */
   let fbRating=0;
