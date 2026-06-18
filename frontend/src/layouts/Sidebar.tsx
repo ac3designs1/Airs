@@ -41,7 +41,12 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boo
 
   const [expanded, setExpanded] = useState<Set<string>>(() => {
     try { const s = localStorage.getItem('nr-sidebar'); if (s) return new Set(JSON.parse(s)); } catch {}
-    return new Set(['overview', 'operations', 'records', 'training', 'leadership']);
+    const defaults = ['overview', 'operations', 'records', 'training', 'leadership'];
+    const userRole = auth.user?.role ?? 'officer';
+    if (['admin', 'administrator', 'leadership', 'senior_command'].includes(userRole)) {
+      defaults.push('admin');
+    }
+    return new Set(defaults);
   });
   const [stats, setStats] = useState({ activeWarrants: 0, activeCalls: 0, activeBolos: 0, pendingApps: 0, pendingLeave: 0 });
   const [statusOpen, setStatusOpen] = useState(false);
