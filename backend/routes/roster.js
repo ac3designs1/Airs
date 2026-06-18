@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
     return res.status(400).json({ error: 'All fields required' });
   }
   const id = uuidv4();
-  const hash = bcrypt.hashSync(password, 10);
+  const hash = bcrypt.hashSync(password, 12);
   const auto_badge = username.toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Date.now().toString(36);
   db.prepare(`INSERT INTO officers (id, badge_number, username, password, first_name, last_name, rank, department, role, callsign) VALUES (?,?,?,?,?,?,?,?,?,?)`).run(
     id, auto_badge, username, hash, first_name, last_name, rank || 'Recruit', department || 'Academy', role || 'recruit', callsign || null

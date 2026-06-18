@@ -8,9 +8,13 @@ const LEADERSHIP = ['admin','administrator','leadership','senior_command','super
 router.use(authenticateToken);
 
 // GET /api/recruit-progress/:officer_id
+// Leadership can view any recruit's progress; others can only view their own
 router.get('/:officer_id', (req, res) => {
+  const isLeader = LEADERSHIP.includes(req.user.role);
+  if (!isLeader && req.user.id !== req.params.officer_id) {
+    return res.status(403).json({ error: 'You can only view your own training progress' });
+  }
   const rows = db.prepare('SELECT * FROM recruit_progress WHERE officer_id = ?').all(req.params.officer_id);
-  // Convert to map: { stageId: { status, notes, updated_by_name, completed_at } }
   const map = {};
   rows.forEach(r => { map[r.stage_id] = r; });
   res.json({ progress: map });
