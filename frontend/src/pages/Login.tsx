@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff, AlertCircle, Shield, Lock, Users, Radio } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle, Shield, Lock, Users, Radio, Zap, FileText } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const BACKEND_URL = (import.meta.env.VITE_API_BASE_URL || 'https://airs-production-4e96.up.railway.app/api')
@@ -18,10 +18,12 @@ const DISCORD_ERRORS: Record<string, string> = {
 };
 
 const FEATURES = [
-  { icon: Radio,  label: 'Live Dispatch',   desc: 'Real-time call management' },
-  { icon: Shield, label: 'Warrant System',  desc: 'Issue & track warrants'    },
-  { icon: Users,  label: 'Officer Roster',  desc: 'Full personnel registry'   },
-  { icon: Lock,   label: 'Secure Access',   desc: 'Discord-authenticated'     },
+  { icon: Radio,    label: 'Live Dispatch',  color: '#a855f7' },
+  { icon: Shield,   label: 'Warrants',       color: '#ef4444' },
+  { icon: Users,    label: 'Officer Roster', color: '#22c55e' },
+  { icon: Zap,      label: 'Incident BOLO',  color: '#f59e0b' },
+  { icon: FileText, label: 'Reports',        color: '#818cf8' },
+  { icon: Lock,     label: 'Secure Access',  color: '#c084fc' },
 ];
 
 export default function Login() {
@@ -68,126 +70,137 @@ export default function Login() {
   return (
     <div className="min-h-screen flex" style={{ background: '#06060a' }}>
 
-      {/* ── LEFT PANEL — Branding ─────────────────────────────── */}
+      {/* ══════════════════════════════════════
+          LEFT — Branding panel
+      ══════════════════════════════════════ */}
       <div className="hidden lg:flex flex-col flex-1 relative overflow-hidden"
-        style={{ background: 'linear-gradient(160deg, #0a0614 0%, #08050f 50%, #050308 100%)' }}>
+        style={{ background: 'linear-gradient(155deg, #0c0618 0%, #09060f 40%, #06040c 100%)' }}>
 
-        {/* Glow orbs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div style={{ position:'absolute', top:'10%', left:'15%', width:'560px', height:'560px', borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(168,85,247,0.20) 0%, rgba(124,58,237,0.08) 40%, transparent 70%)', filter:'blur(50px)' }} />
-          <div style={{ position:'absolute', bottom:'5%', right:'5%', width:'380px', height:'380px', borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(236,72,153,0.13) 0%, transparent 70%)', filter:'blur(60px)' }} />
-          <div style={{ position:'absolute', top:'55%', left:'0%', width:'220px', height:'220px', borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(99,102,241,0.09) 0%, transparent 70%)', filter:'blur(35px)' }} />
-          {/* Grid */}
-          <div className="absolute inset-0 opacity-[0.022]"
-            style={{ backgroundImage:'linear-gradient(rgba(168,85,247,0.6) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.6) 1px,transparent 1px)', backgroundSize:'40px 40px' }} />
+        {/* ── Glow layers ── */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div style={{ position:'absolute', top:'-10%', left:'-5%', width:'70%', height:'80%', borderRadius:'50%',
+            background:'radial-gradient(ellipse, rgba(168,85,247,0.18) 0%, transparent 65%)', filter:'blur(60px)' }} />
+          <div style={{ position:'absolute', bottom:'-10%', right:'-5%', width:'60%', height:'60%', borderRadius:'50%',
+            background:'radial-gradient(ellipse, rgba(236,72,153,0.14) 0%, transparent 65%)', filter:'blur(70px)' }} />
+          <div style={{ position:'absolute', top:'40%', right:'10%', width:'40%', height:'40%', borderRadius:'50%',
+            background:'radial-gradient(ellipse, rgba(99,102,241,0.10) 0%, transparent 65%)', filter:'blur(50px)' }} />
+          {/* Subtle grid */}
+          <div className="absolute inset-0"
+            style={{ backgroundImage:'linear-gradient(rgba(168,85,247,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.04) 1px,transparent 1px)', backgroundSize:'50px 50px', opacity:1 }} />
         </div>
 
-        {/* Top status bar */}
-        <div className="relative z-10 px-10 pt-10 flex items-center justify-between">
+        {/* ── Top bar ── */}
+        <div className="relative z-10 flex items-center justify-between px-10 pt-8">
           <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" style={{ boxShadow:'0 0 6px rgba(34,197,94,0.9)' }} />
-            <span className="text-[10px] font-mono text-slate-600 uppercase tracking-widest">System Online</span>
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow:'0 0 8px rgba(34,197,94,1)' }} />
+            <span className="text-[11px] font-mono font-bold text-slate-500 uppercase tracking-[0.18em]">System Online</span>
           </div>
-          <span className="text-[10px] font-mono text-slate-800 uppercase tracking-widest">Melbourne · AEST</span>
+          <span className="text-[11px] font-mono text-slate-700 uppercase tracking-widest">Melbourne · AEST</span>
         </div>
 
-        {/* Hero */}
-        <div className={`relative z-10 flex-1 flex flex-col items-center justify-center px-12 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        {/* ── Main hero content ── */}
+        <div className={`relative z-10 flex-1 flex flex-col justify-center px-14 transition-all duration-800 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 
           {/* AIRS logo */}
-          <div className="mb-6 select-none" style={{ filter:'drop-shadow(0 0 32px rgba(168,85,247,0.50))' }}>
+          <div className="mb-8" style={{ filter:'drop-shadow(0 0 40px rgba(168,85,247,0.60))' }}>
             <img src="/airs-logo.png" alt="AIRS" draggable={false}
-              style={{ width:'300px', maxWidth:'85%', opacity:0.93 }} />
+              style={{ width:'260px', maxWidth:'80%', opacity:0.95 }} />
           </div>
 
-          {/* NEXT RP big title */}
-          <h1 className="text-[80px] font-black text-center leading-none mb-4 select-none"
-            style={{
+          {/* NEXT RP */}
+          <div className="mb-6">
+            <div className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] mb-3"
+              style={{ color:'rgba(168,85,247,0.65)' }}>
+              Next RP · Melbourne Police Force
+            </div>
+            <h1 style={{
+              fontSize:'clamp(52px,6vw,80px)',
+              fontWeight:900,
               letterSpacing:'-0.04em',
-              background:'linear-gradient(135deg, #f0abfc 0%, #a855f7 40%, #818cf8 100%)',
+              lineHeight:1,
+              margin:0,
+              background:'linear-gradient(135deg, #f5d0fe 0%, #d946ef 30%, #a855f7 60%, #818cf8 100%)',
               WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
-              filter:'drop-shadow(0 0 48px rgba(168,85,247,0.55))',
+              filter:'drop-shadow(0 0 40px rgba(168,85,247,0.45))',
             }}>
-            NEXT RP
-          </h1>
+              NEXT RP
+            </h1>
+          </div>
 
-          <p className="text-slate-500 text-center text-sm leading-relaxed max-w-xs">
-            Melbourne's premier FiveM law enforcement system. Secure, real-time, and built for serious roleplay.
+          <p className="text-slate-400 text-[15px] leading-relaxed max-w-[360px] mb-10">
+            Melbourne's premier FiveM law enforcement system — secure, real-time, and built for serious roleplay.
           </p>
 
-          {/* Feature grid */}
-          <div className="grid grid-cols-2 gap-3 mt-10 w-full max-w-xs">
-            {FEATURES.map(({ icon: Icon, label, desc }) => (
-              <div key={label} className="flex items-start gap-2.5 p-3 rounded-xl"
-                style={{ background:'rgba(168,85,247,0.06)', border:'1px solid rgba(168,85,247,0.14)' }}>
-                <div className="p-1.5 rounded-lg flex-shrink-0" style={{ background:'rgba(168,85,247,0.12)' }}>
-                  <Icon className="w-3.5 h-3.5" style={{ color:'#c084fc' }} />
-                </div>
-                <div>
-                  <div className="text-[11px] font-bold text-white leading-none mb-0.5">{label}</div>
-                  <div className="text-[10px] text-slate-600 leading-tight">{desc}</div>
-                </div>
+          {/* Feature chips */}
+          <div className="flex flex-wrap gap-2.5">
+            {FEATURES.map(({ icon: Icon, label, color }) => (
+              <div key={label}
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-semibold"
+                style={{ background:`${color}12`, border:`1px solid ${color}28`, color }}>
+                <Icon style={{ width:14, height:14 }} />
+                {label}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="relative z-10 px-10 pb-10 flex items-center justify-between">
-          <span className="text-[10px] font-mono text-slate-800">AIRS · Next RP v2.0</span>
-          <span className="text-[10px] font-mono text-slate-800">All access is logged</span>
+        {/* ── Bottom ── */}
+        <div className="relative z-10 flex items-center justify-between px-10 pb-8">
+          <span className="text-[10px] font-mono text-slate-800 uppercase tracking-widest">AIRS · Next RP v2.0</span>
+          <span className="text-[10px] font-mono text-slate-800 uppercase tracking-widest">All access is logged</span>
         </div>
 
-        {/* Right edge divider */}
+        {/* Right divider */}
         <div className="absolute top-0 right-0 w-px h-full"
-          style={{ background:'linear-gradient(180deg,transparent,rgba(168,85,247,0.22) 30%,rgba(168,85,247,0.22) 70%,transparent)' }} />
+          style={{ background:'linear-gradient(180deg,transparent 0%,rgba(168,85,247,0.30) 25%,rgba(168,85,247,0.30) 75%,transparent 100%)' }} />
       </div>
 
-      {/* ── RIGHT PANEL — Login form ─────────────────────────── */}
-      <div className="flex-1 lg:max-w-[460px] flex flex-col relative overflow-y-auto"
+      {/* ══════════════════════════════════════
+          RIGHT — Login form
+      ══════════════════════════════════════ */}
+      <div className="w-full lg:w-[480px] lg:flex-shrink-0 flex flex-col relative"
         style={{ background:'#08060e' }}>
 
         {/* Ambient glow */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div style={{ position:'absolute', top:'20%', left:'50%', transform:'translateX(-50%)',
-            width:'360px', height:'360px', borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(168,85,247,0.07) 0%, transparent 70%)', filter:'blur(50px)' }} />
+          <div style={{ position:'absolute', top:'30%', left:'50%', transform:'translateX(-50%)',
+            width:'400px', height:'400px', borderRadius:'50%',
+            background:'radial-gradient(circle, rgba(168,85,247,0.09) 0%, transparent 70%)', filter:'blur(55px)' }} />
         </div>
 
-        {/* Mobile top bar */}
+        {/* Mobile nav */}
         <div className="lg:hidden flex items-center justify-between px-6 h-14 flex-shrink-0"
           style={{ borderBottom:'1px solid rgba(168,85,247,0.10)' }}>
           <img src="/airs-logo.png" alt="AIRS" draggable={false}
-            style={{ height:'20px', width:'auto', filter:'drop-shadow(0 0 8px rgba(168,85,247,0.5))' }} />
-          <span className="text-[10px] font-mono text-slate-700 uppercase tracking-widest">Next RP · Melbourne</span>
+            style={{ height:'22px', width:'auto', filter:'drop-shadow(0 0 8px rgba(168,85,247,0.5))' }} />
+          <span className="text-[10px] font-mono text-slate-600 uppercase tracking-widest">Next RP</span>
         </div>
 
-        {/* Form container */}
-        <div className="flex-1 flex items-center justify-center p-8">
-          <div className={`w-full max-w-sm relative z-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        {/* Form */}
+        <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
+          <div className={`w-full max-w-[360px] relative z-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
 
-            {/* Header */}
-            <div className="mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="h-px flex-1" style={{ background:'linear-gradient(90deg, rgba(168,85,247,0.4), transparent)' }} />
-                <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em]" style={{ color:'rgba(168,85,247,0.60)' }}>
-                  Officer Portal
-                </span>
-                <div className="h-px flex-1" style={{ background:'linear-gradient(270deg, rgba(168,85,247,0.4), transparent)' }} />
+            {/* Heading */}
+            <div className="mb-10">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="h-px flex-1" style={{ background:'linear-gradient(90deg,rgba(168,85,247,0.5),transparent)' }} />
+                <span className="text-[10px] font-mono font-bold uppercase tracking-[0.24em]"
+                  style={{ color:'rgba(168,85,247,0.55)' }}>Officer Portal</span>
+                <div className="h-px flex-1" style={{ background:'linear-gradient(270deg,rgba(168,85,247,0.5),transparent)' }} />
               </div>
-              <h2 className="text-[34px] font-black text-white leading-none mb-2" style={{ letterSpacing:'-0.03em' }}>
+              <h2 className="text-[40px] font-black text-white leading-none mb-2.5"
+                style={{ letterSpacing:'-0.035em' }}>
                 Welcome Back
               </h2>
-              <p className="text-slate-600 text-sm">Advanced Internal Reporting System.</p>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                Advanced Internal Reporting System
+              </p>
             </div>
 
             {/* Error */}
             {error && (
-              <div className="flex items-start gap-3 p-4 rounded-2xl mb-5 animate-fade-in"
-                style={{ background:'rgba(239,68,68,0.08)', border:'1px solid rgba(239,68,68,0.22)' }}>
+              <div className="flex items-start gap-3 p-4 rounded-2xl mb-6 animate-fade-in"
+                style={{ background:'rgba(239,68,68,0.08)', border:'1px solid rgba(239,68,68,0.25)' }}>
                 <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm text-red-400 font-semibold leading-snug">{error}</p>
@@ -196,13 +209,13 @@ export default function Login() {
               </div>
             )}
 
-            {/* Discord button */}
+            {/* Discord sign-in */}
             <button onClick={handleDiscordLogin}
-              className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-black text-white text-[15px] transition-all hover:scale-[1.02] hover:brightness-110 active:scale-[0.98] mb-3"
+              className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-black text-white text-base mb-4 transition-all hover:scale-[1.02] hover:brightness-110 active:scale-[0.98]"
               style={{
-                background:'linear-gradient(135deg, #5865F2 0%, #7c3aed 50%, #a855f7 100%)',
-                boxShadow:'0 8px 32px rgba(88,101,242,0.35), 0 2px 8px rgba(0,0,0,0.5)',
-                border:'1px solid rgba(168,85,247,0.40)',
+                background:'linear-gradient(135deg,#5865F2 0%,#7c3aed 55%,#a855f7 100%)',
+                boxShadow:'0 8px 32px rgba(88,101,242,0.40), inset 0 1px 0 rgba(255,255,255,0.12)',
+                border:'1px solid rgba(168,85,247,0.45)',
                 letterSpacing:'-0.01em',
               }}>
               <svg width="22" height="17" viewBox="0 0 71 55" fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -211,40 +224,38 @@ export default function Login() {
               Sign in with Discord
             </button>
 
-            <p className="text-center text-xs text-slate-700 mb-6">
+            <p className="text-center text-xs text-slate-600 mb-8">
               New officer?{' '}
-              <a href="/apply" className="font-bold transition-colors hover:opacity-80" style={{ color:'#a855f7' }}>Apply to join &rarr;</a>
+              <a href="/apply" style={{ color:'#a855f7', fontWeight:700 }}
+                className="hover:opacity-75 transition-opacity">Apply to join &rarr;</a>
             </p>
 
-            {/* Info box */}
-            <div className="rounded-2xl p-4" style={{ background:'rgba(168,85,247,0.04)', border:'1px solid rgba(168,85,247,0.09)' }}>
-              <div className="flex items-start gap-3">
-                <div className="p-1.5 rounded-lg flex-shrink-0 mt-0.5" style={{ background:'rgba(168,85,247,0.10)' }}>
-                  <Lock className="w-3.5 h-3.5" style={{ color:'#c084fc' }} />
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Access is restricted to verified Next RP officers. Sign in with your linked Discord account. New officers must apply and be approved by leadership before gaining access.
-                </p>
+            {/* Info */}
+            <div className="rounded-2xl px-4 py-3.5 flex items-start gap-3"
+              style={{ background:'rgba(168,85,247,0.05)', border:'1px solid rgba(168,85,247,0.12)' }}>
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                style={{ background:'rgba(168,85,247,0.12)', border:'1px solid rgba(168,85,247,0.20)' }}>
+                <Lock className="w-3.5 h-3.5" style={{ color:'#c084fc' }} />
               </div>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Restricted to verified Next RP officers only. Sign in with your linked Discord. New officers must apply and be approved by leadership.
+              </p>
             </div>
 
-            {/* Hidden admin bypass */}
+            {/* Hidden leadership bypass */}
             {showAdmin && (
-              <div className="mt-6 animate-fade-up">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex-1 h-px" style={{ background:'rgba(168,85,247,0.12)' }} />
+              <div className="mt-8 animate-fade-up">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="flex-1 h-px" style={{ background:'rgba(168,85,247,0.15)' }} />
                   <span className="text-[10px] font-mono text-slate-700 uppercase tracking-widest">Leadership Access</span>
-                  <div className="flex-1 h-px" style={{ background:'rgba(168,85,247,0.12)' }} />
+                  <div className="flex-1 h-px" style={{ background:'rgba(168,85,247,0.15)' }} />
                 </div>
                 <form onSubmit={handleAdminLogin} className="space-y-3">
-                  <input
-                    value={form.username}
+                  <input value={form.username}
                     onChange={e => setForm(p => ({ ...p, username: e.target.value }))}
-                    placeholder="Username" autoComplete="username"
-                    className="nx-input" />
+                    placeholder="Username" autoComplete="username" className="nx-input" />
                   <div className="relative">
-                    <input
-                      type={showPwd ? 'text' : 'password'}
+                    <input type={showPwd ? 'text' : 'password'}
                       value={form.password}
                       onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
                       placeholder="Password" autoComplete="current-password"
@@ -256,13 +267,10 @@ export default function Login() {
                   </div>
                   <button type="submit" disabled={loading || !form.username || !form.password}
                     className="w-full py-3 rounded-xl font-bold text-sm text-white transition-all hover:brightness-110 disabled:opacity-40"
-                    style={{ background:'linear-gradient(135deg,#7c3aed,#a855f7)', border:'1px solid rgba(168,85,247,0.30)' }}>
-                    {loading ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Signing in...
-                      </span>
-                    ) : 'Sign In'}
+                    style={{ background:'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
+                    {loading
+                      ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Signing in...</span>
+                      : 'Sign In'}
                   </button>
                   <button type="button" onClick={() => setShowAdmin(false)}
                     className="w-full text-center text-xs text-slate-700 hover:text-slate-500 transition-colors py-1">
@@ -272,15 +280,15 @@ export default function Login() {
               </div>
             )}
 
-            {/* Hidden trigger */}
-            <div className="mt-8 text-center">
+            <div className="mt-10 text-center">
               <button
                 onClick={() => { const n = tapCount + 1; setTapCount(n); if (n >= 5) { setShowAdmin(true); setTapCount(0); } }}
                 className="text-[10px] font-mono select-none cursor-default"
-                style={{ background:'none', border:'none', padding:0, color:'rgba(30,30,40,0.8)' }}>
+                style={{ background:'none', border:'none', padding:0, color:'rgba(20,15,30,1)' }}>
                 All access is monitored and logged
               </button>
             </div>
+
           </div>
         </div>
       </div>
