@@ -99,45 +99,39 @@ export default function Login() {
         </div>
 
         {/* ── Main hero content ── */}
-        <div className={`relative z-10 flex-1 flex flex-col justify-center px-14 transition-all duration-800 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`relative z-10 flex-1 flex flex-col items-center justify-center px-14 text-center transition-all duration-800 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 
-          {/* AIRS logo */}
-          <div className="mb-8" style={{ filter:'drop-shadow(0 0 40px rgba(168,85,247,0.60))' }}>
-            <img src="/airs-logo.png" alt="AIRS" draggable={false}
-              style={{ width:'260px', maxWidth:'80%', opacity:0.95 }} />
+          {/* Tag */}
+          <div className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] mb-5"
+            style={{ color:'rgba(168,85,247,0.65)' }}>
+            Next RP · Melbourne Police Force
           </div>
 
           {/* NEXT RP */}
-          <div className="mb-6">
-            <div className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] mb-3"
-              style={{ color:'rgba(168,85,247,0.65)' }}>
-              Next RP · Melbourne Police Force
-            </div>
-            <h1 style={{
-              fontSize:'clamp(52px,6vw,80px)',
-              fontWeight:900,
-              letterSpacing:'-0.04em',
-              lineHeight:1,
-              margin:0,
-              background:'linear-gradient(135deg, #f5d0fe 0%, #d946ef 30%, #a855f7 60%, #818cf8 100%)',
-              WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
-              filter:'drop-shadow(0 0 40px rgba(168,85,247,0.45))',
-            }}>
-              NEXT RP
-            </h1>
-          </div>
+          <h1 style={{
+            fontSize:'clamp(64px,7vw,96px)',
+            fontWeight:900,
+            letterSpacing:'-0.04em',
+            lineHeight:1,
+            margin:'0 0 24px',
+            background:'linear-gradient(135deg, #f5d0fe 0%, #d946ef 30%, #a855f7 60%, #818cf8 100%)',
+            WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
+            filter:'drop-shadow(0 0 50px rgba(168,85,247,0.50))',
+          }}>
+            NEXT RP
+          </h1>
 
-          <p className="text-slate-400 text-[15px] leading-relaxed max-w-[360px] mb-10">
+          <p className="text-slate-400 text-[15px] leading-relaxed max-w-[400px] mb-10">
             Melbourne's premier FiveM law enforcement system — secure, real-time, and built for serious roleplay.
           </p>
 
-          {/* Feature chips */}
-          <div className="flex flex-wrap gap-2.5">
-            {FEATURES.map(({ icon: Icon, label, color }) => (
+          {/* 4 feature chips — single row */}
+          <div className="flex items-center gap-3">
+            {FEATURES.slice(0, 4).map(({ icon: Icon, label, color }) => (
               <div key={label}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-semibold"
-                style={{ background:`${color}12`, border:`1px solid ${color}28`, color }}>
-                <Icon style={{ width:14, height:14 }} />
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap"
+                style={{ background:`${color}12`, border:`1px solid ${color}30`, color }}>
+                <Icon style={{ width:14, height:14, flexShrink:0 }} />
                 {label}
               </div>
             ))}
