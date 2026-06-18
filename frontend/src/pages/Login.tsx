@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Shield, Eye, EyeOff, AlertCircle, UserX, XCircle } from 'lucide-react';
+import { Shield, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const BACKEND_URL = (import.meta.env.VITE_API_BASE_URL || 'https://airs-production-4e96.up.railway.app/api')
@@ -59,73 +59,113 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#060b18' }}>
+    <div className="min-h-screen flex" style={{ background: '#06060a' }}>
 
       {/* ── Left panel — Branding ─────────────────────────── */}
       <div className="hidden lg:flex flex-col flex-1 relative overflow-hidden"
-        style={{ background: 'linear-gradient(160deg, #07112b 0%, #060d1f 50%, #04091a 100%)' }}>
+        style={{ background: 'linear-gradient(160deg, #0a0614 0%, #08050f 50%, #050308 100%)' }}>
 
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-grid opacity-60" />
-        <div className="absolute top-0 left-0 right-0 h-full pointer-events-none">
-          <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] rounded-full opacity-20"
-            style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.3) 0%, transparent 70%)', filter: 'blur(60px)' }} />
-          <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] rounded-full opacity-10"
-            style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.4) 0%, transparent 70%)', filter: 'blur(40px)' }} />
+        {/* Background glow orbs */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Main purple orb */}
+          <div style={{
+            position: 'absolute', top: '15%', left: '20%',
+            width: '520px', height: '520px', borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(168,85,247,0.22) 0%, rgba(124,58,237,0.10) 40%, transparent 70%)',
+            filter: 'blur(40px)',
+          }} />
+          {/* Pink orb */}
+          <div style={{
+            position: 'absolute', bottom: '10%', right: '10%',
+            width: '340px', height: '340px', borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%)',
+            filter: 'blur(50px)',
+          }} />
+          {/* Faint blue accent */}
+          <div style={{
+            position: 'absolute', top: '60%', left: '5%',
+            width: '200px', height: '200px', borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 70%)',
+            filter: 'blur(30px)',
+          }} />
+          {/* Grid overlay */}
+          <div className="absolute inset-0 opacity-[0.025]"
+            style={{ backgroundImage: 'linear-gradient(rgba(168,85,247,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,0.6) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         </div>
 
         {/* Top left logo */}
         <div className="relative z-10 p-10">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg,#0891b2,#1d4ed8)', boxShadow: '0 0 20px rgba(6,182,212,0.35)' }}>
+              style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', boxShadow: '0 0 20px rgba(168,85,247,0.40)' }}>
               <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
               <div className="text-white font-black text-sm tracking-tight">NextAirs MDT</div>
-              <div className="text-[10px] font-mono font-bold tracking-widest uppercase" style={{ color: '#06b6d4' }}>Melbourne Police Force</div>
+              <div className="text-[10px] font-mono font-bold tracking-widest uppercase" style={{ color: '#a855f7' }}>Melbourne Police Force</div>
             </div>
           </div>
         </div>
 
-        {/* Centre content */}
+        {/* Centre hero */}
         <div className={`relative z-10 flex-1 flex flex-col items-center justify-center px-12 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
 
-          {/* Big shield */}
-          <div className="relative mb-10">
-            <div className="absolute inset-0 rounded-full animate-pulse"
-              style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.20) 0%, transparent 70%)', filter: 'blur(20px)', transform: 'scale(1.5)' }} />
-            <div className="relative w-28 h-28 rounded-3xl flex items-center justify-center"
-              style={{
-                background: 'linear-gradient(135deg, #0891b2 0%, #1d4ed8 100%)',
-                boxShadow: '0 0 40px rgba(6,182,212,0.4), 0 0 80px rgba(6,182,212,0.15)',
-              }}>
-              <Shield className="w-14 h-14 text-white" strokeWidth={1.5} />
-            </div>
-          </div>
-
-          <h1 className="text-4xl font-black text-white text-center leading-tight mb-4" style={{ letterSpacing: '-0.02em' }}>
-            Next RP<br />
-            <span style={{ background: 'linear-gradient(135deg,#06b6d4,#3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              Police Force
-            </span>
-          </h1>
-          <p className="text-slate-400 text-center text-base leading-relaxed max-w-sm">
-            Melbourne's premier FiveM law enforcement CAD & MDT system. Secure, real-time, and built for serious roleplay.
+          {/* Subtitle */}
+          <p className="text-[11px] font-bold uppercase tracking-[0.25em] mb-5"
+            style={{ color: 'rgba(168,85,247,0.70)' }}>
+            Australian FiveM Roleplay
           </p>
+
+          {/* Big title */}
+          <h1 className="text-[72px] font-black text-center leading-none mb-6 select-none"
+            style={{
+              letterSpacing: '-0.03em',
+              background: 'linear-gradient(135deg, #e879f9 0%, #a855f7 40%, #818cf8 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 0 40px rgba(168,85,247,0.45))',
+            }}>
+            NEXT RP
+          </h1>
+
+          <p className="text-slate-300 text-center text-base leading-relaxed max-w-sm font-semibold uppercase tracking-wider text-[13px]">
+            Australia's Premier Roleplay Experience
+          </p>
+          <p className="text-slate-600 text-center text-sm leading-relaxed max-w-sm mt-2">
+            Custom scripts, whitelisted factions, and a community built for serious roleplay.
+          </p>
+
+          {/* Stats row */}
+          <div className="flex items-center gap-10 mt-10">
+            {[
+              { val: '200+', label: 'Player Slots' },
+              { val: '50+',  label: 'Custom Scripts' },
+              { val: '10+',  label: 'Active Factions' },
+              { val: '30+',  label: 'Unique Jobs' },
+            ].map(s => (
+              <div key={s.label} className="text-center">
+                <div className="text-2xl font-black"
+                  style={{ background: 'linear-gradient(135deg,#e879f9,#a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                  {s.val}
+                </div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600 mt-0.5">{s.label}</div>
+              </div>
+            ))}
+          </div>
 
           {/* Feature pills */}
           <div className="flex flex-wrap justify-center gap-2 mt-8">
             {['Live Dispatch','Officer Roster','Warrant System','FTO Training','Certifications','Shift Tracking'].map(f => (
               <span key={f} className="px-3 py-1.5 rounded-full text-xs font-semibold"
-                style={{ background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.18)', color: 'rgba(6,182,212,0.80)' }}>
+                style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.20)', color: 'rgba(168,85,247,0.80)' }}>
                 {f}
               </span>
             ))}
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom status */}
         <div className="relative z-10 p-10 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: '0 0 6px rgba(34,197,94,0.8)' }} />
@@ -134,33 +174,46 @@ export default function Login() {
           <span className="text-xs font-mono text-slate-700">NextAirs v2.0 · FIVEM CAD</span>
         </div>
 
-        {/* Right border fade */}
+        {/* Right border */}
         <div className="absolute top-0 right-0 w-px h-full"
-          style={{ background: 'linear-gradient(180deg, transparent, rgba(6,182,212,0.20) 30%, rgba(6,182,212,0.20) 70%, transparent)' }} />
+          style={{ background: 'linear-gradient(180deg, transparent, rgba(168,85,247,0.25) 30%, rgba(168,85,247,0.25) 70%, transparent)' }} />
       </div>
 
       {/* ── Right panel — Login form ──────────────────────── */}
       <div className="flex-1 lg:max-w-[440px] flex flex-col items-center justify-center p-8 relative"
-        style={{ background: '#080d1a' }}>
+        style={{ background: '#08060e' }}>
+
+        {/* Background glow behind form */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div style={{
+            position: 'absolute', top: '30%', left: '50%', transform: 'translateX(-50%)',
+            width: '300px', height: '300px', borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(168,85,247,0.08) 0%, transparent 70%)',
+            filter: 'blur(40px)',
+          }} />
+        </div>
 
         {/* Mobile logo */}
         <div className="lg:hidden flex items-center gap-3 mb-10">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg,#0891b2,#1d4ed8)', boxShadow: '0 0 18px rgba(6,182,212,0.3)' }}>
+            style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', boxShadow: '0 0 18px rgba(168,85,247,0.35)' }}>
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div>
             <div className="text-white font-black text-base">NextAirs MDT</div>
-            <div className="text-[10px] font-mono" style={{ color: '#06b6d4' }}>NEXT RP · MELBOURNE</div>
+            <div className="text-[10px] font-mono" style={{ color: '#a855f7' }}>NEXT RP · MELBOURNE</div>
           </div>
         </div>
 
-        <div className={`w-full max-w-sm transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <div className={`w-full max-w-sm relative z-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
 
           {/* Heading */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-black text-white mb-1.5">Welcome back</h2>
-            <p className="text-slate-500 text-sm">Sign in to access the MDT system.</p>
+          <div className="mb-8 text-center">
+            <div className="text-[10px] font-bold uppercase tracking-[0.25em] mb-3" style={{ color: 'rgba(168,85,247,0.60)' }}>
+              Officer Portal
+            </div>
+            <h2 className="text-3xl font-black text-white mb-2" style={{ letterSpacing: '-0.02em' }}>Welcome Back</h2>
+            <p className="text-slate-600 text-sm">Sign in to access the MDT system.</p>
           </div>
 
           {/* Error */}
@@ -175,13 +228,13 @@ export default function Login() {
             </div>
           )}
 
-          {/* Discord CTA */}
+          {/* Discord button */}
           <button onClick={handleDiscordLogin}
-            className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-black text-white text-base transition-all hover:scale-[1.02] hover:brightness-110 active:scale-[0.98] mb-4"
+            className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-black text-white text-base transition-all hover:scale-[1.02] hover:brightness-110 active:scale-[0.98] mb-3"
             style={{
-              background: 'linear-gradient(135deg, #4f46e5 0%, #5b63f5 100%)',
-              boxShadow: '0 8px 32px rgba(79,70,229,0.40), 0 2px 8px rgba(0,0,0,0.4)',
-              border: '1px solid rgba(99,102,241,0.50)',
+              background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c026d3 100%)',
+              boxShadow: '0 8px 32px rgba(168,85,247,0.40), 0 2px 8px rgba(0,0,0,0.5)',
+              border: '1px solid rgba(168,85,247,0.45)',
               letterSpacing: '-0.01em',
             }}>
             <svg width="22" height="22" viewBox="0 0 71 55" fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -192,18 +245,31 @@ export default function Login() {
 
           <p className="text-center text-xs text-slate-600 mb-6">
             Don't have an account?{' '}
-            <a href="/apply" className="font-bold transition-colors" style={{ color: '#06b6d4' }}>Apply to join →</a>
+            <a href="/apply" className="font-bold transition-colors" style={{ color: '#a855f7' }}>Apply to join →</a>
           </p>
 
-          {/* Hidden admin bypass — click "All access is monitored" 5× */}
-          {showAdmin && (
-            <div className="animate-fade-up">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex-1 h-px" style={{ background: 'rgba(6,182,212,0.10)' }} />
-                <span className="text-[10px] font-mono text-slate-700 uppercase tracking-widest">Leadership Access</span>
-                <div className="flex-1 h-px" style={{ background: 'rgba(6,182,212,0.10)' }} />
-              </div>
+          {/* Divider */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px" style={{ background: 'rgba(168,85,247,0.10)' }} />
+            <span className="text-[10px] font-mono text-slate-800 uppercase tracking-widest">Secure Access</span>
+            <div className="flex-1 h-px" style={{ background: 'rgba(168,85,247,0.10)' }} />
+          </div>
 
+          {/* Info blurb */}
+          <div className="rounded-xl p-4 text-center" style={{ background: 'rgba(168,85,247,0.05)', border: '1px solid rgba(168,85,247,0.10)' }}>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Access is restricted to verified Next RP officers. Use your linked Discord account to sign in. New officers must apply and be approved by leadership.
+            </p>
+          </div>
+
+          {/* Hidden admin bypass */}
+          {showAdmin && (
+            <div className="mt-6 animate-fade-up">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex-1 h-px" style={{ background: 'rgba(168,85,247,0.12)' }} />
+                <span className="text-[10px] font-mono text-slate-700 uppercase tracking-widest">Leadership Access</span>
+                <div className="flex-1 h-px" style={{ background: 'rgba(168,85,247,0.12)' }} />
+              </div>
               <form onSubmit={handleAdminLogin} className="space-y-3">
                 <input
                   value={form.username}
@@ -223,9 +289,10 @@ export default function Login() {
                   </button>
                 </div>
                 <button type="submit" disabled={loading || !form.username || !form.password}
-                  className="btn-primary w-full">
+                  className="w-full py-2.5 rounded-xl font-bold text-sm text-white transition-all hover:brightness-110"
+                  style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', border: '1px solid rgba(168,85,247,0.30)' }}>
                   {loading ? (
-                    <span className="flex items-center gap-2">
+                    <span className="flex items-center justify-center gap-2">
                       <span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" />
                       Signing in…
                     </span>
@@ -239,11 +306,11 @@ export default function Login() {
             </div>
           )}
 
-          {/* Hidden trigger */}
-          <div className="mt-8 text-center">
+          {/* Hidden trigger — click 5x */}
+          <div className="mt-6 text-center">
             <button
               onClick={() => { const n = tapCount + 1; setTapCount(n); if (n >= 5) { setShowAdmin(true); setTapCount(0); } }}
-              className="text-[10px] font-mono text-slate-800 hover:text-slate-800 select-none cursor-default"
+              className="text-[10px] font-mono text-slate-900 hover:text-slate-900 select-none cursor-default"
               style={{ background: 'none', border: 'none', padding: 0 }}>
               All access is monitored and logged
             </button>
