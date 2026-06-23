@@ -124,6 +124,7 @@ function createApp(options = {}) {
   app.use('/api/recruit-stages', require('./routes/recruit_stages'));
   app.use('/api/onboarding', require('./routes/onboarding'));
   app.use('/api/stats', require('./routes/stats'));
+  app.use('/api/fivem', require('./routes/fivem'));
 
   // Public health check — deliberately minimal to avoid information leakage
   app.get('/api/health', (_req, res) => {
