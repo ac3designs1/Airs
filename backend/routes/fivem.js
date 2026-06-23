@@ -3,6 +3,12 @@ const router = express.Router();
 const { db } = require('../db/schema');
 const { v4: uuidv4 } = require('uuid');
 
+// Add fivem_originated columns so we can filter out FiveM-created records
+// from the events feed (preventing duplicate in-game alerts).
+try { db.exec('ALTER TABLE warrants ADD COLUMN fivem_originated INTEGER DEFAULT 0'); } catch {}
+try { db.exec('ALTER TABLE bolos ADD COLUMN fivem_originated INTEGER DEFAULT 0'); } catch {}
+try { db.exec('ALTER TABLE dispatch_calls ADD COLUMN fivem_originated INTEGER DEFAULT 0'); } catch {}
+
 // Simple API-key auth for FiveM server-to-server calls.
 // Set FIVEM_API_KEY in your Railway environment variables.
 function fivemAuth(req, res, next) {
@@ -13,6 +19,8 @@ function fivemAuth(req, res, next) {
     next();
 }
 router.use(fivemAuth);
+
+// ─── GAME → WEBSITE ──────────────────────────────────────────────────────────
 
 // POST /api/fivem/duty/start
 // Called when an officer logs into the FiveM MDT.
@@ -65,18 +73,18 @@ router.post('/duty/end', (req, res) => {
 
 // POST /api/fivem/duty/status
 // Called when an officer changes their status in the FiveM MDT.
-// Body: { callsign, status }  (FiveM status string e.g. "ON PATROL", "TRAFFIC STOP")
+// Body: { callsign, status }
 router.post('/duty/status', (req, res) => {
     const { callsign, status } = req.body;
     if (!callsign) return res.status(400).json({ error: 'callsign required' });
 
     const statusMap = {
-        'ON PATROL': 'on_duty',
+        'ON PATROL':    'on_duty',
         'TRAFFIC STOP': 'busy',
-        'ON SCENE': 'busy',
-        'ENROUTE': 'busy',
-        'BUSY': 'busy',
-        'UNAVAILABLE': 'off_duty',
+        'ON SCENE':     'busy',
+        'ENROUTE':      'busy',
+        'BUSY':         'busy',
+        'UNAVAILABLE':  'off_duty',
     };
 
     const officer = db.prepare("SELECT id FROM officers WHERE LOWER(callsign) = LOWER(?)").get(callsign);
@@ -126,7 +134,7 @@ router.post('/warrant', (req, res) => {
 
     const id = uuidv4();
     db.prepare(
-        "INSERT INTO warrants (id, citizen_id, type, charges, description, status, issued_by) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO warrants (id, citizen_id, type, charges, description, status, issued_by, fivem_originated) VALUES (?, ?, ?, ?, ?, ?, ?, 1)"
     ).run(id, citizen_id, 'Arrest', JSON.stringify(['Warrant For Arrest']), notes || '', 'active', issued_by);
 
     res.status(201).json({ message: 'Warrant created', warrant_id: id });
@@ -145,10 +153,64 @@ router.post('/dispatch', (req, res) => {
     const call_number = `CS-${year}-${String(cnt + 1).padStart(4, '0')}`;
 
     db.prepare(
-        "INSERT INTO dispatch_calls (id, call_number, type, description, location, priority, status) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO dispatch_calls (id, call_number, type, description, location, priority, status, fivem_originated) VALUES (?, ?, ?, ?, ?, ?, ?, 1)"
     ).run(id, call_number, type, description || '', location, priority || 3, 'active');
 
     res.status(201).json({ message: 'Dispatch call created', call_number });
+});
+
+// ─── WEBSITE → GAME ──────────────────────────────────────────────────────────
+
+// GET /api/fivem/events?since=<ISO8601>
+// Returns new warrants, BOLOs, and dispatch calls created on the *website*
+// since the given timestamp. FiveM-originated records are excluded to prevent
+// duplicate in-game alerts (the MDT already broadcasts those directly).
+router.get('/events', (req, res) => {
+    const since = req.query.since || new Date(0).toISOString();
+
+    const warrants = db.prepare(`
+        SELECT
+            w.id, w.type, w.description, w.issued_date,
+            c.first_name || ' ' || c.last_name AS suspect_name,
+            COALESCE(o.callsign, o.username)   AS officer_callsign
+        FROM warrants w
+        LEFT JOIN citizens c ON w.citizen_id = c.id
+        LEFT JOIN officers o ON w.issued_by   = o.id
+        WHERE w.issued_date > ?
+          AND w.status = 'active'
+          AND (w.fivem_originated IS NULL OR w.fivem_originated = 0)
+        ORDER BY w.issued_date ASC
+    `).all(since);
+
+    const bolos = db.prepare(`
+        SELECT
+            b.id, b.type, b.subject, b.description,
+            b.plate, b.vehicle_description,
+            b.armed, b.dangerous, b.created_at,
+            COALESCE(o.callsign, o.username) AS officer_callsign
+        FROM bolos b
+        LEFT JOIN officers o ON b.issued_by = o.id
+        WHERE b.created_at > ?
+          AND b.status = 'active'
+          AND (b.fivem_originated IS NULL OR b.fivem_originated = 0)
+        ORDER BY b.created_at ASC
+    `).all(since);
+
+    const dispatch = db.prepare(`
+        SELECT id, call_number, type, description, location, priority, created_at
+        FROM dispatch_calls
+        WHERE created_at > ?
+          AND status IN ('active', 'pending')
+          AND (fivem_originated IS NULL OR fivem_originated = 0)
+        ORDER BY created_at ASC
+    `).all(since);
+
+    res.json({
+        warrants,
+        bolos,
+        dispatch,
+        server_time: new Date().toISOString(),
+    });
 });
 
 module.exports = router;
