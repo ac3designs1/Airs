@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { db } = require('../db/schema');
 const { v4: uuidv4 } = require('uuid');
+const { utcNow, parseStoredUtc } = require('../lib/time');
 
 // Add fivem_originated columns so we can filter out FiveM-created records
 // from the events feed (preventing duplicate in-game alerts).
@@ -58,8 +59,8 @@ router.post('/duty/start', (req, res) => {
     }
 
     const id = uuidv4();
-    db.prepare(`INSERT INTO shifts (id, officer_id, officer_name, callsign, department, start_time, status) VALUES (?, ?, ?, ?, ?, datetime('now'), 'active')`)
-        .run(id, officer.id, `${officer.first_name} ${officer.last_name}`, callsign || officer.callsign, officer.department);
+    db.prepare(`INSERT INTO shifts (id, officer_id, officer_name, callsign, department, start_time, status) VALUES (?, ?, ?, ?, ?, ?, 'active')`)
+        .run(id, officer.id, `${officer.first_name} ${officer.last_name}`, callsign || officer.callsign, officer.department, utcNow());
 
     db.prepare("UPDATE officers SET status = 'on_duty' WHERE id = ?").run(officer.id);
 
@@ -82,9 +83,9 @@ router.post('/duty/end', (req, res) => {
         return res.json({ message: 'No active shift found, status set to off_duty' });
     }
 
-    const mins = Math.round((Date.now() - new Date(shift.start_time).getTime()) / 60000);
-    db.prepare("UPDATE shifts SET status = 'completed', end_time = datetime('now'), duration_mins = ? WHERE id = ?")
-        .run(mins, shift.id);
+    const mins = Math.round((Date.now() - parseStoredUtc(shift.start_time).getTime()) / 60000);
+    db.prepare("UPDATE shifts SET status = 'completed', end_time = ?, duration_mins = ? WHERE id = ?")
+        .run(utcNow(), mins, shift.id);
     db.prepare("UPDATE officers SET status = 'off_duty' WHERE id = ?").run(officer.id);
 
     res.json({ message: 'Shift ended', duration_mins: mins });

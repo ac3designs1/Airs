@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Clock, Play, Square, BarChart2, Calendar, CheckCircle, AlertCircle, FileText } from 'lucide-react';
 import api from '../api/client';
 import { useAuth } from '../contexts/AuthContext';
-import { format, formatDuration, intervalToDuration, parseISO } from 'date-fns';
+import { format, formatDuration, intervalToDuration } from 'date-fns';
+import { parseStoredTime } from '../lib/time';
 
 interface Shift {
   id: string; officer_id: string; officer_name: string; callsign?: string;
@@ -49,7 +50,7 @@ export default function Shifts() {
   useEffect(() => {
     if (!active) { setElapsed(''); return; }
     const tick = () => {
-      const dur = intervalToDuration({ start: parseISO(active.start_time), end: new Date() });
+      const dur = intervalToDuration({ start: parseStoredTime(active.start_time), end: new Date() });
       setElapsed(formatDuration(dur, { format: ['hours', 'minutes', 'seconds'] }) || '< 1s');
     };
     tick();
@@ -138,7 +139,7 @@ export default function Shifts() {
                 <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                 <span className="text-xs font-bold uppercase tracking-wider text-green-400">Active Shift</span>
               </div>
-              <p className="text-white font-semibold">Started {format(parseISO(active.start_time), 'h:mm a · dd MMM yyyy')}</p>
+              <p className="text-white font-semibold">Started {format(parseStoredTime(active.start_time), 'h:mm a · dd MMM yyyy')}</p>
               <p className="text-slate-500 text-sm mt-1">Elapsed: <span className="text-green-400 font-mono">{elapsed}</span></p>
             </div>
             <div className="flex items-end gap-3 flex-wrap">
@@ -198,9 +199,9 @@ export default function Shifts() {
                     {isLeader && <td className="font-semibold text-white">{s.officer_name}</td>}
                     {isLeader && <td className="font-mono text-purple-400 text-sm">{s.callsign || '—'}</td>}
                     {isLeader && <td className="text-slate-400 text-xs">{s.department || '—'}</td>}
-                    {!isLeader && <td className="text-slate-500 text-xs">{format(parseISO(s.start_time), 'dd MMM yyyy')}</td>}
-                    <td className="font-mono text-slate-300">{format(parseISO(s.start_time), 'HH:mm')}</td>
-                    <td className="font-mono text-slate-300">{s.end_time ? format(parseISO(s.end_time), 'HH:mm') : '—'}</td>
+                    {!isLeader && <td className="text-slate-500 text-xs">{format(parseStoredTime(s.start_time), 'dd MMM yyyy')}</td>}
+                    <td className="font-mono text-slate-300">{format(parseStoredTime(s.start_time), 'HH:mm')}</td>
+                    <td className="font-mono text-slate-300">{s.end_time ? format(parseStoredTime(s.end_time), 'HH:mm') : '—'}</td>
                     <td className="font-mono font-semibold text-slate-200">{s.duration_mins ? fmtMins(s.duration_mins) : (s.status === 'active' ? <span className="text-green-400 font-bold">Active</span> : '—')}</td>
                     <td><span className={`chip text-[10px] ${s.status === 'active' ? 'chip-green' : 'chip-gray'}`}>{s.status === 'active' ? 'On Duty' : 'Ended'}</span></td>
                     <td className="text-xs text-slate-500 max-w-[160px] truncate">{s.notes || '—'}</td>

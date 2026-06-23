@@ -3,6 +3,7 @@ const router = express.Router();
 const { db } = require('../db/schema');
 const { authenticateToken } = require('../middleware/auth');
 const { v4: uuidv4 } = require('uuid');
+const { utcNow, parseStoredUtc } = require('../lib/time');
 
 const LEADERSHIP = ['commissioner', 'admin', 'administrator', 'leadership', 'senior_command', 'supervisor'];
 
@@ -32,8 +33,8 @@ router.post('/start', authenticateToken, (req, res) => {
   const id = uuidv4();
   const name = officer ? `${officer.first_name} ${officer.last_name}` : req.user.username;
 
-  db.prepare(`INSERT INTO shifts (id,officer_id,officer_name,callsign,department,start_time,status) VALUES (?,?,?,?,?,datetime('now'),'active')`)
-    .run(id, req.user.id, name, officer?.callsign ?? null, officer?.department ?? null);
+  db.prepare(`INSERT INTO shifts (id,officer_id,officer_name,callsign,department,start_time,status) VALUES (?,?,?,?,?,?,'active')`)
+    .run(id, req.user.id, name, officer?.callsign ?? null, officer?.department ?? null, utcNow());
 
   db.prepare("UPDATE officers SET status='on_duty' WHERE id=?").run(req.user.id);
   res.status(201).json(db.prepare('SELECT * FROM shifts WHERE id=?').get(id));
@@ -45,12 +46,12 @@ router.post('/end', authenticateToken, (req, res) => {
   if (!shift) return res.status(404).json({ error: 'No active shift' });
 
   const { notes } = req.body;
-  const start = new Date(shift.start_time);
+  const start = parseStoredUtc(shift.start_time);
   const end = new Date();
   const mins = Math.round((end - start) / 60000);
 
-  db.prepare(`UPDATE shifts SET status='completed', end_time=datetime('now'), duration_mins=?, notes=? WHERE id=?`)
-    .run(mins, notes || null, shift.id);
+  db.prepare(`UPDATE shifts SET status='completed', end_time=?, duration_mins=?, notes=? WHERE id=?`)
+    .run(utcNow(), mins, notes || null, shift.id);
   db.prepare("UPDATE officers SET status='off_duty' WHERE id=?").run(req.user.id);
 
   res.json(db.prepare('SELECT * FROM shifts WHERE id=?').get(shift.id));
