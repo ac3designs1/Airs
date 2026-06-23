@@ -22,15 +22,34 @@ router.use(fivemAuth);
 
 // ─── GAME → WEBSITE ──────────────────────────────────────────────────────────
 
+// Parse a FiveM player name ("Lastname, Firstname" or "Firstname Lastname")
+// into { firstName, lastName } and look up the matching officer row.
+function findOfficerByName(name) {
+    if (!name) return null;
+    let firstName, lastName;
+    const commaSplit = name.split(', ');
+    if (commaSplit.length >= 2) {
+        lastName  = commaSplit[0].trim();
+        firstName = commaSplit[1].trim();
+    } else {
+        const parts = name.trim().split(' ');
+        firstName = parts[0] || name;
+        lastName  = parts.slice(1).join(' ') || '';
+    }
+    return db.prepare(
+        "SELECT * FROM officers WHERE LOWER(first_name) = LOWER(?) AND LOWER(last_name) = LOWER(?)"
+    ).get(firstName, lastName);
+}
+
 // POST /api/fivem/duty/start
 // Called when an officer logs into the FiveM MDT.
-// Body: { callsign, name, rank }
+// Body: { name, callsign, rank }
 router.post('/duty/start', (req, res) => {
-    const { callsign, name, rank } = req.body;
-    if (!callsign) return res.status(400).json({ error: 'callsign required' });
+    const { name, callsign, rank } = req.body;
+    if (!name) return res.status(400).json({ error: 'name required' });
 
-    const officer = db.prepare("SELECT * FROM officers WHERE LOWER(callsign) = LOWER(?)").get(callsign);
-    if (!officer) return res.status(404).json({ error: 'Officer not found in NextAirs — ensure callsigns match.' });
+    const officer = findOfficerByName(name);
+    if (!officer) return res.status(404).json({ error: 'Officer not found in NextAirs — ensure your name matches AIRS.' });
 
     const existing = db.prepare("SELECT id FROM shifts WHERE officer_id = ? AND status = 'active'").get(officer.id);
     if (existing) {
@@ -40,7 +59,7 @@ router.post('/duty/start', (req, res) => {
 
     const id = uuidv4();
     db.prepare(`INSERT INTO shifts (id, officer_id, officer_name, callsign, department, start_time, status) VALUES (?, ?, ?, ?, ?, datetime('now'), 'active')`)
-        .run(id, officer.id, `${officer.first_name} ${officer.last_name}`, officer.callsign, officer.department);
+        .run(id, officer.id, `${officer.first_name} ${officer.last_name}`, callsign || officer.callsign, officer.department);
 
     db.prepare("UPDATE officers SET status = 'on_duty' WHERE id = ?").run(officer.id);
 
@@ -49,12 +68,12 @@ router.post('/duty/start', (req, res) => {
 
 // POST /api/fivem/duty/end
 // Called when an officer logs out of the FiveM MDT.
-// Body: { callsign }
+// Body: { name }
 router.post('/duty/end', (req, res) => {
-    const { callsign } = req.body;
-    if (!callsign) return res.status(400).json({ error: 'callsign required' });
+    const { name } = req.body;
+    if (!name) return res.status(400).json({ error: 'name required' });
 
-    const officer = db.prepare("SELECT * FROM officers WHERE LOWER(callsign) = LOWER(?)").get(callsign);
+    const officer = findOfficerByName(name);
     if (!officer) return res.status(404).json({ error: 'Officer not found' });
 
     const shift = db.prepare("SELECT * FROM shifts WHERE officer_id = ? AND status = 'active'").get(officer.id);
@@ -73,10 +92,10 @@ router.post('/duty/end', (req, res) => {
 
 // POST /api/fivem/duty/status
 // Called when an officer changes their status in the FiveM MDT.
-// Body: { callsign, status }
+// Body: { name, status }
 router.post('/duty/status', (req, res) => {
-    const { callsign, status } = req.body;
-    if (!callsign) return res.status(400).json({ error: 'callsign required' });
+    const { name, status } = req.body;
+    if (!name) return res.status(400).json({ error: 'name required' });
 
     const statusMap = {
         'ON PATROL':    'on_duty',
@@ -87,7 +106,7 @@ router.post('/duty/status', (req, res) => {
         'UNAVAILABLE':  'off_duty',
     };
 
-    const officer = db.prepare("SELECT id FROM officers WHERE LOWER(callsign) = LOWER(?)").get(callsign);
+    const officer = findOfficerByName(name);
     if (!officer) return res.status(404).json({ error: 'Officer not found' });
 
     db.prepare("UPDATE officers SET status = ? WHERE id = ?").run(statusMap[status] || 'on_duty', officer.id);
